@@ -119,6 +119,7 @@ border-radius:10px;
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 
 <script>
+const res = await fetch(API_BASE + "/api/upload",{
 
 // ELEMENTS
 
@@ -188,7 +189,7 @@ async function generate(){
 status.innerHTML = "AI is generating the 3D model..."
 
 const res = await fetch(
-"http://127.0.0.1:8000/api/generate?job_id="+currentJobId,
+API_BASE + "/api/generate?job_id=" + currentJobId,
 {method:"POST"}
 )
 
@@ -207,7 +208,7 @@ async function checkStatus(taskId){
 const interval = setInterval(async () => {
 
 const res = await fetch(
-"http://127.0.0.1:8000/api/job/"+taskId
+API_BASE + "/api/job/" + taskId
 )
 
 const data = await res.json()
@@ -326,7 +327,7 @@ download.style.display = "inline-block"
 
 async function savePreview(image){
 
-await fetch("http://127.0.0.1:8000/api/preview",{
+await fetch(API_BASE + "/api/preview",{
 
 method:"POST",
 
