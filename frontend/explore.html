@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Pluto3D Explore</title>
+
+<style>
+
+body{
+background:#020617;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+
+h1{
+color:#38bdf8;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,200px);
+gap:20px;
+justify-content:center;
+padding:20px;
+}
+
+.card{
+background:#020617;
+border:1px solid #0ea5e9;
+border-radius:10px;
+padding:10px;
+box-shadow:0 0 15px #0ea5e9;
+cursor:pointer;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.preview{
+width:180px;
+height:180px;
+background:#000;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#38bdf8;
+font-size:12px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Explore Pluto3D Models</h1>
+
+<div class="grid" id="gallery"></div>
+
+<script>
+
+fetch("http://127.0.0.1:8000/api/models")
+
+.then(res => res.json())
+
+.then(data => {
+
+const gallery = document.getElementById("gallery")
+
+data.models.forEach(url => {
+
+const card = document.createElement("div")
+card.className = "card"
+
+const preview = document.createElement("div")
+preview.className = "preview"
+const img = document.createElement("img")
+
+img.src = url.replace("model.glb","preview.png")
+
+img.style.width = "180px"
+img.style.height = "180px"
+img.style.objectFit = "cover"
+img.style.borderRadius = "10px"
+
+preview.appendChild(img)
+
+card.appendChild(preview)
+
+card.onclick = () => {
+
+window.location.href = "index.html?model=" + url
+
+}
+
+gallery.appendChild(card)
+
+})
+
+})
+
+</script>
+
+</body>
+</html>

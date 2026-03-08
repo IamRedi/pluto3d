@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Photo → 3D AI</title>
+
+<style>
+
+body{
+background:#020617;
+color:white;
+font-family:Arial;
+display:flex;
+flex-direction:column;
+align-items:center;
+margin:0;
+padding:20px;
+}
+
+.panel{
+background:#020617;
+padding:40px;
+border-radius:20px;
+box-shadow:0 0 40px #0ea5e9;
+width:550px;
+text-align:center;
+margin-bottom:30px;
+}
+
+h1{
+color:#38bdf8;
+}
+
+.preview{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.preview img{
+width:120px;
+margin:10px;
+border-radius:10px;
+border:2px solid #0ea5e9;
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#0ea5e9;
+color:white;
+font-size:16px;
+cursor:pointer;
+margin-top:10px;
+margin-right:10px;
+}
+
+button:hover{
+background:#0284c7;
+}
+
+.status{
+margin-top:20px;
+color:#38bdf8;
+font-size:14px;
+}
+
+#viewer{
+width:800px;
+height:450px;
+border:1px solid #0ea5e9;
+border-radius:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="panel">
+
+<h1>Photo → 3D AI</h1>
+
+<a href="explore.html">
+<button style="margin-bottom:10px;">Explore Models</button>
+</a>
+
+<input type="file" id="fileInput" accept="image/*" multiple>
+
+<br><br>
+
+<button onclick="upload()">Upload Photos</button>
+<button onclick="generate()">Generate 3D</button>
+<button onclick="toyMode()">Toy Mode</button>
+<button onclick="selfieToy()">Selfie → Toy</button>
+<br><br>
+
+<button onclick="plasticToy()">Plastic</button>
+<button onclick="goldToy()">Gold</button>
+<button onclick="chromeToy()">Chrome</button>
+<button onclick="cartoonToy()">Cartoon</button>
+
+<div class="preview" id="preview"></div>
+
+<div class="status" id="status"></div>
+<a id="downloadBtn" style="display:none;" download>
+<button>Download 3D Model</button>
+</a>
+</div>
+
+<h2>3D Viewer</h2>
+<div id="viewer"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+
+<script>
+
+// ELEMENTS
+
+const input = document.getElementById("fileInput")
+const preview = document.getElementById("preview")
+const status = document.getElementById("status")
+
+let currentJobId = null
+let currentModel = null
+let toyBase = null
+// IMAGE PREVIEW
+
+input.addEventListener("change", () => {
+
+preview.innerHTML=""
+
+const files = input.files
+
+for(let i=0;i<files.length;i++){
+
+const img = document.createElement("img")
+img.src = URL.createObjectURL(files[i])
+preview.appendChild(img)
+
+}
+
+})
+
+// UPLOAD
+
+async function upload(){
+
+const files = input.files
+
+if(files.length == 0){
+alert("Choose photos first")
+return
+}
+
+const jobId = crypto.randomUUID()
+currentJobId = jobId
+
+for(let i=0;i<files.length;i++){
+
+const formData = new FormData()
+
+formData.append("file", files[i])
+formData.append("job_id", jobId)
+
+const res = await fetch("http://127.0.0.1:8000/api/upload",{
+method:"POST",
+body:formData
+})
+
+const data = await res.json()
+
+status.innerHTML = "Upload OK | Job ID: " + data.job_id
+
+}
+
+}
+
+// GENERATE
+
+async function generate(){
+
+status.innerHTML = "AI is generating the 3D model..."
+
+const res = await fetch(
+"http://127.0.0.1:8000/api/generate?job_id="+currentJobId,
+{method:"POST"}
+)
+
+const data = await res.json()
+
+const taskId = data.task_id
+
+checkStatus(taskId)
+
+}
+
+// CHECK STATUS
+
+async function checkStatus(taskId){
+
+const interval = setInterval(async () => {
+
+const res = await fetch(
+"http://127.0.0.1:8000/api/job/"+taskId
+)
+
+const data = await res.json()
+
+status.innerHTML =
+"AI status: " + data.status +
+" | progress: " + data.progress + "%"
+
+if(data.status === "SUCCEEDED"){
+
+clearInterval(interval)
+
+const modelUrl = data.model_url
+
+status.innerHTML = "3D Model Ready"
+
+loadModel(modelUrl)
+const download = document.getElementById("downloadBtn")
+download.href = modelUrl
+download.style.display = "inline-block"
+}
+
+}, 5000)
+
+}
+
+// THREE.JS SCENE
+
+const scene = new THREE.Scene()
+
+const camera = new THREE.PerspectiveCamera(75,800/450,0.1,1000)
+
+const renderer = new THREE.WebGLRenderer({antialias:true})
+
+renderer.setSize(800,450)
+
+document.getElementById("viewer").appendChild(renderer.domElement)
+
+const ambient = new THREE.AmbientLight(0xffffff,1.5)
+scene.add(ambient)
+
+const light = new THREE.DirectionalLight(0xffffff,1)
+light.position.set(2,2,2)
+
+scene.add(light)
+camera.position.set(0,1,3)
+
+const controls = new THREE.OrbitControls(camera,renderer.domElement)
+
+// LOAD MODEL
+
+function loadModel(url){
+
+const loader = new THREE.GLTFLoader()
+
+loader.load(
+
+url,
+
+function(gltf){
+
+scene.clear()
+
+scene.add(ambient)
+scene.add(light)
+
+currentModel = gltf.scene
+scene.add(currentModel)
+setTimeout(() => {
+
+const image = renderer.domElement.toDataURL("image/png")
+
+savePreview(image)
+
+}, 3000)
+},
+
+undefined,
+
+function(error){
+
+console.error(error)
+
+}
+
+)
+
+}
+
+// ANIMATION
+
+function animate(){
+
+requestAnimationFrame(animate)
+
+controls.update()
+
+renderer.render(scene,camera)
+
+}
+
+animate()
+const params = new URLSearchParams(window.location.search)
+
+const model = params.get("model")
+
+if(model){
+
+loadModel(model)
+
+const download = document.getElementById("downloadBtn")
+download.href = model
+download.style.display = "inline-block"
+
+}
+
+async function savePreview(image){
+
+await fetch("http://127.0.0.1:8000/api/preview",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+job_id: currentJobId,
+image: image
+
+})
+
+})
+
+}
+function toyMode(){
+
+if(!currentModel){
+alert("Generate a 3D model first")
+return
+}
+
+// SCALE BODY (figurine look)
+
+currentModel.scale.x *= 1.1
+currentModel.scale.z *= 1.1
+currentModel.scale.y *= 0.9
+
+// ROUND LOOK MATERIAL
+
+currentModel.traverse(child => {
+
+if(child.isMesh){
+
+child.material.metalness = 0.1
+child.material.roughness = 0.3
+
+}
+
+})
+
+// ADD BASE (stand)
+
+if(toyBase) scene.remove(toyBase)
+
+const geometry = new THREE.CylinderGeometry(0.8,0.8,0.15,32)
+
+const material = new THREE.MeshStandardMaterial({
+color:0x111111,
+roughness:0.5
+})
+
+toyBase = new THREE.Mesh(geometry,material)
+
+toyBase.position.y = -0.8
+
+scene.add(toyBase)
+
+status.innerHTML = "Toy Mode Activated 🧸"
+
+}
+function plasticToy(){
+
+if(!currentModel) return
+
+currentModel.traverse(child => {
+
+if(child.isMesh){
+
+child.material = new THREE.MeshStandardMaterial({
+color:0xffcc99,
+roughness:0.4,
+metalness:0.1
+})
+
+}
+
+})
+
+status.innerHTML = "Plastic Toy Material"
+
+}
+function goldToy(){
+
+if(!currentModel) return
+
+currentModel.traverse(child => {
+
+if(child.isMesh){
+
+child.material = new THREE.MeshStandardMaterial({
+color:0xffd700,
+roughness:0.2,
+metalness:1
+})
+
+}
+
+})
+
+status.innerHTML = "Gold Collectible"
+
+}
+function chromeToy(){
+
+if(!currentModel) return
+
+currentModel.traverse(child => {
+
+if(child.isMesh){
+
+child.material = new THREE.MeshStandardMaterial({
+color:0xffffff,
+metalness:1,
+roughness:0
+})
+
+}
+
+})
+
+status.innerHTML = "Chrome Toy"
+
+}
+function cartoonToy(){
+
+if(!currentModel) return
+
+currentModel.traverse(child => {
+
+if(child.isMesh){
+
+child.material = new THREE.MeshToonMaterial({
+color:0xff8844
+})
+
+}
+
+})
+
+status.innerHTML = "Cartoon Style"
+
+}
+function selfieToy(){
+
+if(!currentModel){
+alert("Generate a 3D model first")
+return
+}
+
+// figurine proportions
+currentModel.scale.x *= 1.15
+currentModel.scale.z *= 1.15
+currentModel.scale.y *= 0.85
+
+// toy material
+currentModel.traverse(child => {
+
+if(child.isMesh){
+
+child.material = new THREE.MeshStandardMaterial({
+color:0xffcc99,
+roughness:0.35,
+metalness:0.15
+})
+
+}
+
+})
+
+// stand
+if(toyBase) scene.remove(toyBase)
+
+const geometry = new THREE.CylinderGeometry(0.9,0.9,0.18,32)
+
+const material = new THREE.MeshStandardMaterial({
+color:0x111111,
+roughness:0.6
+})
+
+toyBase = new THREE.Mesh(geometry,material)
+
+toyBase.position.y = -0.9
+
+scene.add(toyBase)
+
+status.innerHTML = "Selfie Toy Created 🧸"
+
+}
+</script>
+
+</body>
+</html>
