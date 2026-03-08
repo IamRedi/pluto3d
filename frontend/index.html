@@ -119,7 +119,7 @@ border-radius:10px;
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 
 <script>
-const res = await fetch(API_BASE + "/api/upload",{
+const API_BASE = "https://pluto3d-production.up.railway.app"
 
 // ELEMENTS
 
@@ -169,7 +169,7 @@ const formData = new FormData()
 formData.append("file", files[i])
 formData.append("job_id", jobId)
 
-const res = await fetch("http://127.0.0.1:8000/api/upload",{
+const res = await fetch(API_BASE + "/api/upload",{
 method:"POST",
 body:formData
 })
