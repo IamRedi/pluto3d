@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File
 import uuid
 import os
-import subprocess
+import vtracer
 
 router = APIRouter()
 
@@ -23,9 +23,10 @@ async def generate_svg(file: UploadFile = File(...)):
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
-    subprocess.run(
-        ["vtracer", input_path, "-o", output_path],
-        check=True
+    # vtracer python version
+    vtracer.convert_image_to_svg_py(
+        input_path,
+        output_path
     )
 
     return {
