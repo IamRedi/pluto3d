@@ -429,6 +429,32 @@ status.innerHTML = "Upload complete | Job ID: " + jobId
 
 }
 
+async function generate3D(){
+
+if(!currentJobId){
+alert("Upload photos first")
+return
+}
+
+status.innerHTML = "Sending images to AI..."
+
+const res = await fetch(API_BASE + "/api/generate",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+job_id: currentJobId
+})
+})
+
+const data = await res.json()
+
+status.innerHTML = "AI Processing..."
+
+checkStatus(data.task_id)
+
+}
 
 // GENERATE
 
