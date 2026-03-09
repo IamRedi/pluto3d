@@ -455,7 +455,6 @@ status.innerHTML = "AI Processing..."
 checkStatus(data.task_id)
 
 }
-
 // GENERATE
 
 async function generateSVG(){
@@ -519,7 +518,7 @@ if(data.status === "SUCCEEDED"){
 
 clearInterval(interval)
 
-const modelUrl = data.model_url
+const modelUrl = API_BASE + data.model_url
 
 status.innerHTML = "3D Model Ready"
 
@@ -546,7 +545,7 @@ const camera = new THREE.PerspectiveCamera(75,800/450,0.1,1000)
 
 const renderer = new THREE.WebGLRenderer({antialias:true})
 
-renderer.setSize(800,450)
+renderer.setSize(800,560)
 
 document.getElementById("viewer").appendChild(renderer.domElement)
 
@@ -566,9 +565,9 @@ const controls = new THREE.OrbitControls(camera,renderer.domElement)
 
 function loadModel(url){
 
-const loader = new THREE.GLTFLoader()
+const gltfLoader = new THREE.GLTFLoader()
 
-loader.load(
+gltfLoader.load(
 
 url,
 

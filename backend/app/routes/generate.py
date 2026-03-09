@@ -1,41 +1,46 @@
 from fastapi import APIRouter
 import requests
 import base64
-import os
-from app.config import UPLOAD_DIR, MESHY_API_KEY
+from pathlib import Path
+from app.config import MESHY_API_KEY
 
 router = APIRouter()
+
+UPLOAD_DIR = Path("uploads")
 
 
 # =========================
 # SAVE MODEL
 # =========================
+
 def save_model(glb_url, job_id):
 
-    folder = f"outputs/{job_id}"
-    os.makedirs(folder, exist_ok=True)
+    folder = Path("outputs") / job_id
+    folder.mkdir(parents=True, exist_ok=True)
 
-    file_path = f"{folder}/model.glb"
+    file_path = folder / "model.glb"
 
     r = requests.get(glb_url)
 
     with open(file_path, "wb") as f:
         f.write(r.content)
 
-    return file_path
+    return str(file_path)
 
 
 # =========================
-# CREATE AI TASK
+# GENERATE 3D
 # =========================
+
 @router.post("/generate")
 async def generate_3d(job_id: str):
 
     job_folder = UPLOAD_DIR / job_id
+
     images = list(job_folder.glob("*"))
 
     if len(images) == 0:
-        return {"error": "No images"}
+        return {"error": "No images found"}
 
     image_path = images[0]
 
@@ -63,14 +68,16 @@ async def generate_3d(job_id: str):
 
     task = res.json()
 
-    return {
-        "task_id": task["result"]
-    }
+    if "result" not in task:
+        return {"error": task}
+
+    return {"task_id": task["result"]}
 
 
 # =========================
-# CHECK TASK STATUS
+# CHECK STATUS
 # =========================
+
 @router.get("/job/{task_id}")
 def check_status(task_id: str):
 
@@ -87,7 +94,7 @@ def check_status(task_id: str):
 
     status = data.get("status")
 
-    if status == "SUCCEEDED" and "result" in data:
+    if status == "SUCCEEDED":
 
         glb_url = data["result"]["model_urls"]["glb"]
 
@@ -99,50 +106,3 @@ def check_status(task_id: str):
         }
 
     return data
-from pathlib import Path
-
-@router.get("/models")
-def list_models():
-
-    base = Path("outputs")
-
-    models = []
-
-    if base.exists():
-
-        for folder in base.iterdir():
-
-            model = folder / "model.glb"
-
-            if model.exists():
-
-                models.append(f"/outputs/{folder.name}/model.glb")
-
-    return {"models": models}
-
-import os
-import base64
-
-@router.post("/preview")
-def save_preview(data: dict):
-
-    job_id = data["job_id"]
-    image = data["image"]
-
-    # remove base64 header
-    image = image.split(",")[1]
-
-    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    outputs_dir = os.path.join(base_dir, "outputs")
-
-    job_folder = os.path.join(outputs_dir, job_id)
-
-    # create folder if not exists
-    os.makedirs(job_folder, exist_ok=True)
-
-    preview_path = os.path.join(job_folder, "preview.png")
-
-    with open(preview_path, "wb") as f:
-        f.write(base64.b64decode(image))
-
-    return {"status": "preview_saved"}
