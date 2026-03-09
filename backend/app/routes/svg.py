@@ -11,6 +11,7 @@ SVG_DIR = "outputs/svg"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(SVG_DIR, exist_ok=True)
 
+
 @router.post("/svg")
 async def generate_svg(file: UploadFile = File(...)):
 
@@ -22,12 +23,10 @@ async def generate_svg(file: UploadFile = File(...)):
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
-    subprocess.run([
-        "vtracer",
-        input_path,
-        "-o",
-        output_path
-    ])
+    subprocess.run(
+        ["vtracer", input_path, "-o", output_path],
+        check=True
+    )
 
     return {
         "svg_url": f"/outputs/svg/{file_id}.svg"

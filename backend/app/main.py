@@ -4,12 +4,16 @@ from fastapi.staticfiles import StaticFiles
 
 from app.routes.upload import router as upload_router
 from app.routes.generate import router as generate_router
-from app.routes.svg import router as svg_router   # NEW
+from app.routes.svg import router as svg_router
 
-app = FastAPI()
+app = FastAPI(
+    title="Pluto3D API",
+    description="Photo to 3D and SVG generator",
+    version="1.0"
+)
 
 # ==============================
-# CORS
+# CORS (FIX për frontend)
 # ==============================
 
 app.add_middleware(
@@ -26,7 +30,7 @@ app.add_middleware(
 
 app.include_router(upload_router, prefix="/api")
 app.include_router(generate_router, prefix="/api")
-app.include_router(svg_router, prefix="/api")   # NEW
+app.include_router(svg_router, prefix="/api")
 
 # ==============================
 # STATIC FILES
@@ -41,4 +45,8 @@ app.mount("/outputs", StaticFiles(directory="outputs"), name="outputs")
 
 @app.get("/")
 def root():
-    return {"message": "Pluto3D backend running"}
+    return {
+        "app": "Pluto3D Studio",
+        "status": "running",
+        "version": "1.0"
+    }

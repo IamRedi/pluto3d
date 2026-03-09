@@ -254,6 +254,13 @@ or
 <button onclick="generate()">Generate 3D</button>
 
 </div>
+<div class="button-row">
+
+<button onclick="generate()">Generate 3D</button>
+
+<button onclick="generateSVG()">Generate SVG Sketch</button>
+
+</div>
 
 <div class="loader" id="loader"></div>
 
@@ -264,6 +271,8 @@ or
 <div class="preview" id="preview"></div>
 
 <div class="status" id="status"></div>
+
+<div id="svgPreview" style="margin-top:15px;"></div>
 
 <a id="downloadBtn" style="display:none;" download>
 <button>Download 3D Model</button>
@@ -359,7 +368,6 @@ preview.appendChild(img)
 
 }
 
-
 // DRAG DROP
 
 const dropzone = document.getElementById("dropzone")
@@ -425,27 +433,48 @@ status.innerHTML = "Upload complete | Job ID: " + jobId
 
 // GENERATE
 
-async function generate(){
+async function generateSVG(){
 
-status.innerHTML = "AI generating the 3D model..."
+const files = input.files
 
-const res = await fetch(
-API_BASE + "/api/generate?job_id=" + currentJobId,
-{method:"POST"}
-)
+if(files.length == 0){
+alert("Choose an image first")
+return
+}
+
+const formData = new FormData()
+formData.append("file", files[0])
+
+status.innerHTML = "Generating SVG sketch..."
+
+const res = await fetch(API_BASE + "/api/svg",{
+method:"POST",
+body:formData
+})
 
 const data = await res.json()
 
-const taskId = data.task_id
+const svgUrl = data.svg_url
 
-checkStatus(taskId)
+status.innerHTML = "SVG Ready"
+
+const svgPreview = document.getElementById("svgPreview")
+
+svgPreview.innerHTML = `
+<div style="margin-top:10px;">
+<object data="${API_BASE + svgUrl}" type="image/svg+xml" width="300"></object>
+<br>
+<a href="${API_BASE + svgUrl}" download>
+<button style="margin-top:10px;">Download SVG</button>
+</a>
+</div>
+`
 
 }
 
-
 // CHECK STATUS
 
-async function checkStatus(taskId){
+async function checkStatus(taskId){s
 
 const interval = setInterval(async () => {
 
