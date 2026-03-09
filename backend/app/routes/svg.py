@@ -23,8 +23,7 @@ async def generate_svg(file: UploadFile = File(...)):
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
-    # vtracer python version
-    vtracer.convert_image_to_svg_py(
+    vtracer.convert_image_to_svg(
         input_path,
         output_path
     )

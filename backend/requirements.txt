@@ -2,4 +2,4 @@ fastapi
 uvicorn
 python-multipart
 requests
-vtracer
+vtracer==0.6.12
