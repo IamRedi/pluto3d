@@ -1,77 +1,227 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
-<title>Photo → 3D AI</title>
+<title>Pluto3D Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
-background:#020617;
+margin:0;
+font-family:Inter,Arial;
 color:white;
-font-family:Arial;
+
+background:
+radial-gradient(circle at 20% 20%,#1e3a8a,#020617),
+radial-gradient(circle at 80% 70%,#0ea5e9,#020617);
+
+min-height:100vh;
+
 display:flex;
 flex-direction:column;
 align-items:center;
-margin:0;
-padding:20px;
+padding:40px;
+}
+
+.title{
+font-size:46px;
+font-weight:600;
+margin-bottom:35px;
+color:#38bdf8;
+letter-spacing:1px;
 }
 
 .panel{
-background:#020617;
-padding:40px;
-border-radius:20px;
-box-shadow:0 0 40px #0ea5e9;
-width:550px;
-text-align:center;
-margin-bottom:30px;
+
+background:rgba(15,23,42,0.6);
+backdrop-filter:blur(14px);
+
+border-radius:22px;
+padding:30px;
+
+width:820px;
+margin-bottom:25px;
+
+box-shadow:0 0 60px rgba(14,165,233,0.35);
 }
 
-h1{
+.section{
+margin-bottom:25px;
+}
+
+.section-title{
 color:#38bdf8;
+font-size:18px;
+margin-bottom:15px;
 }
 
-.preview{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
+.dropzone{
+border:2px dashed #0ea5e9;
+border-radius:14px;
+padding:35px;
+text-align:center;
+color:#7dd3fc;
+transition:0.25s;
 }
 
-.preview img{
-width:120px;
-margin:10px;
+.dropzone.dragover{
+background:rgba(14,165,233,0.1);
+}
+
+input[type=file]{
+margin-top:15px;
+background:#020617;
+padding:10px;
 border-radius:10px;
-border:2px solid #0ea5e9;
+border:1px solid #0ea5e9;
+color:white;
+}
+
+.button-row{
+margin-top:15px;
 }
 
 button{
-padding:10px 20px;
+
+background:linear-gradient(135deg,#0ea5e9,#0284c7);
+
 border:none;
-border-radius:10px;
-background:#0ea5e9;
+padding:12px 20px;
+
+border-radius:12px;
+
 color:white;
-font-size:16px;
+
+font-size:14px;
+
 cursor:pointer;
-margin-top:10px;
-margin-right:10px;
+
+margin:6px;
+
+transition:0.25s;
+
 }
 
 button:hover{
-background:#0284c7;
+
+transform:translateY(-2px) scale(1.05);
+
+box-shadow:
+0 0 20px #0ea5e9;
+
+}
+
+.preview{
+
+display:flex;
+flex-wrap:wrap;
+margin-top:15px;
+
+}
+
+.preview img{
+
+width:100px;
+
+border-radius:10px;
+
+margin:8px;
+
+border:2px solid #0ea5e9;
+
+box-shadow:0 0 10px rgba(14,165,233,0.5);
+
 }
 
 .status{
-margin-top:20px;
-color:#38bdf8;
+
+margin-top:15px;
+
 font-size:14px;
+
+color:#38bdf8;
+
+}
+
+.loader{
+
+border:4px solid rgba(255,255,255,0.1);
+
+border-top:4px solid #0ea5e9;
+
+border-radius:50%;
+
+width:25px;
+height:25px;
+
+animation:spin 1s linear infinite;
+
+display:none;
+
+margin:auto;
+
+}
+
+.progress{
+height:10px;
+background:#020617;
+border-radius:10px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.progress-bar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#38bdf8,#0ea5e9);
+transition:width 0.4s;
 }
 
 #viewer{
+
 width:800px;
-height:450px;
-border:1px solid #0ea5e9;
+
+height:560px;
+
+background:black;
+
+border-radius:20px;
+
+box-shadow:
+0 0 60px rgba(14,165,233,0.4);
+
+}
+
+.gallery{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fill,110px);
+
+gap:10px;
+
+margin-top:15px;
+
+}
+
+.gallery img{
+
+width:110px;
+
 border-radius:10px;
+
+border:2px solid #0ea5e9;
+
+cursor:pointer;
+
+}
+
+@keyframes spin{
+
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+
 }
 
 </style>
@@ -80,59 +230,120 @@ border-radius:10px;
 
 <body>
 
+<div class="title">Pluto3D Studio</div>
+
+
 <div class="panel">
 
-<h1>Photo → 3D AI</h1>
+<div class="section">
 
-<a href="explore.html">
-<button style="margin-bottom:10px;">Explore Models</button>
-</a>
+<div class="section-title">Upload Photos</div>
 
+<div class="dropzone" id="dropzone">
+Drag & Drop Images Here
+<br>
+or
+<br>
 <input type="file" id="fileInput" accept="image/*" multiple>
+</div>
 
-<br><br>
+<div class="button-row">
 
 <button onclick="upload()">Upload Photos</button>
-<button onclick="generate()">Generate 3D</button>
-<button onclick="toyMode()">Toy Mode</button>
-<button onclick="selfieToy()">Selfie → Toy</button>
-<br><br>
 
-<button onclick="plasticToy()">Plastic</button>
-<button onclick="goldToy()">Gold</button>
-<button onclick="chromeToy()">Chrome</button>
-<button onclick="cartoonToy()">Cartoon</button>
+<button onclick="generate()">Generate 3D</button>
+
+</div>
+
+<div class="loader" id="loader"></div>
+
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
 
 <div class="preview" id="preview"></div>
 
 <div class="status" id="status"></div>
+
 <a id="downloadBtn" style="display:none;" download>
 <button>Download 3D Model</button>
 </a>
+
 </div>
 
-<h2>3D Viewer</h2>
+</div>
+
+
+<div class="panel">
+
+<div class="section-title">Toy Studio</div>
+
+<div class="button-row">
+
+<button onclick="toyMode()">Toy Mode</button>
+
+<button onclick="selfieToy()">Selfie Toy</button>
+
+</div>
+
+<div class="button-row">
+
+<button onclick="plasticToy()">Plastic</button>
+
+<button onclick="goldToy()">Gold</button>
+
+<button onclick="chromeToy()">Chrome</button>
+
+<button onclick="cartoonToy()">Cartoon</button>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="section-title">3D Viewer</div>
+
 <div id="viewer"></div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="section-title">Generated Models</div>
+
+<div class="gallery" id="gallery"></div>
+
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 
-<script>
-const API_BASE = "https://pluto3d-production.up.railway.app"
 
-// ELEMENTS
+<script>
+
+const API_BASE = "https://pluto3d-production.up.railway.app"
 
 const input = document.getElementById("fileInput")
 const preview = document.getElementById("preview")
 const status = document.getElementById("status")
+const progressBar = document.getElementById("progressBar")
+const loader = document.getElementById("loader")
 
 let currentJobId = null
 let currentModel = null
 let toyBase = null
+
+
 // IMAGE PREVIEW
 
-input.addEventListener("change", () => {
+input.addEventListener("change", previewImages)
+
+function previewImages(){
 
 preview.innerHTML=""
 
@@ -146,7 +357,34 @@ preview.appendChild(img)
 
 }
 
+}
+
+
+// DRAG DROP
+
+const dropzone = document.getElementById("dropzone")
+
+dropzone.addEventListener("dragover", e=>{
+
+ e.preventDefault()
+ dropzone.classList.add("dragover")
+
 })
+
+dropzone.addEventListener("dragleave", ()=>{
+ dropzone.classList.remove("dragover")
+})
+
+dropzone.addEventListener("drop", e=>{
+
+ e.preventDefault()
+ dropzone.classList.remove("dragover")
+
+ input.files = e.dataTransfer.files
+ previewImages()
+
+})
+
 
 // UPLOAD
 
@@ -162,6 +400,8 @@ return
 const jobId = crypto.randomUUID()
 currentJobId = jobId
 
+loader.style.display="block"
+
 for(let i=0;i<files.length;i++){
 
 const formData = new FormData()
@@ -169,24 +409,25 @@ const formData = new FormData()
 formData.append("file", files[i])
 formData.append("job_id", jobId)
 
-const res = await fetch(API_BASE + "/api/upload",{
+await fetch(API_BASE + "/api/upload",{
 method:"POST",
 body:formData
 })
 
-const data = await res.json()
+}
 
-status.innerHTML = "Upload OK | Job ID: " + data.job_id
+loader.style.display="none"
+
+status.innerHTML = "Upload complete | Job ID: " + jobId
 
 }
 
-}
 
 // GENERATE
 
 async function generate(){
 
-status.innerHTML = "AI is generating the 3D model..."
+status.innerHTML = "AI generating the 3D model..."
 
 const res = await fetch(
 API_BASE + "/api/generate?job_id=" + currentJobId,
@@ -200,6 +441,7 @@ const taskId = data.task_id
 checkStatus(taskId)
 
 }
+
 
 // CHECK STATUS
 
@@ -217,6 +459,8 @@ status.innerHTML =
 "AI status: " + data.status +
 " | progress: " + data.progress + "%"
 
+progressBar.style.width = data.progress + "%"
+
 if(data.status === "SUCCEEDED"){
 
 clearInterval(interval)
@@ -226,14 +470,19 @@ const modelUrl = data.model_url
 status.innerHTML = "3D Model Ready"
 
 loadModel(modelUrl)
+
+saveToGallery(modelUrl)
+
 const download = document.getElementById("downloadBtn")
 download.href = modelUrl
 download.style.display = "inline-block"
-}
-
-}, 5000)
 
 }
+
+}, 4000)
+
+}
+
 
 // THREE.JS SCENE
 
@@ -258,6 +507,7 @@ camera.position.set(0,1,3)
 
 const controls = new THREE.OrbitControls(camera,renderer.domElement)
 
+
 // LOAD MODEL
 
 function loadModel(url){
@@ -276,27 +526,40 @@ scene.add(ambient)
 scene.add(light)
 
 currentModel = gltf.scene
+
+// CENTER MODEL
+
+const box = new THREE.Box3().setFromObject(currentModel)
+const center = box.getCenter(new THREE.Vector3())
+
+currentModel.position.sub(center)
+
 scene.add(currentModel)
-setTimeout(() => {
 
-const image = renderer.domElement.toDataURL("image/png")
+// AUTO CAMERA FIT
 
-savePreview(image)
+const size = box.getSize(new THREE.Vector3()).length()
+const distance = size * 1.5
 
-}, 3000)
+camera.position.set(0, size * 0.5, distance)
+camera.lookAt(0,0,0)
+
+controls.target.set(0,0,0)
+controls.update()
+
 },
 
 undefined,
 
 function(error){
-
-console.error(error)
-
+console.error("Model load error:", error)
+status.innerHTML = "Model could not be loaded"
 }
 
 )
 
 }
+
 
 // ANIMATION
 
@@ -311,6 +574,10 @@ renderer.render(scene,camera)
 }
 
 animate()
+
+
+// URL AUTO LOAD MODEL
+
 const params = new URLSearchParams(window.location.search)
 
 const model = params.get("model")
@@ -325,26 +592,25 @@ download.style.display = "inline-block"
 
 }
 
-async function savePreview(image){
 
-await fetch(API_BASE + "/api/preview",{
+// GALLERY
 
-method:"POST",
+function saveToGallery(url){
 
-headers:{
-"Content-Type":"application/json"
-},
+const gallery = document.getElementById("gallery")
 
-body:JSON.stringify({
+const img = document.createElement("img")
+img.src="https://dummyimage.com/200x200/111/fff&text=3D"
 
-job_id: currentJobId,
-image: image
+img.onclick = ()=>loadModel(url)
 
-})
-
-})
+gallery.appendChild(img)
 
 }
+
+
+// TOY MODES
+
 function toyMode(){
 
 if(!currentModel){
@@ -352,13 +618,9 @@ alert("Generate a 3D model first")
 return
 }
 
-// SCALE BODY (figurine look)
-
 currentModel.scale.x *= 1.1
 currentModel.scale.z *= 1.1
 currentModel.scale.y *= 0.9
-
-// ROUND LOOK MATERIAL
 
 currentModel.traverse(child => {
 
@@ -370,8 +632,6 @@ child.material.roughness = 0.3
 }
 
 })
-
-// ADD BASE (stand)
 
 if(toyBase) scene.remove(toyBase)
 
@@ -388,9 +648,11 @@ toyBase.position.y = -0.8
 
 scene.add(toyBase)
 
-status.innerHTML = "Toy Mode Activated 🧸"
+status.innerHTML = "Toy Mode Activated"
 
 }
+
+
 function plasticToy(){
 
 if(!currentModel) return
@@ -412,6 +674,8 @@ metalness:0.1
 status.innerHTML = "Plastic Toy Material"
 
 }
+
+
 function goldToy(){
 
 if(!currentModel) return
@@ -433,6 +697,8 @@ metalness:1
 status.innerHTML = "Gold Collectible"
 
 }
+
+
 function chromeToy(){
 
 if(!currentModel) return
@@ -454,6 +720,8 @@ roughness:0
 status.innerHTML = "Chrome Toy"
 
 }
+
+
 function cartoonToy(){
 
 if(!currentModel) return
@@ -473,6 +741,8 @@ color:0xff8844
 status.innerHTML = "Cartoon Style"
 
 }
+
+
 function selfieToy(){
 
 if(!currentModel){
@@ -480,12 +750,10 @@ alert("Generate a 3D model first")
 return
 }
 
-// figurine proportions
 currentModel.scale.x *= 1.15
 currentModel.scale.z *= 1.15
 currentModel.scale.y *= 0.85
 
-// toy material
 currentModel.traverse(child => {
 
 if(child.isMesh){
@@ -500,7 +768,6 @@ metalness:0.15
 
 })
 
-// stand
 if(toyBase) scene.remove(toyBase)
 
 const geometry = new THREE.CylinderGeometry(0.9,0.9,0.18,32)
@@ -516,9 +783,10 @@ toyBase.position.y = -0.9
 
 scene.add(toyBase)
 
-status.innerHTML = "Selfie Toy Created 🧸"
+status.innerHTML = "Selfie Toy Created"
 
 }
+
 </script>
 
 </body>
