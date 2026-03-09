@@ -4,12 +4,14 @@ from fastapi.staticfiles import StaticFiles
 
 from app.routes.upload import router as upload_router
 from app.routes.generate import router as generate_router
+from app.routes.svg import router as svg_router   # NEW
 
 app = FastAPI()
 
 # ==============================
 # CORS
 # ==============================
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,14 +23,21 @@ app.add_middleware(
 # ==============================
 # ROUTES
 # ==============================
+
 app.include_router(upload_router, prefix="/api")
 app.include_router(generate_router, prefix="/api")
+app.include_router(svg_router, prefix="/api")   # NEW
 
 # ==============================
 # STATIC FILES
 # ==============================
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/outputs", StaticFiles(directory="outputs"), name="outputs")
+
+# ==============================
+# ROOT
+# ==============================
 
 @app.get("/")
 def root():
