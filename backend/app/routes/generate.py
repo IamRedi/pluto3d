@@ -2,6 +2,7 @@ from fastapi import APIRouter
 import requests
 import base64
 from pathlib import Path
+from pydantic import BaseModel
 from app.config import MESHY_API_KEY
 
 router = APIRouter()
@@ -20,10 +21,11 @@ def save_model(glb_url, job_id):
 
     file_path = folder / "model.glb"
 
-    r = requests.get(glb_url)
+    r = requests.get(glb_url, stream=True)
 
     with open(file_path, "wb") as f:
-        f.write(r.content)
+        for chunk in r.iter_content(chunk_size=8192):
+            f.write(chunk)
 
     return str(file_path)
 
@@ -32,16 +34,14 @@ def save_model(glb_url, job_id):
 # GENERATE 3D
 # =========================
 
-from pydantic import BaseModel
-
 class GenerateRequest(BaseModel):
     job_id: str
+
 
 @router.post("/generate")
 async def generate_3d(req: GenerateRequest):
 
     job_id = req.job_id
-
     job_folder = UPLOAD_DIR / job_id
 
     images = list(job_folder.glob("*"))
@@ -98,12 +98,14 @@ def check_status(task_id: str):
     )
 
     data = res.json()
-
     status = data.get("status")
 
     if status == "SUCCEEDED":
 
-        glb_url = data["result"]["model_urls"]["glb"]
+        try:
+            glb_url = data["result"]["model_urls"]["glb"]
+        except:
+            return {"error": data}
 
         save_model(glb_url, task_id)
 
@@ -112,4 +114,6 @@ def check_status(task_id: str):
             "model_url": f"/outputs/{task_id}/model.glb"
         }
 
-    return data
+    return {
+        "status": status
+    }
