@@ -113,7 +113,8 @@ def check_status(task_id: str):
             "status": "SUCCEEDED",
             "model_url": f"/outputs/{task_id}/model.glb"
         }
-
+    progress = data.get("progress", 0)
     return {
-        "status": status
+        "status": status,
+        "progress": progress
     }
