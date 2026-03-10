@@ -85,7 +85,7 @@ async def generate_3d(req: GenerateRequest):
 # CHECK STATUS
 # =========================
 
-@router.get("/job/{task_id}")
+@router.get("/job/{https://pluto3d-production.up.railway.app/api/job/TASK_ID}")
 def check_status(task_id: str):
 
     headers = {
