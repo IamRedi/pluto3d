@@ -99,22 +99,24 @@ def check_status(task_id: str):
 
     data = res.json()
     status = data.get("status")
+    progress = data.get("progress", 0)
 
     if status == "SUCCEEDED":
 
-        try:
-            glb_url = data["result"]["model_urls"]["glb"]
-        except:
-            return {"error": data}
+      try:
+        glb_url = data["result"]["model_urls"]["glb"]
+      except:
+        return {"error": data}
 
-        save_model(glb_url, task_id)
+    save_model(glb_url, task_id)
 
-        return {
-            "status": "SUCCEEDED",
-            "model_url": f"/outputs/{task_id}/model.glb"
-        }
-    progress = data.get("progress", 0)
     return {
-        "status": status,
-        "progress": progress
+        "status": "SUCCEEDED",
+        "progress": 100,
+        "model_url": f"/outputs/{task_id}/model.glb"
     }
+
+    return {
+    "status": status,
+    "progress": progress
+    }   
