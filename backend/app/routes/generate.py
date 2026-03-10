@@ -32,8 +32,15 @@ def save_model(glb_url, job_id):
 # GENERATE 3D
 # =========================
 
+@from pydantic import BaseModel
+
+class GenerateRequest(BaseModel):
+    job_id: str
+
 @router.post("/generate")
-async def generate_3d(job_id: str):
+async def generate_3d(req: GenerateRequest):
+
+    job_id = req.job_id
 
     job_folder = UPLOAD_DIR / job_id
 
