@@ -74,10 +74,12 @@ async def generate_3d(req: GenerateRequest):
 
     task = res.json()
 
-    if "result" not in task:
-        return {"error": task}
-
-    return {"task_id": task["result"]}
+    try:
+     task_id = task["result"]["task_id"]
+    except:
+     return {"error": task}
+ 
+    return {"task_id": task_id}
 
 
 # =========================
@@ -97,6 +99,7 @@ def check_status(task_id: str):
     )
 
     data = res.json()
+    print("MESHY RESPONSE:", data)
 
     status = data.get("status")
     progress = data.get("progress", 0)
