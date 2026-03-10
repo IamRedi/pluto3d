@@ -13,16 +13,12 @@ app = FastAPI(
 )
 
 # ==============================
-# CORS (FIX për frontend)
+# CORS
 # ==============================
 
 app.add_middleware(
     CORSMiddleware,
-allow_origins=[
-    "https://pluto3d.vercel.app",
-    "http://localhost:3000",
-    "http://127.0.0.1:8000"
-],
+    allow_origins=["*"],   # lejon Vercel dhe localhost
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -54,13 +50,3 @@ def root():
         "status": "running",
         "version": "1.0"
     }
-
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)

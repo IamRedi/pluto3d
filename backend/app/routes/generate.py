@@ -9,7 +9,6 @@ router = APIRouter()
 
 UPLOAD_DIR = Path("uploads")
 
-
 # =========================
 # SAVE MODEL
 # =========================
@@ -98,25 +97,34 @@ def check_status(task_id: str):
     )
 
     data = res.json()
+
     status = data.get("status")
     progress = data.get("progress", 0)
 
+    # =====================
+    # MODEL READY
+    # =====================
+
     if status == "SUCCEEDED":
 
-     try:
-      glb_url = data["result"]["model_urls"]["glb"]
-     except:
-        return {"error": data}
+        try:
+            glb_url = data["result"]["model_urls"]["glb"]
+        except:
+            return {"error": data}
 
-    save_model(glb_url, task_id)
+        save_model(glb_url, task_id)
+
+        return {
+            "status": "SUCCEEDED",
+            "progress": 100,
+            "model_url": f"/outputs/{task_id}/model.glb"
+        }
+
+    # =====================
+    # STILL PROCESSING
+    # =====================
 
     return {
-        "status": "SUCCEEDED",
-        "progress": 100,
-        "model_url": f"/outputs/{task_id}/model.glb"
+        "status": status,
+        "progress": progress
     }
-
-    return {
-    "status": status,
-    "progress": progress
-}   
