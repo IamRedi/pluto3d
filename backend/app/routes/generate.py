@@ -9,7 +9,6 @@ router = APIRouter()
 
 UPLOAD_DIR = Path("uploads")
 
-
 # =========================
 # SAVE MODEL
 # =========================
@@ -73,15 +72,14 @@ async def generate_3d(req: GenerateRequest):
         json=payload
     )
 
-    task = res.json()
+    data = res.json()
 
-    print("MESHY CREATE RESPONSE:", task)
+    print("CREATE RESPONSE:", data)
 
     try:
-        # Meshy zakonisht e kthen kështu
-        task_id = task["result"]["task_id"]
+        task_id = data["result"]["task_id"]
     except:
-        return {"error": task}
+        return {"error": data}
 
     return {"task_id": task_id}
 
@@ -104,25 +102,10 @@ def check_status(task_id: str):
 
     data = res.json()
 
-    print("MESHY STATUS RESPONSE:", data)
-
-    # =========================
-    # PARSE RESPONSE (ROBUST)
-    # =========================
+    print("STATUS RESPONSE:", data)
 
     status = data.get("status")
-
-    if not status and "result" in data:
-        status = data["result"].get("status")
-
     progress = data.get("progress", 0)
-
-    if not progress and "result" in data:
-        progress = data["result"].get("progress", 0)
-
-    # =========================
-    # MODEL READY
-    # =========================
 
     if status == "SUCCEEDED":
 
@@ -138,10 +121,6 @@ def check_status(task_id: str):
             "progress": 100,
             "model_url": f"/outputs/{task_id}/model.glb"
         }
-
-    # =========================
-    # STILL PROCESSING
-    # =========================
 
     return {
         "status": status,
