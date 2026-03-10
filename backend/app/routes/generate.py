@@ -9,6 +9,7 @@ router = APIRouter()
 
 UPLOAD_DIR = Path("uploads")
 
+
 # =========================
 # SAVE MODEL
 # =========================
@@ -104,13 +105,16 @@ def check_status(task_id: str):
 
     print("STATUS RESPONSE:", data)
 
-    status = data.get("status")
-    progress = data.get("progress", 0)
+    # Meshy e kthen status brenda "result"
+    result = data.get("result", {})
+
+    status = result.get("status")
+    progress = result.get("progress", 0)
 
     if status == "SUCCEEDED":
 
         try:
-            glb_url = data["result"]["model_urls"]["glb"]
+            glb_url = result["model_urls"]["glb"]
         except:
             return {"error": data}
 
