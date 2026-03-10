@@ -32,7 +32,7 @@ def save_model(glb_url, job_id):
 # GENERATE 3D
 # =========================
 
-@from pydantic import BaseModel
+from pydantic import BaseModel
 
 class GenerateRequest(BaseModel):
     job_id: str
