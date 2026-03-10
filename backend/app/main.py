@@ -12,41 +12,32 @@ app = FastAPI(
     version="1.0"
 )
 
-# ==============================
-# CORS
-# ==============================
+# CORS duhet të vijë MENJËHERË pas FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # lejon Vercel dhe localhost
+    allow_origins=["*"],  # për testim
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ==============================
-# ROUTES
-# ==============================
+# ROUTERS
 
 app.include_router(upload_router, prefix="/api")
 app.include_router(generate_router, prefix="/api")
 app.include_router(svg_router, prefix="/api")
 
-# ==============================
 # STATIC FILES
-# ==============================
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/outputs", StaticFiles(directory="outputs"), name="outputs")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# ==============================
 # ROOT
-# ==============================
 
 @app.get("/")
 def root():
     return {
         "app": "Pluto3D Studio",
-        "status": "running",
-        "version": "1.0"
+        "status": "running"
     }
