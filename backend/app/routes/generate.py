@@ -85,7 +85,7 @@ async def generate_3d(req: GenerateRequest):
 # CHECK STATUS
 # =========================
 
-@router.get("/job/{https://pluto3d-production.up.railway.app/api/job/TASK_ID}")
+@router.get("/job/{task_id}")
 def check_status(task_id: str):
 
     headers = {
@@ -103,9 +103,9 @@ def check_status(task_id: str):
 
     if status == "SUCCEEDED":
 
-      try:
-        glb_url = data["result"]["model_urls"]["glb"]
-      except:
+     try:
+      glb_url = data["result"]["model_urls"]["glb"]
+     except:
         return {"error": data}
 
     save_model(glb_url, task_id)
@@ -119,4 +119,4 @@ def check_status(task_id: str):
     return {
     "status": status,
     "progress": progress
-    }   
+}   
