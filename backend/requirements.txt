@@ -3,4 +3,4 @@ uvicorn
 python-multipart
 requests
 pillow
-opencv-python
+opencv-python-headless
