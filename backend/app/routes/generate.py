@@ -8,6 +8,7 @@ from app.config import MESHY_API_KEY
 router = APIRouter()
 
 UPLOAD_DIR = Path("uploads")
+OUTPUT_DIR = Path("outputs")
 
 
 # =========================
@@ -16,7 +17,7 @@ UPLOAD_DIR = Path("uploads")
 
 def save_model(glb_url, job_id):
 
-    folder = Path("outputs") / job_id
+    folder = OUTPUT_DIR / job_id
     folder.mkdir(parents=True, exist_ok=True)
 
     file_path = folder / "model.glb"
@@ -25,24 +26,32 @@ def save_model(glb_url, job_id):
 
     with open(file_path, "wb") as f:
         for chunk in r.iter_content(chunk_size=8192):
-            f.write(chunk)
+            if chunk:
+                f.write(chunk)
 
     return str(file_path)
 
 
 # =========================
-# GENERATE 3D
+# REQUEST MODEL
 # =========================
 
 class GenerateRequest(BaseModel):
     job_id: str
 
 
+# =========================
+# GENERATE 3D
+# =========================
+
 @router.post("/generate")
 async def generate_3d(req: GenerateRequest):
 
     job_id = req.job_id
     job_folder = UPLOAD_DIR / job_id
+
+    if not job_folder.exists():
+        return {"error": "Upload folder not found"}
 
     images = list(job_folder.glob("*"))
 
@@ -77,12 +86,14 @@ async def generate_3d(req: GenerateRequest):
 
     print("CREATE RESPONSE:", data)
 
-    try:
-        task_id = data["result"]
-    except:
+    if "result" not in data:
         return {"error": data}
 
-    return {"task_id": task_id}
+    task_id = data["result"]
+
+    return {
+        "task_id": task_id
+    }
 
 
 # =========================
@@ -105,11 +116,20 @@ def check_status(task_id: str):
 
     print("STATUS RESPONSE:", data)
 
-    # Meshy e kthen status brenda "result"
-    result = data.get("result", {})
+    result = data.get("result")
+
+    if not result:
+        return {
+            "status": None,
+            "progress": 0
+        }
 
     status = result.get("status")
     progress = result.get("progress", 0)
+
+    # ======================
+    # MODEL READY
+    # ======================
 
     if status == "SUCCEEDED":
 
@@ -118,13 +138,17 @@ def check_status(task_id: str):
         except:
             return {"error": data}
 
-        save_model(glb_url, task_id)
+        local_path = save_model(glb_url, task_id)
 
         return {
             "status": "SUCCEEDED",
             "progress": 100,
             "model_url": f"/outputs/{task_id}/model.glb"
         }
+
+    # ======================
+    # STILL PROCESSING
+    # ======================
 
     return {
         "status": status,
