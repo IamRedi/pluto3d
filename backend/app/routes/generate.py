@@ -116,16 +116,25 @@ def check_status(task_id: str):
 
     print("STATUS RESPONSE:", data)
 
-    result = data.get("result")
+    status = data.get("status")
+    progress = data.get("progress", 0)
 
-    if not result:
+    if status == "SUCCEEDED":
+
+        glb_url = data["model_urls"]["glb"]
+
+        save_model(glb_url, task_id)
+
         return {
-            "status": None,
-            "progress": 0
+            "status": "SUCCEEDED",
+            "progress": 100,
+            "model_url": f"/outputs/{task_id}/model.glb"
         }
 
-    status = result.get("status")
-    progress = result.get("progress", 0)
+    return {
+        "status": status,
+        "progress": progress
+    }
 
     # ======================
     # MODEL READY
@@ -154,3 +163,4 @@ def check_status(task_id: str):
         "status": status,
         "progress": progress
     }
+
