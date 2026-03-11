@@ -78,7 +78,7 @@ async def generate_3d(req: GenerateRequest):
     print("CREATE RESPONSE:", data)
 
     try:
-        task_id = data["result"]["task_id"]
+        task_id = data["result"]
     except:
         return {"error": data}
 
