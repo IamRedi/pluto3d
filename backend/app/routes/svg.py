@@ -27,20 +27,26 @@ async def generate_svg(
     bitmap_path = f"{TMP_DIR}/{file_id}.pbm"
     output_svg = f"{SVG_DIR}/{file_id}.svg"
 
+    # save uploaded file
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
     img = cv2.imread(input_path)
+
+    if img is None:
+        return {"error": "Image could not be loaded"}
+
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # ---------- MODE SELECTION ----------
 
     if mode == "outline":
 
-        blur = cv2.GaussianBlur(gray,(5,5),0)
-        edges = cv2.Canny(blur,80,200)
+        blur = cv2.GaussianBlur(gray, (5,5), 0)
+        edges = cv2.Canny(blur, 80, 200)
 
         processed = edges
+
 
     elif mode == "engrave":
 
@@ -53,21 +59,20 @@ async def generate_svg(
             2
         )
 
+
     elif mode == "stencil":
 
-        _,processed = cv2.threshold(
+        _, thresh = cv2.threshold(
             gray,
             120,
             255,
             cv2.THRESH_BINARY_INV
         )
 
-        kernel = cv2.getStructuringElement(
-            cv2.MORPH_RECT,(5,5)
-        )
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
 
         processed = cv2.morphologyEx(
-            processed,
+            thresh,
             cv2.MORPH_CLOSE,
             kernel
         )
@@ -76,11 +81,14 @@ async def generate_svg(
 
         processed = gray
 
-    # ---------- SAVE BITMAP ----------
+    # ---------- CONVERT TO PURE BLACK / WHITE ----------
 
-    cv2.imwrite(bitmap_path, processed)
+    _, bw = cv2.threshold(processed,127,255,cv2.THRESH_BINARY)
 
-    # ---------- POTRACE ----------
+    # save bitmap for potrace
+    cv2.imwrite(bitmap_path, bw)
+
+    # ---------- RUN POTRACE ----------
 
     subprocess.run([
         "potrace",
@@ -88,10 +96,10 @@ async def generate_svg(
         "-s",
         "-o",
         output_svg,
-        "--turdsize","10",
-        "--alphamax","1",
+        "--turdsize","5",
+        "--alphamax","0.8",
         "--opttolerance","0.2"
-    ])
+    ], check=True)
 
     return {
         "svg_url": f"/outputs/svg/{file_id}.svg"
