@@ -4,4 +4,3 @@ python-multipart
 requests
 pillow
 opencv-python-headless
-vtracer

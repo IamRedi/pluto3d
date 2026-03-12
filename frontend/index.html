@@ -256,6 +256,23 @@ or
 </div>
 <div class="button-row">
 
+<div style="margin-bottom:10px;">
+
+<select id="svgMode" style="
+background:#020617;
+color:white;
+padding:10px;
+border-radius:10px;
+border:1px solid #0ea5e9;
+">
+
+<option value="outline">Outline</option>
+<option value="engrave">Engrave</option>
+<option value="stencil">Stencil</option>
+
+</select>
+
+</div>
 
 <button onclick="generateSVG()">Generate SVG Sketch</button>
 
@@ -466,8 +483,11 @@ alert("Choose an image first")
 return
 }
 
+const mode = document.getElementById("svgMode").value
+
 const formData = new FormData()
 formData.append("file", files[0])
+formData.append("mode", mode)
 
 status.innerHTML = "Generating SVG sketch..."
 
