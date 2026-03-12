@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# install potrace
+# Install potrace
 RUN apt-get update && \
     apt-get install -y potrace && \
     apt-get clean
