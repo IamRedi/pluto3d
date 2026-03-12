@@ -83,7 +83,7 @@ async def generate_svg(
     # ---------- POTRACE ----------
 
     subprocess.run([
-    "/usr/bin/potrace",
+        "potrace",
         bitmap_path,
         "-s",
         "-o",
