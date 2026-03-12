@@ -11,7 +11,15 @@ app = FastAPI(
     description="Photo to 3D and SVG generator",
     version="1.0"
 )
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://pluto3d.vercel.app"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # CORS duhet të vijë MENJËHERË pas FastAPI()
 
 app.add_middleware(
