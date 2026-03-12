@@ -3,6 +3,7 @@ import uuid
 import os
 import cv2
 import subprocess
+import shutil
 
 router = APIRouter()
 
@@ -21,13 +22,19 @@ async def generate_svg(
     mode: str = Form("outline")
 ):
 
+    # ---------- CHECK POTRACE ----------
+
+    if shutil.which("potrace") is None:
+        return {"error": "potrace not installed on server"}
+
     file_id = str(uuid.uuid4())
 
     input_path = f"{UPLOAD_DIR}/{file_id}.png"
     bitmap_path = f"{TMP_DIR}/{file_id}.pbm"
     output_svg = f"{SVG_DIR}/{file_id}.svg"
 
-    # save uploaded file
+    # ---------- SAVE IMAGE ----------
+
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
@@ -38,15 +45,13 @@ async def generate_svg(
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # ---------- MODE SELECTION ----------
+    # ---------- MODES ----------
 
     if mode == "outline":
 
         blur = cv2.GaussianBlur(gray, (5,5), 0)
         edges = cv2.Canny(blur, 80, 200)
-
         processed = edges
-
 
     elif mode == "engrave":
 
@@ -58,7 +63,6 @@ async def generate_svg(
             11,
             2
         )
-
 
     elif mode == "stencil":
 
@@ -81,25 +85,38 @@ async def generate_svg(
 
         processed = gray
 
-    # ---------- CONVERT TO PURE BLACK / WHITE ----------
+    # ---------- PURE B/W ----------
 
     _, bw = cv2.threshold(processed,127,255,cv2.THRESH_BINARY)
 
-    # save bitmap for potrace
+    # ---------- SAVE BITMAP ----------
+
     cv2.imwrite(bitmap_path, bw)
+
+    if not os.path.exists(bitmap_path):
+        return {"error": "Bitmap creation failed"}
 
     # ---------- RUN POTRACE ----------
 
-    subprocess.run([
-        "potrace",
-        bitmap_path,
-        "-s",
-        "-o",
-        output_svg,
-        "--turdsize","5",
-        "--alphamax","0.8",
-        "--opttolerance","0.2"
-    ], check=True)
+    try:
+
+        subprocess.run([
+            "potrace",
+            bitmap_path,
+            "-s",
+            "-o",
+            output_svg,
+            "--turdsize","5",
+            "--alphamax","0.8",
+            "--opttolerance","0.2"
+        ], check=True)
+
+    except subprocess.CalledProcessError as e:
+
+        return {"error": f"Potrace failed: {str(e)}"}
+
+    if not os.path.exists(output_svg):
+        return {"error": "SVG not generated"}
 
     return {
         "svg_url": f"/outputs/svg/{file_id}.svg"
