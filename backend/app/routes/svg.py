@@ -23,42 +23,44 @@ async def generate_svg(file: UploadFile = File(...)):
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
-    # READ IMAGE
+    # LOAD IMAGE
     img = cv2.imread(input_path)
-
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # SMOOTH IMAGE
-    blur = cv2.GaussianBlur(gray, (5,5), 0)
+    # SMOOTH
+    blur = cv2.GaussianBlur(gray,(5,5),0)
 
-    # EDGE DETECT
-    edges = cv2.Canny(blur, 80, 200)
+    # THRESHOLD (clean shapes)
+    _, thresh = cv2.threshold(blur,120,255,cv2.THRESH_BINARY_INV)
+
+    # MORPH CLOSE (bashkon vijat)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(3,3))
+    morph = cv2.morphologyEx(thresh,cv2.MORPH_CLOSE,kernel)
 
     # FIND CONTOURS
-    contours, _ = cv2.findContours(
-        edges,
+    contours,_ = cv2.findContours(
+        morph,
         cv2.RETR_EXTERNAL,
         cv2.CHAIN_APPROX_SIMPLE
     )
 
-    h, w = gray.shape
+    h,w = gray.shape
 
-    # WRITE SVG
-    with open(output_path, "w") as svg:
+    with open(output_path,"w") as svg:
 
         svg.write(
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">'
+            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">'
         )
 
         for cnt in contours:
 
-            epsilon = 0.01 * cv2.arcLength(cnt, True)
-            approx = cv2.approxPolyDP(cnt, epsilon, True)
+            epsilon = 0.002 * cv2.arcLength(cnt,True)
+            approx = cv2.approxPolyDP(cnt,epsilon,True)
 
             path = "M "
 
             for p in approx:
-                x, y = p[0]
+                x,y = p[0]
                 path += f"{x},{y} "
 
             path += "Z"
