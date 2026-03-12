@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File
 import uuid
 import os
-import subprocess
+import cv2
 
 router = APIRouter()
 
@@ -10,7 +10,6 @@ SVG_DIR = "outputs/svg"
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(SVG_DIR, exist_ok=True)
-
 
 @router.post("/svg")
 async def generate_svg(file: UploadFile = File(...)):
@@ -23,15 +22,47 @@ async def generate_svg(file: UploadFile = File(...)):
     with open(input_path, "wb") as f:
         f.write(await file.read())
 
-    subprocess.run([
-        "vtracer",
-        "--input", input_path,
-        "--output", output_path,
-        "--mode", "polygon",
-        "--filter_speckle", "4",
-        "--color_precision", "6",
-        "--layer_difference", "16"
-    ])
+    img = cv2.imread(input_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # cleaner edges
+    blur = cv2.GaussianBlur(gray,(5,5),0)
+
+    edges = cv2.Canny(blur,80,200)
+
+    contours,_ = cv2.findContours(
+        edges,
+        cv2.RETR_LIST,
+        cv2.CHAIN_APPROX_SIMPLE
+    )
+
+    h,w = gray.shape
+
+    with open(output_path,"w") as svg:
+
+        svg.write(
+            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">'
+        )
+
+        for cnt in contours:
+
+            if cv2.contourArea(cnt) < 50:
+                continue
+
+            epsilon = 0.002 * cv2.arcLength(cnt,True)
+            approx = cv2.approxPolyDP(cnt,epsilon,True)
+
+            path = "M "
+
+            for p in approx:
+                x,y = p[0]
+                path += f"{x},{y} "
+
+            svg.write(
+                f'<path d="{path}" stroke="black" fill="none" stroke-width="1"/>'
+            )
+
+        svg.write("</svg>")
 
     return {
         "svg_url": f"/outputs/svg/{file_id}.svg"
