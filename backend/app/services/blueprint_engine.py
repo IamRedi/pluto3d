@@ -3,7 +3,7 @@ import svgwrite
 import uuid
 import os
 
-from app.services.object_detector import detect_main_object
+#from app.services.object_detector import detect_main_object
 from app.services.crop_object import crop_object
 
 OUTPUT_DIR = "outputs"
@@ -13,16 +13,18 @@ def generate_blueprint(image_path):
 
     # ---------------- OBJECT DETECTION ----------------
 
-    box = detect_main_object(img)
+    boxes = []
 
-    if box:
+    # ---------------- OBJECT DETECTION ----------------
 
-        print("Object detected → cropping")
-        img = crop_object(img, box)
+boxes = []
 
-    else:
-
-        print("No object detected → using full image")
+if len(boxes) > 0:
+    box = boxes[0]
+    print("Object detected → cropping")
+    img = crop_object(img, box)
+else:
+    print("No object detected → using full image")
 
     # ---------------- EDGE PREPROCESS ----------------
 
