@@ -14,23 +14,29 @@ app = FastAPI(
     version="1.0"
 )
 
-# CORS
+# ---------------- CORS ----------------
+
+origins = [
+    "https://pluto3d.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ROUTERS
+# ---------------- ROUTERS ----------------
 
 app.include_router(upload_router, prefix="/api")
 app.include_router(generate_router, prefix="/api")
 app.include_router(svg_router, prefix="/api")
 
-# PATH FIX (Railway safe)
+# ---------------- PATH FIX (Railway safe) ----------------
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,12 +46,12 @@ STATIC_DIR = BASE_DIR / "static"
 OUTPUTS_DIR.mkdir(exist_ok=True)
 STATIC_DIR.mkdir(exist_ok=True)
 
-# STATIC FILES
+# ---------------- STATIC FILES ----------------
 
 app.mount("/outputs", StaticFiles(directory=str(OUTPUTS_DIR)), name="outputs")
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
-# ROOT
+# ---------------- ROOT ----------------
 
 @app.get("/")
 def root():
