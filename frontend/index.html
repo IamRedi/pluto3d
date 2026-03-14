@@ -491,7 +491,7 @@ formData.append("mode", mode)
 
 status.innerHTML = "Generating SVG sketch..."
 
-const res = await fetch(API_BASE + "/svg",{
+const res = await fetch(API_BASE + "/api/svg",{
 method:"POST",
 body:formData
 })
