@@ -251,7 +251,17 @@ or
 
 <button onclick="upload()">Upload Photos</button>
 
-<button onclick="generate3D()">Generate 3D</button>
+<button onclick="generateFree3D()">
+Generate 3D (Free)
+</button>
+
+<button style="
+background:linear-gradient(135deg,#f59e0b,#d97706);
+"
+onclick="generate3D()">
+
+Generate 3D Premium
+</button>
 
 </div>
 <div class="button-row">
@@ -556,7 +566,16 @@ download.style.display = "inline-block"
 
 }
 
+async function generateFree3D(){
 
+if(!currentJobId){
+alert("Upload photos first")
+return
+}
+
+status.innerHTML = "Free AI generation coming soon..."
+
+}
 // THREE.JS SCENE
 
 const scene = new THREE.Scene()
