@@ -315,7 +315,7 @@ Download 3D Model
 <div id="svgPreview"></div>
 
 <a id="downloadSVG" style="display:none;" download>
-Download SVG
+<button style="margin-top:10px;">Download SVG</button>
 </a>
 
 </div>
@@ -630,10 +630,12 @@ const blob = await res.blob()
 const url = URL.createObjectURL(blob)
 
 const preview = document.getElementById("svgPreview")
+
 preview.innerHTML=""
 
 const img = document.createElement("img")
 img.src = url
+img.style.width = "120px"
 
 preview.appendChild(img)
 
@@ -642,17 +644,6 @@ download.href = url
 download.style.display = "block"
 
 }
-document.getElementById("svgInput").addEventListener("change", function(){
-
-const file = this.files[0]
-
-if(!file) return
-
-const url = URL.createObjectURL(file)
-
-document.getElementById("svgUploadPreview").src = url
-
-})
 </script>
 
 </body>
