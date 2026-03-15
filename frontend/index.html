@@ -299,8 +299,8 @@ Generate Premium
 </div>
 
 <div class="status" id="status"></div>
-<a id="downloadBtn" style="display:none;" download>
-<button style="margin-top:10px;">Download 3D Model</button>
+<a id="downloadBtn" class="download-btn" style="display:none;" download>
+Download 3D Model
 </a>
 </div>
 
@@ -547,7 +547,12 @@ progressBar.style.width="0%"
 
 const scene=new THREE.Scene()
 
-const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000)
+const camera=new THREE.PerspectiveCamera(
+75,
+viewerContainer.clientWidth / viewerContainer.clientHeight,
+0.1,
+1000
+)
 
 const renderer=new THREE.WebGLRenderer({antialias:true})
 
@@ -575,7 +580,6 @@ const loader=new THREE.GLTFLoader()
 
 loader.load(url,(gltf)=>{
 
-scene.clear()
 
 scene.add(light)
 
@@ -626,6 +630,25 @@ const img = document.createElement("img")
 img.src = url
 
 preview.appendChild(img)
+
+}
+.download-btn{
+
+display:block;
+text-align:center;
+
+margin-top:15px;
+padding:12px;
+
+border-radius:10px;
+
+background:
+linear-gradient(135deg,#22c55e,#16a34a);
+
+color:white;
+
+text-decoration:none;
+font-weight:500;
 
 }
 </script>
