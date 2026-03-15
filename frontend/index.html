@@ -554,7 +554,7 @@ document.querySelectorAll(".toolpanel")
 document
 .getElementById("panel-"+name)
 .classList.remove("hidden")
-
+document.getElementById("svgViewer").style.display="none"
 status.innerHTML=""
 progressBar.style.width="0%"
 }
@@ -635,18 +635,25 @@ body:form
 
 const data = await res.json()
 
-/* backend already created SVG */
-
 const svgUrl = API_BASE + data.svg_url
 
-document.getElementById("svgPreview").innerHTML = "SVG generated"
+document.getElementById("svgPreview").innerHTML="SVG generated"
+
+/* SHOW SVG IN VIEWER */
+
+const svgViewer = document.getElementById("svgViewer")
+
+svgViewer.src = svgUrl
+svgViewer.style.display="block"
+
+/* DOWNLOAD */
 
 const download = document.getElementById("downloadSVG")
 
 download.href = svgUrl
 download.download = "vector.svg"
 
-download.style.display = "block"
+download.style.display="block"
 
 }
 
