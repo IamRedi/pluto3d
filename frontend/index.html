@@ -409,7 +409,12 @@ Generate AI Image
 <div class="viewer">
 
 <div class="viewer-title">AI Viewer</div>
+document.getElementById("bgSelector")
+.addEventListener("change",function(){
 
+document.querySelector(".viewer").style.background=this.value
+
+})
 <div id="viewer"></div>
 
 <img id="svgViewer"
@@ -677,7 +682,12 @@ const url = URL.createObjectURL(file)
 document.getElementById("svgUploadPreview").src = url
 
 })
+document.getElementById("bgSelector")
+.addEventListener("change",function(){
 
+document.querySelector(".viewer").style.background=this.value
+
+})
 </script>
 
 </body>
