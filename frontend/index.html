@@ -303,7 +303,9 @@ Generate Premium
 </div>
 
 <div class="status" id="status"></div>
-
+<a id="downloadBtn" style="display:none;" download>
+<button style="margin-top:10px;">Download 3D Model</button>
+</a>
 </div>
 
 
@@ -514,9 +516,7 @@ clearInterval(interval)
 status.innerHTML="Model Ready"
 
 loadModel(API_BASE+data.model_url)
-<a id="downloadBtn" style="display:none;" download>
-  <button style="margin-top:10px;">Download 3D Model</button>
-</a>
+
 // DOWNLOAD BUTTON
   const download = document.getElementById("downloadBtn")
   download.href = modelUrl
