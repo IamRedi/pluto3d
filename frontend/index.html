@@ -409,12 +409,19 @@ Generate AI Image
 <div class="viewer">
 
 <div class="viewer-title">AI Viewer</div>
-document.getElementById("bgSelector")
-.addEventListener("change",function(){
+<!-- background selector -->
+<div style="position:absolute;top:20px;right:20px;z-index:10">
 
-document.querySelector(".viewer").style.background=this.value
+<select id="bgSelector">
 
-})
+<option value="#000">Dark</option>
+<option value="#020617">Space</option>
+<option value="#0f172a">Blueprint</option>
+<option value="#ffffff">White</option>
+
+</select>
+
+</div>
 <div id="viewer"></div>
 
 <img id="svgViewer"
