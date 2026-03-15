@@ -305,8 +305,6 @@ Generate Premium
 </div>
 
 
-<!-- SVG -->
-
 <div id="panel-svg" class="toolpanel hidden">
 
 <div class="section-title">SVG Generator</div>
@@ -318,22 +316,20 @@ Generate Premium
 <label>Mode</label>
 
 <select id="svgMode">
-
 <option value="outline">Outline</option>
 <option value="engrave">Engrave</option>
 <option value="stencil">Stencil</option>
-
 </select>
 
 <br><br>
 
 <label>Shadow</label>
-<input type="range" min="0" max="100" value="20">
+<input type="range" id="shadowRange" min="0" max="100" value="20">
 
 <br><br>
 
 <label>Contrast</label>
-<input type="range" min="0" max="100" value="50">
+<input type="range" id="contrastRange" min="0" max="100" value="50">
 
 <br><br>
 
@@ -598,7 +594,40 @@ renderer.render(scene,camera)
 }
 
 animate()
+async function generateSVG(){
 
+const file = document.getElementById("svgInput").files[0]
+
+if(!file){
+
+alert("Upload image first")
+return
+
+}
+
+const form = new FormData()
+form.append("file",file)
+
+const res = await fetch(API_BASE+"/api/svg",{
+method:"POST",
+body:form
+})
+
+const blob = await res.blob()
+
+const url = URL.createObjectURL(blob)
+
+const preview = document.getElementById("svgPreview")
+
+preview.innerHTML=""
+
+const img = document.createElement("img")
+
+img.src = url
+
+preview.appendChild(img)
+
+}
 </script>
 
 </body>
