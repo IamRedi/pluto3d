@@ -311,6 +311,18 @@ Download 3D Model
 
 <input type="file" id="svgInput">
 
+<button onclick="generateSVG()">
+Generate SVG
+</button>
+
+<div id="svgPreview"></div>
+
+<a id="downloadSVG" style="display:none;" download>
+Download SVG
+</a>
+
+</div>
+
 <br><br>
 
 <label>Mode</label>
@@ -545,18 +557,18 @@ progressBar.style.width="0%"
 
 /* three viewer */
 
-const scene=new THREE.Scene()
+const scene = new THREE.Scene()
 
-const camera=new THREE.PerspectiveCamera(
+const viewerContainer = document.getElementById("viewer")
+
+const camera = new THREE.PerspectiveCamera(
 75,
 viewerContainer.clientWidth / viewerContainer.clientHeight,
 0.1,
 1000
 )
 
-const renderer=new THREE.WebGLRenderer({antialias:true})
-
-const viewerContainer = document.getElementById("viewer")
+const renderer = new THREE.WebGLRenderer({antialias:true})
 
 renderer.setSize(
 viewerContainer.clientWidth,
@@ -580,9 +592,11 @@ const loader=new THREE.GLTFLoader()
 
 loader.load(url,(gltf)=>{
 
+while(scene.children.length > 0){
+scene.remove(scene.children[0])
+}
 
 scene.add(light)
-
 scene.add(gltf.scene)
 
 })
@@ -603,10 +617,8 @@ async function generateSVG(){
 const file = document.getElementById("svgInput").files[0]
 
 if(!file){
-
 alert("Upload image first")
 return
-
 }
 
 const form = new FormData()
@@ -618,18 +630,19 @@ body:form
 })
 
 const blob = await res.blob()
-
 const url = URL.createObjectURL(blob)
 
 const preview = document.getElementById("svgPreview")
-
 preview.innerHTML=""
 
 const img = document.createElement("img")
-
 img.src = url
 
 preview.appendChild(img)
+
+const download = document.getElementById("downloadSVG")
+download.href = url
+download.style.display = "block"
 
 }
 </script>
