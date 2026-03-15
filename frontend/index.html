@@ -281,17 +281,42 @@ color:#7dd3fc;
 <input type="file" id="fileInput" multiple>
 
 </div>
-<button onclick="generateSVG()">
-Generate SVG
-</button>
 
-<div id="svgPreview"></div>
 <button onclick="upload()">Upload Photos</button>
 
 <button onclick="generateFree3D()">
 Generate Free
 </button>
+async function generateSVG(){
 
+const file = document.getElementById("svgInput").files[0]
+
+if(!file){
+
+alert("Upload image first")
+return
+
+}
+
+const form = new FormData()
+form.append("file",file)
+
+const res = await fetch(API_BASE+"/api/svg",{
+method:"POST",
+body:form
+})
+
+const blob = await res.blob()
+
+const url = URL.createObjectURL(blob)
+
+const img = document.createElement("img")
+
+img.src = url
+
+document.getElementById("svgPreview").appendChild(img)
+
+}
 <button class="btn-premium" onclick="generate3D()">
 Generate Premium
 </button>
@@ -515,12 +540,15 @@ clearInterval(interval)
 
 status.innerHTML="Model Ready"
 
-loadModel(API_BASE+data.model_url)
+const modelUrl = API_BASE + data.model_url
+
+loadModel(modelUrl)
 
 // DOWNLOAD BUTTON
-  const download = document.getElementById("downloadBtn")
-  download.href = modelUrl
-  download.style.display = "block"
+const download = document.getElementById("downloadBtn")
+download.href = modelUrl
+download.style.display = "block"
+
 }
 
 },4000)
@@ -544,6 +572,8 @@ document
 .getElementById("panel-"+name)
 .classList.remove("hidden")
 
+status.innerHTML=""
+progressBar.style.width="0%"
 }
 
 /* three viewer */
@@ -554,7 +584,12 @@ const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight
 
 const renderer=new THREE.WebGLRenderer({antialias:true})
 
-renderer.setSize(window.innerWidth,window.innerHeight)
+const viewerContainer = document.getElementById("viewer")
+
+renderer.setSize(
+viewerContainer.clientWidth,
+viewerContainer.clientHeight
+)
 
 document.getElementById("viewer").appendChild(renderer.domElement)
 
