@@ -623,20 +623,32 @@ body:form
 
 const data = await res.json()
 
-const preview = document.getElementById("svgPreview")
-preview.innerHTML = "Vector JSON generated"
+/* Convert JSON → SVG */
+
+let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">`
+
+if(data.paths){
+
+data.paths.forEach(path=>{
+
+svg += `<path d="${path}" stroke="black" fill="none" stroke-width="2"/>`
+
+})
+
+}
+
+svg += `</svg>`
+
+document.getElementById("svgPreview").innerHTML = "SVG generated"
 
 const download = document.getElementById("downloadSVG")
 
-const blob = new Blob(
-[JSON.stringify(data,null,2)],
-{type:"application/json"}
-)
+const blob = new Blob([svg],{type:"image/svg+xml"})
 
 const url = URL.createObjectURL(blob)
 
 download.href = url
-download.download = "vector.json"
+download.download = "vector.svg"
 
 download.style.display = "block"
 
