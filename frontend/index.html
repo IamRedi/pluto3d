@@ -597,6 +597,42 @@ renderer.render(scene,camera)
 animate()
 async function generateSVG(){
 
+const file = document.getElementById("svgInput").files[0]
+
+if(!file){
+alert("Upload image first")
+return
+}
+
+const form = new FormData()
+form.append("file",file)
+
+const res = await fetch(API_BASE + "/api/svg",{
+method:"POST",
+body:form
+})
+
+const data = await res.json()
+
+const preview = document.getElementById("svgPreview")
+preview.innerHTML = "Vector JSON generated"
+
+const download = document.getElementById("downloadSVG")
+
+const blob = new Blob(
+[JSON.stringify(data,null,2)],
+{type:"application/json"}
+)
+
+const url = URL.createObjectURL(blob)
+
+download.href = url
+download.download = "vector.json"
+
+download.style.display = "block"
+
+}
+
 </script>
 
 </body>
