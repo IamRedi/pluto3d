@@ -646,7 +646,7 @@ return
 const form = new FormData()
 form.append("file",file)
 
-const res = await fetch(API_BASE+"/api/svg",{
+const res = await fetch(API_BASE + "/api/svg",{
 method:"POST",
 body:form
 })
@@ -654,7 +654,7 @@ body:form
 const data = await res.json()
 
 const preview = document.getElementById("svgPreview")
-preview.innerHTML = "JSON ready"
+preview.innerHTML = "Vector JSON generated"
 
 const download = document.getElementById("downloadSVG")
 
@@ -671,17 +671,6 @@ download.download = "vector.json"
 download.style.display = "block"
 
 }
-document.getElementById("svgInput").addEventListener("change", function(){
-
-const file = this.files[0]
-
-if(!file) return
-
-const url = URL.createObjectURL(file)
-
-document.getElementById("svgUploadPreview").src = url
-
-})
 </script>
 
 </body>
