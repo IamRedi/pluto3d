@@ -281,7 +281,11 @@ color:#7dd3fc;
 <input type="file" id="fileInput" multiple>
 
 </div>
+<button onclick="generateSVG()">
+Generate SVG
+</button>
 
+<div id="svgPreview"></div>
 <button onclick="upload()">Upload Photos</button>
 
 <button onclick="generateFree3D()">
@@ -510,7 +514,13 @@ clearInterval(interval)
 status.innerHTML="Model Ready"
 
 loadModel(API_BASE+data.model_url)
-
+<a id="downloadBtn" style="display:none;" download>
+  <button style="margin-top:10px;">Download 3D Model</button>
+</a>
+// DOWNLOAD BUTTON
+  const download = document.getElementById("downloadBtn")
+  download.href = modelUrl
+  download.style.display = "block"
 }
 
 },4000)
