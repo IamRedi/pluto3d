@@ -98,10 +98,15 @@ border-right:1px solid rgba(56,189,248,0.2);
 /* viewer */
 
 .viewer{
+background:
+radial-gradient(circle at center,#020617,#000000),
+linear-gradient(rgba(56,189,248,0.05) 1px, transparent 1px),
+linear-gradient(90deg, rgba(56,189,248,0.05) 1px, transparent 1px);
 
-background:black;
-position:relative;
-
+background-size:
+100% 100%,
+40px 40px,
+40px 40px;
 }
 
 .viewer-title{
@@ -673,6 +678,7 @@ const url = URL.createObjectURL(file)
 document.getElementById("svgUploadPreview").src = url
 
 })
+
 </script>
 
 </body>
