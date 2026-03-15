@@ -312,17 +312,38 @@ Download 3D Model
 
 <img id="svgUploadPreview" style="width:120px;margin-top:10px;border-radius:8px;">
 
-
+<br><br>
 
 <label>Mode</label>
-
 <select id="svgMode">
 <option value="outline">Outline</option>
 <option value="engrave">Engrave</option>
 <option value="stencil">Stencil</option>
 </select>
 
+<br><br>
 
+<label>Shadow</label>
+<input type="range" id="shadowRange" min="0" max="100" value="20">
+
+<br><br>
+
+<label>Contrast</label>
+<input type="range" id="contrastRange" min="0" max="100" value="50">
+
+<br><br>
+
+<button onclick="generateSVG()">Generate SVG</button>
+
+<br><br>
+
+<div id="svgPreview"></div>
+
+<a id="downloadSVG" style="display:none;" download>
+<button style="margin-top:10px;">Download JSON</button>
+</a>
+
+</div>
 
 
 <!-- AI -->
@@ -620,6 +641,18 @@ download.download = "vector.json"
 download.style.display = "block"
 
 }
+
+document.getElementById("svgInput").addEventListener("change", function(){
+
+const file = this.files[0]
+
+if(!file) return
+
+const url = URL.createObjectURL(file)
+
+document.getElementById("svgUploadPreview").src = url
+
+})
 </script>
 
 </body>
