@@ -21,9 +21,7 @@ overflow:hidden;
 .workspace{
 
 display:grid;
-
 grid-template-columns:90px 420px 1fr;
-
 height:100vh;
 
 }
@@ -33,31 +31,31 @@ height:100vh;
 .sidebar{
 
 background:#020617;
-
 border-right:1px solid rgba(56,189,248,0.2);
 
 display:flex;
 flex-direction:column;
 align-items:center;
-padding-top:30px;
-gap:25px;
+
+padding-top:25px;
+gap:20px;
 
 }
 
 .logo{
 
 font-family:Orbitron;
-font-size:18px;
 color:#38bdf8;
+margin-bottom:20px;
 
 }
 
-.tool{
+.sidebtn{
 
 width:60px;
 height:60px;
 
-border-radius:14px;
+border-radius:12px;
 
 display:flex;
 align-items:center;
@@ -66,54 +64,89 @@ justify-content:center;
 cursor:pointer;
 
 background:rgba(14,165,233,0.1);
+border:1px solid rgba(56,189,248,0.4);
 
-border:1px solid rgba(56,189,248,0.3);
-
-transition:0.25s;
+transition:0.2s;
 
 }
 
-.tool:hover{
+.sidebtn:hover{
 
 background:#0ea5e9;
 
 }
 
-/* workspace */
+/* panel */
 
 .panel{
 
-padding:35px;
+padding:30px;
+overflow:auto;
 
 background:
 
 linear-gradient(
 180deg,
-rgba(15,23,42,0.7),
-rgba(2,6,23,0.9)
+rgba(15,23,42,0.8),
+rgba(2,6,23,0.95)
 );
 
-border-right:1px solid rgba(56,189,248,0.15);
+border-right:1px solid rgba(56,189,248,0.2);
 
-overflow:auto;
+}
+
+/* viewer */
+
+.viewer{
+
+background:black;
+position:relative;
+
+}
+
+.viewer-title{
+
+position:absolute;
+top:20px;
+left:20px;
+
+font-family:Orbitron;
+color:#38bdf8;
+
+}
+
+#viewer{
+
+width:100%;
+height:100%;
+
+box-shadow:
+0 0 60px rgba(14,165,233,0.4);
+
+}
+
+/* panels */
+
+.toolpanel{
+
+display:block;
+
+}
+
+.hidden{
+
+display:none;
 
 }
 
 /* title */
 
-.title{
+.section-title{
 
 font-family:Orbitron;
-
-font-size:28px;
-
+font-size:22px;
 color:#38bdf8;
-
-margin-bottom:25px;
-
-text-shadow:
-0 0 10px #38bdf8,
-0 0 30px #0ea5e9;
+margin-bottom:20px;
 
 }
 
@@ -122,78 +155,39 @@ text-shadow:
 .dropzone{
 
 border:2px dashed #0ea5e9;
+border-radius:14px;
 
-border-radius:16px;
-
-padding:40px;
-
+padding:35px;
 text-align:center;
 
-color:#7dd3fc;
-
-margin-bottom:20px;
-
-transition:0.25s;
-
-}
-
-.dropzone.drag{
-
-background:rgba(14,165,233,0.1);
-
-}
-
-input[type=file]{
-
-margin-top:15px;
+margin-bottom:15px;
 
 }
 
 /* buttons */
 
-.btn{
+button{
 
 width:100%;
-
-padding:14px;
-
-border-radius:12px;
-
-border:none;
-
-cursor:pointer;
+padding:12px;
 
 margin-top:10px;
 
-font-size:14px;
+border:none;
+border-radius:10px;
 
-color:white;
+cursor:pointer;
 
 background:
-
 linear-gradient(135deg,#0ea5e9,#38bdf8);
 
-box-shadow:
-
-0 0 15px rgba(56,189,248,0.6);
-
-transition:0.2s;
-
-}
-
-.btn:hover{
-
-transform:translateY(-2px);
-
-box-shadow:
-0 0 25px #38bdf8;
+color:white;
 
 }
 
 .btn-premium{
 
 background:
-
 linear-gradient(135deg,#f59e0b,#f97316);
 
 }
@@ -205,54 +199,15 @@ linear-gradient(135deg,#f59e0b,#f97316);
 display:flex;
 flex-wrap:wrap;
 gap:10px;
-margin-top:15px;
+margin-top:10px;
 
 }
 
 .preview img{
 
-width:90px;
-
-border-radius:10px;
-
+width:80px;
+border-radius:8px;
 border:2px solid #0ea5e9;
-
-}
-
-/* viewer */
-
-.viewer{
-
-position:relative;
-
-background:black;
-
-}
-
-/* viewer title */
-
-.viewer-title{
-
-position:absolute;
-
-top:20px;
-left:20px;
-
-font-family:Orbitron;
-
-color:#38bdf8;
-
-}
-
-/* viewer glow */
-
-.viewer canvas{
-
-width:100%;
-height:100%;
-
-box-shadow:
-0 0 80px rgba(14,165,233,0.4);
 
 }
 
@@ -261,25 +216,19 @@ box-shadow:
 .progress{
 
 height:6px;
-
 background:#020617;
-
-margin-top:15px;
-
 border-radius:10px;
-
 overflow:hidden;
+margin-top:15px;
 
 }
 
-.bar{
+.progress-bar{
 
 height:100%;
-
 width:0%;
 
 background:
-
 linear-gradient(90deg,#38bdf8,#0ea5e9);
 
 }
@@ -289,10 +238,8 @@ linear-gradient(90deg,#38bdf8,#0ea5e9);
 .status{
 
 margin-top:10px;
-
-color:#7dd3fc;
-
 font-size:13px;
+color:#7dd3fc;
 
 }
 
@@ -309,57 +256,145 @@ font-size:13px;
 
 <div class="logo">P3D</div>
 
-<div class="tool">3D</div>
+<div class="sidebtn" onclick="openPanel('3d')">3D</div>
 
-<div class="tool">SVG</div>
+<div class="sidebtn" onclick="openPanel('svg')">SVG</div>
 
-<div class="tool">AI</div>
+<div class="sidebtn" onclick="openPanel('ai')">AI</div>
 
-<div class="tool">Toy</div>
+<div class="sidebtn" onclick="openPanel('toy')">Toy</div>
 
 </div>
 
-<!-- WORKSPACE -->
+<!-- PANEL -->
 
 <div class="panel">
 
-<div class="title">3D Generator</div>
+<!-- 3D -->
 
-<div class="dropzone" id="dropzone">
+<div id="panel-3d" class="toolpanel">
 
-Drag Images Here
+<div class="section-title">3D Generator</div>
 
-<br>
+<div class="dropzone">
 
 <input type="file" id="fileInput" multiple>
 
 </div>
 
-<button class="btn" onclick="upload()">Upload Photos</button>
+<button onclick="upload()">Upload Photos</button>
 
-<button class="btn" onclick="generateFree3D()">
-
-Generate 3D (Free)
-
+<button onclick="generateFree3D()">
+Generate Free
 </button>
 
-<button class="btn btn-premium" onclick="generate3D()">
-
+<button class="btn-premium" onclick="generate3D()">
 Generate Premium
-
 </button>
 
 <div class="preview" id="preview"></div>
 
 <div class="progress">
-
-<div class="bar" id="bar"></div>
-
+<div class="progress-bar" id="progressBar"></div>
 </div>
 
 <div class="status" id="status"></div>
 
 </div>
+
+
+<!-- SVG -->
+
+<div id="panel-svg" class="toolpanel hidden">
+
+<div class="section-title">SVG Generator</div>
+
+<input type="file" id="svgInput">
+
+<br><br>
+
+<label>Mode</label>
+
+<select id="svgMode">
+
+<option value="outline">Outline</option>
+<option value="engrave">Engrave</option>
+<option value="stencil">Stencil</option>
+
+</select>
+
+<br><br>
+
+<label>Shadow</label>
+<input type="range" min="0" max="100" value="20">
+
+<br><br>
+
+<label>Contrast</label>
+<input type="range" min="0" max="100" value="50">
+
+<br><br>
+
+<button onclick="generateSVG()">
+Generate SVG
+</button>
+
+<div id="svgPreview"></div>
+
+</div>
+
+
+<!-- AI -->
+
+<div id="panel-ai" class="toolpanel hidden">
+
+<div class="section-title">AI Photo</div>
+
+<input type="file">
+
+<br><br>
+
+<select>
+
+<option>Cartoon</option>
+<option>3D Toy</option>
+<option>Metal</option>
+
+</select>
+
+<br><br>
+
+<button onclick="generatePhotoAI()">
+Generate AI Image
+</button>
+
+</div>
+
+
+<!-- TOY -->
+
+<div id="panel-toy" class="toolpanel hidden">
+
+<div class="section-title">Toy Studio</div>
+
+<button onclick="toyMode()">Toy Mode</button>
+
+<button onclick="selfieToy()">Selfie Toy</button>
+
+<br>
+
+<button onclick="plasticToy()">Plastic</button>
+
+<button onclick="goldToy()">Gold</button>
+
+<button onclick="chromeToy()">Chrome</button>
+
+<button onclick="cartoonToy()">Cartoon</button>
+
+</div>
+
+</div>
+
 
 <!-- VIEWER -->
 
@@ -384,9 +419,9 @@ const API_BASE = "https://pluto3d-production.up.railway.app"
 const input = document.getElementById("fileInput")
 const preview = document.getElementById("preview")
 const status = document.getElementById("status")
-const bar = document.getElementById("bar")
+const progressBar = document.getElementById("progressBar")
 
-let jobId=null
+let currentJobId=null
 
 input.addEventListener("change",()=>{
 
@@ -395,9 +430,7 @@ preview.innerHTML=""
 for(let file of input.files){
 
 const img=document.createElement("img")
-
 img.src=URL.createObjectURL(file)
-
 preview.appendChild(img)
 
 }
@@ -408,27 +441,24 @@ async function upload(){
 
 if(input.files.length==0){
 
-alert("Upload photos")
+alert("Choose photos")
 
 return
 
 }
 
-jobId=crypto.randomUUID()
+currentJobId=crypto.randomUUID()
 
 for(let file of input.files){
 
 let form=new FormData()
 
 form.append("file",file)
-form.append("job_id",jobId)
+form.append("job_id",currentJobId)
 
 await fetch(API_BASE+"/api/upload",{
-
 method:"POST",
-
 body:form
-
 })
 
 }
@@ -450,7 +480,7 @@ headers:{
 },
 
 body:JSON.stringify({
-job_id:jobId
+job_id:currentJobId
 })
 
 })
@@ -471,13 +501,13 @@ const data=await res.json()
 
 status.innerHTML="AI Processing "+data.progress+"%"
 
-bar.style.width=data.progress+"%"
+progressBar.style.width=data.progress+"%"
 
 if(data.status==="SUCCEEDED"){
 
 clearInterval(interval)
 
-status.innerHTML="Model ready"
+status.innerHTML="Model Ready"
 
 loadModel(API_BASE+data.model_url)
 
@@ -487,7 +517,26 @@ loadModel(API_BASE+data.model_url)
 
 }
 
-/* three */
+function generateFree3D(){
+
+status.innerHTML="Free generation coming soon"
+
+}
+
+/* panels */
+
+function openPanel(name){
+
+document.querySelectorAll(".toolpanel")
+.forEach(p=>p.classList.add("hidden"))
+
+document
+.getElementById("panel-"+name)
+.classList.remove("hidden")
+
+}
+
+/* three viewer */
 
 const scene=new THREE.Scene()
 
@@ -500,7 +549,6 @@ renderer.setSize(window.innerWidth,window.innerHeight)
 document.getElementById("viewer").appendChild(renderer.domElement)
 
 const light=new THREE.DirectionalLight(0xffffff,1)
-
 light.position.set(2,2,2)
 
 scene.add(light)
