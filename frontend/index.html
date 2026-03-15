@@ -623,31 +623,15 @@ body:form
 
 const data = await res.json()
 
-/* Convert JSON → SVG */
+/* backend already created SVG */
 
-let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">`
-
-if(data.paths){
-
-data.paths.forEach(path=>{
-
-svg += `<path d="${path}" stroke="black" fill="none" stroke-width="2"/>`
-
-})
-
-}
-
-svg += `</svg>`
+const svgUrl = API_BASE + data.svg_url
 
 document.getElementById("svgPreview").innerHTML = "SVG generated"
 
 const download = document.getElementById("downloadSVG")
 
-const blob = new Blob([svg],{type:"image/svg+xml"})
-
-const url = URL.createObjectURL(blob)
-
-download.href = url
+download.href = svgUrl
 download.download = "vector.svg"
 
 download.style.display = "block"
