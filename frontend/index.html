@@ -287,36 +287,7 @@ color:#7dd3fc;
 <button onclick="generateFree3D()">
 Generate Free
 </button>
-async function generateSVG(){
 
-const file = document.getElementById("svgInput").files[0]
-
-if(!file){
-
-alert("Upload image first")
-return
-
-}
-
-const form = new FormData()
-form.append("file",file)
-
-const res = await fetch(API_BASE+"/api/svg",{
-method:"POST",
-body:form
-})
-
-const blob = await res.blob()
-
-const url = URL.createObjectURL(blob)
-
-const img = document.createElement("img")
-
-img.src = url
-
-document.getElementById("svgPreview").appendChild(img)
-
-}
 <button class="btn-premium" onclick="generate3D()">
 Generate Premium
 </button>
