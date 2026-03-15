@@ -357,28 +357,60 @@ Download 3D Model
 
 <div id="panel-ai" class="toolpanel hidden">
 
-<div class="section-title">AI Photo</div>
+<div class="section-title">AI Photo Studio</div>
 
-<input type="file">
+<!-- DRAG & DROP -->
+
+<div class="dropzone" id="aiDrop">
+
+Drag photo here or click
+
+<input type="file" id="aiInput" style="display:none">
+
+</div>
+
+<img id="aiPreview" 
+style="width:120px;margin-top:10px;border-radius:10px;display:none">
 
 <br><br>
 
-<select>
+<!-- PROMPT -->
 
-<option>Cartoon</option>
-<option>3D Toy</option>
-<option>Metal</option>
+<label>Prompt</label>
+
+<textarea id="aiPrompt"
+placeholder="modify image or create new image"
+style="width:100%;height:70px;border-radius:10px;padding:10px;"></textarea>
+
+<br><br>
+
+<!-- STYLE -->
+
+<label>Style</label>
+
+<select id="aiStyle">
+
+<option value="realistic">Realistic</option>
+<option value="toy">3D Toy</option>
+<option value="cartoon">Cartoon</option>
+<option value="metal">Metal</option>
+<option value="cyber">Cyberpunk</option>
 
 </select>
 
 <br><br>
 
-<button onclick="generatePhotoAI()">
-Generate AI Image
-</button>
+<button onclick="generateAIPhoto()">Generate AI Image</button>
+
+<br><br>
+
+<button onclick="convertToSVG()">Convert to SVG</button>
+
+<button onclick="convertTo3D()">Convert to 3D</button>
+
+<button class="btn-premium" onclick="convertTo3DPro()">3D PRO</button>
 
 </div>
-
 
 <!-- TOY -->
 
