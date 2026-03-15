@@ -3,487 +3,379 @@
 <head>
 <meta charset="UTF-8">
 <title>Pluto3D Studio</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
 body{
 margin:0;
-font-family:Inter,Arial;
+font-family:Inter;
+background:#020617;
 color:white;
-
-background-image:url("bg.jpg");
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-
-
-min-height:100vh;
-
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:40px;
+overflow:hidden;
 }
 
-.title{
-font-size:46px;
-font-weight:600;
-margin-bottom:35px;
-color:#38bdf8;
-letter-spacing:1px;
+/* layout */
 
-text-shadow:
-0 0 10px #38bdf8,
-0 0 30px #0ea5e9;
-}
-
-.panel{
-
-    box-shadow:
-
-0 0 30px rgba(14,165,233,0.25),
-
-inset 0 0 20px rgba(255,255,255,0.03);
-background:rgba(15,23,42,0.35);
-
-backdrop-filter:blur(20px);
-
-border-radius:22px;
-padding:30px;
-
-width:100%;
-margin-bottom:25px;
-
-border:1px solid rgba(56,189,248,0.35);
-
-box-shadow:
-0 0 20px rgba(56,189,248,0.25),
-inset 0 0 25px rgba(255,255,255,0.05);
-}
 .workspace{
 
 display:grid;
 
-grid-template-columns:80px 420px 1fr;
+grid-template-columns:90px 420px 1fr;
 
-height:90vh;
-
-width:100%;
-
-max-width:1600px;
-
-margin:auto;
-
-gap:20px;
+height:100vh;
 
 }
+
+/* sidebar */
+
 .sidebar{
 
-background:rgba(0,0,0,0.4);
+background:#020617;
 
-backdrop-filter:blur(20px);
-
-border-radius:18px;
-
-padding:20px;
+border-right:1px solid rgba(56,189,248,0.2);
 
 display:flex;
-
 flex-direction:column;
-
 align-items:center;
-
-gap:20px;
-
-border:1px solid rgba(56,189,248,0.2);
+padding-top:30px;
+gap:25px;
 
 }
 
-.sidebtn{
+.logo{
 
-width:50px;
-height:50px;
+font-family:Orbitron;
+font-size:18px;
+color:#38bdf8;
 
-border-radius:12px;
+}
 
-background:rgba(14,165,233,0.15);
+.tool{
 
-border:1px solid rgba(56,189,248,0.4);
+width:60px;
+height:60px;
 
-cursor:pointer;
+border-radius:14px;
 
 display:flex;
 align-items:center;
 justify-content:center;
 
-font-size:18px;
+cursor:pointer;
+
+background:rgba(14,165,233,0.1);
+
+border:1px solid rgba(56,189,248,0.3);
+
+transition:0.25s;
+
+}
+
+.tool:hover{
+
+background:#0ea5e9;
+
+}
+
+/* workspace */
+
+.panel{
+
+padding:35px;
+
+background:
+
+linear-gradient(
+180deg,
+rgba(15,23,42,0.7),
+rgba(2,6,23,0.9)
+);
+
+border-right:1px solid rgba(56,189,248,0.15);
+
+overflow:auto;
+
+}
+
+/* title */
+
+.title{
+
+font-family:Orbitron;
+
+font-size:28px;
+
+color:#38bdf8;
+
+margin-bottom:25px;
+
+text-shadow:
+0 0 10px #38bdf8,
+0 0 30px #0ea5e9;
+
+}
+
+/* upload */
+
+.dropzone{
+
+border:2px dashed #0ea5e9;
+
+border-radius:16px;
+
+padding:40px;
+
+text-align:center;
+
+color:#7dd3fc;
+
+margin-bottom:20px;
+
+transition:0.25s;
+
+}
+
+.dropzone.drag{
+
+background:rgba(14,165,233,0.1);
+
+}
+
+input[type=file]{
+
+margin-top:15px;
+
+}
+
+/* buttons */
+
+.btn{
+
+width:100%;
+
+padding:14px;
+
+border-radius:12px;
+
+border:none;
+
+cursor:pointer;
+
+margin-top:10px;
+
+font-size:14px;
+
+color:white;
+
+background:
+
+linear-gradient(135deg,#0ea5e9,#38bdf8);
+
+box-shadow:
+
+0 0 15px rgba(56,189,248,0.6);
 
 transition:0.2s;
 
 }
 
-.sidebtn:hover{
+.btn:hover{
 
-background:#0ea5e9;
-
-}
-.viewer-panel{
-
-position:sticky;
-
-top:20px;
-
-height:720px;
-
-}
-
-#viewer{
-
-width:100%;
-height:720px;
-
-background:black;
-
-border-radius:20px;
+transform:translateY(-2px);
 
 box-shadow:
-0 0 60px rgba(14,165,233,0.4);
+0 0 25px #38bdf8;
 
 }
-.section{
-margin-bottom:25px;
+
+.btn-premium{
+
+background:
+
+linear-gradient(135deg,#f59e0b,#f97316);
+
 }
 
-.section-title{
-color:#38bdf8;
-font-size:18px;
-margin-bottom:15px;
-}
-
-.dropzone{
-border:2px dashed #0ea5e9;
-border-radius:14px;
-padding:35px;
-text-align:center;
-color:#7dd3fc;
-transition:0.25s;
-}
-
-.dropzone.dragover{
-background:rgba(14,165,233,0.1);
-}
-
-input[type=file]{
-margin-top:15px;
-background:#020617;
-padding:10px;
-border-radius:10px;
-border:1px solid #0ea5e9;
-color:white;
-}
-
-.button-row{
-margin-top:15px;
-}
-
-button{
-
-background:linear-gradient(135deg,#0ea5e9,#38bdf8);
-
-border:none;
-
-padding:12px 22px;
-
-border-radius:12px;
-
-color:white;
-
-font-size:14px;
-
-cursor:pointer;
-
-margin:6px;
-
-transition:0.25s;
-
-box-shadow:0 0 12px rgba(56,189,248,0.6);
-}
-
-button:hover{
-
-transform:translateY(-2px) scale(1.05);
-
-box-shadow:
-0 0 25px #38bdf8,
-0 0 45px #0ea5e9;
-}
+/* preview */
 
 .preview{
 
 display:flex;
 flex-wrap:wrap;
+gap:10px;
 margin-top:15px;
 
 }
 
 .preview img{
 
-width:100px;
+width:90px;
 
 border-radius:10px;
 
-margin:8px;
-
 border:2px solid #0ea5e9;
-
-box-shadow:0 0 10px rgba(14,165,233,0.5);
 
 }
 
-.status{
+/* viewer */
 
-margin-top:15px;
+.viewer{
 
-font-size:14px;
+position:relative;
+
+background:black;
+
+}
+
+/* viewer title */
+
+.viewer-title{
+
+position:absolute;
+
+top:20px;
+left:20px;
+
+font-family:Orbitron;
 
 color:#38bdf8;
 
 }
 
-.loader{
+/* viewer glow */
 
-border:4px solid rgba(255,255,255,0.1);
+.viewer canvas{
 
-border-top:4px solid #0ea5e9;
-
-border-radius:50%;
-
-width:25px;
-height:25px;
-
-animation:spin 1s linear infinite;
-
-display:none;
-
-margin:auto;
-
-}
-.tabs{
-
-display:flex;
-
-gap:10px;
-
-margin-bottom:20px;
-
-}
-
-.tabs button{
-
-flex:1;
-
-background:rgba(14,165,233,0.15);
-
-border:1px solid rgba(56,189,248,0.4);
-
-}
-.progress{
-height:10px;
-background:#020617;
-border-radius:10px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.progress-bar{
+width:100%;
 height:100%;
-width:0%;
-background:linear-gradient(90deg,#38bdf8,#0ea5e9);
-transition:width 0.4s;
+
+box-shadow:
+0 0 80px rgba(14,165,233,0.4);
+
 }
 
+/* progress */
 
-.gallery{
+.progress{
 
-display:grid;
+height:6px;
 
-grid-template-columns:repeat(auto-fill,110px);
-
-gap:10px;
+background:#020617;
 
 margin-top:15px;
 
-}
-
-.gallery img{
-
-width:110px;
-
 border-radius:10px;
 
-border:2px solid #0ea5e9;
-
-cursor:pointer;
+overflow:hidden;
 
 }
 
-@keyframes spin{
+.bar{
 
-0%{transform:rotate(0deg)}
-100%{transform:rotate(360deg)}
+height:100%;
+
+width:0%;
+
+background:
+
+linear-gradient(90deg,#38bdf8,#0ea5e9);
+
+}
+
+/* status */
+
+.status{
+
+margin-top:10px;
+
+color:#7dd3fc;
+
+font-size:13px;
 
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div class="title">Pluto3D Studio</div>
 <div class="workspace">
 
 <!-- SIDEBAR -->
+
 <div class="sidebar">
 
-<div class="sidebtn" onclick="switchMode('3d')">3D</div>
+<div class="logo">P3D</div>
 
-<div class="sidebtn" onclick="switchMode('svg')">SVG</div>
+<div class="tool">3D</div>
 
-<div class="sidebtn" onclick="switchMode('photo')">AI</div>
+<div class="tool">SVG</div>
 
-</div>
+<div class="tool">AI</div>
 
-<div class="panel controls">
-
-<div class="section">
-<div class="tabs">
-
-<button onclick="switchMode('3d')">3D</button>
-<button onclick="switchMode('svg')">SVG</button>
-<button onclick="switchMode('photo')">AI Photo</button>
-
-</div>
-<div class="section-title">Upload Photos</div>
-
-<div class="dropzone" id="dropzone">
-Drag & Drop Images Here
-<br>
-or
-<br>
-<input type="file" id="fileInput" accept="image/*" multiple>
-</div>
-
-<div class="button-row">
-
-<button onclick="upload()">Upload Photos</button>
-
-<button onclick="generateFree3D()">
-Generate 3D (Free)
-</button>
-<button onclick="generatePhotoAI()" style="
-background:linear-gradient(135deg,#a855f7,#6366f1);
-">
-Generate AI Photo
-</button>
-<button style="
-background:linear-gradient(135deg,#f59e0b,#d97706);
-"
-onclick="generate3D()">
-
-Generate 3D Premium
-</button>
-
-</div>
-<div class="button-row">
-
-<div style="margin-bottom:10px;">
-
-<select id="svgMode" style="
-background:#020617;
-color:white;
-padding:10px;
-border-radius:10px;
-border:1px solid #0ea5e9;
-">
-
-<option value="outline">Outline</option>
-<option value="engrave">Engrave</option>
-<option value="stencil">Stencil</option>
-
-</select>
+<div class="tool">Toy</div>
 
 </div>
 
-<button onclick="generateSVG()">Generate SVG Sketch</button>
-
-</div>
-
-<div class="loader" id="loader"></div>
-
-<div class="progress">
-<div class="progress-bar" id="progressBar"></div>
-</div>
-
-<div class="preview" id="preview"></div>
-
-<div class="status" id="status"></div>
-
-<div id="svgPreview" style="margin-top:15px;"></div>
-
-<a id="downloadBtn" style="display:none;" download>
-<button>Download 3D Model</button>
-</a>
-
-</div>
-
-</div>
-
+<!-- WORKSPACE -->
 
 <div class="panel">
 
-<div class="section-title">Toy Studio</div>
+<div class="title">3D Generator</div>
 
-<div class="button-row">
+<div class="dropzone" id="dropzone">
 
-<button onclick="toyMode()">Toy Mode</button>
+Drag Images Here
 
-<button onclick="selfieToy()">Selfie Toy</button>
+<br>
 
-</div>
-
-<div class="button-row">
-
-<button onclick="plasticToy()">Plastic</button>
-
-<button onclick="goldToy()">Gold</button>
-
-<button onclick="chromeToy()">Chrome</button>
-
-<button onclick="cartoonToy()">Cartoon</button>
+<input type="file" id="fileInput" multiple>
 
 </div>
 
+<button class="btn" onclick="upload()">Upload Photos</button>
+
+<button class="btn" onclick="generateFree3D()">
+
+Generate 3D (Free)
+
+</button>
+
+<button class="btn btn-premium" onclick="generate3D()">
+
+Generate Premium
+
+</button>
+
+<div class="preview" id="preview"></div>
+
+<div class="progress">
+
+<div class="bar" id="bar"></div>
+
 </div>
 
+<div class="status" id="status"></div>
 
-<div class="panel viewer-panel">
+</div>
 
-<div class="section-title">Viewer</div>
+<!-- VIEWER -->
+
+<div class="viewer">
+
+<div class="viewer-title">AI Viewer</div>
 
 <div id="viewer"></div>
 
 </div>
 
-
-
-
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
 
@@ -492,303 +384,150 @@ const API_BASE = "https://pluto3d-production.up.railway.app"
 const input = document.getElementById("fileInput")
 const preview = document.getElementById("preview")
 const status = document.getElementById("status")
-const progressBar = document.getElementById("progressBar")
-const loader = document.getElementById("loader")
+const bar = document.getElementById("bar")
 
-let currentJobId = null
-let currentModel = null
-let toyBase = null
+let jobId=null
 
-
-// IMAGE PREVIEW
-
-input.addEventListener("change", previewImages)
-
-function previewImages(){
+input.addEventListener("change",()=>{
 
 preview.innerHTML=""
 
-const files = input.files
+for(let file of input.files){
 
-for(let i=0;i<files.length;i++){
+const img=document.createElement("img")
 
-const img = document.createElement("img")
-img.src = URL.createObjectURL(files[i])
+img.src=URL.createObjectURL(file)
+
 preview.appendChild(img)
 
 }
 
-}
-
-// DRAG DROP
-
-const dropzone = document.getElementById("dropzone")
-
-dropzone.addEventListener("dragover", e=>{
-
- e.preventDefault()
- dropzone.classList.add("dragover")
-
 })
-
-dropzone.addEventListener("dragleave", ()=>{
- dropzone.classList.remove("dragover")
-})
-
-dropzone.addEventListener("drop", e=>{
-
- e.preventDefault()
- dropzone.classList.remove("dragover")
-
- input.files = e.dataTransfer.files
- previewImages()
-
-})
-
-
-// UPLOAD
 
 async function upload(){
 
-const files = input.files
+if(input.files.length==0){
 
-if(files.length == 0){
-alert("Choose photos first")
+alert("Upload photos")
+
 return
+
 }
 
-const jobId = crypto.randomUUID()
-currentJobId = jobId
+jobId=crypto.randomUUID()
 
-loader.style.display="block"
+for(let file of input.files){
 
-for(let i=0;i<files.length;i++){
+let form=new FormData()
 
-const formData = new FormData()
+form.append("file",file)
+form.append("job_id",jobId)
 
-formData.append("file", files[i])
-formData.append("job_id", jobId)
+await fetch(API_BASE+"/api/upload",{
 
-await fetch(API_BASE + "/api/upload",{
 method:"POST",
-body:formData
+
+body:form
+
 })
 
 }
 
-loader.style.display="none"
-
-status.innerHTML = "Upload complete | Job ID: " + jobId
+status.innerHTML="Upload complete"
 
 }
 
 async function generate3D(){
 
-if(!currentJobId){
-alert("Upload photos first")
-return
-}
+status.innerHTML="Sending to AI..."
 
-status.innerHTML = "Sending images to AI..."
+const res=await fetch(API_BASE+"/api/generate",{
 
-const res = await fetch(API_BASE + "/api/generate",{
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
-job_id: currentJobId
-})
+job_id:jobId
 })
 
-const data = await res.json()
+})
 
-status.innerHTML = "AI Processing..."
+const data=await res.json()
 
 checkStatus(data.task_id)
 
 }
-// GENERATE
 
-async function generateSVG(){
+async function checkStatus(id){
 
-const files = input.files
+const interval=setInterval(async()=>{
 
-if(files.length == 0){
-alert("Choose an image first")
-return
-}
+const res=await fetch(API_BASE+"/api/job/"+id)
 
-const mode = document.getElementById("svgMode").value
+const data=await res.json()
 
-const formData = new FormData()
-formData.append("file", files[0])
-formData.append("mode", mode)
+status.innerHTML="AI Processing "+data.progress+"%"
 
-status.innerHTML = "Generating SVG sketch..."
+bar.style.width=data.progress+"%"
 
-const res = await fetch(API_BASE + "/api/svg",{
-method:"POST",
-body:formData
-})
-
-const data = await res.json()
-
-const svgUrl = data.svg_url
-
-status.innerHTML = "SVG Ready"
-
-const svgPreview = document.getElementById("svgPreview")
-
-svgPreview.innerHTML = `
-<div style="margin-top:10px;">
-<object data="${API_BASE + svgUrl}" type="image/svg+xml" width="300"></object>
-<br>
-<a href="${API_BASE + svgUrl}" download>
-<button style="margin-top:10px;">Download SVG</button>
-</a>
-</div>
-`
-
-}
-
-// CHECK STATUS
-
-async function checkStatus(taskId){
-
-const interval = setInterval(async () => {
-
-const res = await fetch(
-API_BASE + "/api/job/" + taskId
-)
-
-const data = await res.json()
-
-status.innerHTML =
-"AI status: " + data.status +
-" | progress: " + data.progress + "%"
-
-progressBar.style.width = data.progress + "%"
-
-if(data.status === "SUCCEEDED"){
+if(data.status==="SUCCEEDED"){
 
 clearInterval(interval)
 
-const modelUrl = API_BASE + data.model_url
+status.innerHTML="Model ready"
 
-status.innerHTML = "3D Model Ready"
-
-loadModel(modelUrl)
-
-saveToGallery(modelUrl)
-
-const download = document.getElementById("downloadBtn")
-download.href = modelUrl
-download.style.display = "inline-block"
+loadModel(API_BASE+data.model_url)
 
 }
 
-}, 4000)
+},4000)
 
 }
 
-async function generateFree3D(){
+/* three */
 
-if(!currentJobId){
-alert("Upload photos first")
-return
-}
+const scene=new THREE.Scene()
 
-status.innerHTML = "Free AI generation coming soon..."
+const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000)
 
-}
-// THREE.JS SCENE
+const renderer=new THREE.WebGLRenderer({antialias:true})
 
-const scene = new THREE.Scene()
-
-const camera = new THREE.PerspectiveCamera(75,800/450,0.1,1000)
-
-const renderer = new THREE.WebGLRenderer({antialias:true})
-
-renderer.setSize(
-document.getElementById("viewer").clientWidth,
-720
-)
+renderer.setSize(window.innerWidth,window.innerHeight)
 
 document.getElementById("viewer").appendChild(renderer.domElement)
 
-const ambient = new THREE.AmbientLight(0xffffff,1.5)
-scene.add(ambient)
+const light=new THREE.DirectionalLight(0xffffff,1)
 
-const light = new THREE.DirectionalLight(0xffffff,1)
 light.position.set(2,2,2)
 
 scene.add(light)
-camera.position.set(0,1,3)
 
-const controls = new THREE.OrbitControls(camera,renderer.domElement)
+camera.position.z=3
 
-
-// LOAD MODEL
+const controls=new THREE.OrbitControls(camera,renderer.domElement)
 
 function loadModel(url){
 
-const gltfLoader = new THREE.GLTFLoader()
+const loader=new THREE.GLTFLoader()
 
-gltfLoader.load(
-
-url,
-
-function(gltf){
+loader.load(url,(gltf)=>{
 
 scene.clear()
 
-scene.add(ambient)
 scene.add(light)
 
-currentModel = gltf.scene
+scene.add(gltf.scene)
 
-// CENTER MODEL
-
-const box = new THREE.Box3().setFromObject(currentModel)
-const center = box.getCenter(new THREE.Vector3())
-
-currentModel.position.sub(center)
-
-scene.add(currentModel)
-
-// AUTO CAMERA FIT
-
-const size = box.getSize(new THREE.Vector3()).length()
-const distance = size * 1.5
-
-camera.position.set(0, size * 0.5, distance)
-camera.lookAt(0,0,0)
-
-controls.target.set(0,0,0)
-controls.update()
-
-},
-
-undefined,
-
-function(error){
-console.error("Model load error:", error)
-status.innerHTML = "Model could not be loaded"
-}
-
-)
+})
 
 }
-
-
-// ANIMATION
 
 function animate(){
 
 requestAnimationFrame(animate)
-
-controls.update()
 
 renderer.render(scene,camera)
 
@@ -796,231 +535,6 @@ renderer.render(scene,camera)
 
 animate()
 
-
-// URL AUTO LOAD MODEL
-
-const params = new URLSearchParams(window.location.search)
-
-const model = params.get("model")
-
-if(model){
-
-loadModel(model)
-
-const download = document.getElementById("downloadBtn")
-download.href = model
-download.style.display = "inline-block"
-
-}
-
-
-// GALLERY
-
-function saveToGallery(url){
-
-const gallery = document.getElementById("gallery")
-
-const img = document.createElement("img")
-img.src="https://dummyimage.com/200x200/111/fff&text=3D"
-
-img.onclick = ()=>loadModel(url)
-
-gallery.appendChild(img)
-
-}
-
-
-// TOY MODES
-
-function toyMode(){
-
-if(!currentModel){
-alert("Generate a 3D model first")
-return
-}
-
-currentModel.scale.x *= 1.1
-currentModel.scale.z *= 1.1
-currentModel.scale.y *= 0.9
-
-currentModel.traverse(child => {
-
-if(child.isMesh){
-
-child.material.metalness = 0.1
-child.material.roughness = 0.3
-
-}
-
-})
-
-if(toyBase) scene.remove(toyBase)
-
-const geometry = new THREE.CylinderGeometry(0.8,0.8,0.15,32)
-
-const material = new THREE.MeshStandardMaterial({
-color:0x111111,
-roughness:0.5
-})
-
-toyBase = new THREE.Mesh(geometry,material)
-
-toyBase.position.y = -0.8
-
-scene.add(toyBase)
-
-status.innerHTML = "Toy Mode Activated"
-
-}
-
-
-function plasticToy(){
-
-if(!currentModel) return
-
-currentModel.traverse(child => {
-
-if(child.isMesh){
-
-child.material = new THREE.MeshStandardMaterial({
-color:0xffcc99,
-roughness:0.4,
-metalness:0.1
-})
-
-}
-
-})
-
-status.innerHTML = "Plastic Toy Material"
-
-}
-
-
-function goldToy(){
-
-if(!currentModel) return
-
-currentModel.traverse(child => {
-
-if(child.isMesh){
-
-child.material = new THREE.MeshStandardMaterial({
-color:0xffd700,
-roughness:0.2,
-metalness:1
-})
-
-}
-
-})
-
-status.innerHTML = "Gold Collectible"
-
-}
-
-
-function chromeToy(){
-
-if(!currentModel) return
-
-currentModel.traverse(child => {
-
-if(child.isMesh){
-
-child.material = new THREE.MeshStandardMaterial({
-color:0xffffff,
-metalness:1,
-roughness:0
-})
-
-}
-
-})
-
-status.innerHTML = "Chrome Toy"
-
-}
-
-
-function cartoonToy(){
-
-if(!currentModel) return
-
-currentModel.traverse(child => {
-
-if(child.isMesh){
-
-child.material = new THREE.MeshToonMaterial({
-color:0xff8844
-})
-
-}
-
-})
-
-status.innerHTML = "Cartoon Style"
-
-}
-
-
-function selfieToy(){
-
-if(!currentModel){
-alert("Generate a 3D model first")
-return
-}
-
-currentModel.scale.x *= 1.15
-currentModel.scale.z *= 1.15
-currentModel.scale.y *= 0.85
-
-currentModel.traverse(child => {
-
-if(child.isMesh){
-
-child.material = new THREE.MeshStandardMaterial({
-color:0xffcc99,
-roughness:0.35,
-metalness:0.15
-})
-
-}
-
-})
-
-if(toyBase) scene.remove(toyBase)
-
-const geometry = new THREE.CylinderGeometry(0.9,0.9,0.18,32)
-
-const material = new THREE.MeshStandardMaterial({
-color:0x111111,
-roughness:0.6
-})
-
-toyBase = new THREE.Mesh(geometry,material)
-
-toyBase.position.y = -0.9
-
-scene.add(toyBase)
-
-status.innerHTML = "Selfie Toy Created"
-
-}
-function generatePhotoAI(){
-
-status.innerHTML = "AI Photo generator coming soon..."
-
-}
-let mode="3d"
-
-function switchMode(newMode){
-
-mode=newMode
-
-status.innerHTML="Mode: "+newMode
-
-}
 </script>
 
 </body>
