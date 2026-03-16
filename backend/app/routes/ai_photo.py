@@ -8,17 +8,21 @@ client = replicate.Client(api_token=os.getenv("REPLICATE_API_TOKEN"))
 
 @router.post("/api/ai-photo")
 async def ai_photo(
-    prompt: str = Form(...),
+    prompt: str = Form(""),
     style: str = Form(""),
     image: UploadFile = File(None)
 ):
 
     try:
 
+        # DEFAULT PROMPT nëse bosh
+        if not prompt:
+            prompt = "high quality product photo"
+
         final_prompt = prompt
 
         if style:
-            final_prompt = f"{prompt}, {style} style"
+            final_prompt = f"{final_prompt}, {style} style"
 
         output = client.run(
             "black-forest-labs/flux-schnell",
@@ -26,6 +30,9 @@ async def ai_photo(
                 "prompt": final_prompt + ", ultra detailed, studio lighting, 4k"
             }
         )
+
+        if not output:
+            return {"error": "AI returned empty result"}
 
         image_url = output[0]
 

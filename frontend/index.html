@@ -773,19 +773,25 @@ form.append("prompt",prompt)
 form.append("style",style)
 
 if(fileInput.files.length > 0){
-
 form.append("image",fileInput.files[0])
-
 }
 
 try{
 
 const res = await fetch(API_BASE+"/api/ai-photo",{
-
 method:"POST",
 body:form
-
 })
+
+if(!res.ok){
+
+const txt = await res.text()
+console.log(txt)
+
+alert("AI request failed")
+return
+
+}
 
 const data = await res.json()
 
@@ -811,12 +817,11 @@ viewer.style.display="block"
 }catch(err){
 
 console.log(err)
-alert("AI request failed")
+alert("AI request crashed")
 
 }
 
 }
-
 const aiDrop = document.getElementById("aiDrop")
 const aiInput = document.getElementById("aiInput")
 
