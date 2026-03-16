@@ -720,6 +720,97 @@ const url = URL.createObjectURL(file)
 document.getElementById("svgUploadPreview").src = url
 
 })
+
+async function convertToSVG(){
+
+const viewer = document.getElementById("svgViewer")
+
+if(!viewer.src){
+
+alert("Generate or upload image first")
+return
+
+}
+
+const res = await fetch(API_BASE+"/api/svg-from-image",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+image_url: viewer.src
+})
+
+})
+
+const data = await res.json()
+
+viewer.src = API_BASE + data.svg_url
+viewer.style.display="block"
+
+}
+async function convertTo3D(){
+async function convertTo3DPro(){
+
+const viewer = document.getElementById("svgViewer")
+
+if(!viewer.src){
+
+alert("Generate image first")
+return
+
+}
+
+const res = await fetch(API_BASE+"/api/image-to-3d-pro",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+image_url: viewer.src
+})
+
+})
+
+const data = await res.json()
+
+loadModel(API_BASE + data.model_url)
+
+}
+const viewer = document.getElementById("svgViewer")
+
+if(!viewer.src){
+
+alert("Generate image first")
+return
+
+}
+
+const res = await fetch(API_BASE+"/api/image-to-3d",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+image_url: viewer.src
+})
+
+})
+
+const data = await res.json()
+
+loadModel(API_BASE + data.model_url)
+
+}
 document.getElementById("bgSelector")
 .addEventListener("change",function(){
 
