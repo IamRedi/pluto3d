@@ -756,32 +756,67 @@ viewer.style.display="block"
 
 async function generateAIPhoto(){
 
-const prompt = document.getElementById("aiPrompt").value
+const prompt = document.getElementById("aiPrompt").value.trim()
 const style = document.getElementById("aiStyle").value
-const file = document.getElementById("aiInput").files[0]
+const fileInput = document.getElementById("aiInput")
 
-let form = new FormData()
+if(!prompt && fileInput.files.length === 0){
+
+alert("Write prompt or upload image")
+return
+
+}
+
+const form = new FormData()
 
 form.append("prompt",prompt)
 form.append("style",style)
 
-if(file){
-form.append("image",file)
+if(fileInput.files.length > 0){
+
+form.append("image",fileInput.files[0])
+
 }
 
+try{
+
 const res = await fetch(API_BASE+"/api/ai-photo",{
+
 method:"POST",
 body:form
+
 })
 
 const data = await res.json()
+
+if(data.error){
+
+alert(data.error)
+return
+
+}
+
+if(!data.image_url){
+
+alert("AI returned empty image")
+return
+
+}
 
 const viewer = document.getElementById("svgViewer")
 
 viewer.src = data.image_url
 viewer.style.display="block"
 
+}catch(err){
+
+console.log(err)
+alert("AI request failed")
+
 }
+
+}
+
 const aiDrop = document.getElementById("aiDrop")
 const aiInput = document.getElementById("aiInput")
 
