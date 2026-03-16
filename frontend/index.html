@@ -752,8 +752,9 @@ viewer.src = API_BASE + data.svg_url
 viewer.style.display="block"
 
 }
-async function convertTo3D(){
-    async function generateAIPhoto(){
+/* ---------------- AI PHOTO ---------------- */
+
+async function generateAIPhoto(){
 
 const prompt = document.getElementById("aiPrompt").value
 const style = document.getElementById("aiStyle").value
@@ -769,10 +770,8 @@ form.append("image",file)
 }
 
 const res = await fetch(API_BASE+"/api/ai-photo",{
-
 method:"POST",
 body:form
-
 })
 
 const data = await res.json()
@@ -783,7 +782,7 @@ viewer.src = data.image_url
 viewer.style.display="block"
 
 }
-async function convertTo3DPro(){
+async function convertTo3D(){
 
 const viewer = document.getElementById("svgViewer")
 
@@ -794,7 +793,7 @@ return
 
 }
 
-const res = await fetch(API_BASE+"/api/image-to-3d-pro",{
+const res = await fetch(API_BASE+"/api/image-to-3d",{
 
 method:"POST",
 
@@ -813,6 +812,8 @@ const data = await res.json()
 loadModel(API_BASE + data.model_url)
 
 }
+async function convertTo3DPro(){
+
 const viewer = document.getElementById("svgViewer")
 
 if(!viewer.src){
@@ -822,7 +823,7 @@ return
 
 }
 
-const res = await fetch(API_BASE+"/api/image-to-3d",{
+const res = await fetch(API_BASE+"/api/image-to-3d-pro",{
 
 method:"POST",
 
