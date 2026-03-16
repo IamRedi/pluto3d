@@ -4,15 +4,12 @@ import replicate
 
 router = APIRouter()
 
-# create replicate client with token from Railway env
-replicate_client = replicate.Client(
-    api_token=os.getenv("REPLICATE_API_TOKEN")
-)
+client = replicate.Client(api_token=os.getenv("REPLICATE_API_TOKEN"))
 
 @router.post("/api/ai-photo")
 async def ai_photo(
     prompt: str = Form(...),
-    style: str = Form(...),
+    style: str = Form(""),
     image: UploadFile = File(None)
 ):
 
@@ -21,9 +18,9 @@ async def ai_photo(
         final_prompt = prompt
 
         if style:
-            final_prompt = f"{prompt}, style {style}"
+            final_prompt = f"{prompt}, {style} style"
 
-        output = replicate_client.run(
+        output = client.run(
             "black-forest-labs/flux-schnell",
             input={
                 "prompt": final_prompt + ", ultra detailed, studio lighting, 4k"

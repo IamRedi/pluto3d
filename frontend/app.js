@@ -75,29 +75,27 @@ async function generateAIPhoto(){
 
 const prompt = document.getElementById("aiPrompt").value
 const style = document.getElementById("aiStyle").value
-const file = document.getElementById("aiInput").files[0]
+const fileInput = document.getElementById("aiInput")
 
-let form = new FormData()
+const formData = new FormData()
 
-form.append("prompt",prompt)
-form.append("style",style)
+formData.append("prompt", prompt)
+formData.append("style", style)
 
-if(file){
-form.append("image",file)
+if(fileInput.files.length > 0){
+formData.append("image", fileInput.files[0])
 }
 
-const res = await fetch(API_BASE+"/api/ai-photo",{
+const response = await fetch(API_BASE + "/api/ai-photo",{
 method:"POST",
-body:form
+body:formData
 })
 
-const data = await res.json()
-
-/* ERROR CHECK */
+const data = await response.json()
 
 if(data.error){
 
-alert("AI error: "+data.error)
+alert(data.error)
 return
 
 }
@@ -112,7 +110,7 @@ return
 const viewer = document.getElementById("svgViewer")
 
 viewer.src = data.image_url
-viewer.style.display="block"
+viewer.style.display = "block"
 
 }
 // ---------------- BUTTON EVENTS ----------------
