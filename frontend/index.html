@@ -914,21 +914,31 @@ document.getElementById("bgSelector")
 document.querySelector(".viewer").style.background=this.value
 
 })
-function downloadAI(){
+async function downloadAI(){
 
 const img = document.getElementById("svgViewer")
 
 if(!img.src){
-alert("No image to download")
+alert("No image")
 return
 }
 
+const response = await fetch(img.src)
+
+const blob = await response.blob()
+
+const url = window.URL.createObjectURL(blob)
+
 const a = document.createElement("a")
 
-a.href = img.src
+a.href = url
 a.download = "ai_image.png"
 
+document.body.appendChild(a)
+
 a.click()
+
+a.remove()
 
 }
 </script>
