@@ -15,14 +15,13 @@ async def ai_photo(
 
     try:
 
-        # DEFAULT PROMPT nëse bosh
         if not prompt:
             prompt = "high quality product photo"
 
         final_prompt = prompt
 
         if style:
-            final_prompt = f"{final_prompt}, {style} style"
+            final_prompt = f"{prompt}, {style} style"
 
         output = client.run(
             "black-forest-labs/flux-schnell",
@@ -31,10 +30,14 @@ async def ai_photo(
             }
         )
 
-        if not output:
-            return {"error": "AI returned empty result"}
+        # Flux ndonjëherë kthen generator
+        image_url = None
 
-        image_url = output[0]
+        if isinstance(output, list):
+            image_url = output[0]
+
+        else:
+            image_url = str(output)
 
         return {
             "image_url": image_url
