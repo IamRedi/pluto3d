@@ -30,13 +30,12 @@ async def ai_photo(
             }
         )
 
-        # Flux output mund të jetë generator
+        # Flux kthen iterator → marrim elementin e parë
         image_url = None
 
-        try:
-            image_url = next(iter(output))
-        except:
-            image_url = str(output)
+        for item in output:
+            image_url = str(item)
+            break
 
         return {"image_url": image_url}
 
