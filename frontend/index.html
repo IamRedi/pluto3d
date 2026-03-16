@@ -782,6 +782,27 @@ viewer.src = data.image_url
 viewer.style.display="block"
 
 }
+const aiDrop = document.getElementById("aiDrop")
+const aiInput = document.getElementById("aiInput")
+
+aiDrop.addEventListener("click",()=>{
+aiInput.click()
+})
+
+aiInput.addEventListener("change",()=>{
+
+const file = aiInput.files[0]
+
+if(!file) return
+
+const url = URL.createObjectURL(file)
+
+const preview = document.getElementById("aiPreview")
+
+preview.src = url
+preview.style.display="block"
+
+})
 async function convertTo3D(){
 
 const viewer = document.getElementById("svgViewer")
