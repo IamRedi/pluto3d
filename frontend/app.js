@@ -41,7 +41,7 @@ alert("Upload image first")
 return
 }
 
-const res = await fetch(API + "/generate",{
+const res = await fetch(API + "/svg",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
