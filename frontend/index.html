@@ -298,7 +298,9 @@ Generate Free
 <button class="btn-premium" onclick="generate3D()">
 Generate Premium
 </button>
-
+<button id="downloadAI" class="btn">
+Download Image
+</button>
 <div class="preview" id="preview"></div>
 
 <div class="progress">
@@ -401,7 +403,7 @@ style="width:100%;height:70px;border-radius:10px;padding:10px;"></textarea>
 <br><br>
 
 <button onclick="generateAIPhoto()">Generate AI Image</button>
-
+<button onclick="downloadAI()">Download Image</button>
 <br><br>
 
 <button onclick="convertToSVG()">Convert to SVG</button>
@@ -458,17 +460,10 @@ style="width:100%;height:70px;border-radius:10px;padding:10px;"></textarea>
 style="
 width:70%;
 height:auto;
-
 max-width:700px;
-
 object-fit:contain;
-
 display:none;
-
-filter:
-invert(1)
-brightness(2)
-drop-shadow(0 0 20px #38bdf8);
+filter:none;
 ">
 </div>
 
@@ -909,6 +904,23 @@ document.getElementById("bgSelector")
 document.querySelector(".viewer").style.background=this.value
 
 })
+function downloadAI(){
+
+const img = document.getElementById("svgViewer")
+
+if(!img.src){
+alert("No image to download")
+return
+}
+
+const a = document.createElement("a")
+
+a.href = img.src
+a.download = "ai_image.png"
+
+a.click()
+
+}
 </script>
 
 </body>
