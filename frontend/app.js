@@ -69,7 +69,52 @@ function showSVG(svgUrl) {
     `;
 }
 
+// ----------------AIPhoto ---------------
 
+async function generateAIPhoto(){
+
+const prompt = document.getElementById("aiPrompt").value
+const style = document.getElementById("aiStyle").value
+const file = document.getElementById("aiInput").files[0]
+
+let form = new FormData()
+
+form.append("prompt",prompt)
+form.append("style",style)
+
+if(file){
+form.append("image",file)
+}
+
+const res = await fetch(API_BASE+"/api/ai-photo",{
+method:"POST",
+body:form
+})
+
+const data = await res.json()
+
+/* ERROR CHECK */
+
+if(data.error){
+
+alert("AI error: "+data.error)
+return
+
+}
+
+if(!data.image_url){
+
+alert("AI did not return image")
+return
+
+}
+
+const viewer = document.getElementById("svgViewer")
+
+viewer.src = data.image_url
+viewer.style.display="block"
+
+}
 // ---------------- BUTTON EVENTS ----------------
 
 document.querySelector("#uploadBtn").onclick = uploadImage;
