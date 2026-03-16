@@ -30,21 +30,18 @@ async def ai_photo(
             }
         )
 
-        # Flux ndonjëherë kthen generator
+        # Flux output mund të jetë generator
         image_url = None
 
-        if isinstance(output, list):
-            image_url = output[0]
-
-        else:
+        try:
+            image_url = next(iter(output))
+        except:
             image_url = str(output)
 
-        return {
-            "image_url": image_url
-        }
+        return {"image_url": image_url}
 
     except Exception as e:
 
-        return {
-            "error": str(e)
-        }
+        print("AI ERROR:", e)
+
+        return {"error": str(e)}
