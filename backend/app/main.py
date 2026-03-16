@@ -59,3 +59,6 @@ def root():
         "app": "Pluto3D Studio",
         "status": "running"
     }
+
+from app.routes.ai_photo import router as ai_router
+app.include_router(ai_router)
