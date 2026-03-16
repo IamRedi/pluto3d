@@ -98,7 +98,8 @@ border-right:1px solid rgba(56,189,248,0.2);
 /* viewer */
 
 .viewer{
-
+background:
+radial-gradient(circle at center,#020617,#000);
 position:relative;
 
 display:flex;
@@ -682,9 +683,18 @@ body:form
 
 const data = await res.json()
 
-const svgUrl = API_BASE + data.svg_url
+if(data.error){
+alert(data.error)
+return
+}
 
-document.getElementById("svgPreview").innerHTML="SVG generated"
+if(!data.svg_url){
+alert("SVG generation failed")
+return
+}
+
+viewer.src = API_BASE + data.svg_url
+viewer.style.display="block"
 
 /* SHOW SVG IN VIEWER */
 
