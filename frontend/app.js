@@ -54,8 +54,7 @@ image: uploadedImage
 const data = await res.json()
 
 console.log("Generated:", data)
-
-showSVG(data.svg)
+showSVG(data.svg_url)
 
 }
 
