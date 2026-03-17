@@ -700,13 +700,14 @@ const svgViewer = document.getElementById("svgViewer")
 const resSvg = await fetch(svgUrl)
 const svgText = await resSvg.text()
 
-const viewer = document.getElementById("viewer")
+const viewerContainer = document.getElementById("viewer")
 
-viewer.innerHTML += svgText
-svgViewer.style.display = "block"
+// pastro viewer (mos mbaj modele 3D ose svg të vjetër)
+viewerContainer.innerHTML = `
+<div class="viewer-title">AI Viewer</div>
+`
 
-// vetëm për SVG → efekt white/neon
-svgViewer.style.filter = "invert(1) brightness(2)"
+viewerContainer.innerHTML += svgText
 
 /* DOWNLOAD */
 
@@ -714,14 +715,8 @@ const download = document.getElementById("downloadSVG")
 
 download.onclick = async () => {
 
-const res = await fetch(svgUrl)
-
-const contentType = res.headers.get("content-type")
-
-if(!contentType.includes("svg")){
-alert("Backend is not returning SVG!")
-return
-}
+  const res = await fetch(svgUrl)
+  const blob = await res.blob()
 
   const url = window.URL.createObjectURL(blob)
 
@@ -773,17 +768,11 @@ return
 const svgUrl = API_BASE + data.svg_url
 
 // 🔥 SHOW SVG (SI generateSVG)
-const resSvg = await fetch(svgUrl)
-const svgText = await resSvg.text()
+viewer.src = svgUrl
+viewer.style.display = "block"
 
-const viewerContainer = document.getElementById("viewer")
-
-// pastro viewer (mos mbaj modele 3D ose svg të vjetër)
-viewerContainer.innerHTML = `
-<div class="viewer-title">AI Viewer</div>
-`
-
-viewerContainer.innerHTML += svgText
+// vetëm për SVG → efekt white
+viewer.style.filter = "invert(1) brightness(2)"
 
 // 🔥 DOWNLOAD FIX
 const download = document.getElementById("downloadSVG")
@@ -793,8 +782,7 @@ download.onclick = async () => {
   const res = await fetch(svgUrl)
   const blob = await res.blob()
 
-  const blob = await res.blob()
-const url = window.URL.createObjectURL(blob)
+  const url = window.URL.createObjectURL(blob)
 
   const a = document.createElement("a")
   a.href = url
