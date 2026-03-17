@@ -739,17 +739,7 @@ download.style.display = "block"
 
 }
 
-document.getElementById("svgInput").addEventListener("change", function(){
 
-const file = this.files[0]
-
-if(!file) return
-
-const url = URL.createObjectURL(file)
-
-document.getElementById("svgUploadPreview").src = url
-
-})
 
 async function convertToSVG(){
 
@@ -1094,7 +1084,13 @@ if(!file) return
 
 const url = URL.createObjectURL(file)
 
-document.getElementById("svgUploadPreview").src = url
+// preview brenda dropzone
+const img = document.getElementById("dropPreviewSVG")
+const text = document.getElementById("dropTextSVG")
+
+img.src = url
+img.style.display = "block"
+text.style.display = "none"
 
 }
 </script>
