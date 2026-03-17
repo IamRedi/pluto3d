@@ -746,10 +746,8 @@ async function convertToSVG(){
 const viewer = document.getElementById("svgViewer")
 
 if(!viewer.src){
-
 alert("Generate or upload image first")
 return
-
 }
 
 const res = await fetch(API_BASE+"/api/svg-from-image",{
@@ -768,8 +766,40 @@ image_url: viewer.src
 
 const data = await res.json()
 
-viewer.src = API_BASE + data.svg_url
-viewer.style.display="block"
+if(!data.svg_url){
+alert("SVG conversion failed")
+return
+}
+
+const svgUrl = API_BASE + data.svg_url
+
+// 🔥 SHOW SVG (SI generateSVG)
+viewer.src = svgUrl
+viewer.style.display = "block"
+
+// vetëm për SVG → efekt white
+viewer.style.filter = "invert(1) brightness(2)"
+
+// 🔥 DOWNLOAD FIX
+const download = document.getElementById("downloadSVG")
+
+download.onclick = async () => {
+
+  const res = await fetch(svgUrl)
+  const blob = await res.blob()
+
+  const url = window.URL.createObjectURL(blob)
+
+  const a = document.createElement("a")
+  a.href = url
+  a.download = "vector.svg"
+
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+
+download.style.display = "block"
 
 }
 /* ---------------- AI PHOTO ---------------- */
