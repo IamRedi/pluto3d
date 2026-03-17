@@ -53,6 +53,8 @@ async def svg_from_image(data: ImageURL):
 
     svg_file = generate_blueprint(str(img_path))
 
+    filename = Path(svg_file).name
+
     return {
-        "svg_url": f"/outputs/svg/{svg_file}"
+    "svg_url": f"/outputs/svg/{filename}"
     }
