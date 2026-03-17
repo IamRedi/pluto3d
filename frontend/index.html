@@ -318,7 +318,13 @@ Download 3D Model
 
 <div class="section-title">SVG Generator</div>
 
-<input type="file" id="svgInput">
+<div class="dropzone" id="dropSVG">
+
+<p>Drag photo here or click to upload</p>
+
+<input type="file" id="svgInput" style="display:none">
+
+</div>
 
 <img id="svgUploadPreview" style="width:120px;margin-top:10px;border-radius:8px;">
 
@@ -967,6 +973,27 @@ if(!img.src){
 alert("No image")
 return
 }
+
+const response = await fetch(img.src)
+
+const blob = await response.blob()
+
+const url = window.URL.createObjectURL(blob)
+
+const a = document.createElement("a")
+
+a.href = url
+a.download = "ai_image.png"
+
+document.body.appendChild(a)
+
+a.click()
+
+a.remove()
+
+}
+/* ---------------- 3D DROPZONE ---------------- */
+
 const drop3d = document.getElementById("drop3d")
 
 drop3d.addEventListener("click",()=>{
@@ -986,7 +1013,6 @@ drop3d.addEventListener("drop",(e)=>{
 e.preventDefault()
 
 input.files = e.dataTransfer.files
-
 handleFiles(input.files)
 })
 
@@ -1002,15 +1028,13 @@ for(let file of files){
 
 const img=document.createElement("img")
 img.src=URL.createObjectURL(file)
-
 preview.appendChild(img)
 
 }
 
-// 🔥 AUTO UPLOAD
 autoUpload(files)
-
 }
+
 async function autoUpload(files){
 
 currentJobId = crypto.randomUUID()
@@ -1018,7 +1042,6 @@ currentJobId = crypto.randomUUID()
 for(let file of files){
 
 let form=new FormData()
-
 form.append("file",file)
 form.append("job_id",currentJobId)
 
@@ -1032,22 +1055,42 @@ body:form
 status.innerHTML="Uploaded & ready 🚀"
 
 }
-const response = await fetch(img.src)
+/* ---------------- SVG DROPZONE ---------------- */
 
-const blob = await response.blob()
+const dropSVG = document.getElementById("dropSVG")
+const svgInput = document.getElementById("svgInput")
 
-const url = window.URL.createObjectURL(blob)
+dropSVG.addEventListener("click",()=>{
+svgInput.click()
+})
 
-const a = document.createElement("a")
+dropSVG.addEventListener("dragover",(e)=>{
+e.preventDefault()
+dropSVG.style.borderColor="#38bdf8"
+})
 
-a.href = url
-a.download = "ai_image.png"
+dropSVG.addEventListener("dragleave",()=>{
+dropSVG.style.borderColor="#0ea5e9"
+})
 
-document.body.appendChild(a)
+dropSVG.addEventListener("drop",(e)=>{
+e.preventDefault()
 
-a.click()
+svgInput.files = e.dataTransfer.files
+handleSVG(svgInput.files[0])
+})
 
-a.remove()
+svgInput.addEventListener("change",()=>{
+handleSVG(svgInput.files[0])
+})
+
+function handleSVG(file){
+
+if(!file) return
+
+const url = URL.createObjectURL(file)
+
+document.getElementById("svgUploadPreview").src = url
 
 }
 </script>
