@@ -305,7 +305,7 @@ Generate Premium
 <button id="downloadAI" class="btn">
 Download Image
 </button>
-<div class="preview" id="preview"></div>
+
 
 <div class="progress">
 <div class="progress-bar" id="progressBar"></div>
@@ -495,19 +495,6 @@ const progressBar = document.getElementById("progressBar")
 
 let currentJobId=null
 
-input.addEventListener("change",()=>{
-
-preview.innerHTML=""
-
-for(let file of input.files){
-
-const img=document.createElement("img")
-img.src=URL.createObjectURL(file)
-preview.appendChild(img)
-
-}
-
-})
 
 async function upload(){
 
@@ -1016,17 +1003,24 @@ handleFiles(input.files)
 
 function handleFiles(files){
 
-preview.innerHTML=""
+const file = files[0]
 
-for(let file of files){
+if(file){
 
-const img=document.createElement("img")
-img.src=URL.createObjectURL(file)
-preview.appendChild(img)
+const url = URL.createObjectURL(file)
+
+// preview brenda dropzone
+const img = document.getElementById("dropPreview3d")
+const text = document.getElementById("dropText3d")
+
+img.src = url
+img.style.display = "block"
+text.style.display = "none"
 
 }
 
 autoUpload(files)
+
 }
 
 async function autoUpload(files){
