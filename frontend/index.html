@@ -539,8 +539,8 @@ headers:{
 "Content-Type":"application/json"
 },
 
-body:JSON.stringify({
-job_id:currentJobId
+body: JSON.stringify({
+  image_url: viewer.src.split("?")[0]
 })
 
 })
@@ -738,18 +738,45 @@ alert("Generate or upload image first")
 return
 }
 
-const res = await fetch(API_BASE+"/api/svg-from-image",{
+// 🔥 nëse është blob → duhet upload
+if(viewer.src.startsWith("blob:")){
 
+const response = await fetch(viewer.src)
+const blob = await response.blob()
+
+const form = new FormData()
+form.append("file", blob, "image.png")
+
+const uploadRes = await fetch(API_BASE + "/api/svg",{
 method:"POST",
+body:form
+})
 
+const data = await uploadRes.json()
+
+if(!data.svg_url){
+alert("SVG failed")
+return
+}
+
+const svgUrl = API_BASE + data.svg_url
+
+viewer.src = svgUrl
+viewer.style.display="block"
+viewer.style.filter = "invert(1) brightness(2)"
+
+return
+}
+
+// 🔥 normal case
+const res = await fetch(API_BASE+"/api/svg-from-image",{
+method:"POST",
 headers:{
 "Content-Type":"application/json"
 },
-
 body:JSON.stringify({
-image_url: viewer.src
+image_url: viewer.src.split("?")[0]
 })
-
 })
 
 const data = await res.json()
@@ -761,34 +788,9 @@ return
 
 const svgUrl = API_BASE + data.svg_url
 
-// 🔥 SHOW SVG (SI generateSVG)
 viewer.src = svgUrl
-viewer.style.display = "block"
-
-// vetëm për SVG → efekt white
+viewer.style.display="block"
 viewer.style.filter = "invert(1) brightness(2)"
-
-// 🔥 DOWNLOAD FIX
-const download = document.getElementById("downloadSVG")
-
-download.onclick = async () => {
-
-  const res = await fetch(svgUrl)
-  const blob = await res.blob()
-
-  const url = window.URL.createObjectURL(blob)
-
-  const a = document.createElement("a")
-  a.href = url
-  a.download = "vector.svg"
-
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-}
-
-download.style.display = "block"
-
 }
 /* ---------------- AI PHOTO ---------------- */
 
