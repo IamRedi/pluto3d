@@ -3,15 +3,25 @@ import svgwrite
 import uuid
 import os
 
-# from app.services.object_detector import detect_main_object
 from app.services.crop_object import crop_object
 
-OUTPUT_DIR = "outputs/svg"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+OUTPUT_DIR = os.path.abspath(
+    os.path.join(BASE_DIR, "../../outputs/svg")
+)
+
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 def generate_blueprint(image_path):
 
+    print("Saving SVG to:", OUTPUT_DIR)
+
     img = cv2.imread(image_path)
+
+    if img is None:
+        raise Exception(f"Image not found: {image_path}")
 
     # ---------------- OBJECT DETECTION ----------------
 
@@ -27,17 +37,9 @@ def generate_blueprint(image_path):
     # ---------------- EDGE PREPROCESS ----------------
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # redukton noise
     gray = cv2.bilateralFilter(gray, 9, 75, 75)
-
-    # blur i lehtë
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
-
-    # edges më të qëndrueshme
     edges = cv2.Canny(blur, 40, 120)
-
-    # ---------------- CONTOURS ----------------
 
     contours, _ = cv2.findContours(
         edges,
@@ -54,13 +56,9 @@ def generate_blueprint(image_path):
 
     for cnt in contours:
 
-        area = cv2.contourArea(cnt)
-
-        # filtro noise shumë të vogël
-        if area < 5:
+        if cv2.contourArea(cnt) < 5:
             continue
 
-        # smooth contour
         epsilon = 0.002 * cv2.arcLength(cnt, True)
         approx = cv2.approxPolyDP(cnt, epsilon, True)
 
