@@ -773,11 +773,17 @@ return
 const svgUrl = API_BASE + data.svg_url
 
 // 🔥 SHOW SVG (SI generateSVG)
-viewer.src = svgUrl
-viewer.style.display = "block"
+const resSvg = await fetch(svgUrl)
+const svgText = await resSvg.text()
 
-// vetëm për SVG → efekt white
-viewer.style.filter = "invert(1) brightness(2)"
+const viewerContainer = document.getElementById("viewer")
+
+// pastro viewer (mos mbaj modele 3D ose svg të vjetër)
+viewerContainer.innerHTML = `
+<div class="viewer-title">AI Viewer</div>
+`
+
+viewerContainer.innerHTML += svgText
 
 // 🔥 DOWNLOAD FIX
 const download = document.getElementById("downloadSVG")
@@ -787,7 +793,8 @@ download.onclick = async () => {
   const res = await fetch(svgUrl)
   const blob = await res.blob()
 
-  const url = window.URL.createObjectURL(blob)
+  const blob = await res.blob()
+const url = window.URL.createObjectURL(blob)
 
   const a = document.createElement("a")
   a.href = url
