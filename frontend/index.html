@@ -697,17 +697,11 @@ const svgUrl = API_BASE + data.svg_url
 
 const svgViewer = document.getElementById("svgViewer")
 
-const resSvg = await fetch(svgUrl)
-const svgText = await resSvg.text()
+svgViewer.src = svgUrl
+svgViewer.style.display = "block"
 
-const viewerContainer = document.getElementById("viewer")
-
-// pastro viewer (mos mbaj modele 3D ose svg të vjetër)
-viewerContainer.innerHTML = `
-<div class="viewer-title">AI Viewer</div>
-`
-
-viewerContainer.innerHTML += svgText
+// vetëm për SVG → efekt white/neon
+svgViewer.style.filter = "invert(1) brightness(2)"
 
 /* DOWNLOAD */
 
