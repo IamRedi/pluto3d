@@ -284,13 +284,13 @@ color:#7dd3fc;
 
 <div class="section-title">3D Generator</div>
 
-<div class="dropzone">
+<div class="dropzone" id="drop3d">
 
-<input type="file" id="fileInput" multiple>
+<p>Drag photo here or click to upload</p>
+
+<input type="file" id="fileInput" multiple style="display:none">
 
 </div>
-
-<button onclick="upload()">Upload Photos</button>
 
 <button onclick="generateFree3D()">
 Generate Free
@@ -967,7 +967,71 @@ if(!img.src){
 alert("No image")
 return
 }
+const drop3d = document.getElementById("drop3d")
 
+drop3d.addEventListener("click",()=>{
+input.click()
+})
+
+drop3d.addEventListener("dragover",(e)=>{
+e.preventDefault()
+drop3d.style.borderColor="#38bdf8"
+})
+
+drop3d.addEventListener("dragleave",()=>{
+drop3d.style.borderColor="#0ea5e9"
+})
+
+drop3d.addEventListener("drop",(e)=>{
+e.preventDefault()
+
+input.files = e.dataTransfer.files
+
+handleFiles(input.files)
+})
+
+input.addEventListener("change",()=>{
+handleFiles(input.files)
+})
+
+function handleFiles(files){
+
+preview.innerHTML=""
+
+for(let file of files){
+
+const img=document.createElement("img")
+img.src=URL.createObjectURL(file)
+
+preview.appendChild(img)
+
+}
+
+// 🔥 AUTO UPLOAD
+autoUpload(files)
+
+}
+async function autoUpload(files){
+
+currentJobId = crypto.randomUUID()
+
+for(let file of files){
+
+let form=new FormData()
+
+form.append("file",file)
+form.append("job_id",currentJobId)
+
+await fetch(API_BASE+"/api/upload",{
+method:"POST",
+body:form
+})
+
+}
+
+status.innerHTML="Uploaded & ready 🚀"
+
+}
 const response = await fetch(img.src)
 
 const blob = await response.blob()
