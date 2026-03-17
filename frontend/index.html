@@ -693,15 +693,14 @@ alert("SVG generation failed")
 return
 }
 
-viewer.src = API_BASE + data.svg_url
-viewer.style.display="block"
+const svgUrl = API_BASE + data.svg_url
 
-/* SHOW SVG IN VIEWER */
+/* SHOW SVG */
 
 const svgViewer = document.getElementById("svgViewer")
 
 svgViewer.src = svgUrl
-svgViewer.style.display="block"
+svgViewer.style.display = "block"
 
 /* DOWNLOAD */
 
@@ -710,7 +709,7 @@ const download = document.getElementById("downloadSVG")
 download.href = svgUrl
 download.download = "vector.svg"
 
-download.style.display="block"
+download.style.display = "block"
 
 }
 
