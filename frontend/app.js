@@ -75,42 +75,29 @@ preview.innerHTML = `
 
 // ---------------- AI PHOTO ----------------
 
-async function generateAIPhoto(){
+async function generateSVG(){
 
-const prompt = document.getElementById("aiPrompt").value
-const style = document.getElementById("aiStyle").value
-const fileInput = document.getElementById("aiInput")
+const fileInput = document.querySelector("#fileInput")
+const file = fileInput.files[0]
 
-const formData = new FormData()
-
-formData.append("prompt",prompt)
-formData.append("style",style)
-
-if(fileInput.files.length > 0){
-formData.append("image",fileInput.files[0])
+if(!file){
+alert("Select image first")
+return
 }
 
-const response = await fetch(API + "/ai-photo",{
+const formData = new FormData()
+formData.append("file", file)
+
+const res = await fetch(API + "/svg",{
 method:"POST",
 body:formData
 })
 
-const data = await response.json()
+const data = await res.json()
 
-if(data.error){
-alert(data.error)
-return
-}
+console.log("SVG Generated:", data)
 
-if(!data.image_url){
-alert("AI did not return image")
-return
-}
-
-const viewer = document.getElementById("svgViewer")
-
-viewer.src = data.image_url
-viewer.style.display = "block"
+showSVG(data.svg_url)
 
 }
 
