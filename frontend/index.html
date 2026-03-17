@@ -5,252 +5,187 @@
 <title>Pluto3D Studio</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
+:root{
+  --bg:#020617;
+  --panel:rgba(15,23,42,0.75);
+  --accent:#38bdf8;
+  --accent2:#0ea5e9;
+}
 
 body{
-margin:0;
-font-family:Inter;
-background:#020617;
-color:white;
-overflow:hidden;
+  margin:0;
+  font-family:Inter;
+  color:white;
+  background:var(--bg);
+  overflow:hidden;
 }
 
-/* layout */
-
+/* LAYOUT */
 .workspace{
-
-display:grid;
-grid-template-columns:90px 420px 1fr;
-height:100vh;
-
+  display:grid;
+  grid-template-columns:90px 420px 1fr;
+  height:100vh;
+  transition:all .3s ease;
 }
 
-/* sidebar */
-
+/* SIDEBAR GLASS */
 .sidebar{
-
-background:#020617;
-border-right:1px solid rgba(56,189,248,0.2);
-
-display:flex;
-flex-direction:column;
-align-items:center;
-
-padding-top:25px;
-gap:20px;
-
+  background:rgba(2,6,23,0.85);
+  border-right:1px solid rgba(56,189,248,0.25);
+  backdrop-filter: blur(12px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:25px;
+  gap:20px;
 }
 
 .logo{
-
-font-family:Orbitron;
-color:#38bdf8;
-margin-bottom:20px;
-
+  font-family:Orbitron;
+  color:var(--accent);
+  margin-bottom:20px;
+  text-shadow:0 0 10px var(--accent);
 }
 
 .sidebtn{
-
-width:60px;
-height:60px;
-
-border-radius:12px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-cursor:pointer;
-
-background:rgba(14,165,233,0.1);
-border:1px solid rgba(56,189,248,0.4);
-
-transition:0.2s;
-
+  width:60px;
+  height:60px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  background:rgba(14,165,233,0.12);
+  border:1px solid rgba(56,189,248,0.35);
+  box-shadow:0 0 12px rgba(56,189,248,0.2) inset;
+  transition:all .25s ease;
 }
-
 .sidebtn:hover{
-
-background:#0ea5e9;
-
+  background:var(--accent2);
+  box-shadow:0 0 20px var(--accent);
 }
 
-/* panel */
-
+/* PANEL GLASS */
 .panel{
-
-padding:30px;
-overflow:auto;
-
-background:
-
-linear-gradient(
-180deg,
-rgba(15,23,42,0.8),
-rgba(2,6,23,0.95)
-);
-
-border-right:1px solid rgba(56,189,248,0.2);
-
+  padding:30px;
+  overflow:auto;
+  background:var(--panel);
+  backdrop-filter: blur(16px);
+  border-right:1px solid rgba(56,189,248,0.25);
+  box-shadow:0 0 40px rgba(56,189,248,0.15) inset;
 }
 
-/* viewer */
-
+/* VIEWER */
 .viewer{
-background:
-radial-gradient(circle at center,#020617,#000);
-position:relative;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-overflow:hidden;
-
-background:#000;
-
+  background: radial-gradient(circle at 30% 30%, #0ea5e933, transparent 60%),
+              radial-gradient(circle at 80% 70%, #38bdf833, transparent 60%),
+              #000;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
 }
-
 .viewer-title{
-
-position:absolute;
-top:20px;
-left:20px;
-
-font-family:Orbitron;
-color:#38bdf8;
-
+  position:absolute;
+  top:20px;
+  left:20px;
+  font-family:Orbitron;
+  color:var(--accent);
+  text-shadow:0 0 10px var(--accent);
 }
 
 #viewer{
-
-width:100%;
-height:100%;
-
-box-shadow:
-0 0 60px rgba(14,165,233,0.4);
-
+  width:100%;
+  height:100%;
+  box-shadow:0 0 60px rgba(14,165,233,0.35);
 }
 
-/* panels */
-
-.toolpanel{
-
-display:block;
-
-}
-
-.hidden{
-
-display:none;
-
-}
-
-/* title */
-
+/* ELEMENTË GLASS */
 .section-title{
-
-font-family:Orbitron;
-font-size:22px;
-color:#38bdf8;
-margin-bottom:20px;
-
+  font-family:Orbitron;
+  font-size:22px;
+  color:var(--accent);
+  margin-bottom:20px;
+  text-shadow:0 0 8px var(--accent);
 }
-
-/* upload */
 
 .dropzone{
-
-border:2px dashed #0ea5e9;
-border-radius:14px;
-
-padding:35px;
-text-align:center;
-
-margin-bottom:15px;
-
+  border:2px dashed var(--accent2);
+  border-radius:16px;
+  padding:35px;
+  text-align:center;
+  margin-bottom:15px;
+  background:rgba(14,165,233,0.08);
+  backdrop-filter: blur(8px);
+  transition:.2s;
+}
+.dropzone:hover{
+  border-color:var(--accent);
+  box-shadow:0 0 20px rgba(56,189,248,0.3);
 }
 
-/* buttons */
-
 button{
-
-width:100%;
-padding:12px;
-
-margin-top:10px;
-
-border:none;
-border-radius:10px;
-
-cursor:pointer;
-
-background:
-linear-gradient(135deg,#0ea5e9,#38bdf8);
-
-color:white;
-
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:linear-gradient(135deg,#0ea5e9,#38bdf8);
+  color:white;
+  font-weight:500;
+  box-shadow:0 0 15px rgba(56,189,248,0.3);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 25px rgba(56,189,248,0.5);
 }
 
 .btn-premium{
-
-background:
-linear-gradient(135deg,#f59e0b,#f97316);
-
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  box-shadow:0 0 15px rgba(249,115,22,0.4);
+}
+.btn-premium:hover{
+  box-shadow:0 0 25px rgba(249,115,22,0.6);
 }
 
-/* preview */
-
-.preview{
-
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-top:10px;
-
+/* INPUTS & SELECT */
+select, textarea, input[type="file"]{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(56,189,248,0.4);
+  background:rgba(2,6,23,0.6);
+  color:white;
+  backdrop-filter: blur(6px);
 }
 
-.preview img{
-
-width:80px;
-border-radius:8px;
-border:2px solid #0ea5e9;
-
+/* RESPONSIVE - TELEFON */
+@media (max-width:900px){
+  .workspace{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto 1fr;
+  }
+  .sidebar{
+    flex-direction:row;
+    height:70px;
+    border-right:none;
+    border-bottom:1px solid rgba(56,189,248,0.25);
+    padding:0 10px;
+    justify-content:center;
+  }
+  .panel{
+    border-right:none;
+    border-bottom:1px solid rgba(56,189,248,0.25);
+    max-height:45vh;
+  }
+  .viewer{
+    height:55vh;
+  }
 }
-
-/* progress */
-
-.progress{
-
-height:6px;
-background:#020617;
-border-radius:10px;
-overflow:hidden;
-margin-top:15px;
-
-}
-
-.progress-bar{
-
-height:100%;
-width:0%;
-
-background:
-linear-gradient(90deg,#38bdf8,#0ea5e9);
-
-}
-
-/* status */
-
-.status{
-
-margin-top:10px;
-font-size:13px;
-color:#7dd3fc;
-
-}
-
 </style>
 </head>
 
