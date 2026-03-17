@@ -6,7 +6,7 @@ import os
 # from app.services.object_detector import detect_main_object
 from app.services.crop_object import crop_object
 
-OUTPUT_DIR = "outputs"
+OUTPUT_DIR = "outputs/svg"
 
 
 def generate_blueprint(image_path):
