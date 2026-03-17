@@ -697,7 +697,12 @@ const svgUrl = API_BASE + data.svg_url
 
 const svgViewer = document.getElementById("svgViewer")
 
-svgViewer.src = svgUrl
+const resSvg = await fetch(svgUrl)
+const svgText = await resSvg.text()
+
+const viewer = document.getElementById("viewer")
+
+viewer.innerHTML += svgText
 svgViewer.style.display = "block"
 
 // vetëm për SVG → efekt white/neon
@@ -709,8 +714,14 @@ const download = document.getElementById("downloadSVG")
 
 download.onclick = async () => {
 
-  const res = await fetch(svgUrl)
-  const blob = await res.blob()
+const res = await fetch(svgUrl)
+
+const contentType = res.headers.get("content-type")
+
+if(!contentType.includes("svg")){
+alert("Backend is not returning SVG!")
+return
+}
 
   const url = window.URL.createObjectURL(blob)
 
