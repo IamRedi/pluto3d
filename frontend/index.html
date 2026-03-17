@@ -884,33 +884,7 @@ img.style.display = "block"
 text.style.display = "none"
 
 })
-aiDrop.addEventListener("dragover",(e)=>{
-e.preventDefault()
-aiDrop.style.borderColor="#38bdf8"
-})
 
-aiDrop.addEventListener("dragleave",()=>{
-aiDrop.style.borderColor="#0ea5e9"
-})
-
-aiDrop.addEventListener("drop",(e)=>{
-e.preventDefault()
-
-aiInput.files = e.dataTransfer.files
-
-const file = aiInput.files[0]
-if(!file) return
-
-const url = URL.createObjectURL(file)
-
-const img = document.getElementById("dropPreviewAI")
-const text = document.getElementById("dropTextAI")
-
-img.src = url
-img.style.display = "block"
-text.style.display = "none"
-
-})
 async function convertTo3D(){
 
 const viewer = document.getElementById("svgViewer")
