@@ -24,8 +24,11 @@ async def create_svg(file: UploadFile = File(...)):
 
     svg_file = generate_blueprint(image_path)
 
+    # nëse svg_file kthen path si "outputs/xxx.svg"
+    filename = Path(svg_file).name
+
     return {
-        "svg_url": f"/outputs/svg/{svg_file}"
+    "svg_url": f"/outputs/svg/{filename}"
     }
 
 
