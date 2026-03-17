@@ -285,14 +285,13 @@ color:#7dd3fc;
 <div class="section-title">3D Generator</div>
 
 <div class="dropzone" id="drop3d">
-<div class="dropzone" id="dropSVG">
 
-<p id="dropTextSVG">Drag photo here or click to upload</p>
+<p id="dropText3d">Drag photo here or click to upload</p>
 
-<img id="dropPreviewSVG"
+<img id="dropPreview3d" 
 style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
 
-<input type="file" id="svgInput" style="display:none">
+<input type="file" id="fileInput" multiple style="display:none">
 
 </div>
 
@@ -1028,23 +1027,6 @@ function handleFiles(files){
 
 preview.innerHTML=""
 
-const file = files[0]
-
-if(file){
-
-const url = URL.createObjectURL(file)
-
-// 🔥 preview brenda dropzone
-const img = document.getElementById("dropPreview3d")
-const text = document.getElementById("dropText3d")
-
-img.src = url
-img.style.display = "block"
-text.style.display = "none"
-
-}
-
-// preview i vogël (opsional mund ta mbash)
 for(let file of files){
 
 const img=document.createElement("img")
@@ -1054,7 +1036,6 @@ preview.appendChild(img)
 }
 
 autoUpload(files)
-
 }
 
 async function autoUpload(files){
@@ -1115,7 +1096,6 @@ const url = URL.createObjectURL(file)
 document.getElementById("svgUploadPreview").src = url
 
 }
-
 </script>
 
 </body>
