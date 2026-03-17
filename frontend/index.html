@@ -285,13 +285,14 @@ color:#7dd3fc;
 <div class="section-title">3D Generator</div>
 
 <div class="dropzone" id="drop3d">
+<div class="dropzone" id="dropSVG">
 
-<p id="dropText3d">Drag photo here or click to upload</p>
+<p id="dropTextSVG">Drag photo here or click to upload</p>
 
-<img id="dropPreview3d" 
+<img id="dropPreviewSVG"
 style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
 
-<input type="file" id="fileInput" multiple style="display:none">
+<input type="file" id="svgInput" style="display:none">
 
 </div>
 
@@ -329,7 +330,7 @@ Download 3D Model
 
 </div>
 
-<img id="svgUploadPreview" style="width:120px;margin-top:10px;border-radius:8px;">
+
 
 <br><br>
 
@@ -1111,7 +1112,13 @@ if(!file) return
 
 const url = URL.createObjectURL(file)
 
-document.getElementById("svgUploadPreview").src = url
+// preview brenda dropzone
+const img = document.getElementById("dropPreviewSVG")
+const text = document.getElementById("dropTextSVG")
+
+img.src = url
+img.style.display = "block"
+text.style.display = "none"
 
 }
 
