@@ -702,12 +702,28 @@ const svgViewer = document.getElementById("svgViewer")
 svgViewer.src = svgUrl
 svgViewer.style.display = "block"
 
+// vetëm për SVG → efekt white/neon
+svgViewer.style.filter = "invert(1) brightness(2)"
+
 /* DOWNLOAD */
 
 const download = document.getElementById("downloadSVG")
 
-download.href = svgUrl
-download.download = "vector.svg"
+download.onclick = async () => {
+
+  const res = await fetch(svgUrl)
+  const blob = await res.blob()
+
+  const url = window.URL.createObjectURL(blob)
+
+  const a = document.createElement("a")
+  a.href = url
+  a.download = "vector.svg"
+
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
 
 download.style.display = "block"
 
@@ -817,7 +833,7 @@ const viewer = document.getElementById("svgViewer")
 
 viewer.src = data.image_url
 viewer.style.display="block"
-
+viewer.style.filter = "none"
 }catch(err){
 
 console.log(err)

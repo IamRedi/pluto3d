@@ -70,7 +70,7 @@ def generate_blueprint(image_path):
         dwg.add(
             dwg.polyline(
                 points,
-                stroke="white",
+                stroke="black",
                 fill="none",
                 stroke_width=1
             )

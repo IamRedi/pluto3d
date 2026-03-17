@@ -71,7 +71,14 @@ preview.innerHTML = `
 
 }
 
-
+function downloadSVG(url) {
+  const a = document.createElement("a")
+  a.href = url
+  a.download = "pluto.svg"
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+}
 
 // ---------------- AI PHOTO ----------------
 
