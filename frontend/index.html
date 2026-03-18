@@ -525,28 +525,44 @@ style="width:100%;height:70px;border-radius:10px;padding:10px;"></textarea>
 
 <!-- TOY -->
 
-<div id="panel-toy" class="toolpanel hidden">
+<<div id="panel-toy" class="toolpanel hidden">
 
-<div class="section-title">Toy Studio</div>
+<div class="section-title">Toy Generator</div>
 
-<button onclick="toyMode()">Toy Mode</button>
+<label>Prompt</label>
 
-<button onclick="selfieToy()">Selfie Toy</button>
+<textarea id="toyPrompt"
+placeholder="e.g. cute robot, toy car, action figure..."
+style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 
-<br>
+<br><br>
 
-<button onclick="plasticToy()">Plastic</button>
+<label>Template</label>
 
-<button onclick="goldToy()">Gold</button>
+<select id="toyTemplate">
+<option value="auto">Auto</option>
+<option value="car">Car</option>
+<option value="robot">Robot</option>
+<option value="figure">Figure</option>
+</select>
 
-<button onclick="chromeToy()">Chrome</button>
+<br><br>
 
-<button onclick="cartoonToy()">Cartoon</button>
+<label>Size</label>
+
+<input type="range" id="toySize" min="1" max="10" value="5">
+
+<br><br>
+
+<button onclick="generateToy()">Generate Toy</button>
+
+<a id="downloadToy" style="display:none;">
+<button>Download STL</button>
+</a>
+
+<div class="status" id="toyStatus"></div>
 
 </div>
-
-</div>
-
 
 <!-- VIEWER -->
 
