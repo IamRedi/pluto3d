@@ -8,3 +8,6 @@ numpy
 vtracer
 svgwrite
 replicate
+trimesh==4.0.5
+scipy
+networkx
