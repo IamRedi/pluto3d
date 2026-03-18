@@ -15,7 +15,31 @@ background:#020617;
 color:white;
 overflow:hidden;
 }
+/* ===== SPACE BACKGROUND ===== */
 
+.space-bg{
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 30%, rgba(56,189,248,0.15), transparent),
+radial-gradient(circle at 80% 70%, rgba(168,85,247,0.15), transparent),
+#020617;
+z-index:-2;
+}
+
+.stars{
+position:fixed;
+inset:0;
+background:url('https://www.transparenttextures.com/patterns/stardust.png');
+opacity:0.25;
+animation: moveStars 60s linear infinite;
+z-index:-1;
+}
+
+@keyframes moveStars{
+from{background-position:0 0;}
+to{background-position:1000px 1000px;}
+}
 /* layout */
 
 .workspace{
@@ -30,7 +54,8 @@ height:100vh;
 
 .sidebar{
 
-background:#020617;
+background:rgba(2,6,23,0.6);
+backdrop-filter:blur(10px);
 border-right:1px solid rgba(56,189,248,0.2);
 
 display:flex;
@@ -79,20 +104,13 @@ background:#0ea5e9;
 /* panel */
 
 .panel{
-
 padding:30px;
 overflow:auto;
 
-background:
-
-linear-gradient(
-180deg,
-rgba(15,23,42,0.8),
-rgba(2,6,23,0.95)
-);
+background:rgba(15,23,42,0.5);
+backdrop-filter:blur(12px);
 
 border-right:1px solid rgba(56,189,248,0.2);
-
 }
 
 /* viewer */
@@ -161,43 +179,48 @@ margin-bottom:20px;
 /* upload */
 
 .dropzone{
-
-border:2px dashed #0ea5e9;
 border-radius:14px;
-
 padding:35px;
 text-align:center;
-
 margin-bottom:15px;
 
+background:rgba(255,255,255,0.03);
+backdrop-filter:blur(8px);
+border:1px solid rgba(56,189,248,0.3);
 }
 
 /* buttons */
 
 button{
-
 width:100%;
 padding:12px;
-
 margin-top:10px;
 
-border:none;
-border-radius:10px;
-
+border-radius:12px;
 cursor:pointer;
 
-background:
-linear-gradient(135deg,#0ea5e9,#38bdf8);
+background:rgba(56,189,248,0.1);
+border:1px solid rgba(56,189,248,0.4);
+
+backdrop-filter:blur(10px);
 
 color:white;
 
+transition:0.25s;
+}
+
+button:hover{
+background:rgba(56,189,248,0.3);
+box-shadow:0 0 15px rgba(56,189,248,0.5);
 }
 
 .btn-premium{
+background:rgba(251,146,60,0.15);
+border:1px solid rgba(251,146,60,0.6);
+}
 
-background:
-linear-gradient(135deg,#f59e0b,#f97316);
-
+.btn-premium:hover{
+box-shadow:0 0 15px rgba(251,146,60,0.7);
 }
 
 /* preview */
@@ -250,12 +273,43 @@ font-size:13px;
 color:#7dd3fc;
 
 }
+/* ===== AI CORE ===== */
 
+.ai-core{
+position:absolute;
+width:120px;
+height:120px;
+
+border-radius:50%;
+
+background:
+radial-gradient(circle, #fff, #38bdf8, #000);
+
+box-shadow:
+0 0 40px #38bdf8,
+0 0 80px #38bdf8;
+
+animation:pulse 3s ease-in-out infinite;
+
+pointer-events:none;
+}
+
+@keyframes pulse{
+0%,100%{
+transform:scale(1);
+box-shadow:0 0 40px #38bdf8;
+}
+50%{
+transform:scale(1.1);
+box-shadow:0 0 80px #38bdf8;
+}
+}
 </style>
 </head>
 
 <body>
-
+<div class="space-bg"></div>
+<div class="stars"></div>
 <div class="workspace">
 
 <!-- SIDEBAR -->
