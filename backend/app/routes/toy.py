@@ -73,5 +73,5 @@ def generate_toy(req: ToyRequest):
     mesh.export(path)
 
     return {
-        "stl_url": f"/outputs/toy/{filename}"
+    "stl_url": f"/outputs/toy/{filename}.stl"
     }
