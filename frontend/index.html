@@ -133,13 +133,19 @@ background:#0ea5e9;
 
 .panel{
 padding:30px;
-overflow:hidden;   /* 🔥 JO auto */
-
+overflow:auto;   /* duhet scroll */
 background:rgba(15,23,42,0.5);
 backdrop-filter:blur(12px);
-
 border-right:1px solid rgba(56,189,248,0.2);
+scroll-behavior:smooth;
+/* 🔥 HIDE SCROLLBAR */
+scrollbar-width: none;        /* Firefox */
+-ms-overflow-style: none;     /* IE/Edge */
 }
+.panel::-webkit-scrollbar{
+display:none;   /* Chrome, Safari */
+}
+
 
 /* viewer */
 
