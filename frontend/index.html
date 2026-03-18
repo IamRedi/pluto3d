@@ -1208,6 +1208,56 @@ img.style.display = "block"
 text.style.display = "none"
 
 }
+
+async function generateToy(){
+
+const prompt = document.getElementById("toyPrompt").value
+const template = document.getElementById("toyTemplate").value
+const size = document.getElementById("toySize").value
+const status = document.getElementById("toyStatus")
+
+if(!prompt){
+alert("Write prompt first")
+return
+}
+
+status.innerHTML = "Generating toy..."
+
+try{
+
+const res = await fetch(API_BASE + "/api/generate-toy",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+prompt,
+template,
+size
+})
+})
+
+const data = await res.json()
+
+if(!data.stl_url){
+status.innerHTML = "Failed"
+return
+}
+
+status.innerHTML = "Toy Ready 🎯"
+
+const download = document.getElementById("downloadToy")
+download.href = API_BASE + data.stl_url
+download.style.display = "block"
+
+}catch(err){
+
+console.log(err)
+status.innerHTML = "Error"
+
+}
+
+}
 </script>
 
 </body>
