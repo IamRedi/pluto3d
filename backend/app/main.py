@@ -16,11 +16,7 @@ app = FastAPI(
 
 # ---------------- CORS ----------------
 
-origins = [
-    "https://pluto3d.vercel.app",
-    "http://localhost:3000",
-    "http://localhost:5173",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -62,3 +58,7 @@ def root():
 
 from app.routes.ai_photo import router as ai_router
 app.include_router(ai_router)
+
+from app.routes import toy
+
+app.include_router(toy.router, prefix="/api")
