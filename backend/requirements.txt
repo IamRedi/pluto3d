@@ -4,7 +4,7 @@ python-multipart
 requests
 pillow
 opencv-python-headless
-numpy
+numpy==1.26.4
 vtracer
 svgwrite
 replicate
