@@ -7,8 +7,12 @@ import uuid
 
 router = APIRouter()
 
-OUTPUT_DIR = "outputs/toy"
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+OUTPUT_DIR = BASE_DIR / "outputs" / "toy"
+
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 class ToyRequest(BaseModel):
@@ -71,9 +75,9 @@ def generate_toy(req: ToyRequest):
             mesh = create_figure(size)
 
     filename = f"{uuid.uuid4()}.stl"
-    path = os.path.join(OUTPUT_DIR, filename)
+    path = OUTPUT_DIR / filename
 
-    mesh.export(path)
+    mesh.export(str(path))
 
     return {
     "stl_url": f"/outputs/toy/{filename}.stl"
