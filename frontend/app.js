@@ -136,5 +136,88 @@ a.click()
 
 document.querySelector("#uploadBtn").onclick = uploadImage
 document.querySelector("#generateBtn").onclick = generateSVG
+document.querySelector("#generateToy").onclick = generateToy
 document.querySelector("#generateAI").onclick = generateAIPhoto
 document.querySelector("#downloadAI").onclick = downloadAI
+
+// ---------------- TOY GENERATOR ----------------
+
+async function generateToy() {
+
+  const prompt = document.querySelector("#prompt").value
+  const template = document.querySelector("#template").value
+  const size = document.querySelector("#size").value
+
+  const res = await fetch(API + "/generate-toy", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      prompt,
+      template,
+      size
+    })
+  })
+
+  const data = await res.json()
+
+  console.log("TOY:", data)
+
+  // FIX PATH
+const base = API.replace("/api", "")
+
+const stlUrl = data.stl_url ? base + data.stl_url : null
+const glbUrl = data.glb_url ? base + data.glb_url : null
+
+// DEBUG NE UI
+const viewer = document.querySelector("#viewer")
+
+if(glbUrl){
+    console.log("GLB OK:", glbUrl)
+    loadGLB(glbUrl)
+} else {
+    console.error("GLB missing")
+    viewer.innerHTML = "<h3 style='color:red'>❌ GLB NOT GENERATED</h3>"
+}
+
+// DOWNLOAD STL
+if(stlUrl){
+    setupDownload(stlUrl)
+}
+}
+
+
+// ---------------- LOAD STL ----------------
+
+function loadGLB(url) {
+
+  const viewer = document.querySelector("#viewer")
+
+  viewer.innerHTML = `
+    <model-viewer 
+      src="${url}" 
+      camera-controls 
+      auto-rotate 
+      shadow-intensity="1"
+      exposure="1"
+      style="width:100%; height:100%;">
+    </model-viewer>
+  `
+}
+
+
+// ---------------- DOWNLOAD ----------------
+
+function setupDownload(url){
+
+  const btn = document.querySelector("#downloadBtn")
+
+  btn.onclick = () => {
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "toy.stl"
+    a.click()
+  }
+
+}

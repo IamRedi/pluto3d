@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Pluto3D Studio</title>
+<title>Pluto Studio</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -357,7 +357,7 @@ box-shadow:0 0 80px #38bdf8;
 
 <div class="logo-orb"></div>
 
-<div class="logo">Pluto3D</div>
+<div class="logo">Pluto</div>
 
 </div>
 
@@ -596,6 +596,7 @@ filter:none;
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
@@ -1246,8 +1247,14 @@ return
 
 status.innerHTML = "Toy Ready 🎯"
 
+const stlUrl = API_BASE + data.stl_url
+const glbUrl = API_BASE + data.glb_url
+
+loadGLB(glbUrl)   // 👈 përdor GLB për viewer
+
+// DOWNLOAD
 const download = document.getElementById("downloadToy")
-download.href = API_BASE + data.stl_url
+download.href = stlUrl
 download.style.display = "block"
 
 }catch(err){
@@ -1256,6 +1263,58 @@ console.log(err)
 status.innerHTML = "Error"
 
 }
+
+}
+// ---------------- GLOBAL STL LOADER ----------------
+
+function loadSTL(url){
+
+const loader = new THREE.STLLoader()
+
+loader.load(url,(geometry)=>{
+
+document.querySelector(".ai-core").style.display = "none"
+
+// pastro skenën
+while(scene.children.length > 0){
+scene.remove(scene.children[0])
+}
+
+// material clean
+const material = new THREE.MeshStandardMaterial({
+color: 0x00d9ff,
+metalness: 0.3,
+roughness: 0.4
+})
+
+const mesh = new THREE.Mesh(geometry, material)
+
+// center model
+geometry.center()
+
+scene.add(light)
+scene.add(mesh)
+
+})
+
+}
+function loadGLB(url){
+
+const loader = new THREE.GLTFLoader()
+
+loader.load(url,(gltf)=>{
+
+document.querySelector(".ai-core").style.display = "none"
+
+// pastro skenën
+while(scene.children.length > 0){
+scene.remove(scene.children[0])
+}
+
+scene.add(light)
+scene.add(gltf.scene)
+
+})
 
 }
 </script>
