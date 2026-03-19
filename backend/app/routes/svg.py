@@ -58,3 +58,6 @@ async def svg_from_image(data: ImageURL):
     return {
     "svg_url": f"/outputs/svg/{filename}"
     }
+@router.post("/svg")
+def svg_test():
+    return {"msg": "SVG ROUTE WORKING"}
