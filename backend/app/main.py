@@ -62,3 +62,7 @@ app.include_router(ai_router)
 from app.routes import toy
 
 app.include_router(toy.router, prefix="/api")
+
+@app.get("/test")
+def test():
+    return {"status": "ok"}
