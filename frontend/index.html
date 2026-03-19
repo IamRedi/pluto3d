@@ -887,9 +887,7 @@ download.onclick = async () => {
 
   const url = window.URL.createObjectURL(blob)
 
-  const a = document.createElement("a")
-  a.href = url
-  a.download = "vector.svg"
+await forceDownload(svgUrl, "pluto.svg")
 
   document.body.appendChild(a)
   a.click()
@@ -1124,7 +1122,10 @@ const blob = await resBlob.blob()
 const url = window.URL.createObjectURL(blob)
 
 const a = document.createElement("a")
-a.href = url
+downloadBtn.onclick = async () => {
+  const url = viewer.src.split("?")[0]
+  await forceDownload(url, "pluto.png")
+}
 a.download = "pluto.svg"
 
 document.body.appendChild(a)
@@ -1428,7 +1429,10 @@ download.onclick = async () => {
   const url = window.URL.createObjectURL(blob)
 
   const a = document.createElement("a")
-  a.href = url
+  downloadBtn.onclick = async () => {
+  const url = viewer.src.split("?")[0]
+  await forceDownload(url, "pluto.png")
+}
   a.download = "vector.svg"
 
   document.body.appendChild(a)
@@ -1438,6 +1442,23 @@ download.onclick = async () => {
 
 download.style.display = "block"
 
+}
+async function forceDownload(url, filename){
+
+  const res = await fetch(url)
+  const blob = await res.blob()
+
+  const blobUrl = window.URL.createObjectURL(blob)
+
+  const a = document.createElement("a")
+  a.href = blobUrl
+  a.download = filename
+
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+
+  window.URL.revokeObjectURL(blobUrl)
 }
 </script>
 <audio id="orbSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
