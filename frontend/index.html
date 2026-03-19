@@ -887,7 +887,9 @@ download.onclick = async () => {
 
   const url = window.URL.createObjectURL(blob)
 
-await forceDownload(svgUrl, "pluto.svg")
+  const a = document.createElement("a")
+  a.href = url
+  a.download = "vector.svg"
 
   document.body.appendChild(a)
   a.click()
@@ -909,7 +911,41 @@ alert("Generate or upload image first")
 return
 }
 
-const res = await fetch(API_BASE + "/api/svg-from-image",{
+// nëse është blob → upload
+if(viewer.src.startsWith("blob:")){
+
+const response = await fetch(viewer.src)
+const blob = await response.blob()
+
+const form = new FormData()
+form.append("file", blob, "image.png")
+
+const uploadRes = await fetch(API_BASE + "/api/svg",{
+method:"POST",
+body:form
+})
+
+const data = await uploadRes.json()
+
+if(!data.svg_url){
+alert("SVG failed")
+return
+}
+
+const svgUrl = API_BASE + data.svg_url
+
+viewer.src = svgUrl
+viewer.style.display="block"
+viewer.style.filter = "invert(1) brightness(2)"
+
+// 🔥 FIX DOWNLOAD
+setupSVGDownload(svgUrl)
+
+return
+}
+
+// normal case
+const res = await fetch(API_BASE+"/api/svg-from-image",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
@@ -928,19 +964,12 @@ return
 
 const svgUrl = API_BASE + data.svg_url
 
-// SHOW SVG
 viewer.src = svgUrl
 viewer.style.display="block"
 viewer.style.filter = "invert(1) brightness(2)"
-document.querySelector(".ai-core").style.display = "none"
 
-// DOWNLOAD SVG REAL
-const a = document.createElement("a")
-a.href = svgUrl
-a.download = "pluto.svg"
-document.body.appendChild(a)
-a.click()
-a.remove()
+// 🔥 FIX DOWNLOAD
+setupSVGDownload(svgUrl)
 
 }
 /* ---------------- AI PHOTO ---------------- */
@@ -1116,20 +1145,19 @@ return
 
 const response = await fetch(img.src)
 
-const resBlob = await fetch(svgUrl)
-const blob = await resBlob.blob()
+const blob = await response.blob()
 
 const url = window.URL.createObjectURL(blob)
 
 const a = document.createElement("a")
-downloadBtn.onclick = async () => {
-  const url = viewer.src.split("?")[0]
-  await forceDownload(url, "pluto.png")
-}
-a.download = "pluto.svg"
+
+a.href = url
+a.download = "ai_image.png"
 
 document.body.appendChild(a)
+
 a.click()
+
 a.remove()
 
 }
@@ -1429,10 +1457,7 @@ download.onclick = async () => {
   const url = window.URL.createObjectURL(blob)
 
   const a = document.createElement("a")
-  downloadBtn.onclick = async () => {
-  const url = viewer.src.split("?")[0]
-  await forceDownload(url, "pluto.png")
-}
+  a.href = url
   a.download = "vector.svg"
 
   document.body.appendChild(a)
@@ -1442,23 +1467,6 @@ download.onclick = async () => {
 
 download.style.display = "block"
 
-}
-async function forceDownload(url, filename){
-
-  const res = await fetch(url)
-  const blob = await res.blob()
-
-  const blobUrl = window.URL.createObjectURL(blob)
-
-  const a = document.createElement("a")
-  a.href = blobUrl
-  a.download = filename
-
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-
-  window.URL.revokeObjectURL(blobUrl)
 }
 </script>
 <audio id="orbSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
