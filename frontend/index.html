@@ -876,25 +876,7 @@ document.querySelector(".ai-core").style.display = "none"
 // vetëm për SVG → efekt white/neon
 svgViewer.style.filter = "invert(1) brightness(2)"
 
-/* DOWNLOAD */
 
-const download = document.getElementById("downloadSVG")
-
-download.onclick = async () => {
-
-  const res = await fetch(svgUrl)
-  const blob = await res.blob()
-
-  const url = window.URL.createObjectURL(blob)
-
-  const a = document.createElement("a")
-  a.href = url
-  a.download = "vector.svg"
-
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-}
 
 download.style.display = "block"
 
