@@ -63,6 +63,6 @@ from app.routes import toy
 
 app.include_router(toy.router, prefix="/api")
 
-@app.get("/test")
-def test():
-    return {"status": "ok"}
+import os
+
+port = int(os.environ.get("PORT", 8000))
