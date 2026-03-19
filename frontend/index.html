@@ -1118,19 +1118,17 @@ return
 
 const response = await fetch(img.src)
 
-const blob = await response.blob()
+const resBlob = await fetch(svgUrl)
+const blob = await resBlob.blob()
 
 const url = window.URL.createObjectURL(blob)
 
 const a = document.createElement("a")
-
 a.href = url
-a.download = "ai_image.png"
+a.download = "pluto.svg"
 
 document.body.appendChild(a)
-
 a.click()
-
 a.remove()
 
 }
