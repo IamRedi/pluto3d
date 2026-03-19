@@ -74,11 +74,17 @@ def generate_toy(req: ToyRequest):
         else:
             mesh = create_figure(size)
 
-    filename = f"{uuid.uuid4()}.stl"
-    path = OUTPUT_DIR / filename
+    # -------- STL (për download) --------
+    filename_stl = f"{uuid.uuid4()}.stl"
+    path_stl = OUTPUT_DIR / filename_stl
+    mesh.export(str(path_stl))
 
-    mesh.export(str(path))
+    # -------- GLB (për viewer) --------
+    filename_glb = f"{uuid.uuid4()}.glb"
+    path_glb = OUTPUT_DIR / filename_glb
+    mesh.export(str(path_glb))
 
     return {
-    "stl_url": f"/outputs/toy/{filename}"
+    "stl_url": f"/outputs/toy/{filename_stl}",
+    "glb_url": f"/outputs/toy/{filename_glb}"
     }
