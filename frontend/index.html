@@ -972,67 +972,6 @@ viewer.style.filter = "invert(1) brightness(2)"
 setupSVGDownload(svgUrl)
 
 }
-
-const viewer = document.getElementById("svgViewer")
-
-if(!viewer.src){
-alert("Generate or upload image first")
-return
-}
-
-// 🔥 nëse është blob → duhet upload
-if(viewer.src.startsWith("blob:")){
-
-const response = await fetch(viewer.src)
-const blob = await response.blob()
-
-const form = new FormData()
-form.append("file", blob, "image.png")
-
-const uploadRes = await fetch(API_BASE + "/api/svg",{
-method:"POST",
-body:form
-})
-
-const data = await uploadRes.json()
-
-if(!data.svg_url){
-alert("SVG failed")
-return
-}
-
-const svgUrl = API_BASE + data.svg_url
-
-viewer.src = svgUrl
-viewer.style.display="block"
-viewer.style.filter = "invert(1) brightness(2)"
-
-return
-}
-
-// 🔥 normal case
-const res = await fetch(API_BASE+"/api/svg-from-image",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-image_url: viewer.src.split("?")[0]
-})
-})
-
-const data = await res.json()
-
-if(!data.svg_url){
-alert("SVG conversion failed")
-return
-}
-
-const svgUrl = API_BASE + data.svg_url
-
-viewer.src = svgUrl
-viewer.style.display="block"
-viewer.style.filter = "invert(1) brightness(2)"
 /* ---------------- AI PHOTO ---------------- */
 
 async function generateAIPhoto(){
