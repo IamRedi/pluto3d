@@ -47,7 +47,10 @@ def create_figure(size):
 @router.post("/generate-toy")
 def generate_toy(req: ToyRequest):
 
-    size = float(req.size) / 5  # normalize
+    try:
+       size = float(req.size) / 5
+    except:
+       size = 1.0  # normalize
 
     if req.template == "robot":
         mesh = create_robot(size)
