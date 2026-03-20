@@ -1170,7 +1170,7 @@ viewer.style.display="block"
 viewer.style.filter = "invert(1) brightness(2)"
 
 // 🔥 FIX DOWNLOAD
-showViewerDownload(svgUrl, "converted.svg")
+setupSVGDownload(svgUrl)
 
 }
 /* ---------------- AI PHOTO ---------------- */
@@ -1567,8 +1567,7 @@ const loader = new THREE.GLTFLoader()
 
 loader.load(url,(gltf)=>{
 console.log("GLB loaded:", url)
-const aiCore = document.querySelector(".ai-core")
-if(aiCore) aiCore.style.display = "none"
+document.querySelector(".ai-core").style.display = "none"
 
 // 🔥 CLEAR SCENE
 while(scene.children.length > 0){
