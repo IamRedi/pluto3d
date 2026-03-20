@@ -412,10 +412,17 @@ animation:shake 0.4s ease;
 
 @media (max-width: 900px){
 
-/* layout */
 .workspace{
-display:flex;
-flex-direction:column;
+display:flex !important;
+flex-direction:column !important;
+grid-template-columns:none !important;   /* 🔥 KJO E VRIT GRID */
+}
+
+/* gjithashtu sigurohu */
+.sidebar, .panel, .viewer{
+width:100% !important;
+}
+
 }
 
 /* sidebar si bottom bar 🔥 */
@@ -468,7 +475,7 @@ width:95%;
 max-width:100%;
 }
 
-}
+
 </style>
 </head>
 
