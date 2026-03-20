@@ -411,7 +411,35 @@ animation:shake 0.4s ease;
 /* ===== MOBILE FINAL (Pluto PRO) ===== */
 
 @media (max-width: 900px){
+/* 🔥 FIX VIEWER SHFAQJE */
+.viewer{
+display:block !important;
+order:3;
 
+width:100% !important;
+height:260px !important;
+
+min-height:200px;
+flex-shrink:0;
+
+position:relative;
+z-index:1;
+}
+
+/* panel sipër */
+.panel{
+order:2;
+}
+
+/* sidebar sipër fare */
+.sidebar{
+order:1;
+}
+
+/* workspace duhet të lejojë rritje */
+.workspace{
+overflow:visible !important;
+}
 .workspace{
 display:flex !important;
 flex-direction:column !important;
