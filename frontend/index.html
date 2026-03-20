@@ -1209,7 +1209,7 @@ if(!res.ok){
 const txt = await res.text()
 console.log(txt)
 
-alert("AI request failed")
+console.error("AI request failed", err)
 return
 
 }
@@ -1240,7 +1240,7 @@ viewer.style.filter = "none"
 }catch(err){
 
 console.log(err)
-alert("AI request crashed")
+console.error("AI request crashed", err)
 
 }
 
@@ -1511,10 +1511,17 @@ return
 status.innerHTML = "Toy Ready 🎯"
 
 const stlUrl = API_BASE + data.stl_url
-const glbUrl = API_BASE + data.glb_url
 
-// 🔥 SHFAQ NË VIEWER
-loadGLB(glbUrl)
+// 🔥 SHFAQ NË VIEWER (FIX)
+if(data.glb_url){
+  const glbUrl = API_BASE + data.glb_url
+  loadGLB(glbUrl)
+}else{
+  loadSTL(stlUrl)
+}
+
+// 🔥 DOWNLOAD BUTTON
+showViewerDownload(stlUrl, "toy.stl")
 
 // 🔥 DOWNLOAD BUTTON NË VIEWER
 showViewerDownload(stlUrl, "toy.stl")
@@ -1557,6 +1564,16 @@ geometry.center()
 
 scene.add(light)
 scene.add(mesh)
+geometry.center()
+
+const box = new THREE.Box3().setFromObject(mesh)
+const size = box.getSize(new THREE.Vector3()).length()
+const scale = 2 / size
+
+mesh.scale.setScalar(scale)
+// 🔥 FIX CAMERA
+camera.position.set(0, 0, 3)
+controls.update()
 
 })
 
