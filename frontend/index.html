@@ -1605,10 +1605,6 @@ console.error("GLB load error:", error)
 
 const orb = document.getElementById("aiOrb")
 const greeting = document.getElementById("orbGreeting")
-if(sound){
-  sound.currentTime = 0
-  sound.play().catch(()=>{})
-}
 
 if(orb){
 
@@ -1632,8 +1628,7 @@ if(orb){
 
     greeting.classList.add("show")
 
-    sound.currentTime = 0
-    sound.play().catch(()=>{})
+
 
   })
 
@@ -1698,19 +1693,18 @@ btn.classList.remove("hidden")
 btn.onclick = async () => {
 
 const res = await fetch(url)
-const blob = await res.blob()
+const text = await res.text()   // 🔥 rëndësi: jo blob
 
-// 🔥 FORCE TYPE
-let type = blob.type
+let blob
 
 if(filename.endsWith(".svg")){
-type = "image/svg+xml"
+  blob = new Blob([text], { type: "image/svg+xml" })
+}else{
+  blob = new Blob([text])
 }
 
-const fixedBlob = new Blob([blob], { type })
-
 const link = document.createElement("a")
-link.href = URL.createObjectURL(fixedBlob)
+link.href = URL.createObjectURL(blob)
 link.download = filename
 
 document.body.appendChild(link)
