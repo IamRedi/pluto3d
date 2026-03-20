@@ -1093,7 +1093,6 @@ scene.remove(scene.children[0])
 }
 scene.add(light)
 svgViewer.style.display = "block"
-document.querySelector(".ai-core").style.display = "none"
 // vetëm për SVG → efekt white/neon
 svgViewer.style.filter = "invert(1) brightness(2)"
 
@@ -1209,7 +1208,7 @@ if(!res.ok){
 const txt = await res.text()
 console.log(txt)
 
-console.error("AI request failed", err)
+console.error("AI request failed")
 return
 
 }
@@ -1235,7 +1234,6 @@ const viewer = document.getElementById("svgViewer")
 viewer.src = data.image_url
 showViewerDownload(data.image_url, "ai_image.png")
 viewer.style.display="block"
-document.querySelector(".ai-core").style.display = "none"
 viewer.style.filter = "none"
 }catch(err){
 
@@ -1520,8 +1518,7 @@ if(data.glb_url){
   loadSTL(stlUrl)
 }
 
-// 🔥 DOWNLOAD BUTTON
-showViewerDownload(stlUrl, "toy.stl")
+
 
 // 🔥 DOWNLOAD BUTTON NË VIEWER
 showViewerDownload(stlUrl, "toy.stl")
@@ -1584,7 +1581,6 @@ const loader = new THREE.GLTFLoader()
 
 loader.load(url,(gltf)=>{
 console.log("GLB loaded:", url)
-document.querySelector(".ai-core").style.display = "none"
 
 // 🔥 CLEAR SCENE
 while(scene.children.length > 0){
