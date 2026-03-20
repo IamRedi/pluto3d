@@ -821,10 +821,6 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 
 <button onclick="generateToy()">Generate Toy</button>
 
-<a id="downloadToy" style="display:none;">
-<button>Download STL</button>
-</a>
-
 <div class="status" id="toyStatus"></div>
 
 </div>
@@ -971,9 +967,22 @@ document.querySelectorAll(".toolpanel")
 document
 .getElementById("panel-"+name)
 .classList.remove("hidden")
+
+// 🔥 CLEAN VIEWER
 document.getElementById("svgViewer").style.display="none"
+
+const btn = document.getElementById("viewerDownload")
+btn.classList.add("hidden")
+
+// 🔥 CLEAR 3D SCENE
+while(scene.children.length > 0){
+scene.remove(scene.children[0])
+}
+scene.add(light)
+
 status.innerHTML=""
 progressBar.style.width="0%"
+
 }
 
 /* three viewer */
@@ -1079,6 +1088,11 @@ const svgViewer = document.getElementById("svgViewer")
 
 svgViewer.src = svgUrl
 showViewerDownload(svgUrl, "vector.svg")
+// pastro 3D para SVG
+while(scene.children.length > 0){
+scene.remove(scene.children[0])
+}
+scene.add(light)
 svgViewer.style.display = "block"
 document.querySelector(".ai-core").style.display = "none"
 // vetëm për SVG → efekt white/neon
@@ -1128,8 +1142,6 @@ viewer.src = svgUrl
 viewer.style.display="block"
 viewer.style.filter = "invert(1) brightness(2)"
 
-// 🔥 FIX DOWNLOAD
-setupSVGDownload(svgUrl)
 
 return
 }
@@ -1502,12 +1514,11 @@ status.innerHTML = "Toy Ready 🎯"
 const stlUrl = API_BASE + data.stl_url
 const glbUrl = API_BASE + data.glb_url
 
-loadGLB(glbUrl)   // 👈 përdor GLB për viewer
+// 🔥 SHFAQ NË VIEWER
+loadGLB(glbUrl)
 
-// DOWNLOAD
-const download = document.getElementById("downloadToy")
-download.href = stlUrl
-download.style.display = "block"
+// 🔥 DOWNLOAD BUTTON NË VIEWER
+showViewerDownload(stlUrl, "toy.stl")
 
 }catch(err){
 
@@ -1655,6 +1666,7 @@ download.style.display = "block"
 
 }
 function showViewerDownload(url, filename="file"){
+
 const btn = document.getElementById("viewerDownload")
 
 btn.classList.remove("hidden")
@@ -1664,8 +1676,17 @@ btn.onclick = async () => {
 const res = await fetch(url)
 const blob = await res.blob()
 
+// 🔥 FORCE TYPE
+let type = blob.type
+
+if(filename.endsWith(".svg")){
+type = "image/svg+xml"
+}
+
+const fixedBlob = new Blob([blob], { type })
+
 const link = document.createElement("a")
-link.href = URL.createObjectURL(blob)
+link.href = URL.createObjectURL(fixedBlob)
 link.download = filename
 
 document.body.appendChild(link)
@@ -1673,6 +1694,7 @@ link.click()
 link.remove()
 
 }
+
 }
 
 </script>
