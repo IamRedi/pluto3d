@@ -1621,10 +1621,7 @@ console.error("GLB load error:", error)
 
 const orb = document.getElementById("aiOrb")
 const greeting = document.getElementById("orbGreeting")
-if(sound){
-  sound.currentTime = 0
-  sound.play().catch(()=>{})
-}
+
 
 if(orb){
 
@@ -1648,8 +1645,7 @@ if(orb){
 
     greeting.classList.add("show")
 
-    sound.currentTime = 0
-    sound.play().catch(()=>{})
+
 
   })
 
