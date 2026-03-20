@@ -1240,7 +1240,7 @@ viewer.style.filter = "none"
 }catch(err){
 
 console.log(err)
-console.error("AI request crashed", err)
+alert("AI request crashed")
 
 }
 
@@ -1697,42 +1697,28 @@ btn.classList.remove("hidden")
 
 btn.onclick = async () => {
 
-  const res = await fetch(url)
-  const text = await res.text()
+const res = await fetch(url)
+const blob = await res.blob()
 
-  // 🔥 VALIDIM REAL SVG
-  if(filename.endsWith(".svg")){
-    if(!text.trim().startsWith("<svg")){
-      alert("❌ Not valid SVG from backend")
-      console.log(text)
-      return
-    }
+// 🔥 FORCE TYPE
+let type = blob.type
 
-    const blob = new Blob([text], { type: "image/svg+xml" })
+if(filename.endsWith(".svg")){
+type = "image/svg+xml"
+}
 
-    const link = document.createElement("a")
-    link.href = URL.createObjectURL(blob)
-    link.download = filename
+const fixedBlob = new Blob([blob], { type })
 
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
+const link = document.createElement("a")
+link.href = URL.createObjectURL(fixedBlob)
+link.download = filename
 
-    return
-  }
-
-  // normal files (png, stl, glb)
-  const blob = await (await fetch(url)).blob()
-
-  const link = document.createElement("a")
-  link.href = URL.createObjectURL(blob)
-  link.download = filename
-
-  document.body.appendChild(link)
-  link.click()
-  link.remove()
+document.body.appendChild(link)
+link.click()
+link.remove()
 
 }
+
 }
 
 </script>
