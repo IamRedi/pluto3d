@@ -511,8 +511,20 @@ font-size:14px;
 
 /* svg responsive */
 #svgViewer{
-width:95%;
-max-width:100%;
+position:absolute;
+top:50%;
+left:50%;
+
+transform:translate(-50%, -50%);
+
+max-width:80%;
+max-height:80%;
+
+object-fit:contain;
+
+z-index:2;
+
+pointer-events:none;
 }
 }
 
@@ -920,6 +932,10 @@ viewerContainer.clientHeight
 )
 
 document.getElementById("viewer").appendChild(renderer.domElement)
+renderer.domElement.style.position = "absolute"
+renderer.domElement.style.top = "0"
+renderer.domElement.style.left = "0"
+renderer.domElement.style.zIndex = "1"
 
 const light=new THREE.DirectionalLight(0xffffff,1)
 light.position.set(2,2,2)
