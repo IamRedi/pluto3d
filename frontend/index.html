@@ -1567,14 +1567,34 @@ loader.load(url,(gltf)=>{
 
 document.querySelector(".ai-core").style.display = "none"
 
-// pastro skenën
+// 🔥 CLEAR SCENE
 while(scene.children.length > 0){
 scene.remove(scene.children[0])
 }
 
 scene.add(light)
-scene.add(gltf.scene)
 
+const model = gltf.scene
+
+// 🔥 CENTER MODEL
+const box = new THREE.Box3().setFromObject(model)
+const center = box.getCenter(new THREE.Vector3())
+model.position.sub(center)
+
+// 🔥 SCALE MODEL
+const size = box.getSize(new THREE.Vector3()).length()
+const scale = 2 / size
+model.scale.setScalar(scale)
+
+// 🔥 ADD MODEL
+scene.add(model)
+
+// 🔥 FIX CAMERA
+camera.position.set(0, 0, 3)
+controls.update()
+
+}, undefined, (error)=>{
+console.error("GLB load error:", error)
 })
 
 }
