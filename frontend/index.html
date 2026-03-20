@@ -1118,9 +1118,7 @@ return
 if(viewer.src.startsWith("blob:")){
 
 const response = await fetch(viewer.src)
-const text = await res.text()
-
-const blob = new Blob([text], { type: "image/svg+xml" })
+const blob = await response.blob()
 
 const form = new FormData()
 form.append("file", blob, "image.png")
@@ -1607,6 +1605,10 @@ console.error("GLB load error:", error)
 
 const orb = document.getElementById("aiOrb")
 const greeting = document.getElementById("orbGreeting")
+if(sound){
+  sound.currentTime = 0
+  sound.play().catch(()=>{})
+}
 
 if(orb){
 
@@ -1630,7 +1632,8 @@ if(orb){
 
     greeting.classList.add("show")
 
-
+    sound.currentTime = 0
+    sound.play().catch(()=>{})
 
   })
 
@@ -1695,18 +1698,19 @@ btn.classList.remove("hidden")
 btn.onclick = async () => {
 
 const res = await fetch(url)
-const text = await res.text()   // 🔥 rëndësi: jo blob
+const blob = await res.blob()
 
-let blob
+// 🔥 FORCE TYPE
+let type = blob.type
 
 if(filename.endsWith(".svg")){
-  blob = new Blob([text], { type: "image/svg+xml" })
-}else{
-  blob = new Blob([text])
+type = "image/svg+xml"
 }
 
+const fixedBlob = new Blob([blob], { type })
+
 const link = document.createElement("a")
-link.href = URL.createObjectURL(blob)
+link.href = URL.createObjectURL(fixedBlob)
 link.download = filename
 
 document.body.appendChild(link)
