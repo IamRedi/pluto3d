@@ -1170,7 +1170,7 @@ viewer.style.display="block"
 viewer.style.filter = "invert(1) brightness(2)"
 
 // 🔥 FIX DOWNLOAD
-setupSVGDownload(svgUrl)
+showViewerDownload(svgUrl, "converted.svg")
 
 }
 /* ---------------- AI PHOTO ---------------- */
@@ -1240,7 +1240,7 @@ viewer.style.filter = "none"
 }catch(err){
 
 console.log(err)
-alert("AI request crashed")
+console.error("AI request crashed", err)
 
 }
 
@@ -1697,28 +1697,42 @@ btn.classList.remove("hidden")
 
 btn.onclick = async () => {
 
-const res = await fetch(url)
-const blob = await res.blob()
+  const res = await fetch(url)
+  const text = await res.text()
 
-// 🔥 FORCE TYPE
-let type = blob.type
+  // 🔥 VALIDIM REAL SVG
+  if(filename.endsWith(".svg")){
+    if(!text.trim().startsWith("<svg")){
+      alert("❌ Not valid SVG from backend")
+      console.log(text)
+      return
+    }
 
-if(filename.endsWith(".svg")){
-type = "image/svg+xml"
+    const blob = new Blob([text], { type: "image/svg+xml" })
+
+    const link = document.createElement("a")
+    link.href = URL.createObjectURL(blob)
+    link.download = filename
+
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+
+    return
+  }
+
+  // normal files (png, stl, glb)
+  const blob = await (await fetch(url)).blob()
+
+  const link = document.createElement("a")
+  link.href = URL.createObjectURL(blob)
+  link.download = filename
+
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+
 }
-
-const fixedBlob = new Blob([blob], { type })
-
-const link = document.createElement("a")
-link.href = URL.createObjectURL(fixedBlob)
-link.download = filename
-
-document.body.appendChild(link)
-link.click()
-link.remove()
-
-}
-
 }
 
 </script>
