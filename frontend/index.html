@@ -49,7 +49,21 @@ display:grid;
 grid-template-columns:160px 460px 1fr;
 min-height:100vh;   /* 🔥 shumë e rëndësishme */
 }
+/* viewer shkon poshtë panel */
+.viewer{
+order:3;
+height:280px;
+}
 
+/* panel në mes */
+.panel{
+order:2;
+}
+
+/* sidebar sipër */
+.sidebar{
+order:1;
+}
 /* sidebar */
 
 .sidebar{
@@ -406,22 +420,18 @@ flex-direction:column;
 
 /* sidebar si bottom bar 🔥 */
 .sidebar{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-
+position:relative;   /* 🔥 mos jetë fixed */
 flex-direction:row;
 justify-content:space-around;
+align-items:center;
 
-height:70px;
-padding:5px;
+width:100%;
+height:auto;
+padding:10px;
 
-background:rgba(2,6,23,0.95);
-border-top:1px solid rgba(56,189,248,0.3);
-z-index:100;
+background:rgba(2,6,23,0.6);
+border-bottom:1px solid rgba(56,189,248,0.2);
 }
-
 /* fsheh logo në mobile */
 .logo-container{
 display:none;
