@@ -1535,7 +1535,8 @@ const loader = new THREE.STLLoader()
 
 loader.load(url,(geometry)=>{
 
-document.querySelector(".ai-core").style.display = "none"
+const aiCore = document.querySelector(".ai-core")
+if(aiCore) aiCore.style.display = "none"
 
 // pastro skenën
 while(scene.children.length > 0){
@@ -1566,7 +1567,8 @@ const loader = new THREE.GLTFLoader()
 
 loader.load(url,(gltf)=>{
 console.log("GLB loaded:", url)
-document.querySelector(".ai-core").style.display = "none"
+const aiCore = document.querySelector(".ai-core")
+if(aiCore) aiCore.style.display = "none"
 
 // 🔥 CLEAR SCENE
 while(scene.children.length > 0){
@@ -1603,7 +1605,10 @@ console.error("GLB load error:", error)
 
 const orb = document.getElementById("aiOrb")
 const greeting = document.getElementById("orbGreeting")
-const sound = document.getElementById("orbSound")
+if(sound){
+  sound.currentTime = 0
+  sound.play().catch(()=>{})
+}
 
 if(orb){
 
