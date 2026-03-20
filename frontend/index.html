@@ -1118,7 +1118,9 @@ return
 if(viewer.src.startsWith("blob:")){
 
 const response = await fetch(viewer.src)
-const blob = await response.blob()
+const text = await res.text()
+
+const blob = new Blob([text], { type: "image/svg+xml" })
 
 const form = new FormData()
 form.append("file", blob, "image.png")
@@ -1705,7 +1707,7 @@ if(filename.endsWith(".svg")){
 
 const link = document.createElement("a")
 link.href = URL.createObjectURL(blob)
-link.download = filename
+link.download = "converted.svg"
 
 document.body.appendChild(link)
 link.click()
