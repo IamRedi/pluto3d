@@ -13,7 +13,8 @@ margin:0;
 font-family:Inter;
 background:#020617;
 color:white;
-overflow:hidden;
+overflow-x:hidden;
+overflow-y:auto;   /* 🔥 lejon scroll vetëm vertikal */
 }
 /* ===== SPACE BACKGROUND ===== */
 
@@ -46,7 +47,7 @@ to{background-position:1000px 1000px;}
 .workspace{
 display:grid;
 grid-template-columns:160px 460px 1fr;
-height:100vh;
+min-height:100vh;   /* 🔥 shumë e rëndësishme */
 }
 
 /* sidebar */
@@ -393,64 +394,68 @@ animation:shake 0.4s ease;
 100%{transform:translate(0,0);}
 }
 
-/* ===== MOBILE FIX (Pluto version) ===== */
+/* ===== MOBILE FINAL (Pluto PRO) ===== */
 
 @media (max-width: 900px){
 
-/* layout nga grid → column */
+/* layout */
 .workspace{
 display:flex;
 flex-direction:column;
-height:auto;
 }
 
-/* sidebar horizontal */
+/* sidebar si bottom bar 🔥 */
 .sidebar{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+
 flex-direction:row;
 justify-content:space-around;
-align-items:center;
-width:100%;
-padding:10px 5px;
+
+height:70px;
+padding:5px;
+
+background:rgba(2,6,23,0.95);
+border-top:1px solid rgba(56,189,248,0.3);
+z-index:100;
 }
 
-/* orb + logo më të vogla */
-.logo-orb{
-width:40px;
-height:40px;
+/* fsheh logo në mobile */
+.logo-container{
+display:none;
 }
 
-.logo{
-font-size:14px;
-}
-
-/* butonat më të vegjël */
+/* butona si app */
 .sidebtn{
 width:60px;
 height:50px;
 font-size:12px;
 }
 
-/* panel full width */
+/* panel */
 .panel{
 width:100%;
+padding:15px;
+margin-bottom:80px; /* 🔥 mos mbulohet nga sidebar */
 }
 
-/* viewer mos shkoj poshtë pa kontroll */
+/* viewer TOP si hero */
 .viewer{
 width:100%;
-height:350px;   /* 🔥 kjo e stabilizon */
+height:300px;
 }
 
-/* svg / image më responsive */
+/* title më i vogël */
+.viewer-title{
+font-size:14px;
+}
+
+/* svg responsive */
 #svgViewer{
-width:90%;
+width:95%;
 max-width:100%;
-}
-
-/* greeting mos dalë jashtë */
-.orb-greeting{
-top:50px;
-font-size:11px;
 }
 
 }
@@ -688,7 +693,7 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <!-- VIEWER -->
 
 <div class="viewer" id="viewer">
-<div class="ai-core"></div>
+
 <div class="viewer-title">AI Viewer</div>
 <!-- background selector -->
 <div style="position:absolute;top:20px;right:20px;z-index:10">
