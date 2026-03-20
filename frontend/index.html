@@ -8,24 +8,35 @@
 
 <style>
 
-body{
-margin:0;
-font-family:Inter;
-background:#020617;
-color:white;
-overflow-x:hidden;
-overflow-y:auto;   /* 🔥 lejon scroll vetëm vertikal */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  
+  background: radial-gradient(circle at 20% 30%, rgba(88, 28, 135, 0.4), transparent 40%),
+              radial-gradient(circle at 80% 70%, rgba(30, 64, 175, 0.4), transparent 40%),
+              linear-gradient(135deg, #020617, #0f172a, #1e1b4b);
+
+  color: white;
+  overflow-x: hidden;
 }
 /* ===== SPACE BACKGROUND ===== */
 
 .space-bg{
 position:fixed;
 inset:0;
+
 background:
-radial-gradient(circle at 20% 30%, rgba(56,189,248,0.2), transparent),
-radial-gradient(circle at 80% 70%, rgba(168,85,247,0.25), transparent),
-radial-gradient(circle at 50% 80%, rgba(244,63,94,0.15), transparent),
+linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+
+radial-gradient(circle at 20% 30%, rgba(56,189,248,0.15), transparent),
+radial-gradient(circle at 80% 70%, rgba(168,85,247,0.2), transparent),
+radial-gradient(circle at 50% 80%, rgba(244,63,94,0.1), transparent),
+
 #020617;
+
+background-size: 40px 40px, 40px 40px, cover, cover, cover, cover;
+
 z-index:-2;
 }
 
@@ -69,7 +80,7 @@ order:1;
 .sidebar{
 padding-top:35px;
 gap:25px;
-background:rgba(2,6,23,0.6);
+background: rgba(15, 23, 42, 0.6);
 backdrop-filter:blur(10px);
 border-right:1px solid rgba(56,189,248,0.2);
 
@@ -148,7 +159,7 @@ background:#0ea5e9;
 .panel{
 padding:30px;
 overflow:auto;   /* duhet scroll */
-background:rgba(15,23,42,0.5);
+background: rgba(15, 23, 42, 0.6);
 backdrop-filter:blur(12px);
 border-right:1px solid rgba(56,189,248,0.2);
 scroll-behavior:smooth;
@@ -166,9 +177,14 @@ display:none;   /* Chrome, Safari */
 .viewer{
 position:relative;
 background:
-radial-gradient(circle at 50% 50%, rgba(56,189,248,0.2), transparent),
-radial-gradient(circle at 70% 60%, rgba(168,85,247,0.2), transparent),
-#000;
+radial-gradient(circle at center, rgba(59,130,246,0.1), transparent 70%);
+background-image:
+linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+
+background-size: 50px 50px;
+border: 1px solid rgba(99, 102, 241, 0.2);
+backdrop-filter: blur(6px);
 
 display:flex;
 align-items:center;
@@ -176,7 +192,7 @@ justify-content:center;
 
 overflow:hidden;
 
-background:#000;
+
 
 }
 
@@ -188,7 +204,7 @@ left:20px;
 
 font-family:Orbitron;
 color:#38bdf8;
-
+text-shadow: 0 0 10px rgba(56,189,248,0.5);
 }
 
 #viewer{
@@ -738,17 +754,7 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <div class="viewer" id="viewer">
 
 <div class="viewer-title">AI Viewer</div>
-<!-- background selector -->
-<div style="position:absolute;top:20px;right:20px;z-index:10">
 
-<select id="bgSelector">
-
-<option value="#000">Dark</option>
-<option value="#020617">Space</option>
-<option value="#0f172a">Blueprint</option>
-<option value="#ffffff">White</option>
-
-</select>
 
 <img id="svgViewer"
 style="
@@ -759,7 +765,7 @@ object-fit:contain;
 display:none;
 filter:none;
 ">
-</div>
+
 
 </div>
 
@@ -1220,12 +1226,7 @@ const data = await res.json()
 loadModel(API_BASE + data.model_url)
 
 }
-document.getElementById("bgSelector")
-.addEventListener("change",function(){
 
-document.querySelector(".viewer").style.background=this.value
-
-})
 async function downloadAI(){
 
 const img = document.getElementById("svgViewer")
