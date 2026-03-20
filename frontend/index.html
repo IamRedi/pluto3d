@@ -1028,7 +1028,8 @@ function loadModel(url){
 const loader=new THREE.GLTFLoader()
 
 loader.load(url,(gltf)=>{
-document.querySelector(".ai-core").style.display = "none"
+const aiCore = document.querySelector(".ai-core")
+if(aiCore) aiCore.style.display = "none"
 while(scene.children.length > 0){
 scene.remove(scene.children[0])
 }
@@ -1564,7 +1565,7 @@ function loadGLB(url){
 const loader = new THREE.GLTFLoader()
 
 loader.load(url,(gltf)=>{
-
+console.log("GLB loaded:", url)
 document.querySelector(".ai-core").style.display = "none"
 
 // 🔥 CLEAR SCENE
