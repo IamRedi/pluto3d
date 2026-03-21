@@ -165,10 +165,8 @@ async function generateToy() {
   console.log("TOY:", data)
 
   // FIX PATH
-const base = API.replace("/api", "")
-
-const stlUrl = data.stl_url ? base + data.stl_url : null
-const glbUrl = data.glb_url ? base + data.glb_url : null
+const stlUrl = data.stl_url
+const glbUrl = data.glb_url
 
 // DEBUG NE UI
 const viewer = document.querySelector("#viewer")
