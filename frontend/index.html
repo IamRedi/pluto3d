@@ -1508,22 +1508,33 @@ if(!data.glb_url && !data.stl_url){
 
 status.innerHTML = "Toy Ready 🎯"
 
-const stlUrl = API_BASE + data.stl_url
+console.log("TOY DATA:", data)
 
-// 🔥 SHFAQ NË VIEWER (FIX)
+// 🔥 vetëm nëse ekziston
 if(data.glb_url){
+
   const glbUrl = data.glb_url.startsWith("http")
-  ? data.glb_url
-  : API_BASE + data.glb_url
+    ? data.glb_url
+    : API_BASE + data.glb_url
+
   loadGLB(glbUrl)
-}else{
-  loadSTL(stlUrl)
+
+  showViewerDownload(glbUrl, "toy.glb")
+
 }
+else if(data.stl_url){
 
+  const stlUrl = API_BASE + data.stl_url
 
+  loadSTL(stlUrl)
 
-// 🔥 DOWNLOAD BUTTON NË VIEWER
-showViewerDownload(stlUrl, "toy.stl")
+  showViewerDownload(stlUrl, "toy.stl")
+
+}
+else{
+
+  status.innerHTML = "No model returned"
+}
 
 }catch(err){
 
