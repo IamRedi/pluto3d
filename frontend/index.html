@@ -939,9 +939,8 @@ const modelUrl = API_BASE + data.model_url
 
 loadModel(modelUrl)
 
-// DOWNLOAD BUTTON
-const download = document.getElementById("downloadBtn")
-download.href = modelUrl
+// 🔥 FIX DOWNLOAD
+showViewerDownload(modelUrl, "model.glb")
 
 
 }
