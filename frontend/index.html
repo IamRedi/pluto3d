@@ -949,9 +949,32 @@ showViewerDownload(modelUrl, "model.glb")
 
 }
 
-function generateFree3D(){
+async function generateFree3D(){
 
-status.innerHTML="Free generation coming soon"
+status.innerHTML="Generating (free)..."
+
+const res = await fetch(API_BASE + "/api/generate-free",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+  job_id: currentJobId
+})
+})
+
+const data = await res.json()
+
+if(!data.model_url){
+status.innerHTML="Failed"
+return
+}
+
+const url = API_BASE + data.model_url
+
+loadModel(url)
+
+status.innerHTML="Free model ready 🚀"
 
 }
 
@@ -1288,7 +1311,7 @@ headers:{
 },
 
 body:JSON.stringify({
-image_url: viewer.src
+job_id: currentJobId
 })
 
 })

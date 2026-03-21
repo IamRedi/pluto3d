@@ -164,3 +164,16 @@ def check_status(task_id: str):
         "progress": progress
     }
 
+@router.post("/generate-free")
+async def generate_free(req: GenerateRequest):
+
+    job_id = req.job_id
+
+    folder = OUTPUT_DIR / job_id
+    folder.mkdir(parents=True, exist_ok=True)
+
+    # 🔥 për momentin fake model (placeholder)
+    return {
+        "status": "DONE",
+        "model_url": "/outputs/sample.glb"
+    }
