@@ -10,7 +10,7 @@ class ToyRequest(BaseModel):
     size: int | None = 1
 
 
-@router.post("/api/generate-toy")
+@router.post("/generate-toy")
 async def generate_toy(req: ToyRequest):
     try:
         query = req.prompt.lower()
