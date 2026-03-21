@@ -144,7 +144,7 @@ document.querySelector("#downloadAI").onclick = downloadAI
 
 async function generateToy() {
 
-  const prompt = document.querySelector("#prompt").value
+  const prompt = document.querySelector("#toyPrompt").value
   const template = document.querySelector("#template").value
   const size = document.querySelector("#size").value
 
@@ -161,7 +161,9 @@ async function generateToy() {
   })
 
   const data = await res.json()
-
+// 🔥 NEW: PolyPizza Gallery
+const models = searchToyModels(prompt)
+renderToyGallery(models)
   console.log("TOY:", data)
 
   // FIX PATH
@@ -219,3 +221,62 @@ function setupDownload(url){
   }
 
 }
+
+let TOY_LIBRARY = []
+
+async function loadToyLibrary(){
+
+  try{
+
+    const res = await fetch("models.json")
+    const data = await res.json()
+
+    TOY_LIBRARY = data
+
+    console.log("MODELS LOADED:", TOY_LIBRARY)
+
+  }catch(err){
+
+    console.error("Failed loading models.json", err)
+
+  }
+
+}
+
+function searchToyModels(prompt){
+
+  const q = prompt.toLowerCase()
+
+  const results = TOY_LIBRARY.filter(m =>
+    m.name.toLowerCase().includes(q) ||
+    (m.tags && m.tags.some(tag => tag.toLowerCase().includes(q)))
+  )
+
+  return results.length ? results : TOY_LIBRARY
+}
+
+function renderToyGallery(models){
+
+  const gallery = document.getElementById("toyGallery")
+
+  if(!gallery) return
+
+  gallery.innerHTML = ""
+
+  models.forEach(model => {
+
+    const img = document.createElement("img")
+    img.src = model.thumb
+
+    img.onclick = () => {
+
+      loadGLB(model.url)
+      showViewerDownload(model.url, "toy.glb")
+
+    }
+
+    gallery.appendChild(img)
+  })
+}
+
+loadToyLibrary()

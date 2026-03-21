@@ -1,0 +1,14 @@
+[
+  {
+    "name": "robot",
+    "tags": ["robot","android"],
+    "url": "https://modelviewer.dev/shared-assets/models/RobotExpressive.glb",
+    "thumb": "https://modelviewer.dev/shared-assets/models/RobotExpressive.webp"
+  },
+  {
+    "name": "horse",
+    "tags": ["animal"],
+    "url": "https://modelviewer.dev/shared-assets/models/Horse.glb",
+    "thumb": "https://modelviewer.dev/shared-assets/models/Horse.webp"
+  }
+]
