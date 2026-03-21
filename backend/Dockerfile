@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     potrace \
     openscad \
-    && echo "force rebuild v1" \
+    && echo "force rebuild v2" \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
