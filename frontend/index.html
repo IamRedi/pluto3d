@@ -1512,7 +1512,9 @@ const stlUrl = API_BASE + data.stl_url
 
 // 🔥 SHFAQ NË VIEWER (FIX)
 if(data.glb_url){
-  const glbUrl = API_BASE + data.glb_url
+  const glbUrl = data.glb_url.startsWith("http")
+  ? data.glb_url
+  : API_BASE + data.glb_url
   loadGLB(glbUrl)
 }else{
   loadSTL(stlUrl)
