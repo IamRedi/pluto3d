@@ -967,7 +967,9 @@ const url = URL.createObjectURL(file)
 document.getElementById("viewer").innerHTML = `
 <div class="viewer-title">AI Viewer</div>
 <img id="svgViewer" style="display:none;">
-<button id="viewerDownload" class="viewer-download hidden"></button>
+<button id="viewerDownload" class="viewer-download hidden">
+⬇ Download
+</button>
 `
 
 loadFake3D(url)
@@ -1735,7 +1737,7 @@ function showViewerDownload(url, filename="file"){
 const btn = document.getElementById("viewerDownload")
 
 btn.classList.remove("hidden")
-
+btn.innerText = "⬇ Download"
 btn.onclick = async () => {
 
 const res = await fetch(url)
