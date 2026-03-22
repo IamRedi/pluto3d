@@ -972,9 +972,11 @@ status.innerHTML="Failed"
 return
 }
 
-const url = API_BASE + data.model_url
+const url = data.model_url.startsWith("http")
+  ? data.model_url
+  : API_BASE + data.model_url
 
-loadModel(url)
+loadGLB(url)
 
 status.innerHTML="Free model ready 🚀"
 
