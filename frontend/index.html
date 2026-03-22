@@ -953,34 +953,21 @@ showViewerDownload(modelUrl, "model.glb")
 
 async function generateFree3D(){
 
-status.innerHTML="Generating (free)..."
+const fileInput = document.querySelector("#fileInput")
+const file = fileInput.files[0]
 
-const res = await fetch(API_BASE + "/api/generate-free",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body: JSON.stringify({
-  job_id: currentJobId
-})
-})
-
-const data = await res.json()
-
-if(!data.model_url){
-status.innerHTML="Failed"
+if(!file){
+alert("Upload image first")
 return
 }
 
-const url = data.model_url.startsWith("http")
-  ? data.model_url
-  : API_BASE + data.model_url
+const url = URL.createObjectURL(file)
 
-loadGLB(url)
-showViewerDownload(url, "model.glb")
-status.innerHTML="Free model ready 🚀"
+// 🔥 FAKE 3D
+loadFake3D(url)
 
 }
+
 
 /* panels */
 

@@ -280,3 +280,36 @@ function renderToyGallery(models){
 }
 
 loadToyLibrary()
+
+function loadFake3D(imageUrl){
+
+const viewer = document.querySelector("#viewer")
+
+viewer.innerHTML = `
+  <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; position:relative;">
+    
+    <img src="${imageUrl}" 
+      style="
+        width:60%;
+        border-radius:12px;
+        box-shadow:0 20px 60px rgba(0,0,0,0.5);
+        transform:rotateY(-15deg) rotateX(8deg);
+        transition:transform 0.3s;
+      "
+      id="fake3dImg"
+    >
+
+  </div>
+`
+
+// animation e lehtë
+const img = document.getElementById("fake3dImg")
+
+let angle = -15
+
+setInterval(()=>{
+  angle += 0.2
+  img.style.transform = `rotateY(${angle}deg) rotateX(8deg)`
+}, 30)
+
+}
