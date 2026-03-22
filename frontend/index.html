@@ -977,7 +977,7 @@ const url = data.model_url.startsWith("http")
   : API_BASE + data.model_url
 
 loadGLB(url)
-
+showViewerDownload(url, "model.glb")
 status.innerHTML="Free model ready 🚀"
 
 }
