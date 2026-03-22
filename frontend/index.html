@@ -921,19 +921,31 @@ async function checkStatus(id){
 
 const interval=setInterval(async()=>{
 
-const res=await fetch(API_BASE+"/api/job/"+id)
+const res = await fetch(API_BASE + "/api/job/" + id)
+const data = await res.json()
 
-const data=await res.json()
-
-status.innerHTML="AI Processing "+data.progress+"%"
-
-progressBar.style.width=data.progress+"%"
+status.innerHTML = "AI Processing " + data.progress + "%"
+progressBar.style.width = data.progress + "%"
 
 console.log("MODEL DATA:", data)
+
+if(data.status === "SUCCEEDED"){
+
+clearInterval(interval)
+
+status.innerHTML = "Model Ready 🚀"
 
 const modelUrl = API_BASE + data.model_url
 
 console.log("FINAL URL:", modelUrl)
+
+// 🔥 LOAD MODEL (KJO MUNGONTE)
+loadGLB(modelUrl)
+
+// 🔥 DOWNLOAD BUTTON
+showViewerDownload(modelUrl, "model.glb")
+
+}
 
 },4000)
 
