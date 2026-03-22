@@ -70,7 +70,8 @@ async def silhouette(file: UploadFile = File(...)):
 
     contents = await file.read()
 
-    output = remove(contents)
+    # TEMP disable rembg for Railway
+    output = contents
 
     filename = f"silhouette_{uuid.uuid4()}.png"
     path = f"outputs/{filename}"
