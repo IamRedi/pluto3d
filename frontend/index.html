@@ -929,21 +929,11 @@ status.innerHTML="AI Processing "+data.progress+"%"
 
 progressBar.style.width=data.progress+"%"
 
-if(data.status==="SUCCEEDED"){
-
-clearInterval(interval)
-
-status.innerHTML="Model Ready"
+console.log("MODEL DATA:", data)
 
 const modelUrl = API_BASE + data.model_url
 
-loadModel(modelUrl)
-
-// 🔥 FIX DOWNLOAD
-showViewerDownload(modelUrl, "model.glb")
-
-
-}
+console.log("FINAL URL:", modelUrl)
 
 },4000)
 
