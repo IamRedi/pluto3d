@@ -58,6 +58,26 @@ async def svg_from_image(data: ImageURL):
     return {
     "svg_url": f"/outputs/svg/{filename}"
     }
-@router.post("/svg")
-def svg_test():
-    return {"msg": "SVG ROUTE WORKING"}
+
+
+from fastapi import UploadFile, File
+from rembg import remove
+import uuid
+import os
+
+@router.post("/silhouette")
+async def silhouette(file: UploadFile = File(...)):
+
+    contents = await file.read()
+
+    output = remove(contents)
+
+    filename = f"silhouette_{uuid.uuid4()}.png"
+    path = f"outputs/{filename}"
+
+    with open(path, "wb") as f:
+        f.write(output)
+
+    return {
+        "image_url": f"/outputs/{filename}"
+    }
