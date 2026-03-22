@@ -963,7 +963,13 @@ return
 
 const url = URL.createObjectURL(file)
 
-// 🔥 FAKE 3D
+// 🔥 pastro viewer para
+document.getElementById("viewer").innerHTML = `
+<div class="viewer-title">AI Viewer</div>
+<img id="svgViewer" style="display:none;">
+<button id="viewerDownload" class="viewer-download hidden"></button>
+`
+
 loadFake3D(url)
 
 }
