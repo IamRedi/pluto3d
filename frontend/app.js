@@ -2,7 +2,20 @@ const API = "https://pluto3d-production.up.railway.app/api"
 
 let uploadedImage = null
 
+async function generateSilhouette(file){
 
+  const formData = new FormData()
+  formData.append("file", file)
+
+  const res = await fetch(API + "/silhouette", {
+    method: "POST",
+    body: formData
+  })
+
+  const data = await res.json()
+
+  return API + data.image_url
+}
 // ---------------- UPLOAD ----------------
 
 async function uploadImage(){
@@ -31,7 +44,24 @@ console.log("Uploaded:", data)
 
 }
 
+async function generateFree3D(){
 
+  const fileInput = document.querySelector("#fileInput")
+  const file = fileInput.files[0]
+
+  if(!file){
+    alert("Upload image first")
+    return
+  }
+
+  const imgUrl = await generateSilhouette(file)
+
+  console.log("Silhouette:", imgUrl)
+
+  // 👉 përdor viewer ekzistues
+  loadFake3D(imgUrl)
+
+}
 // ---------------- GENERATE SVG ----------------
 
 async function generateSVG(){
@@ -136,6 +166,7 @@ a.click()
 
 document.querySelector("#uploadBtn").onclick = uploadImage
 document.querySelector("#generateBtn").onclick = generateSVG
+document.querySelector("#generateFreeBtn").onclick = generateFree3D
 document.querySelector("#generateToy").onclick = generateToy
 document.querySelector("#generateAI").onclick = generateAIPhoto
 document.querySelector("#downloadAI").onclick = downloadAI
