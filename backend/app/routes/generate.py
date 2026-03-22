@@ -21,14 +21,14 @@ def save_model(glb_url, job_id):
     folder.mkdir(parents=True, exist_ok=True)
 
     file_path = folder / "model.glb"
-
+    print("💾 SAVING TO:", file_path)  
     r = requests.get(glb_url, stream=True)
 
     with open(file_path, "wb") as f:
         for chunk in r.iter_content(chunk_size=8192):
             if chunk:
                 f.write(chunk)
-
+    print("✅ SAVED:", file_path.exists())
     return str(file_path)
 
 
@@ -126,10 +126,10 @@ def check_status(task_id: str):
         save_model(glb_url, task_id)
 
         return {
-            "status": "SUCCEEDED",
-            "progress": 100,
-            "model_url": f"/outputs/{task_id}/model.glb"
-        }
+    "status": "SUCCEEDED",
+    "progress": 100,
+    "model_url": f"/outputs/{task_id}/model.glb?ts={task_id}"
+}
 
     return {
         "status": status,
@@ -169,11 +169,13 @@ async def generate_free(req: GenerateRequest):
 
     job_id = req.job_id
 
-    folder = OUTPUT_DIR / job_id
-    folder.mkdir(parents=True, exist_ok=True)
+    job_folder = UPLOAD_DIR / job_id
 
-    # 🔥 për momentin fake model (placeholder)
+    if not job_folder.exists():
+        return {"error": "No upload"}
+
+    # 🔥 për momentin përdor një model test
     return {
         "status": "DONE",
-        "model_url": "/outputs/sample.glb"
+        "model_url": "https://modelviewer.dev/shared-assets/models/Astronaut.glb"
     }
