@@ -218,6 +218,48 @@ These are not all needed immediately, but this is the expected future shape.
 3. Prepare the app structure for auth and plans
 4. Add serious product sections like pricing, footer, and legal pages
 
+## Session Handoff
+
+Current stop point:
+
+- platform surfaces are working
+- auth preview scaffold is working
+- premium lock preview is working
+- usage limits preview is working
+- sponsor/ad loading preview is implemented for free plans
+
+Files touched in the current unfinished local step:
+
+- `AUTH_IMPLEMENTATION_PLAN.md`
+- `PROJECT_BOARD.md`
+- `frontend/auth-scaffold.js`
+- `frontend/index.html`
+- `frontend/toy-mode.js`
+
+When resuming, start with:
+
+1. test sponsor/ad loading preview in:
+   - AI
+   - SVG
+   - Toy
+   - Free 3D
+2. confirm premium preview skips sponsor loading
+3. commit and push the current local changes
+4. begin the real Supabase setup checklist
+
+Recommended next implementation after commit:
+
+1. create Supabase setup checklist
+2. prepare frontend auth client scaffold
+3. prepare backend auth/plan service scaffold
+4. then connect real Supabase session state
+
+## Key Reference Docs
+
+- `PROJECT_BOARD.md`
+- `README.md`
+- `AUTH_IMPLEMENTATION_PLAN.md`
+
 ## Beta Readiness Checklist
 
 The product is considered ready for friend testing when the items below are stable.
@@ -244,29 +286,29 @@ The product is considered ready for friend testing when the items below are stab
 
 ### Product Surface
 
-- [ ] Landing page feels serious and premium
-- [ ] Pricing section exists
+- [x] Landing/product surface exists inside the app
+- [x] Plans section exists
 - [ ] Footer exists
-- [ ] Privacy policy page exists
-- [ ] Terms page exists
-- [ ] Support/contact section exists
+- [x] Privacy policy placeholder exists
+- [x] Terms placeholder exists
+- [x] Support/contact placeholder exists
 - [ ] Beta label and tester guidance exist
 
 ### Platform Layer
 
 - [x] Auth strategy chosen
-- [ ] Login/signup UI exists
+- [x] Login/signup UI scaffold exists
 - [ ] Google login exists
-- [ ] Plan gating exists
-- [ ] Premium-only buttons are visually locked
-- [ ] Usage limits are defined
+- [x] Plan gating preview exists
+- [x] Premium-only buttons are visually locked
+- [x] Usage limits are defined in preview form
 
 ### Monetization
 
 - [ ] Stripe plan structure is defined
 - [ ] Subscription flow exists
 - [ ] Premium activation works
-- [ ] Free user loading sponsor/ad state exists
+- [x] Free user loading sponsor/ad state preview exists
 
 ## Current Sprint: Friend-Test Beta
 
@@ -328,6 +370,11 @@ Choose one of these when continuing:
    - choose stack
    - define data model
    - prepare UI entry points
+5. `Auth integration`
+   - Supabase project
+   - frontend auth client
+   - backend plan checks
+   - Stripe hookup
 
 ## Next Recommended Tasks
 

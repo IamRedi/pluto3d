@@ -29,6 +29,8 @@ async function generateToy(){
     const prompt = document.getElementById("toyPrompt").value.toLowerCase()
     const status = document.getElementById("toyStatus")
 
+    await window.showSponsorPreview("toyGeneration")
+
     status.innerHTML = "Loading local model..."
 
     const promptCategory = getToyPromptCategory(prompt)
@@ -66,6 +68,7 @@ async function generateToy(){
     return
   }
 
+  await window.showSponsorPreview("toyGeneration")
   status.innerHTML = "Generating toy..."
 
   try{

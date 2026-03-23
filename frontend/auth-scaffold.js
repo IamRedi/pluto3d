@@ -36,6 +36,29 @@ const USAGE_LIMITS = {
   }
 };
 
+const SPONSOR_PREVIEW_COPY = {
+  aiImage: {
+    kicker: "Sponsored Generation",
+    title: "Free AI image slot in progress",
+    copy: "Future free users can see a sponsor card or upgrade message here while generation runs in the background."
+  },
+  svgGeneration: {
+    kicker: "Vector Sponsor Slot",
+    title: "Preparing SVG output",
+    copy: "This is where a clean sponsor panel, partner note, or upgrade reminder can appear for free users."
+  },
+  toyGeneration: {
+    kicker: "Toy Studio Sponsor",
+    title: "Loading toy generation",
+    copy: "A short branded wait state here can help cover cost while keeping the experience premium-looking."
+  },
+  free3dGeneration: {
+    kicker: "3D Preview Sponsor",
+    title: "Creating print-ready preview",
+    copy: "Free 3D generation can later show a partner card, countdown, or premium upsell while processing."
+  }
+};
+
 function buildAuthPreviewState(mode){
   if(mode === "premium"){
     return {
@@ -147,6 +170,47 @@ function resetUsagePreview(){
   }
 }
 
+function shouldShowSponsorPreview(){
+  return getAuthPreviewState().mode !== "premium";
+}
+
+function getSponsorPreviewConfig(featureKey){
+  return SPONSOR_PREVIEW_COPY[featureKey] || {
+    kicker: "Sponsored Wait State",
+    title: "Preparing your result",
+    copy: "This is a preview of a future sponsor or ad-supported loading state for free users."
+  };
+}
+
+function showSponsorPreview(featureKey){
+  if(!shouldShowSponsorPreview()){
+    return Promise.resolve();
+  }
+
+  const overlay = document.getElementById("sponsorPreviewOverlay");
+  const kicker = document.getElementById("sponsorPreviewKicker");
+  const title = document.getElementById("sponsorPreviewTitle");
+  const copy = document.getElementById("sponsorPreviewCopy");
+
+  if(!overlay || !kicker || !title || !copy){
+    return Promise.resolve();
+  }
+
+  const config = getSponsorPreviewConfig(featureKey);
+  kicker.textContent = config.kicker;
+  title.textContent = config.title;
+  copy.textContent = config.copy;
+  overlay.classList.remove("hidden");
+
+  return new Promise((resolve) => {
+    window.clearTimeout(window.__plutoSponsorTimer);
+    window.__plutoSponsorTimer = window.setTimeout(() => {
+      overlay.classList.add("hidden");
+      resolve();
+    }, 1800);
+  });
+}
+
 function setAuthPreviewState(mode){
   const nextState = buildAuthPreviewState(mode);
   localStorage.setItem(AUTH_PREVIEW_STORAGE_KEY, JSON.stringify(nextState));
@@ -178,3 +242,5 @@ window.getUsageSnapshot = getUsageSnapshot;
 window.canUseFeature = canUseFeature;
 window.incrementUsage = incrementUsage;
 window.resetUsagePreview = resetUsagePreview;
+window.shouldShowSponsorPreview = shouldShowSponsorPreview;
+window.showSponsorPreview = showSponsorPreview;

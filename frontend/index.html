@@ -2088,13 +2088,21 @@ style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10p
 
 <br><br>
 
-<label>Shadow</label>
-<input type="range" id="shadowRange" min="0" max="100" value="20">
+<label>Detail</label>
+<select id="svgDetail">
+<option value="less">Less Detail</option>
+<option value="normal" selected>Normal</option>
+<option value="more">More Detail</option>
+</select>
 
 <br><br>
 
-<label>Contrast</label>
-<input type="range" id="contrastRange" min="0" max="100" value="50">
+<label>Background</label>
+<select id="svgCleanBackground">
+<option value="off" selected>Off</option>
+<option value="soft">Soft Clean</option>
+<option value="strong">Strong Clean</option>
+</select>
 
 <br><br>
 
@@ -3228,14 +3236,23 @@ initializeTheme()
 initializeProductRail()
 syncAuthPreviewUI()
 
-async function generateSVG(){
+document.getElementById("svgDetail")?.addEventListener("change", triggerSvgAutoRegenerate)
+document.getElementById("svgCleanBackground")?.addEventListener("change", triggerSvgAutoRegenerate)
 
-if(!canUseFeature("svgGeneration")){
+let svgAutoRegenerateTimer = null
+
+async function generateSVG(options = {}){
+const skipUsageCheck = options.skipUsageCheck === true
+const skipUsageIncrement = options.skipUsageIncrement === true
+
+if(!skipUsageCheck && !canUseFeature("svgGeneration")){
 openUsageLimitPrompt("svgGeneration")
 return
 }
 
 const file = document.getElementById("svgInput").files[0]
+const detail = document.getElementById("svgDetail").value
+const cleanBackground = document.getElementById("svgCleanBackground").value
 
 if(!file){
 alert("Upload image first")
@@ -3244,6 +3261,8 @@ return
 
 const form = new FormData()
 form.append("file",file)
+form.append("detail", detail)
+form.append("clean_background", cleanBackground)
 
 const res = await fetch(API_BASE + "/api/svg",{
 method:"POST",
@@ -3263,7 +3282,9 @@ return
 }
 
 const svgUrl = API_BASE + data.svg_url
+if(!skipUsageIncrement){
 incrementUsage("svgGeneration")
+}
 
 /* SHOW SVG */
 
@@ -3287,14 +3308,26 @@ svgViewer.style.filter = "invert(1) brightness(2)"
 
 
 const download = document.getElementById("downloadSVG")
+download.href = svgUrl
+download.download = `vector-${detail}.svg`
+download.style.display = "inline-block"
 
 }
 
 
 
-async function convertToSVG(){
+async function convertToSVG(options = {}){
+const skipUsageCheck = options.skipUsageCheck === true
+const skipUsageIncrement = options.skipUsageIncrement === true
 
 const viewer = document.getElementById("svgViewer")
+const detail = document.getElementById("svgDetail").value
+const cleanBackground = document.getElementById("svgCleanBackground").value
+
+if(!skipUsageCheck && !canUseFeature("svgGeneration")){
+openUsageLimitPrompt("svgGeneration")
+return
+}
 
 if(!viewer.src){
 alert("Generate or upload image first")
@@ -3309,6 +3342,8 @@ const blob = await response.blob()
 
 const form = new FormData()
 form.append("file", blob, "image.png")
+form.append("detail", detail)
+form.append("clean_background", cleanBackground)
 
 const uploadRes = await fetch(API_BASE + "/api/svg",{
 method:"POST",
@@ -3323,6 +3358,9 @@ return
 }
 
 const svgUrl = API_BASE + data.svg_url
+if(!skipUsageIncrement){
+incrementUsage("svgGeneration")
+}
 
 viewer.src = svgUrl
 viewer.style.display="block"
@@ -3330,8 +3368,14 @@ viewer.style.filter = "invert(1) brightness(2)"
 setCurrentViewerAsset({
   type:"svg",
   url:svgUrl,
-  filename:"converted.svg"
+  filename:`converted-${detail}.svg`
 })
+
+showViewerDownload(svgUrl, `converted-${detail}.svg`)
+const svgDownload = document.getElementById("downloadSVG")
+svgDownload.href = svgUrl
+svgDownload.download = `converted-${detail}.svg`
+svgDownload.style.display = "inline-block"
 
 
 return
@@ -3344,7 +3388,9 @@ headers:{
 "Content-Type":"application/json"
 },
 body:JSON.stringify({
-image_url: viewer.src.split("?")[0]
+image_url: viewer.src.split("?")[0],
+ detail,
+ clean_background: cleanBackground
 })
 })
 
@@ -3356,6 +3402,9 @@ return
 }
 
 const svgUrl = API_BASE + data.svg_url
+if(!skipUsageIncrement){
+incrementUsage("svgGeneration")
+}
 
 viewer.src = svgUrl
 viewer.style.display="block"
@@ -3363,12 +3412,37 @@ viewer.style.filter = "invert(1) brightness(2)"
 setCurrentViewerAsset({
   type:"svg",
   url:svgUrl,
-  filename:"converted.svg"
+  filename:`converted-${detail}.svg`
 })
 
 // 🔥 FIX DOWNLOAD
-showViewerDownload(svgUrl, "converted.svg")
+showViewerDownload(svgUrl, `converted-${detail}.svg`)
+const svgDownload = document.getElementById("downloadSVG")
+svgDownload.href = svgUrl
+svgDownload.download = `converted-${detail}.svg`
+svgDownload.style.display = "inline-block"
 
+}
+
+function triggerSvgAutoRegenerate(){
+clearTimeout(svgAutoRegenerateTimer)
+svgAutoRegenerateTimer = setTimeout(async () => {
+  const localSvgFile = document.getElementById("svgInput")?.files?.[0]
+  const viewer = document.getElementById("svgViewer")
+
+  try{
+    if(localSvgFile){
+      await generateSVG({ skipUsageCheck:true, skipUsageIncrement:true })
+      return
+    }
+
+    if(viewer?.src){
+      await convertToSVG({ skipUsageCheck:true, skipUsageIncrement:true })
+    }
+  }catch(error){
+    console.error("SVG auto-regenerate failed", error)
+  }
+}, 240)
 }
 /* ---------------- AI PHOTO ---------------- */
 
