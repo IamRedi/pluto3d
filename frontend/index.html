@@ -669,6 +669,16 @@ body{
 overflow-x:hidden;
 overflow-y:auto;
 }
+.studio-overlay{
+top:12px;
+left:12px;
+right:12px;
+}
+
+.studio-modal{
+width:calc(100vw - 24px);
+max-height:calc(100dvh - 24px);
+}
 /* 🔥 FIX VIEWER SHFAQJE */
 .viewer{
 display:block !important;
@@ -814,13 +824,12 @@ box-shadow:
 
 .studio-overlay{
 position:fixed;
-inset:0;
+top:18px;
+left:190px;
 display:flex;
-align-items:center;
-justify-content:center;
-padding:4vh 4vw;
-background:rgba(2,6,23,0.56);
-backdrop-filter:blur(14px);
+align-items:flex-start;
+justify-content:flex-start;
+pointer-events:none;
 z-index:30;
 }
 
@@ -829,28 +838,35 @@ display:none;
 }
 
 .studio-modal{
-width:min(1400px, 92vw);
-height:min(78vh, 900px);
-border-radius:32px;
+width:min(460px, calc(100vw - 240px));
+max-height:calc(100dvh - 36px);
+border-radius:28px;
 overflow:hidden;
-display:grid;
-grid-template-columns:340px 1fr;
+pointer-events:auto;
 background:
 linear-gradient(180deg, rgba(8,14,29,0.94), rgba(8,14,29,0.86));
 border:1px solid rgba(125,211,252,0.14);
 box-shadow:
 inset 0 1px 0 rgba(255,255,255,0.06),
-0 40px 120px rgba(2,6,23,0.52);
+0 30px 90px rgba(2,6,23,0.48);
 }
 
 .studio-sidebar{
-padding:28px;
+padding:24px;
 background:
 linear-gradient(180deg, rgba(9,16,34,0.96), rgba(8,14,29,0.88));
-border-right:1px solid rgba(125,211,252,0.12);
 display:flex;
 flex-direction:column;
 gap:18px;
+max-height:calc(100dvh - 36px);
+overflow-y:auto;
+overflow-x:hidden;
+scrollbar-width:none;
+-ms-overflow-style:none;
+}
+
+.studio-sidebar::-webkit-scrollbar{
+display:none;
 }
 
 .studio-modal-title{
@@ -930,6 +946,33 @@ font-size:12px;
 color:#7dd3fc;
 }
 
+.studio-meta{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:10px;
+}
+
+.studio-meta-item{
+padding:12px 14px;
+border-radius:16px;
+background:rgba(255,255,255,0.03);
+border:1px solid rgba(125,211,252,0.1);
+}
+
+.studio-meta-label{
+font-size:11px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:#7fa6ba;
+margin-bottom:6px;
+}
+
+.studio-meta-value{
+font-size:15px;
+font-weight:600;
+color:#eefcff;
+}
+
 .studio-slider{
 width:100%;
 accent-color:var(--cyan);
@@ -960,18 +1003,6 @@ gap:10px;
 margin-top:0;
 }
 
-.studio-canvas{
-position:relative;
-padding:28px;
-display:flex;
-flex-direction:column;
-gap:20px;
-background:
-radial-gradient(circle at 20% 18%, rgba(34,211,238,0.08), transparent 28%),
-radial-gradient(circle at 78% 18%, rgba(168,85,247,0.16), transparent 34%),
-linear-gradient(180deg, rgba(7,13,28,0.74), rgba(7,13,28,0.92));
-}
-
 .studio-topbar{
 display:flex;
 align-items:center;
@@ -992,56 +1023,6 @@ color:#c8f8ff;
 width:auto;
 min-width:120px;
 margin-top:0;
-}
-
-.studio-stage{
-flex:1;
-border-radius:28px;
-border:1px solid rgba(125,211,252,0.12);
-background:
-linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
-radial-gradient(circle at center, rgba(34,211,238,0.08), transparent 62%),
-linear-gradient(180deg, rgba(3,7,18,0.56), rgba(3,7,18,0.82));
-background-size:40px 40px, 40px 40px, cover, cover;
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
-position:relative;
-overflow:hidden;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.studio-stage::before{
-content:"Toy Studio Preview";
-position:absolute;
-top:18px;
-left:22px;
-font-size:12px;
-letter-spacing:0.08em;
-text-transform:uppercase;
-color:#86a8bd;
-}
-
-.studio-stage-note{
-max-width:420px;
-text-align:center;
-color:#9eb2c6;
-font-size:14px;
-line-height:1.7;
-padding:0 20px;
-}
-
-@media (max-width: 1100px){
-.studio-modal{
-grid-template-columns:1fr;
-height:min(84vh, 960px);
-}
-
-.studio-sidebar{
-border-right:none;
-border-bottom:1px solid rgba(125,211,252,0.12);
-}
 }
 @keyframes neuralMove{
 from{background-position:0 0;}
@@ -1325,15 +1306,31 @@ filter:none;
 <div id="toyStudioOverlay" class="studio-overlay hidden">
   <div class="studio-modal">
     <div class="studio-sidebar">
-      <div class="studio-modal-title">Toy Studio</div>
-      <div class="studio-modal-subtitle">
-        Shape, style, and prepare collectible toys with a premium editing workspace.
+      <div class="studio-topbar">
+        <div>
+          <div class="studio-modal-title">Toy Studio</div>
+          <div class="studio-modal-subtitle">
+            Shape, style, and prepare collectible toys with a premium editing workspace.
+          </div>
+        </div>
+        <button type="button" class="studio-close" onclick="closeToyStudio()">Close</button>
       </div>
 
       <div class="studio-chip-row">
         <div class="studio-chip">Big Head</div>
         <div class="studio-chip">Chibi</div>
         <div class="studio-chip">Collector</div>
+      </div>
+
+      <div class="studio-meta">
+        <div class="studio-meta-item">
+          <div class="studio-meta-label">Mesh Parts</div>
+          <div class="studio-meta-value" id="toyStudioMeshCount">0</div>
+        </div>
+        <div class="studio-meta-item">
+          <div class="studio-meta-label">Edit Mode</div>
+          <div class="studio-meta-value" id="toyStudioEditMode">Idle</div>
+        </div>
       </div>
 
       <div class="studio-card">
@@ -1402,6 +1399,22 @@ filter:none;
             value="1"
           >
         </div>
+
+        <div class="studio-control-group">
+          <div class="studio-control-label">
+            <span>Tilt</span>
+            <span class="studio-control-value" id="tiltValue">0°</span>
+          </div>
+          <input
+            class="studio-slider"
+            id="tiltControl"
+            type="range"
+            min="-12"
+            max="12"
+            step="1"
+            value="0"
+          >
+        </div>
       </div>
 
       <div class="studio-card">
@@ -1415,20 +1428,6 @@ filter:none;
       <div class="studio-actions">
         <button type="button" onclick="applyToyStudioControls()">Apply Style</button>
         <button type="button" class="btn-premium" onclick="resetToyStudioStyle()">Reset</button>
-      </div>
-    </div>
-
-    <div class="studio-canvas">
-      <div class="studio-topbar">
-        <h2>Floating Toy Workspace</h2>
-        <button type="button" class="studio-close" onclick="closeToyStudio()">Close Studio</button>
-      </div>
-
-      <div class="studio-stage">
-        <div class="studio-stage-note">
-          The first style controls are now active. In the next step we will bring the live
-          model preview directly into this workspace for real-time studio editing.
-        </div>
       </div>
     </div>
   </div>
