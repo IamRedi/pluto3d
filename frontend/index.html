@@ -2522,6 +2522,11 @@ showViewerDownload(modelUrl, "model.glb")
 
 async function generateFree3D(){
 
+if(!canUseFeature("free3dGeneration")){
+openUsageLimitPrompt("free3dGeneration")
+return
+}
+
 const fileInput = document.querySelector("#fileInput")
 const file = fileInput.files[0]
 const status = document.getElementById("status")
@@ -2557,6 +2562,7 @@ const stlUrl = await createPrintReadyStl(testModel.url, testModel.filename)
 
 loadSTL(stlUrl, "free-test-print.stl")
 showViewerDownload(stlUrl, "free-test-print.stl")
+incrementUsage("free3dGeneration")
 progressBar.style.width = "100%"
 status.innerHTML = "Print-ready STL generated from test model."
 }catch(err){
@@ -2731,6 +2737,12 @@ const currentPlan = authState.mode === "premium"
   : authState.mode === "free"
     ? "Free Account"
     : "Guest Beta"
+const limits = {
+  aiImage: getUsageLimit("aiImage"),
+  svgGeneration: getUsageLimit("svgGeneration"),
+  toyGeneration: getUsageLimit("toyGeneration"),
+  free3dGeneration: getUsageLimit("free3dGeneration")
+}
 
 return `
   <div class="platform-surface-card wide">
@@ -2779,6 +2791,12 @@ return `
     <div class="platform-surface-card-label">Platform Logic</div>
     <div class="platform-surface-card-title">How plans connect to the product</div>
     <div class="platform-surface-card-copy">The next implementation step is to connect account roles, usage limits, premium locks, Supabase Auth, and Stripe so these plan levels become real.</div>
+    <ul class="platform-surface-list">
+      <li>AI image preview limit: ${limits.aiImage === null ? "Unlimited" : limits.aiImage}</li>
+      <li>SVG preview limit: ${limits.svgGeneration === null ? "Unlimited" : limits.svgGeneration}</li>
+      <li>Toy preview limit: ${limits.toyGeneration === null ? "Unlimited" : limits.toyGeneration}</li>
+      <li>Free 3D preview limit: ${limits.free3dGeneration === null ? "Unlimited" : limits.free3dGeneration}</li>
+    </ul>
   </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Subscriber UX</div>
@@ -2966,6 +2984,7 @@ const currentPlan = authState.mode === "premium"
   : authState.mode === "free"
     ? "Free Account"
     : "Guest Beta"
+const usage = getUsageSnapshot()
 
 return `
   <div class="platform-surface-card wide">
@@ -2979,8 +2998,8 @@ return `
         <div class="surface-stat-label">Plan Surface</div>
       </div>
       <div class="surface-stat">
-        <div class="surface-stat-value">0</div>
-        <div class="surface-stat-label">Saved Jobs</div>
+        <div class="surface-stat-value">${usage.aiImage + usage.svgGeneration + usage.toyGeneration + usage.free3dGeneration}</div>
+        <div class="surface-stat-label">Preview Actions</div>
       </div>
     </div>
   </div>
@@ -2996,6 +3015,15 @@ return `
     <div class="platform-surface-card-label">History</div>
     <div class="platform-surface-card-title">Saved generations will appear here</div>
     <div class="platform-surface-card-copy">Once login is active, users should be able to revisit their image generations, toy edits, SVG exports, and print-ready files.</div>
+    <ul class="platform-surface-list">
+      <li>AI image previews used: ${usage.aiImage}</li>
+      <li>SVG previews used: ${usage.svgGeneration}</li>
+      <li>Toy previews used: ${usage.toyGeneration}</li>
+      <li>Free 3D previews used: ${usage.free3dGeneration}</li>
+    </ul>
+    <div class="surface-actions">
+      <button type="button" onclick="resetUsagePreview()">Reset Preview Usage</button>
+    </div>
   </div>
 `
 }
@@ -3034,6 +3062,46 @@ if(body){
       </div>
     </div>
   `)
+}
+}
+
+function getUsageLabel(featureKey){
+const labels = {
+  aiImage: "AI image generation",
+  svgGeneration: "SVG generation",
+  toyGeneration: "Toy generation",
+  free3dGeneration: "Free 3D generation"
+}
+
+return labels[featureKey] || featureKey
+}
+
+function openUsageLimitPrompt(featureKey){
+openPlatformSurface("plans")
+const body = document.getElementById("platformSurfaceBody")
+if(body){
+  body.insertAdjacentHTML("afterbegin", `
+    <div class="platform-surface-card wide" style="margin-bottom:16px;">
+      <div class="platform-surface-card-label">Usage Limit Reached</div>
+      <div class="platform-surface-card-title">${getUsageLabel(featureKey)} is currently limited in this preview state</div>
+      <div class="platform-surface-card-copy">
+        Your current preview mode is <strong>${getAuthPreviewState().planLabel}</strong>. Real plan logic will later use Supabase account state and backend checks.
+      </div>
+    </div>
+  `)
+}
+}
+
+function runUsageLimitedAction(featureKey, action){
+if(!canUseFeature(featureKey)){
+  openUsageLimitPrompt(featureKey)
+  return
+}
+
+incrementUsage(featureKey)
+
+if(typeof action === "function"){
+  action()
 }
 }
 
@@ -3162,6 +3230,11 @@ syncAuthPreviewUI()
 
 async function generateSVG(){
 
+if(!canUseFeature("svgGeneration")){
+openUsageLimitPrompt("svgGeneration")
+return
+}
+
 const file = document.getElementById("svgInput").files[0]
 
 if(!file){
@@ -3190,6 +3263,7 @@ return
 }
 
 const svgUrl = API_BASE + data.svg_url
+incrementUsage("svgGeneration")
 
 /* SHOW SVG */
 
@@ -3300,6 +3374,11 @@ showViewerDownload(svgUrl, "converted.svg")
 
 async function generateAIPhoto(){
 
+if(!canUseFeature("aiImage")){
+openUsageLimitPrompt("aiImage")
+return
+}
+
 const prompt = document.getElementById("aiPrompt").value.trim()
 const style = document.getElementById("aiStyle").value
 const fileInput = document.getElementById("aiInput")
@@ -3357,6 +3436,7 @@ return
 const viewer = document.getElementById("svgViewer")
 
 viewer.src = data.image_url
+incrementUsage("aiImage")
 showViewerDownload(data.image_url, "ai_image.png")
 viewer.style.display="block"
 viewer.style.filter = "none"

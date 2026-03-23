@@ -18,6 +18,11 @@ function getToyPromptCategory(prompt){
 }
 
 async function generateToy(){
+  if(!window.canUseFeature("toyGeneration")){
+    window.openUsageLimitPrompt("toyGeneration")
+    return
+  }
+
   const mode = document.getElementById("toyMode").value
 
   if(mode === "test"){
@@ -31,6 +36,7 @@ async function generateToy(){
     if(promptCategory === "car"){
       loadGLB(window.PLUTO_TEST_MODELS.car.url, window.PLUTO_TEST_MODELS.car.filename)
       showViewerDownload(window.PLUTO_TEST_MODELS.car.url, window.PLUTO_TEST_MODELS.car.filename)
+      window.incrementUsage("toyGeneration")
       status.innerHTML = "Car test model loaded."
       return
     }
@@ -38,12 +44,14 @@ async function generateToy(){
     if(promptCategory === "robot"){
       loadGLB(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
       showViewerDownload(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
+      window.incrementUsage("toyGeneration")
       status.innerHTML = "Robot test model loaded."
       return
     }
 
     loadGLB(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
     showViewerDownload(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
+    window.incrementUsage("toyGeneration")
     status.innerHTML = "Default robot test model loaded."
     return
   }
@@ -75,6 +83,8 @@ async function generateToy(){
 
     const data = await res.json()
 
+    window.incrementUsage("toyGeneration")
+
     if(!data.glb_url && !data.stl_url){
       status.innerHTML = "Failed"
       return
@@ -89,6 +99,7 @@ async function generateToy(){
 
       loadGLB(glbUrl, "toy.glb")
       showViewerDownload(glbUrl, "toy.glb")
+      window.incrementUsage("toyGeneration")
       return
     }
 
@@ -97,6 +108,7 @@ async function generateToy(){
 
       loadSTL(stlUrl, "toy.stl")
       showViewerDownload(stlUrl, "toy.stl")
+      window.incrementUsage("toyGeneration")
       return
     }
 
