@@ -801,7 +801,11 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <br><br>
 
 <label>Template</label>
-
+<label>Mode</label>
+<select id="toyMode">
+  <option value="test">Test (local models)</option>
+  <option value="api">API (real)</option>
+</select>
 <select id="toyTemplate">
 <option value="auto">Auto</option>
 <option value="car">Car</option>
@@ -821,7 +825,21 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 
 <div class="status" id="toyStatus"></div>
 <div id="toyGallery" class="preview"></div>
+<div style="margin-top:25px;">
 
+<div class="section-title">Print Mode</div>
+
+<label>Scale</label>
+<input type="range" id="scaleSlider" min="0.2" max="3" step="0.1" value="1">
+
+<label>Rotate Y</label>
+<input type="range" id="rotateSlider" min="0" max="360" value="0">
+
+<button onclick="applyTransform()">Apply Transform</button>
+<button class="btn-premium" onclick="fixCurrentModelForPrint()">Fix for Print</button>
+<div class="status" id="printStatus">Load a GLB model to enable print fix.</div>
+
+</div>
 </div>
 </div>
 <!-- VIEWER -->
@@ -853,14 +871,111 @@ filter:none;
 
 <script>
 
-const API_BASE = "https://pluto3d-production.up.railway.app"
+const API_BASE = ["127.0.0.1", "localhost"].includes(window.location.hostname)
+  ? "http://127.0.0.1:8000"
+  : "https://pluto3d-production.up.railway.app"
 
 const input = document.getElementById("fileInput")
 const preview = document.getElementById("preview")
 const status = document.getElementById("status")
 const progressBar = document.getElementById("progressBar")
+const printStatus = document.getElementById("printStatus")
 
 let currentJobId=null
+let currentViewerAsset = null
+
+function setCurrentViewerAsset(asset){
+currentViewerAsset = asset
+
+if(!printStatus) return
+
+if(!asset){
+  printStatus.innerHTML = "Load a GLB model to enable print fix."
+  return
+}
+
+if(asset.type === "glb"){
+  printStatus.innerHTML = "GLB model ready. Click Fix for Print to create STL."
+  return
+}
+
+if(asset.type === "stl"){
+  printStatus.innerHTML = "Print-ready STL loaded. You can download it now."
+  return
+}
+
+printStatus.innerHTML = "Print fix works only with GLB models."
+}
+
+function resolveAssetUrl(url){
+if(url.startsWith("http://") || url.startsWith("https://") || url.startsWith("blob:")){
+  return url
+}
+
+return new URL(url, window.location.href).href
+}
+
+async function fixCurrentModelForPrint(){
+
+if(!currentViewerAsset || currentViewerAsset.type !== "glb"){
+  alert("Load a GLB model first")
+  return
+}
+
+printStatus.innerHTML = "Uploading model to print fixer..."
+
+try{
+
+  const sourceRes = await fetch(currentViewerAsset.url)
+
+  if(!sourceRes.ok){
+    throw new Error("Could not read current GLB model")
+  }
+
+  const glbBlob = await sourceRes.blob()
+  const form = new FormData()
+  form.append("file", glbBlob, currentViewerAsset.filename || "model.glb")
+
+  const res = await fetch(API_BASE + "/api/print-fix",{
+    method:"POST",
+    body:form
+  })
+
+  const raw = await res.text()
+  let data = null
+
+  try{
+    data = JSON.parse(raw)
+  }catch{
+    data = null
+  }
+
+  if(!res.ok){
+    throw new Error((data && data.message) || raw || "Backend request failed")
+  }
+
+  if(!data || data.status !== "success" || !data.file){
+    throw new Error((data && data.message) || "Print fix failed")
+  }
+
+  const stlUrl = API_BASE + data.file
+
+  loadSTL(stlUrl, "print-ready.stl")
+  showViewerDownload(stlUrl, "print-ready.stl")
+  printStatus.innerHTML = "Print fix complete. STL is ready."
+
+}catch(err){
+
+  console.error("Print fix error:", err)
+  printStatus.innerHTML = "Print fix failed."
+  const msg = err.message && err.message.includes("Failed to fetch")
+    ? "Backend is not running on http://127.0.0.1:8000. Start FastAPI server first."
+    : (err.message || "Print fix failed")
+  alert(msg)
+
+}
+
+}
 
 
 async function upload(){
@@ -974,6 +1089,11 @@ document.getElementById("viewer").innerHTML = `
 
 loadFake3D(url)
 showViewerDownload(url, "preview.png")
+setCurrentViewerAsset({
+  type:"image",
+  url,
+  filename:"preview.png"
+})
 }
 
 
@@ -1047,20 +1167,7 @@ camera.position.z=3
 const controls=new THREE.OrbitControls(camera,renderer.domElement)
 
 function loadModel(url){
-
-const loader=new THREE.GLTFLoader()
-
-loader.load(url,(gltf)=>{
-const aiCore = document.querySelector(".ai-core")
-if(aiCore) aiCore.style.display = "none"
-while(scene.children.length > 0){
-scene.remove(scene.children[0])
-}
-
-scene.add(light)
-scene.add(gltf.scene)
-
-})
+loadGLB(url, "model.glb")
 
 }
 
@@ -1110,6 +1217,11 @@ const svgViewer = document.getElementById("svgViewer")
 
 svgViewer.src = svgUrl
 showViewerDownload(svgUrl, "vector.svg")
+setCurrentViewerAsset({
+  type:"svg",
+  url:svgUrl,
+  filename:"vector.svg"
+})
 // pastro 3D para SVG
 while(scene.children.length > 0){
 scene.remove(scene.children[0])
@@ -1161,6 +1273,11 @@ const svgUrl = API_BASE + data.svg_url
 viewer.src = svgUrl
 viewer.style.display="block"
 viewer.style.filter = "invert(1) brightness(2)"
+setCurrentViewerAsset({
+  type:"svg",
+  url:svgUrl,
+  filename:"converted.svg"
+})
 
 
 return
@@ -1189,6 +1306,11 @@ const svgUrl = API_BASE + data.svg_url
 viewer.src = svgUrl
 viewer.style.display="block"
 viewer.style.filter = "invert(1) brightness(2)"
+setCurrentViewerAsset({
+  type:"svg",
+  url:svgUrl,
+  filename:"converted.svg"
+})
 
 // 🔥 FIX DOWNLOAD
 showViewerDownload(svgUrl, "converted.svg")
@@ -1257,6 +1379,11 @@ viewer.src = data.image_url
 showViewerDownload(data.image_url, "ai_image.png")
 viewer.style.display="block"
 viewer.style.filter = "none"
+setCurrentViewerAsset({
+  type:"image",
+  url:data.image_url,
+  filename:"ai_image.png"
+})
 }catch(err){
 
 console.log(err)
@@ -1494,7 +1621,28 @@ text.style.display = "none"
 }
 
 async function generateToy(){
+const mode = document.getElementById("toyMode").value
 
+if(mode === "test"){
+
+  const prompt = document.getElementById("toyPrompt").value.toLowerCase()
+  const status = document.getElementById("toyStatus")
+
+  status.innerHTML = "Loading local model..."
+
+  let model = "models/Robot.glb"
+
+  if(prompt.includes("car")) model = "models/f1car.glb"
+  if(prompt.includes("bmw")) model = "models/M3 E46.glb"
+  if(prompt.includes("truck")) model = "models/Lkw p300.glb"
+
+  loadGLB(model, "test.glb")
+  showViewerDownload(model, "test.glb")
+
+  status.innerHTML = "Test model loaded ✅"
+
+  return
+}
 const prompt = document.getElementById("toyPrompt").value
 const template = document.getElementById("toyTemplate").value
 const size = document.getElementById("toySize").value
@@ -1539,7 +1687,7 @@ if(data.glb_url){
     ? data.glb_url
     : API_BASE + data.glb_url
 
-  loadGLB(glbUrl)
+  loadGLB(glbUrl, "toy.glb")
 
   showViewerDownload(glbUrl, "toy.glb")
 
@@ -1548,7 +1696,7 @@ else if(data.stl_url){
 
   const stlUrl = API_BASE + data.stl_url
 
-  loadSTL(stlUrl)
+  loadSTL(stlUrl, "toy.stl")
 
   showViewerDownload(stlUrl, "toy.stl")
 
@@ -1568,11 +1716,15 @@ status.innerHTML = "Error"
 }
 // ---------------- GLOBAL STL LOADER ----------------
 
-function loadSTL(url){
+function loadSTL(url, filename="model.stl"){
 
 const loader = new THREE.STLLoader()
 
 loader.load(url,(geometry)=>{
+const svgViewer = document.getElementById("svgViewer")
+if(svgViewer) svgViewer.style.display = "none"
+const fakeWrap = document.getElementById("fake3dWrap")
+if(fakeWrap) fakeWrap.remove()
 
 const aiCore = document.querySelector(".ai-core")
 if(aiCore) aiCore.style.display = "none"
@@ -1590,6 +1742,7 @@ roughness: 0.4
 })
 
 const mesh = new THREE.Mesh(geometry, material)
+window.currentModel = mesh
 
 // center model
 geometry.center()
@@ -1607,15 +1760,25 @@ mesh.scale.setScalar(scale)
 camera.position.set(0, 0, 3)
 controls.update()
 
+setCurrentViewerAsset({
+  type:"stl",
+  url:resolveAssetUrl(url),
+  filename
+})
+
 })
 
 }
-function loadGLB(url){
+function loadGLB(url, filename="model.glb"){
 
 const loader = new THREE.GLTFLoader()
 
 loader.load(url,(gltf)=>{
 console.log("GLB loaded:", url)
+const svgViewer = document.getElementById("svgViewer")
+if(svgViewer) svgViewer.style.display = "none"
+const fakeWrap = document.getElementById("fake3dWrap")
+if(fakeWrap) fakeWrap.remove()
 
 // 🔥 CLEAR SCENE
 while(scene.children.length > 0){
@@ -1626,10 +1789,18 @@ scene.add(light)
 
 const model = gltf.scene
 
+window.currentModel = model
 // 🔥 CENTER MODEL
 const box = new THREE.Box3().setFromObject(model)
+
+// CENTER X & Z
 const center = box.getCenter(new THREE.Vector3())
-model.position.sub(center)
+model.position.x -= center.x
+model.position.z -= center.z
+
+// 🔥 GROUND Y (UL MODELIN NË TOKË)
+const minY = box.min.y
+model.position.y -= minY
 
 // 🔥 SCALE MODEL
 const size = box.getSize(new THREE.Vector3()).length()
@@ -1642,6 +1813,12 @@ scene.add(model)
 // 🔥 FIX CAMERA
 camera.position.set(0, 0, 3)
 controls.update()
+
+setCurrentViewerAsset({
+  type:"glb",
+  url:resolveAssetUrl(url),
+  filename
+})
 
 }, undefined, (error)=>{
 console.error("GLB load error:", error)
@@ -1772,6 +1949,12 @@ while(scene.children.length > 0){
 scene.remove(scene.children[0])
 }
 scene.add(light)
+window.currentModel = null
+setCurrentViewerAsset({
+  type:"image",
+  url:imageUrl,
+  filename:"preview.png"
+})
 
 viewer.innerHTML += `
   <div id="fake3dWrap" style="
@@ -1813,6 +1996,23 @@ window.fakeInterval = setInterval(()=>{
 document.querySelector("#generateFreeBtn")
   .addEventListener("click", generateFree3D)
 
+function applyTransform(){
+
+if(!window.currentModel){
+alert("Load model first")
+return
+}
+
+const scale = document.getElementById("scaleSlider").value
+const rot = document.getElementById("rotateSlider").value
+
+// SCALE
+window.currentModel.scale.set(scale, scale, scale)
+
+// ROTATE
+window.currentModel.rotation.y = THREE.MathUtils.degToRad(rot)
+
+}
 </script>
 <audio id="orbSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 </body>

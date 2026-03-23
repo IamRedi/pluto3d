@@ -60,9 +60,11 @@ from app.routes.ai_photo import router as ai_router
 app.include_router(ai_router)
 
 from app.routes import toy
-
+from app.routes import print_fix
+app.include_router(print_fix.router)
 app.include_router(toy.router, prefix="/api")
 
 import os
 
 port = int(os.environ.get("PORT", 8000))
+

@@ -1,0 +1,14 @@
+.vscode/
+AGENTS.md
+
+__pycache__/
+*.py[cod]
+
+backend/venv/
+backend/uploads/
+backend/outputs/
+backend/*.pt
+backend/.env
+
+venv/
+.venv/
