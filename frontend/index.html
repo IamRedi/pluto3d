@@ -868,12 +868,12 @@ filter:none;
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+<script src="runtime-config.js"></script>
+<script src="test-models.js"></script>
 
 <script>
 
-const API_BASE = ["127.0.0.1", "localhost"].includes(window.location.hostname)
-  ? "http://127.0.0.1:8000"
-  : "https://pluto3d-production.up.railway.app"
+const API_BASE = window.PLUTO_API_BASE
 
 const input = document.getElementById("fileInput")
 const preview = document.getElementById("preview")
@@ -1628,16 +1628,16 @@ if(mode === "test"){
   const prompt = document.getElementById("toyPrompt").value.toLowerCase()
   const status = document.getElementById("toyStatus")
 
+  // Keep test mode intentionally small and predictable.
+  // We only ship two local reference models for QA and demo flows.
   status.innerHTML = "Loading local model..."
 
-  let model = "models/Robot.glb"
+  const testModel = prompt.includes("car")
+    ? window.PLUTO_TEST_MODELS.car
+    : window.PLUTO_TEST_MODELS.default
 
-  if(prompt.includes("car")) model = "models/f1car.glb"
-  if(prompt.includes("bmw")) model = "models/M3 E46.glb"
-  if(prompt.includes("truck")) model = "models/Lkw p300.glb"
-
-  loadGLB(model, "test.glb")
-  showViewerDownload(model, "test.glb")
+  loadGLB(testModel.url, testModel.filename)
+  showViewerDownload(testModel.url, testModel.filename)
 
   status.innerHTML = "Test model loaded ✅"
 

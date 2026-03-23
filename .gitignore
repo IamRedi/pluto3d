@@ -1,5 +1,6 @@
 .vscode/
 AGENTS.md
+TripoSR/
 
 __pycache__/
 *.py[cod]
