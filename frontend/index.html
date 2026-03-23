@@ -1922,10 +1922,10 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <div class="panel-footer">
   <div>Pluto3D Studio Beta · AI-assisted creation for simple 3D workflows.</div>
   <div class="panel-footer-links">
-    <a href="#" class="panel-footer-link">Pricing Soon</a>
-    <a href="#" class="panel-footer-link">Privacy Soon</a>
-    <a href="#" class="panel-footer-link">Terms Soon</a>
-    <a href="#" class="panel-footer-link">Support Soon</a>
+    <a href="#" class="panel-footer-link" onclick="openPlatformSurface('plans'); return false;">Plans</a>
+    <a href="#" class="panel-footer-link" onclick="openPlatformSurface('privacy'); return false;">Privacy</a>
+    <a href="#" class="panel-footer-link" onclick="openPlatformSurface('terms'); return false;">Terms</a>
+    <a href="#" class="panel-footer-link" onclick="openPlatformSurface('support'); return false;">Support</a>
   </div>
 </div>
 </div>
@@ -2344,22 +2344,31 @@ cards: [
 },
 plans: {
 title: "Plans",
-subtitle: "This will define the product structure for Guest, Logged-in Free, and Premium users.",
+subtitle: "The plans surface defines how Pluto3D will work for guests, logged-in free users, and premium subscribers.",
 cards: [
   {
-    label: "Free",
-    title: "Starter access",
-    copy: "Toy test mode, SVG, AI image tools, and simple beta access for exploration."
+    label: "Guest",
+    title: "Open access entry",
+    copy: "Visitors can explore the workspace, try lightweight toy and SVG tools, and understand the product before signing in.",
+    wide: false
+  },
+  {
+    label: "Logged-in Free",
+    title: "Free account layer",
+    copy: "Users who sign in will later get more limits, better history, toy studio access, and ad-supported generation flows.",
+    wide: false
   },
   {
     label: "Premium",
-    title: "Advanced 3D access",
-    copy: "Premium 3D generation, fewer limits, no ads during generation, and faster workflow access."
+    title: "Subscriber workflow",
+    copy: "Premium will unlock real 3D generation, better limits, faster access, cleaner generation flow, and no ad interruptions.",
+    wide: false
   },
   {
-    label: "Roadmap",
-    title: "Subscription-ready surface",
-    copy: "This section will later connect to Stripe, plan badges, usage limits, and upgrade prompts."
+    label: "Subscriber Path",
+    title: "What comes next",
+    copy: "The next step is to connect this plans surface to account roles, Stripe subscriptions, premium-only controls, and upgrade prompts inside the app.",
+    wide: true
   }
 ]
 },
@@ -2408,6 +2417,60 @@ cards: [
     label: "Why It Matters",
     title: "Foundation for plans",
     copy: "Login is required before subscriptions, usage tracking, history, saved outputs, and premium gating."
+  }
+]
+},
+privacy: {
+title: "Privacy",
+subtitle: "Privacy will explain how uploads, prompts, generated assets, and account data are handled inside Pluto3D Studio.",
+cards: [
+  {
+    label: "Uploads",
+    title: "Working files",
+    copy: "This section will later explain how images, temporary models, and generated outputs are stored and when they are removed."
+  },
+  {
+    label: "Accounts",
+    title: "User data",
+    copy: "When auth is added, this page will document what profile information is stored and how plan and history data are used."
+  },
+  {
+    label: "Transparency",
+    title: "Plain-language policy",
+    copy: "The goal is to keep privacy text short, clear, and readable for normal users instead of legal-heavy boilerplate.",
+    wide: true
+  }
+]
+},
+terms: {
+title: "Terms",
+subtitle: "Terms will later define acceptable use, account rules, billing conditions, and how generated outputs can be used.",
+cards: [
+  {
+    label: "Use",
+    title: "Platform usage rules",
+    copy: "This section will define fair use, generation limits, prohibited content, and safe handling of uploaded assets."
+  },
+  {
+    label: "Billing",
+    title: "Subscriber terms",
+    copy: "Once Stripe is connected, this page will explain subscriptions, renewals, and future refund or cancellation logic."
+  }
+]
+},
+support: {
+title: "Support",
+subtitle: "Support will give testers and customers a simple place to ask questions, report bugs, and request help.",
+cards: [
+  {
+    label: "Beta Help",
+    title: "Friend tester support",
+    copy: "During beta, support can stay lightweight with direct feedback, bug reporting, and simple issue follow-up."
+  },
+  {
+    label: "Future",
+    title: "Customer support layer",
+    copy: "Later this can include FAQ, contact flow, account help, billing help, and product guidance for non-expert users."
   }
 ]
 }
