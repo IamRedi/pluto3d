@@ -1925,9 +1925,9 @@ to{background-position:1000px 1000px;}
   </nav>
 
   <div class="platform-actions">
-    <div class="platform-plan-badge">Guest Beta</div>
-    <a href="#" class="platform-pill" onclick="openPlatformSurface('profile'); return false;">Profile</a>
-    <a href="#" class="platform-pill primary" onclick="openPlatformSurface('login'); return false;">Login</a>
+    <div id="platformPlanBadge" class="platform-plan-badge">Guest Beta</div>
+    <a id="platformProfileLink" href="#" class="platform-pill" onclick="openPlatformSurface('profile'); return false;">Profile</a>
+    <a id="platformLoginLink" href="#" class="platform-pill primary" onclick="openPlatformSurface('login'); return false;">Login</a>
   </div>
 </header>
 <div class="workspace">
@@ -2395,6 +2395,7 @@ filter:none;
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 <script src="runtime-config.js"></script>
 <script src="test-models.js"></script>
+<script src="auth-scaffold.js"></script>
 <script src="print-mode.js"></script>
 <script src="toy-mode.js"></script>
 <script src="toy-studio.js"></script>
@@ -2704,8 +2705,20 @@ return `
 }
 
 function renderPlansSurface(){
+const authState = getAuthPreviewState()
+const currentPlan = authState.mode === "premium"
+  ? "Premium Preview"
+  : authState.mode === "free"
+    ? "Free Account"
+    : "Guest Beta"
+
 return `
   <div class="platform-surface-card wide">
+    <div class="surface-chip-row" style="margin-bottom:16px;">
+      <span class="surface-chip primary">Current UI State: ${currentPlan}</span>
+      <span class="surface-chip">Auth Provider: Supabase</span>
+      <span class="surface-chip premium">Billing: Stripe</span>
+    </div>
     <div class="surface-plan-grid">
       <div class="surface-plan-card">
         <div class="surface-plan-tier">Guest</div>
@@ -2883,6 +2896,9 @@ return `
 }
 
 function renderLoginSurface(){
+const authState = getAuthPreviewState()
+const isLoggedIn = authState.loggedIn
+
 return `
   <div class="surface-grid">
     <div class="platform-surface-card">
@@ -2895,21 +2911,22 @@ return `
         <span class="surface-chip">Email Signup Planned</span>
       </div>
       <div class="surface-actions">
-        <button type="button">Continue With Google</button>
-        <button type="button" class="btn-premium">Create Account</button>
+        <button type="button" onclick="signInPreview('free')">Preview Free Login</button>
+        <button type="button" class="btn-premium" onclick="signInPreview('premium')">Preview Premium Login</button>
       </div>
     </div>
     <div class="platform-surface-card">
       <div class="surface-field">
         <div class="surface-mini-label">Email</div>
-        <input type="text" value="your@email.com" readonly>
+        <input type="text" value="${isLoggedIn ? authState.email : "your@email.com"}" readonly>
       </div>
       <div class="surface-field" style="margin-top:12px;">
-        <div class="surface-mini-label">Password</div>
-        <input type="text" value="••••••••••" readonly>
+        <div class="surface-mini-label">State</div>
+        <input type="text" value="${isLoggedIn ? "Logged In Preview" : "Guest Preview"}" readonly>
       </div>
       <div class="surface-actions">
-        <button type="button">Sign In</button>
+        <button type="button" onclick="signInPreview('free')">Use Free Preview</button>
+        <button type="button" onclick="signOutPreview()">Sign Out Preview</button>
       </div>
     </div>
     <div class="platform-surface-card wide">
@@ -2922,15 +2939,23 @@ return `
 }
 
 function renderProfileSurface(){
+const authState = getAuthPreviewState()
+const currentStatus = authState.loggedIn ? authState.name : "Guest"
+const currentPlan = authState.mode === "premium"
+  ? "Premium Preview"
+  : authState.mode === "free"
+    ? "Free Account"
+    : "Guest Beta"
+
 return `
   <div class="platform-surface-card wide">
     <div class="surface-stat-grid">
       <div class="surface-stat">
-        <div class="surface-stat-value">Guest</div>
+        <div class="surface-stat-value">${currentStatus}</div>
         <div class="surface-stat-label">Current Status</div>
       </div>
       <div class="surface-stat">
-        <div class="surface-stat-value">Starter</div>
+        <div class="surface-stat-value">${currentPlan}</div>
         <div class="surface-stat-label">Plan Surface</div>
       </div>
       <div class="surface-stat">
@@ -2943,6 +2968,9 @@ return `
     <div class="platform-surface-card-label">Account View</div>
     <div class="platform-surface-card-title">Profile will become your control center</div>
     <div class="platform-surface-card-copy">Later this section will show account identity, plan, usage, saved outputs, and generated history from one clean dashboard after Supabase auth is connected.</div>
+    <div class="surface-chip-row">
+      <span class="surface-chip">${authState.email || "No email yet"}</span>
+    </div>
   </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">History</div>
@@ -2966,6 +2994,34 @@ case "profile":
   return renderProfileSurface()
 default:
   return renderPlatformSurfaceCards(config.cards || [])
+}
+}
+
+function syncAuthPreviewUI(){
+const authState = getAuthPreviewState()
+const planBadge = document.getElementById("platformPlanBadge")
+const loginLink = document.getElementById("platformLoginLink")
+const profileLink = document.getElementById("platformProfileLink")
+
+if(planBadge){
+  planBadge.textContent = authState.planLabel
+}
+
+if(loginLink){
+  loginLink.textContent = authState.loggedIn ? "Account" : "Login"
+}
+
+if(profileLink){
+  profileLink.textContent = authState.loggedIn ? authState.name : "Profile"
+}
+
+const surface = document.getElementById("platformSurface")
+if(surface && !surface.classList.contains("hidden")){
+  const activeLink = document.querySelector("[data-platform-link].active")
+  const activeKey = activeLink?.dataset.platformLink
+  if(activeKey && activeKey !== "workspace"){
+    openPlatformSurface(activeKey)
+  }
 }
 }
 
@@ -3042,6 +3098,7 @@ progressBar.style.width="0%"
 
 initializeTheme()
 initializeProductRail()
+syncAuthPreviewUI()
 
 async function generateSVG(){
 
