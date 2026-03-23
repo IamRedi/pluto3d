@@ -92,6 +92,144 @@ body {
   overflow: hidden;
   transition:background 0.25s ease, color 0.25s ease;
 }
+
+.app-shell{
+height:100dvh;
+max-height:100dvh;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+.platform-header{
+height:62px;
+min-height:62px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:18px;
+padding:10px 22px;
+background:rgba(4, 9, 20, 0.72);
+backdrop-filter:blur(18px);
+border-bottom:1px solid var(--line-soft);
+box-shadow:0 10px 30px rgba(2,6,23,0.14);
+}
+
+body[data-theme="light"] .platform-header{
+background:rgba(247, 251, 255, 0.82);
+}
+
+.platform-brand{
+display:flex;
+align-items:center;
+gap:12px;
+min-width:0;
+}
+
+.platform-brand-mark{
+width:32px;
+height:32px;
+border-radius:10px;
+background:radial-gradient(circle at 35% 35%, #dffcff, #38bdf8 48%, #1d4ed8 100%);
+box-shadow:0 0 24px rgba(56,189,248,0.22);
+flex-shrink:0;
+}
+
+.platform-brand-copy{
+display:flex;
+flex-direction:column;
+min-width:0;
+}
+
+.platform-brand-name{
+font-family:Orbitron;
+font-size:15px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--text-main);
+}
+
+.platform-brand-subtitle{
+font-size:11px;
+letter-spacing:0.1em;
+text-transform:uppercase;
+color:var(--text-soft);
+}
+
+.platform-nav{
+display:flex;
+align-items:center;
+gap:8px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.platform-link{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+height:38px;
+padding:0 14px;
+border-radius:999px;
+border:1px solid transparent;
+background:transparent;
+color:var(--text-soft);
+font-size:12px;
+font-weight:600;
+letter-spacing:0.08em;
+text-transform:uppercase;
+text-decoration:none;
+transition:0.2s ease;
+}
+
+.platform-link:hover{
+transform:translateY(1px) scale(1.03);
+border-color:var(--line-soft);
+background:rgba(255,255,255,0.05);
+color:var(--text-main);
+}
+
+.platform-link.active{
+border-color:rgba(103,232,249,0.36);
+background:rgba(56,189,248,0.1);
+color:var(--cyan);
+}
+
+.platform-actions{
+display:flex;
+align-items:center;
+gap:10px;
+justify-content:flex-end;
+}
+
+.platform-pill{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+height:36px;
+padding:0 14px;
+border-radius:999px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.04);
+color:var(--text-main);
+font-size:12px;
+font-weight:600;
+letter-spacing:0.06em;
+text-transform:uppercase;
+text-decoration:none;
+white-space:nowrap;
+transition:0.2s ease;
+}
+
+.platform-pill:hover{
+transform:translateY(1px) scale(1.03);
+border-color:var(--line-bright);
+}
+
+.platform-pill.primary{
+background:linear-gradient(135deg, rgba(56,189,248,0.16), rgba(139,92,246,0.18));
+color:var(--cyan);
+}
 /* ===== SPACE BACKGROUND ===== */
 
 .space-bg{
@@ -121,23 +259,23 @@ to{background-position:1000px 1000px;}
 .workspace{
 display:grid;
 grid-template-columns:160px 460px minmax(0, 1fr);
-height:100dvh;
-max-height:100dvh;
+height:calc(100dvh - 62px);
+max-height:calc(100dvh - 62px);
 overflow:hidden;
-min-height:100vh;   /* 🔥 shumë e rëndësishme */
+min-height:calc(100dvh - 62px);
 }
 /* viewer shkon poshtë panel */
 .viewer{
 order:3;
-height:100dvh;
-min-height:100dvh;
+height:calc(100dvh - 62px);
+min-height:calc(100dvh - 62px);
 }
 
 /* panel në mes */
 .panel{
 order:2;
-height:100dvh;
-min-height:100dvh;
+height:calc(100dvh - 62px);
+min-height:calc(100dvh - 62px);
 }
 
 /* sidebar sipër */
@@ -147,8 +285,8 @@ order:1;
 /* sidebar */
 
 .sidebar{
-height:100dvh;
-min-height:100dvh;
+height:calc(100dvh - 62px);
+min-height:calc(100dvh - 62px);
 overflow-y:auto;
 overflow-x:hidden;
 padding-top:35px;
@@ -1300,6 +1438,34 @@ align-items:flex-start;
 .product-close{
 align-self:flex-end;
 }
+
+.platform-header{
+height:auto;
+min-height:unset;
+padding:12px 16px;
+flex-wrap:wrap;
+}
+
+.platform-nav{
+order:3;
+width:100%;
+justify-content:flex-start;
+overflow-x:auto;
+scrollbar-width:none;
+}
+
+.platform-nav::-webkit-scrollbar{
+display:none;
+}
+
+.workspace,
+.viewer,
+.panel,
+.sidebar{
+height:auto;
+max-height:none;
+min-height:unset;
+}
 }
 
 @keyframes neuralMove{
@@ -1318,6 +1484,28 @@ to{background-position:1000px 1000px;}
 <body>
 <div class="space-bg"></div>
 <div class="stars"></div>
+<div class="app-shell">
+<header class="platform-header">
+  <div class="platform-brand">
+    <div class="platform-brand-mark"></div>
+    <div class="platform-brand-copy">
+      <div class="platform-brand-name">Pluto3D</div>
+      <div class="platform-brand-subtitle">Creative Print Studio</div>
+    </div>
+  </div>
+
+  <nav class="platform-nav">
+    <a href="#" class="platform-link active">Workspace</a>
+    <a href="#" class="platform-link">Gallery</a>
+    <a href="#" class="platform-link">Pricing</a>
+    <a href="#" class="platform-link">Shop</a>
+  </nav>
+
+  <div class="platform-actions">
+    <a href="#" class="platform-pill">Profile</a>
+    <a href="#" class="platform-pill primary">Login</a>
+  </div>
+</header>
 <div class="workspace">
 
 <!-- SIDEBAR -->
@@ -1758,6 +1946,7 @@ filter:none;
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
