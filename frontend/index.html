@@ -230,6 +230,133 @@ border-color:var(--line-bright);
 background:linear-gradient(135deg, rgba(56,189,248,0.16), rgba(139,92,246,0.18));
 color:var(--cyan);
 }
+
+.platform-surface{
+position:fixed;
+inset:82px 24px 24px 24px;
+display:flex;
+align-items:flex-start;
+justify-content:center;
+pointer-events:none;
+z-index:18;
+}
+
+.platform-surface.hidden{
+display:none;
+}
+
+.platform-surface-backdrop{
+position:absolute;
+inset:0;
+background:rgba(2, 6, 23, 0.42);
+backdrop-filter:blur(10px);
+border-radius:28px;
+pointer-events:auto;
+}
+
+.platform-surface-panel{
+position:relative;
+width:min(980px, 100%);
+max-height:100%;
+overflow:hidden;
+pointer-events:auto;
+border-radius:28px;
+background:linear-gradient(180deg, rgba(8,14,29,0.96), rgba(7,13,28,0.92));
+border:1px solid var(--line-soft);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.06),
+0 30px 90px rgba(2,6,23,0.48);
+display:flex;
+flex-direction:column;
+}
+
+body[data-theme="light"] .platform-surface-panel{
+background:linear-gradient(180deg, rgba(248,251,255,0.98), rgba(238,246,255,0.96));
+}
+
+.platform-surface-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:16px;
+padding:20px 24px;
+border-bottom:1px solid var(--line-soft);
+}
+
+.platform-surface-title{
+font-family:Orbitron;
+font-size:22px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--cyan);
+margin:0;
+}
+
+.platform-surface-subtitle{
+margin-top:6px;
+font-size:14px;
+line-height:1.6;
+color:var(--text-soft);
+max-width:60ch;
+}
+
+.platform-surface-close{
+width:auto;
+min-width:44px;
+height:44px;
+padding:0 14px;
+margin-top:0;
+border-radius:999px;
+font-size:18px;
+line-height:1;
+}
+
+.platform-surface-body{
+padding:24px;
+overflow-y:auto;
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:16px;
+}
+
+.platform-surface-card{
+padding:18px 18px 20px;
+border-radius:22px;
+background:rgba(255,255,255,0.03);
+border:1px solid var(--line-soft);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.platform-surface-card.wide{
+grid-column:1 / -1;
+}
+
+.platform-surface-card-label{
+font-size:11px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+margin-bottom:10px;
+}
+
+.platform-surface-card-title{
+font-size:18px;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.platform-surface-card-copy{
+font-size:14px;
+line-height:1.65;
+color:var(--text-soft);
+}
+
+.platform-surface-list{
+margin:14px 0 0;
+padding-left:18px;
+color:var(--text-soft);
+line-height:1.8;
+}
 /* ===== SPACE BACKGROUND ===== */
 
 .space-bg{
@@ -1458,6 +1585,15 @@ scrollbar-width:none;
 display:none;
 }
 
+.platform-surface{
+inset:74px 14px 14px 14px;
+}
+
+.platform-surface-body{
+grid-template-columns:1fr;
+padding:18px;
+}
+
 .workspace,
 .viewer,
 .panel,
@@ -1495,15 +1631,15 @@ to{background-position:1000px 1000px;}
   </div>
 
   <nav class="platform-nav">
-    <a href="#" class="platform-link active">Workspace</a>
-    <a href="#" class="platform-link">Gallery</a>
-    <a href="#" class="platform-link">Pricing</a>
-    <a href="#" class="platform-link">Shop</a>
+    <a href="#" class="platform-link active" data-platform-link="workspace" onclick="openPlatformSurface('workspace'); return false;">Workspace</a>
+    <a href="#" class="platform-link" data-platform-link="gallery" onclick="openPlatformSurface('gallery'); return false;">Gallery</a>
+    <a href="#" class="platform-link" data-platform-link="plans" onclick="openPlatformSurface('plans'); return false;">Plans</a>
+    <a href="#" class="platform-link" data-platform-link="shop" onclick="openPlatformSurface('shop'); return false;">Shop</a>
   </nav>
 
   <div class="platform-actions">
-    <a href="#" class="platform-pill">Profile</a>
-    <a href="#" class="platform-pill primary">Login</a>
+    <a href="#" class="platform-pill" onclick="openPlatformSurface('profile'); return false;">Profile</a>
+    <a href="#" class="platform-pill primary" onclick="openPlatformSurface('login'); return false;">Login</a>
   </div>
 </header>
 <div class="workspace">
@@ -1949,6 +2085,22 @@ filter:none;
 </div>
 </div>
 
+<div id="platformSurface" class="platform-surface hidden">
+  <div class="platform-surface-backdrop" onclick="closePlatformSurface()"></div>
+  <div class="platform-surface-panel">
+    <div class="platform-surface-header">
+      <div>
+        <h2 id="platformSurfaceTitle" class="platform-surface-title">Workspace</h2>
+        <div id="platformSurfaceSubtitle" class="platform-surface-subtitle">
+          Pluto3D Studio workspace is active.
+        </div>
+      </div>
+      <button type="button" class="platform-surface-close" onclick="closePlatformSurface()">×</button>
+    </div>
+    <div id="platformSurfaceBody" class="platform-surface-body"></div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
@@ -2150,6 +2302,164 @@ rail.classList.toggle("hidden", dismissed)
 function initializeTheme(){
 const storedTheme = localStorage.getItem("plutoTheme") || "dark"
 applyTheme(storedTheme)
+}
+
+const PLATFORM_SURFACES = {
+workspace: {
+title: "Workspace",
+subtitle: "The main Pluto3D creation workspace is already active. Use the left tools and the right viewer to generate, edit, and prepare outputs.",
+cards: [
+  {
+    label: "Current State",
+    title: "Studio tools are live",
+    copy: "AI image generation, SVG conversion, toy generation, Toy Studio controls, and Print Fix are available in the current beta."
+  },
+  {
+    label: "Next Step",
+    title: "Keep building toward beta",
+    copy: "The next serious product layers are plans, account access, sponsor states, and a cleaner platform surface around the workspace."
+  }
+]
+},
+gallery: {
+title: "Gallery",
+subtitle: "This surface will become the home for user creations, test outputs, saved STL links, and showcase assets.",
+cards: [
+  {
+    label: "Planned",
+    title: "Saved generations",
+    copy: "Friends and future users will later find their generated images, models, toy edits, and print-ready results here."
+  },
+  {
+    label: "Use Cases",
+    title: "Public and private collections",
+    copy: "Gallery can later support featured works, personal history, liked items, and premium creator showcases."
+  },
+  {
+    label: "Beta Direction",
+    title: "Lightweight first release",
+    copy: "We should first add basic history and a clean showcase layout before building advanced asset management."
+  }
+]
+},
+plans: {
+title: "Plans",
+subtitle: "This will define the product structure for Guest, Logged-in Free, and Premium users.",
+cards: [
+  {
+    label: "Free",
+    title: "Starter access",
+    copy: "Toy test mode, SVG, AI image tools, and simple beta access for exploration."
+  },
+  {
+    label: "Premium",
+    title: "Advanced 3D access",
+    copy: "Premium 3D generation, fewer limits, no ads during generation, and faster workflow access."
+  },
+  {
+    label: "Roadmap",
+    title: "Subscription-ready surface",
+    copy: "This section will later connect to Stripe, plan badges, usage limits, and upgrade prompts."
+  }
+]
+},
+shop: {
+title: "Shop",
+subtitle: "The shop can later become a commercial layer for packs, presets, printable kits, and branded toy styles.",
+cards: [
+  {
+    label: "Future Catalog",
+    title: "Toy packs and style kits",
+    copy: "Sell themed bundles, curated prompt packs, collectible presets, and printable starter kits."
+  },
+  {
+    label: "Creator Angle",
+    title: "Monetizable assets",
+    copy: "This is a good future place for branded figures, sponsored collections, and premium printable content."
+  }
+]
+},
+profile: {
+title: "Profile",
+subtitle: "Profile will later show account details, plan, usage, generation history, and saved outputs.",
+cards: [
+  {
+    label: "Account",
+    title: "Plan and identity",
+    copy: "After auth is added, this section will show who is logged in, current plan, and account controls."
+  },
+  {
+    label: "Usage",
+    title: "Credits and history",
+    copy: "We can later show daily limits, premium access, and generation history from one clean dashboard."
+  }
+]
+},
+login: {
+title: "Login",
+subtitle: "Auth is planned as the next platform layer so testers can sign in, save work, and unlock plan-based access.",
+cards: [
+  {
+    label: "Planned Auth",
+    title: "Google and account login",
+    copy: "The first serious auth step should support Google login and standard account creation."
+  },
+  {
+    label: "Why It Matters",
+    title: "Foundation for plans",
+    copy: "Login is required before subscriptions, usage tracking, history, saved outputs, and premium gating."
+  }
+]
+}
+}
+
+function renderPlatformSurfaceCards(cards){
+return cards.map((card) => {
+const wideClass = card.wide ? " wide" : ""
+return `
+  <div class="platform-surface-card${wideClass}">
+    <div class="platform-surface-card-label">${card.label}</div>
+    <div class="platform-surface-card-title">${card.title}</div>
+    <div class="platform-surface-card-copy">${card.copy}</div>
+  </div>
+`
+}).join("")
+}
+
+function syncPlatformLinks(activeKey){
+document.querySelectorAll("[data-platform-link]").forEach((link) => {
+link.classList.toggle("active", link.dataset.platformLink === activeKey)
+})
+}
+
+function openPlatformSurface(key){
+if(key === "workspace"){
+closePlatformSurface()
+syncPlatformLinks("workspace")
+return
+}
+
+const config = PLATFORM_SURFACES[key]
+if(!config){
+return
+}
+
+const surface = document.getElementById("platformSurface")
+const title = document.getElementById("platformSurfaceTitle")
+const subtitle = document.getElementById("platformSurfaceSubtitle")
+const body = document.getElementById("platformSurfaceBody")
+
+title.textContent = config.title
+subtitle.textContent = config.subtitle
+body.innerHTML = renderPlatformSurfaceCards(config.cards || [])
+surface.classList.remove("hidden")
+syncPlatformLinks(key)
+}
+
+function closePlatformSurface(){
+const surface = document.getElementById("platformSurface")
+surface.classList.add("hidden")
+syncPlatformLinks("workspace")
 }
 
 function openPanel(name){
