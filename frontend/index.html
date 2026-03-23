@@ -202,6 +202,23 @@ gap:10px;
 justify-content:flex-end;
 }
 
+.platform-plan-badge{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+height:32px;
+padding:0 12px;
+border-radius:999px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.04);
+font-size:11px;
+font-weight:700;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--text-soft);
+white-space:nowrap;
+}
+
 .platform-pill{
 display:inline-flex;
 align-items:center;
@@ -356,6 +373,179 @@ margin:14px 0 0;
 padding-left:18px;
 color:var(--text-soft);
 line-height:1.8;
+}
+
+.surface-grid{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:16px;
+}
+
+.surface-stack{
+display:flex;
+flex-direction:column;
+gap:16px;
+}
+
+.surface-chip-row{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:12px;
+}
+
+.surface-chip{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:8px 12px;
+border-radius:999px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.04);
+font-size:11px;
+font-weight:600;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--text-main);
+}
+
+.surface-chip.primary{
+background:rgba(56,189,248,0.12);
+color:var(--cyan);
+}
+
+.surface-chip.premium{
+background:rgba(168,85,247,0.12);
+color:#d8b4fe;
+}
+
+.surface-plan-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:14px;
+}
+
+.surface-plan-card{
+padding:18px;
+border-radius:22px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.surface-plan-card.featured{
+box-shadow:0 0 0 1px rgba(103,232,249,0.16), 0 20px 40px rgba(14,165,233,0.12);
+background:linear-gradient(180deg, rgba(11,22,42,0.88), rgba(21,17,52,0.74));
+}
+
+body[data-theme="light"] .surface-plan-card.featured{
+background:linear-gradient(180deg, rgba(234,247,255,0.98), rgba(241,235,255,0.96));
+}
+
+.surface-plan-tier{
+font-size:11px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+}
+
+.surface-plan-title{
+font-family:Orbitron;
+font-size:18px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-main);
+}
+
+.surface-plan-price{
+font-size:28px;
+font-weight:700;
+color:var(--cyan);
+}
+
+.surface-plan-price span{
+font-size:12px;
+font-weight:500;
+color:var(--text-soft);
+}
+
+.surface-plan-list{
+margin:0;
+padding-left:18px;
+color:var(--text-soft);
+line-height:1.8;
+}
+
+.surface-mini-label{
+font-size:11px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+margin-bottom:8px;
+}
+
+.surface-field{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.surface-field input{
+width:100%;
+padding:13px 14px;
+border-radius:16px;
+border:1px solid var(--line-soft);
+background:rgba(6,12,24,0.92);
+color:var(--text-main);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+body[data-theme="light"] .surface-field input{
+background:rgba(248, 251, 255, 0.98);
+color:#0f172a;
+border:1px solid rgba(14,116,144,0.16);
+}
+
+.surface-actions{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:12px;
+}
+
+.surface-actions button{
+width:auto;
+min-width:150px;
+margin-top:0;
+}
+
+.surface-stat-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:12px;
+}
+
+.surface-stat{
+padding:14px 16px;
+border-radius:18px;
+background:rgba(255,255,255,0.03);
+border:1px solid var(--line-soft);
+}
+
+.surface-stat-value{
+font-size:22px;
+font-weight:700;
+color:var(--cyan);
+margin-bottom:4px;
+}
+
+.surface-stat-label{
+font-size:11px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--text-soft);
 }
 /* ===== SPACE BACKGROUND ===== */
 
@@ -1602,6 +1792,12 @@ height:auto;
 max-height:none;
 min-height:unset;
 }
+
+.surface-grid,
+.surface-plan-grid,
+.surface-stat-grid{
+grid-template-columns:1fr;
+}
 }
 
 @keyframes neuralMove{
@@ -1638,6 +1834,7 @@ to{background-position:1000px 1000px;}
   </nav>
 
   <div class="platform-actions">
+    <div class="platform-plan-badge">Guest Beta</div>
     <a href="#" class="platform-pill" onclick="openPlatformSurface('profile'); return false;">Profile</a>
     <a href="#" class="platform-pill primary" onclick="openPlatformSurface('login'); return false;">Login</a>
   </div>
@@ -2345,32 +2542,7 @@ cards: [
 plans: {
 title: "Plans",
 subtitle: "The plans surface defines how Pluto3D will work for guests, logged-in free users, and premium subscribers.",
-cards: [
-  {
-    label: "Guest",
-    title: "Open access entry",
-    copy: "Visitors can explore the workspace, try lightweight toy and SVG tools, and understand the product before signing in.",
-    wide: false
-  },
-  {
-    label: "Logged-in Free",
-    title: "Free account layer",
-    copy: "Users who sign in will later get more limits, better history, toy studio access, and ad-supported generation flows.",
-    wide: false
-  },
-  {
-    label: "Premium",
-    title: "Subscriber workflow",
-    copy: "Premium will unlock real 3D generation, better limits, faster access, cleaner generation flow, and no ad interruptions.",
-    wide: false
-  },
-  {
-    label: "Subscriber Path",
-    title: "What comes next",
-    copy: "The next step is to connect this plans surface to account roles, Stripe subscriptions, premium-only controls, and upgrade prompts inside the app.",
-    wide: true
-  }
-]
+template: "plans"
 },
 shop: {
 title: "Shop",
@@ -2391,34 +2563,12 @@ cards: [
 profile: {
 title: "Profile",
 subtitle: "Profile will later show account details, plan, usage, generation history, and saved outputs.",
-cards: [
-  {
-    label: "Account",
-    title: "Plan and identity",
-    copy: "After auth is added, this section will show who is logged in, current plan, and account controls."
-  },
-  {
-    label: "Usage",
-    title: "Credits and history",
-    copy: "We can later show daily limits, premium access, and generation history from one clean dashboard."
-  }
-]
+template: "profile"
 },
 login: {
 title: "Login",
 subtitle: "Auth is planned as the next platform layer so testers can sign in, save work, and unlock plan-based access.",
-cards: [
-  {
-    label: "Planned Auth",
-    title: "Google and account login",
-    copy: "The first serious auth step should support Google login and standard account creation."
-  },
-  {
-    label: "Why It Matters",
-    title: "Foundation for plans",
-    copy: "Login is required before subscriptions, usage tracking, history, saved outputs, and premium gating."
-  }
-]
+template: "login"
 },
 privacy: {
 title: "Privacy",
@@ -2489,6 +2639,140 @@ return `
 }).join("")
 }
 
+function renderPlansSurface(){
+return `
+  <div class="platform-surface-card wide">
+    <div class="surface-plan-grid">
+      <div class="surface-plan-card">
+        <div class="surface-plan-tier">Guest</div>
+        <div class="surface-plan-title">Explore</div>
+        <div class="surface-plan-price">Free <span>no login</span></div>
+        <ul class="surface-plan-list">
+          <li>See the workspace</li>
+          <li>Try toy test mode</li>
+          <li>Basic SVG tools</li>
+          <li>Simple first-touch experience</li>
+        </ul>
+      </div>
+      <div class="surface-plan-card">
+        <div class="surface-plan-tier">Logged-in Free</div>
+        <div class="surface-plan-title">Create</div>
+        <div class="surface-plan-price">Free <span>with account</span></div>
+        <ul class="surface-plan-list">
+          <li>More usage room</li>
+          <li>Toy Studio access</li>
+          <li>Print Fix workflow</li>
+          <li>Sponsor/ad state during generation</li>
+        </ul>
+      </div>
+      <div class="surface-plan-card featured">
+        <div class="surface-plan-tier">Premium</div>
+        <div class="surface-plan-title">Subscriber</div>
+        <div class="surface-plan-price">$19 <span>/ month target</span></div>
+        <ul class="surface-plan-list">
+          <li>Premium 3D generation</li>
+          <li>No ads during generation</li>
+          <li>Better limits and faster flow</li>
+          <li>Future creator-grade tools</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="platform-surface-card">
+    <div class="platform-surface-card-label">Platform Logic</div>
+    <div class="platform-surface-card-title">How plans connect to the product</div>
+    <div class="platform-surface-card-copy">The next implementation step is to connect account roles, usage limits, premium locks, and Stripe so these plan levels become real.</div>
+  </div>
+  <div class="platform-surface-card">
+    <div class="platform-surface-card-label">Subscriber UX</div>
+    <div class="platform-surface-card-title">Clean upgrade path</div>
+    <div class="platform-surface-card-copy">Upgrade prompts should appear elegantly during generation, inside the plans surface, and beside premium-only buttons without feeling pushy.</div>
+  </div>
+`
+}
+
+function renderLoginSurface(){
+return `
+  <div class="surface-grid">
+    <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Auth Entry</div>
+      <div class="platform-surface-card-title">Sign in to Pluto3D</div>
+      <div class="platform-surface-card-copy">This UI is the scaffold for the real auth layer. The next step is to connect Google and account login through a proper provider.</div>
+      <div class="surface-chip-row">
+        <span class="surface-chip primary">Google Login Planned</span>
+        <span class="surface-chip">Email Signup Planned</span>
+      </div>
+      <div class="surface-actions">
+        <button type="button">Continue With Google</button>
+        <button type="button" class="btn-premium">Create Account</button>
+      </div>
+    </div>
+    <div class="platform-surface-card">
+      <div class="surface-field">
+        <div class="surface-mini-label">Email</div>
+        <input type="text" value="your@email.com" readonly>
+      </div>
+      <div class="surface-field" style="margin-top:12px;">
+        <div class="surface-mini-label">Password</div>
+        <input type="text" value="••••••••••" readonly>
+      </div>
+      <div class="surface-actions">
+        <button type="button">Sign In</button>
+      </div>
+    </div>
+    <div class="platform-surface-card wide">
+      <div class="platform-surface-card-label">Why login matters</div>
+      <div class="platform-surface-card-title">The foundation for plans, history, and premium access</div>
+      <div class="platform-surface-card-copy">Once auth is connected, Pluto3D can save generation history, remember usage, unlock subscriber-only tools, and keep the experience stable across devices.</div>
+    </div>
+  </div>
+`
+}
+
+function renderProfileSurface(){
+return `
+  <div class="platform-surface-card wide">
+    <div class="surface-stat-grid">
+      <div class="surface-stat">
+        <div class="surface-stat-value">Guest</div>
+        <div class="surface-stat-label">Current Status</div>
+      </div>
+      <div class="surface-stat">
+        <div class="surface-stat-value">Starter</div>
+        <div class="surface-stat-label">Plan Surface</div>
+      </div>
+      <div class="surface-stat">
+        <div class="surface-stat-value">0</div>
+        <div class="surface-stat-label">Saved Jobs</div>
+      </div>
+    </div>
+  </div>
+  <div class="platform-surface-card">
+    <div class="platform-surface-card-label">Account View</div>
+    <div class="platform-surface-card-title">Profile will become your control center</div>
+    <div class="platform-surface-card-copy">Later this section will show account identity, plan, usage, saved outputs, and generated history from one clean dashboard.</div>
+  </div>
+  <div class="platform-surface-card">
+    <div class="platform-surface-card-label">History</div>
+    <div class="platform-surface-card-title">Saved generations will appear here</div>
+    <div class="platform-surface-card-copy">Once login is active, users should be able to revisit their image generations, toy edits, SVG exports, and print-ready files.</div>
+  </div>
+`
+}
+
+function renderPlatformSurfaceBody(config){
+switch(config.template){
+case "plans":
+  return renderPlansSurface()
+case "login":
+  return renderLoginSurface()
+case "profile":
+  return renderProfileSurface()
+default:
+  return renderPlatformSurfaceCards(config.cards || [])
+}
+}
+
 function syncPlatformLinks(activeKey){
 document.querySelectorAll("[data-platform-link]").forEach((link) => {
 link.classList.toggle("active", link.dataset.platformLink === activeKey)
@@ -2514,7 +2798,7 @@ const body = document.getElementById("platformSurfaceBody")
 
 title.textContent = config.title
 subtitle.textContent = config.subtitle
-body.innerHTML = renderPlatformSurfaceCards(config.cards || [])
+body.innerHTML = renderPlatformSurfaceBody(config)
 surface.classList.remove("hidden")
 syncPlatformLinks(key)
 }
