@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
+from dotenv import load_dotenv
 
 from app.routes.upload import router as upload_router
 from app.routes.generate import router as generate_router
@@ -35,6 +36,7 @@ app.include_router(svg_router, prefix="/api")
 # ---------------- PATH FIX (Railway safe) ----------------
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 
 OUTPUTS_DIR = BASE_DIR / "outputs"
 STATIC_DIR = BASE_DIR / "static"
