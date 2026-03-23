@@ -299,6 +299,170 @@ scrollbar-width: none;        /* Firefox */
 display:none;   /* Chrome, Safari */
 }
 
+.product-rail{
+display:flex;
+flex-direction:column;
+gap:14px;
+padding:0 0 10px;
+margin:0 0 24px;
+}
+
+.product-rail.hidden{
+display:none;
+}
+
+.product-topbar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:14px;
+padding:12px 14px;
+border-radius:20px;
+background:var(--bg-panel-strong);
+border:1px solid var(--line-soft);
+box-shadow:0 14px 34px rgba(2,6,23,0.18);
+}
+
+.product-topbar-main{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+flex:1;
+}
+
+.product-brand{
+display:flex;
+flex-direction:column;
+gap:4px;
+}
+
+.product-kicker{
+font-size:11px;
+letter-spacing:0.14em;
+text-transform:uppercase;
+color:var(--cyan);
+font-weight:600;
+}
+
+.product-name{
+font-family:Orbitron;
+font-size:18px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+}
+
+.product-badges{
+display:flex;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+justify-content:flex-end;
+}
+
+.product-close{
+width:40px;
+min-width:40px;
+height:40px;
+padding:0;
+margin-top:0;
+border-radius:999px;
+font-size:18px;
+line-height:1;
+}
+
+.badge{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:8px 12px;
+border-radius:999px;
+font-size:11px;
+font-weight:600;
+letter-spacing:0.08em;
+text-transform:uppercase;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.04);
+color:var(--text-main);
+}
+
+.badge-beta{
+background:rgba(56,189,248,0.12);
+color:var(--cyan);
+}
+
+.badge-free{
+background:rgba(125,211,252,0.08);
+}
+
+.badge-premium{
+background:rgba(168,85,247,0.12);
+color:#d8b4fe;
+}
+
+.product-cards{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:12px;
+}
+
+.product-card{
+padding:14px 16px;
+border-radius:20px;
+background:rgba(255,255,255,0.03);
+border:1px solid var(--line-soft);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.product-card-label{
+font-size:11px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+margin-bottom:8px;
+}
+
+.product-card-title{
+font-size:15px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+.product-card-copy{
+font-size:13px;
+line-height:1.55;
+color:var(--text-soft);
+}
+
+.panel-footer{
+margin-top:26px;
+padding:16px 18px 24px;
+border-top:1px solid var(--line-soft);
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:14px;
+flex-wrap:wrap;
+color:var(--text-soft);
+font-size:12px;
+}
+
+.panel-footer-links{
+display:flex;
+gap:14px;
+flex-wrap:wrap;
+}
+
+.panel-footer-link{
+color:inherit;
+text-decoration:none;
+letter-spacing:0.04em;
+}
+
+.panel-footer-link:hover{
+color:var(--cyan);
+}
+
 .sidebar{
 scrollbar-width:none;
 -ms-overflow-style:none;
@@ -1121,6 +1285,23 @@ width:auto;
 min-width:120px;
 margin-top:0;
 }
+
+@media (max-width: 1180px){
+.product-cards{
+grid-template-columns:1fr;
+}
+
+.product-topbar,
+.product-topbar-main{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.product-close{
+align-self:flex-end;
+}
+}
+
 @keyframes neuralMove{
 from{background-position:0 0;}
 to{background-position:1000px 1000px;}
@@ -1176,6 +1357,41 @@ Night
 <!-- PANEL -->
 
 <div class="panel">
+
+<div class="product-rail" id="productRail">
+  <div class="product-topbar">
+    <div class="product-topbar-main">
+      <div class="product-brand">
+        <div class="product-kicker">Beta Workspace</div>
+        <div class="product-name">Pluto3D Studio</div>
+      </div>
+      <div class="product-badges">
+        <span class="badge badge-beta">Friend Test Build</span>
+        <span class="badge badge-free">Free Tools Live</span>
+        <span class="badge badge-premium">Premium 3D Next</span>
+      </div>
+    </div>
+    <button type="button" class="product-close" onclick="dismissProductRail()">×</button>
+  </div>
+
+  <div class="product-cards">
+    <div class="product-card">
+      <div class="product-card-label">How It Works</div>
+      <div class="product-card-title">Generate, edit, print</div>
+      <div class="product-card-copy">Use the workspace to create assets, style toy models, and move toward print-ready export.</div>
+    </div>
+    <div class="product-card">
+      <div class="product-card-label">Beta Access</div>
+      <div class="product-card-title">Built for friend testing</div>
+      <div class="product-card-copy">This release is focused on a stable beta workflow before accounts, plans, and billing are added.</div>
+    </div>
+    <div class="product-card">
+      <div class="product-card-label">Sponsor Space</div>
+      <div class="product-card-title">Future partner slot</div>
+      <div class="product-card-copy">Later we can show elegant sponsor cards or upgrade prompts during generation for free users.</div>
+    </div>
+  </div>
+</div>
 
 <!-- 3D -->
 
@@ -1377,6 +1593,16 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <div class="status" id="printStatus">Load a GLB model to enable print fix.</div>
 
 </div>
+</div>
+
+<div class="panel-footer">
+  <div>Pluto3D Studio Beta · AI-assisted creation for simple 3D workflows.</div>
+  <div class="panel-footer-links">
+    <a href="#" class="panel-footer-link">Pricing Soon</a>
+    <a href="#" class="panel-footer-link">Privacy Soon</a>
+    <a href="#" class="panel-footer-link">Terms Soon</a>
+    <a href="#" class="panel-footer-link">Support Soon</a>
+  </div>
 </div>
 </div>
 <!-- VIEWER -->
@@ -1714,6 +1940,24 @@ applyTheme(nextTheme)
 localStorage.setItem("plutoTheme", nextTheme)
 }
 
+function dismissProductRail(){
+const rail = document.getElementById("productRail")
+if(rail){
+rail.classList.add("hidden")
+}
+localStorage.setItem("plutoProductRailDismissed", "1")
+}
+
+function initializeProductRail(){
+const rail = document.getElementById("productRail")
+if(!rail){
+return
+}
+
+const dismissed = localStorage.getItem("plutoProductRailDismissed") === "1"
+rail.classList.toggle("hidden", dismissed)
+}
+
 function initializeTheme(){
 const storedTheme = localStorage.getItem("plutoTheme") || "dark"
 applyTheme(storedTheme)
@@ -1755,6 +1999,7 @@ progressBar.style.width="0%"
 }
 
 initializeTheme()
+initializeProductRail()
 
 async function generateSVG(){
 
