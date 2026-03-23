@@ -547,6 +547,95 @@ letter-spacing:0.08em;
 text-transform:uppercase;
 color:var(--text-soft);
 }
+
+.gallery-grid{
+display:grid;
+grid-template-columns:1.2fr 0.8fr;
+gap:16px;
+}
+
+.gallery-wall{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:14px;
+}
+
+.gallery-tile{
+min-height:180px;
+padding:16px;
+border-radius:22px;
+border:1px solid var(--line-soft);
+background:
+linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+radial-gradient(circle at 20% 20%, rgba(56,189,248,0.12), transparent 30%),
+radial-gradient(circle at 80% 70%, rgba(168,85,247,0.12), transparent 38%);
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.gallery-tile-title{
+font-size:16px;
+font-weight:700;
+}
+
+.gallery-tile-copy{
+font-size:13px;
+line-height:1.6;
+color:var(--text-soft);
+}
+
+.gallery-tile-meta{
+display:flex;
+justify-content:space-between;
+gap:10px;
+font-size:11px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--text-soft);
+}
+
+.history-list{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.history-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+padding:14px 16px;
+border-radius:18px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+}
+
+.history-row-main{
+display:flex;
+flex-direction:column;
+gap:5px;
+}
+
+.history-row-title{
+font-size:14px;
+font-weight:700;
+}
+
+.history-row-copy{
+font-size:12px;
+color:var(--text-soft);
+}
+
+.history-row-type{
+font-size:11px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--cyan);
+white-space:nowrap;
+}
 /* ===== SPACE BACKGROUND ===== */
 
 .space-bg{
@@ -1795,7 +1884,9 @@ min-height:unset;
 
 .surface-grid,
 .surface-plan-grid,
-.surface-stat-grid{
+.surface-stat-grid,
+.gallery-grid,
+.gallery-wall{
 grid-template-columns:1fr;
 }
 }
@@ -2521,23 +2612,7 @@ cards: [
 gallery: {
 title: "Gallery",
 subtitle: "This surface will become the home for user creations, test outputs, saved STL links, and showcase assets.",
-cards: [
-  {
-    label: "Planned",
-    title: "Saved generations",
-    copy: "Friends and future users will later find their generated images, models, toy edits, and print-ready results here."
-  },
-  {
-    label: "Use Cases",
-    title: "Public and private collections",
-    copy: "Gallery can later support featured works, personal history, liked items, and premium creator showcases."
-  },
-  {
-    label: "Beta Direction",
-    title: "Lightweight first release",
-    copy: "We should first add basic history and a clean showcase layout before building advanced asset management."
-  }
-]
+template: "gallery"
 },
 plans: {
 title: "Plans",
@@ -2547,18 +2622,7 @@ template: "plans"
 shop: {
 title: "Shop",
 subtitle: "The shop can later become a commercial layer for packs, presets, printable kits, and branded toy styles.",
-cards: [
-  {
-    label: "Future Catalog",
-    title: "Toy packs and style kits",
-    copy: "Sell themed bundles, curated prompt packs, collectible presets, and printable starter kits."
-  },
-  {
-    label: "Creator Angle",
-    title: "Monetizable assets",
-    copy: "This is a good future place for branded figures, sponsored collections, and premium printable content."
-  }
-]
+template: "shop"
 },
 profile: {
 title: "Profile",
@@ -2691,6 +2755,129 @@ return `
 `
 }
 
+function renderGallerySurface(){
+return `
+  <div class="gallery-grid wide">
+    <div class="surface-stack">
+      <div class="platform-surface-card">
+        <div class="platform-surface-card-label">Showcase Wall</div>
+        <div class="platform-surface-card-title">Featured creations and printable results</div>
+        <div class="platform-surface-card-copy">This is where Pluto3D can later show the best toy edits, printable STL results, premium examples, and friend-test highlights.</div>
+        <div class="gallery-wall" style="margin-top:16px;">
+          <div class="gallery-tile">
+            <div>
+              <div class="gallery-tile-title">Robot Toy Edit</div>
+              <div class="gallery-tile-copy">A stylized toy figure with bigger head proportions and print-ready cleanup.</div>
+            </div>
+            <div class="gallery-tile-meta">
+              <span>Toy Studio</span>
+              <span>STL Ready</span>
+            </div>
+          </div>
+          <div class="gallery-tile">
+            <div>
+              <div class="gallery-tile-title">F1 Print Model</div>
+              <div class="gallery-tile-copy">A clean viewer-ready test model pushed through the print-fix pipeline.</div>
+            </div>
+            <div class="gallery-tile-meta">
+              <span>Print Fix</span>
+              <span>Beta</span>
+            </div>
+          </div>
+          <div class="gallery-tile">
+            <div>
+              <div class="gallery-tile-title">SVG Conversion</div>
+              <div class="gallery-tile-copy">Vector-ready output that can later live beside 3D assets in the same account gallery.</div>
+            </div>
+            <div class="gallery-tile-meta">
+              <span>Vector</span>
+              <span>Exported</span>
+            </div>
+          </div>
+          <div class="gallery-tile">
+            <div>
+              <div class="gallery-tile-title">AI Image Concept</div>
+              <div class="gallery-tile-copy">Prompt-driven imagery that can later move from concept to SVG or 3D generation workflows.</div>
+            </div>
+            <div class="gallery-tile-meta">
+              <span>AI</span>
+              <span>Source</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="surface-stack">
+      <div class="platform-surface-card">
+        <div class="platform-surface-card-label">Recent Jobs</div>
+        <div class="platform-surface-card-title">Account history scaffold</div>
+        <div class="platform-surface-card-copy">After auth is added, this list can become the real history view for saved generations and exports.</div>
+        <div class="history-list" style="margin-top:14px;">
+          <div class="history-row">
+            <div class="history-row-main">
+              <div class="history-row-title">Robot GLB</div>
+              <div class="history-row-copy">Toy test generation with studio styling path.</div>
+            </div>
+            <div class="history-row-type">3D</div>
+          </div>
+          <div class="history-row">
+            <div class="history-row-main">
+              <div class="history-row-title">Print-ready STL</div>
+              <div class="history-row-copy">Export candidate after mesh repair.</div>
+            </div>
+            <div class="history-row-type">Print</div>
+          </div>
+          <div class="history-row">
+            <div class="history-row-main">
+              <div class="history-row-title">Vector Outline</div>
+              <div class="history-row-copy">SVG conversion result for laser or design use.</div>
+            </div>
+            <div class="history-row-type">SVG</div>
+          </div>
+        </div>
+      </div>
+      <div class="platform-surface-card">
+        <div class="platform-surface-card-label">Beta Direction</div>
+        <div class="platform-surface-card-title">From showcase to real asset library</div>
+        <div class="platform-surface-card-copy">The first real version should support saved outputs, simple filters, and one-click access back into the workspace.</div>
+      </div>
+    </div>
+  </div>
+`
+}
+
+function renderShopSurface(){
+return `
+  <div class="surface-grid">
+    <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Shop Vision</div>
+      <div class="platform-surface-card-title">Presets, packs, and printable kits</div>
+      <div class="platform-surface-card-copy">The shop can later sell curated toy style packs, printable collectible kits, and branded creator bundles.</div>
+      <div class="surface-chip-row">
+        <span class="surface-chip">Preset Packs</span>
+        <span class="surface-chip">Printable Kits</span>
+        <span class="surface-chip premium">Premium Assets</span>
+      </div>
+    </div>
+    <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Revenue Layer</div>
+      <div class="platform-surface-card-title">Monetize beyond subscriptions</div>
+      <div class="platform-surface-card-copy">This gives Pluto3D a second revenue path through asset packs, collaborations, sponsors, and creator-oriented digital products.</div>
+    </div>
+    <div class="platform-surface-card wide">
+      <div class="platform-surface-card-label">Suggested First Catalog</div>
+      <div class="platform-surface-card-title">Starter ideas for launch later</div>
+      <ul class="platform-surface-list">
+        <li>Chibi toy preset pack</li>
+        <li>Vehicle styling preset pack</li>
+        <li>Print-ready starter bundle</li>
+        <li>Branded showcase collection</li>
+      </ul>
+    </div>
+  </div>
+`
+}
+
 function renderLoginSurface(){
 return `
   <div class="surface-grid">
@@ -2762,8 +2949,12 @@ return `
 
 function renderPlatformSurfaceBody(config){
 switch(config.template){
+case "gallery":
+  return renderGallerySurface()
 case "plans":
   return renderPlansSurface()
+case "shop":
+  return renderShopSurface()
 case "login":
   return renderLoginSurface()
 case "profile":
