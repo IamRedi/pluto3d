@@ -4,7 +4,6 @@ import uuid
 import os
 import numpy as np
 
-from app.services.crop_object import crop_object
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,18 +15,14 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 def prepare_edges(gray, detail_level="normal"):
-
     level = (detail_level or "normal").lower()
 
-    # Base cleanup that keeps the current SVG look stable.
     bilateral = cv2.bilateralFilter(gray, 9, 75, 75)
 
     if level == "less":
-        # Slightly stronger smoothing before edge detection.
         processed = cv2.GaussianBlur(bilateral, (7, 7), 0)
         low, high = 48, 128
     elif level == "more":
-        # Small sharpen pass before edges so we keep more source detail.
         soft = cv2.GaussianBlur(bilateral, (3, 3), 0)
         processed = cv2.addWeighted(bilateral, 1.18, soft, -0.18, 0)
         low, high = 36, 112
@@ -35,8 +30,7 @@ def prepare_edges(gray, detail_level="normal"):
         processed = cv2.GaussianBlur(bilateral, (5, 5), 0)
         low, high = 40, 120
 
-    edges = cv2.Canny(processed, low, high)
-    return edges
+    return cv2.Canny(processed, low, high)
 
 
 def clean_background(img, level="soft"):
@@ -49,7 +43,7 @@ def clean_background(img, level="soft"):
         blur,
         0,
         255,
-        cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU
+        cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU,
     )
 
     kernel_size = 5 if level == "soft" else 7
@@ -79,8 +73,11 @@ def clean_background(img, level="soft"):
     return cv2.add(foreground, background)
 
 
-def generate_blueprint(image_path, detail_level="normal", clean_background_level="off"):
-
+def generate_blueprint(
+    image_path,
+    detail_level="normal",
+    clean_background_level="off",
+):
     print("Saving SVG to:", OUTPUT_DIR)
 
     img = cv2.imread(image_path)
@@ -88,21 +85,10 @@ def generate_blueprint(image_path, detail_level="normal", clean_background_level
     if img is None:
         raise Exception(f"Image not found: {image_path}")
 
-    # ---------------- OBJECT DETECTION ----------------
-
-    boxes = []
-
-    if len(boxes) > 0:
-        box = boxes[0]
-        print("Object detected → cropping")
-        img = crop_object(img, box)
-    else:
-        print("No object detected → using full image")
+    print("Using full image for SVG subject framing")
 
     if clean_background_level and clean_background_level != "off":
         img = clean_background(img, level=clean_background_level)
-
-    # ---------------- EDGE PREPROCESS ----------------
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     edges = prepare_edges(gray, detail_level=detail_level)
@@ -110,7 +96,7 @@ def generate_blueprint(image_path, detail_level="normal", clean_background_level
     contours, _ = cv2.findContours(
         edges,
         cv2.RETR_EXTERNAL,
-        cv2.CHAIN_APPROX_NONE
+        cv2.CHAIN_APPROX_NONE,
     )
 
     h, w = edges.shape[:2]
@@ -121,7 +107,6 @@ def generate_blueprint(image_path, detail_level="normal", clean_background_level
     dwg = svgwrite.Drawing(output, size=(w, h))
 
     for cnt in contours:
-
         if cv2.contourArea(cnt) < 5:
             continue
 
@@ -138,7 +123,7 @@ def generate_blueprint(image_path, detail_level="normal", clean_background_level
                 points,
                 stroke="black",
                 fill="none",
-                stroke_width=1
+                stroke_width=1,
             )
         )
 

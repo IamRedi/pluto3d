@@ -218,6 +218,19 @@ These are not all needed immediately, but this is the expected future shape.
 3. Prepare the app structure for auth and plans
 4. Add serious product sections like pricing, footer, and legal pages
 
+## Deferred / Difficult Tasks
+
+- SVG subject isolation with YOLO / Ultralytics is deferred.
+- Reason:
+  - it did not improve results enough in current tests
+  - it adds backend weight and deployment risk for Railway
+  - a weak auto-focus feature is worse than a clean simple SVG flow
+- Current decision:
+  - keep `Detail` and `Clean Background`
+  - do not expose YOLO-based auto focus in the UI for now
+  - revisit only if we later need a stronger object-isolation pipeline
+  - keep the active SVG backend free of YOLO dependencies for stability
+
 ## Session Handoff
 
 Current stop point:
