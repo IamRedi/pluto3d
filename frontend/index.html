@@ -8,6 +8,12 @@
 
 <style>
 
+*,
+*::before,
+*::after{
+box-sizing:border-box;
+}
+
 :root{
   --bg-deep:#060816;
   --bg-panel:rgba(8, 14, 29, 0.78);
@@ -32,7 +38,7 @@ body {
               linear-gradient(135deg, #020617, #081122, #19163a 58%, #0a132b);
 
   color: var(--text-main);
-  overflow-x: hidden;
+  overflow: hidden;
 }
 /* ===== SPACE BACKGROUND ===== */
 
@@ -72,18 +78,24 @@ to{background-position:1000px 1000px;}
 
 .workspace{
 display:grid;
-grid-template-columns:160px 460px 1fr;
+grid-template-columns:160px 460px minmax(0, 1fr);
+height:100dvh;
+max-height:100dvh;
+overflow:hidden;
 min-height:100vh;   /* 🔥 shumë e rëndësishme */
 }
 /* viewer shkon poshtë panel */
 .viewer{
 order:3;
-height:280px;
+height:100dvh;
+min-height:100dvh;
 }
 
 /* panel në mes */
 .panel{
 order:2;
+height:100dvh;
+min-height:100dvh;
 }
 
 /* sidebar sipër */
@@ -93,6 +105,10 @@ order:1;
 /* sidebar */
 
 .sidebar{
+height:100dvh;
+min-height:100dvh;
+overflow-y:auto;
+overflow-x:hidden;
 padding-top:35px;
 gap:25px;
 background:
@@ -201,7 +217,8 @@ inset 0 1px 0 rgba(255,255,255,0.12),
 
 .panel{
 padding:30px;
-overflow:auto;   /* duhet scroll */
+overflow-y:auto;   /* duhet scroll */
+overflow-x:hidden;
 background:
 linear-gradient(180deg, rgba(7, 13, 28, 0.9), rgba(7, 13, 28, 0.72));
 backdrop-filter:blur(18px);
@@ -214,6 +231,15 @@ scrollbar-width: none;        /* Firefox */
 }
 .panel::-webkit-scrollbar{
 display:none;   /* Chrome, Safari */
+}
+
+.sidebar{
+scrollbar-width:none;
+-ms-overflow-style:none;
+}
+
+.sidebar::-webkit-scrollbar{
+display:none;
 }
 
 
@@ -243,6 +269,7 @@ align-items:center;
 justify-content:center;
 
 overflow:hidden;
+align-self:stretch;
 
 
 
@@ -420,7 +447,7 @@ inset 0 1px 0 rgba(255,255,255,0.05),
 button{
 width:100%;
 padding:14px 16px;
-margin-top:10px;
+margin-top:8px;
 
 border-radius:16px;
 cursor:pointer;
@@ -638,13 +665,17 @@ animation:shake 0.4s ease;
 /* ===== MOBILE FINAL (Pluto PRO) ===== */
 
 @media (max-width: 900px){
+body{
+overflow-x:hidden;
+overflow-y:auto;
+}
 /* 🔥 FIX VIEWER SHFAQJE */
 .viewer{
 display:block !important;
 order:3;
 
 width:100% !important;
-height:260px !important;
+height:300px !important;
 
 min-height:200px;
 flex-shrink:0;
@@ -670,12 +701,16 @@ overflow:visible !important;
 .workspace{
 display:flex !important;
 flex-direction:column !important;
+height:auto !important;
+min-height:100vh !important;
 grid-template-columns:none !important;   /* 🔥 KJO E VRIT GRID */
 }
 
 /* gjithashtu sigurohu */
 .sidebar, .panel, .viewer{
 width:100% !important;
+height:auto !important;
+min-height:auto !important;
 }
 .sidebar{
 position:relative;   /* 🔥 mos jetë fixed */
@@ -686,6 +721,7 @@ align-items:center;
 width:100%;
 height:auto;
 padding:10px;
+overflow:visible;
 
 background:rgba(2,6,23,0.6);
 border-bottom:1px solid rgba(56,189,248,0.2);
@@ -741,7 +777,7 @@ pointer-events:none;
 
 .viewer-download{
 position:absolute;
-bottom:18px;
+bottom:14px;
 left:50%;
 transform:translateX(-50%);
 
