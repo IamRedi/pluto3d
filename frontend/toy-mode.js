@@ -1,3 +1,22 @@
+function getToyPromptCategory(prompt){
+  const query = prompt.toLowerCase()
+
+  if(query.includes("car") || query.includes("race") || query.includes("vehicle")){
+    return "car"
+  }
+
+  if(
+    query.includes("robot") ||
+    query.includes("android") ||
+    query.includes("mech") ||
+    query.includes("figure")
+  ){
+    return "robot"
+  }
+
+  return "robot"
+}
+
 async function generateToy(){
   const mode = document.getElementById("toyMode").value
 
@@ -7,14 +26,25 @@ async function generateToy(){
 
     status.innerHTML = "Loading local model..."
 
-    const testModel = prompt.includes("car")
-      ? window.PLUTO_TEST_MODELS.car
-      : window.PLUTO_TEST_MODELS.default
+    const promptCategory = getToyPromptCategory(prompt)
 
-    loadGLB(testModel.url, testModel.filename)
-    showViewerDownload(testModel.url, testModel.filename)
+    if(promptCategory === "car"){
+      loadGLB(window.PLUTO_TEST_MODELS.car.url, window.PLUTO_TEST_MODELS.car.filename)
+      showViewerDownload(window.PLUTO_TEST_MODELS.car.url, window.PLUTO_TEST_MODELS.car.filename)
+      status.innerHTML = "Car test model loaded."
+      return
+    }
 
-    status.innerHTML = "Test model loaded ✅"
+    if(promptCategory === "robot"){
+      loadGLB(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
+      showViewerDownload(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
+      status.innerHTML = "Robot test model loaded."
+      return
+    }
+
+    loadGLB(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
+    showViewerDownload(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
+    status.innerHTML = "Default robot test model loaded."
     return
   }
 
