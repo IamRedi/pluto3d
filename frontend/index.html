@@ -872,6 +872,7 @@ filter:none;
 <script src="test-models.js"></script>
 <script src="print-mode.js"></script>
 <script src="toy-mode.js"></script>
+<script src="viewer.js"></script>
 
 <script>
 
@@ -1033,60 +1034,6 @@ progressBar.style.width="0%"
 
 }
 
-/* three viewer */
-
-const scene = new THREE.Scene()
-
-const viewerContainer = document.getElementById("viewer")
-
-const camera = new THREE.PerspectiveCamera(
-75,
-viewerContainer.clientWidth / viewerContainer.clientHeight,
-0.1,
-1000
-)
-
-const renderer = new THREE.WebGLRenderer({
-  antialias: true,
-  alpha: true
-})
-
-renderer.setClearColor(0x000000, 0)
-
-renderer.setSize(
-viewerContainer.clientWidth,
-viewerContainer.clientHeight
-)
-
-document.getElementById("viewer").appendChild(renderer.domElement)
-renderer.domElement.style.position = "absolute"
-renderer.domElement.style.top = "0"
-renderer.domElement.style.left = "0"
-renderer.domElement.style.zIndex = "1"
-
-const light=new THREE.DirectionalLight(0xffffff,1)
-light.position.set(2,2,2)
-
-scene.add(light)
-
-camera.position.z=3
-
-const controls=new THREE.OrbitControls(camera,renderer.domElement)
-
-function loadModel(url){
-loadGLB(url, "model.glb")
-
-}
-
-function animate(){
-
-requestAnimationFrame(animate)
-
-renderer.render(scene,camera)
-
-}
-
-animate()
 async function generateSVG(){
 
 const file = document.getElementById("svgInput").files[0]
@@ -1809,6 +1756,7 @@ window.fakeInterval = setInterval(()=>{
 document.querySelector("#generateFreeBtn")
   .addEventListener("click", generateFree3D)
 </script>
+<script src="viewer.js"></script>
 <audio id="orbSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 </body>
 </html>
