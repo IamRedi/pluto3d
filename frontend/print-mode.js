@@ -31,6 +31,42 @@ function resolveAssetUrl(url){
   return new URL(url, window.location.href).href
 }
 
+async function createPrintReadyStl(sourceUrl, sourceFilename = "model.glb"){
+  const sourceRes = await fetch(sourceUrl)
+
+  if(!sourceRes.ok){
+    throw new Error("Could not read source GLB model")
+  }
+
+  const glbBlob = await sourceRes.blob()
+  const form = new FormData()
+  form.append("file", glbBlob, sourceFilename)
+
+  const res = await fetch(window.PLUTO_API_BASE + "/api/print-fix", {
+    method:"POST",
+    body:form
+  })
+
+  const raw = await res.text()
+  let data = null
+
+  try{
+    data = JSON.parse(raw)
+  }catch{
+    data = null
+  }
+
+  if(!res.ok){
+    throw new Error((data && data.message) || raw || "Backend request failed")
+  }
+
+  if(!data || data.status !== "success" || !data.file){
+    throw new Error((data && data.message) || "Print fix failed")
+  }
+
+  return window.PLUTO_API_BASE + data.file
+}
+
 async function fixCurrentModelForPrint(){
   const printStatus = document.getElementById("printStatus")
   const currentViewerAsset = window.currentViewerAsset
@@ -43,39 +79,10 @@ async function fixCurrentModelForPrint(){
   printStatus.innerHTML = "Uploading model to print fixer..."
 
   try{
-    const sourceRes = await fetch(currentViewerAsset.url)
-
-    if(!sourceRes.ok){
-      throw new Error("Could not read current GLB model")
-    }
-
-    const glbBlob = await sourceRes.blob()
-    const form = new FormData()
-    form.append("file", glbBlob, currentViewerAsset.filename || "model.glb")
-
-    const res = await fetch(window.PLUTO_API_BASE + "/api/print-fix", {
-      method:"POST",
-      body:form
-    })
-
-    const raw = await res.text()
-    let data = null
-
-    try{
-      data = JSON.parse(raw)
-    }catch{
-      data = null
-    }
-
-    if(!res.ok){
-      throw new Error((data && data.message) || raw || "Backend request failed")
-    }
-
-    if(!data || data.status !== "success" || !data.file){
-      throw new Error((data && data.message) || "Print fix failed")
-    }
-
-    const stlUrl = window.PLUTO_API_BASE + data.file
+    const stlUrl = await createPrintReadyStl(
+      currentViewerAsset.url,
+      currentViewerAsset.filename || "model.glb"
+    )
 
     loadSTL(stlUrl, "print-ready.stl")
     showViewerDownload(stlUrl, "print-ready.stl")

@@ -977,13 +977,28 @@ async function generateFree3D(){
 
 const fileInput = document.querySelector("#fileInput")
 const file = fileInput.files[0]
+const status = document.getElementById("status")
+const progressBar = document.getElementById("progressBar")
 
 if(!file){
 alert("Upload image first")
 return
 }
 
-const url = URL.createObjectURL(file)
+const prompt = (document.getElementById("prompt")?.value || "").toLowerCase()
+const fileName = (file.name || "").toLowerCase()
+const looksLikeCar = (
+prompt.includes("car") ||
+prompt.includes("vehicle") ||
+prompt.includes("race") ||
+fileName.includes("car") ||
+fileName.includes("vehicle") ||
+fileName.includes("race")
+)
+
+const testModel = looksLikeCar
+? window.PLUTO_TEST_MODELS.car
+: window.PLUTO_TEST_MODELS.default
 
 // 🔥 pastro viewer para
 document.getElementById("viewer").innerHTML = `
@@ -994,13 +1009,27 @@ document.getElementById("viewer").innerHTML = `
 </button>
 `
 
-loadFake3D(url)
-showViewerDownload(url, "preview.png")
-setCurrentViewerAsset({
-  type:"image",
-  url,
-  filename:"preview.png"
-})
+status.innerHTML = "Creating print-ready 3D test model..."
+progressBar.style.width = "35%"
+
+try{
+const stlUrl = await createPrintReadyStl(testModel.url, testModel.filename)
+
+loadSTL(stlUrl, "free-test-print.stl")
+showViewerDownload(stlUrl, "free-test-print.stl")
+progressBar.style.width = "100%"
+status.innerHTML = "Print-ready STL generated from test model."
+}catch(err){
+console.error("Free 3D test generation failed:", err)
+progressBar.style.width = "0%"
+status.innerHTML = "Free 3D test generation failed."
+
+const msg = err.message && err.message.includes("Failed to fetch")
+? "Backend is not running on http://127.0.0.1:8000. Start FastAPI server first."
+: (err.message || "Free 3D test generation failed")
+
+alert(msg)
+}
 }
 
 
