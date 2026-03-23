@@ -111,6 +111,67 @@ Core product direction:
 - keep ad experience elegant, not noisy
 - no ads for premium users
 
+## Recommended Platform Stack
+
+Use the simplest serious stack for this project:
+
+- Auth: Supabase Auth
+- Database: Supabase Postgres
+- Billing: Stripe
+- Backend app logic: FastAPI
+- Frontend hosting: Vercel
+- Backend hosting: Railway
+
+Why this stack:
+
+- simple enough for a first product
+- strong enough for real accounts and plans
+- easy to connect to Google login
+- easy to connect to subscriptions later
+- avoids building risky auth logic from scratch
+
+## Auth Implementation Order
+
+1. Create Supabase project
+2. Enable Google auth
+3. Add frontend auth entry points
+4. Store user profile and plan status
+5. Add backend plan checks
+6. Add Stripe checkout and webhook
+7. Add sponsor/ad loading state for free users
+
+## External Services Needed Later
+
+### Required
+
+- Supabase
+- Stripe
+- Replicate
+- Vercel
+- Railway
+
+### Nice To Have Later
+
+- analytics
+- email service
+- sponsor or ad provider
+
+## Required Future Env Variables
+
+These are not all needed immediately, but this is the expected future shape.
+
+### Frontend
+
+- `SUPABASE_URL`
+- `SUPABASE_ANON_KEY`
+
+### Backend
+
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `REPLICATE_API_TOKEN`
+
 ## Suggested Plan Tiers
 
 ### Guest
@@ -193,7 +254,7 @@ The product is considered ready for friend testing when the items below are stab
 
 ### Platform Layer
 
-- [ ] Auth strategy chosen
+- [x] Auth strategy chosen
 - [ ] Login/signup UI exists
 - [ ] Google login exists
 - [ ] Plan gating exists
@@ -222,6 +283,7 @@ This is the recommended order for the next work period.
 4. Add basic legal/support pages
 5. Define auth and plan architecture
 6. Add auth UI scaffold
+7. Lock the recommended stack: Supabase + Stripe
 
 ## Task Split
 
@@ -289,6 +351,7 @@ Choose one of these when continuing:
 - Fixed AI token handling
 - Built compact Toy Studio panel and kept preview in the main viewer
 - Decided to move toward a real product platform with auth, plans, premium access, and sponsor/ad loading states
+- Chosen recommended platform stack: Supabase Auth + Supabase Postgres + Stripe
 
 ## How To Use This File
 

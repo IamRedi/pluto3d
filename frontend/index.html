@@ -2745,12 +2745,16 @@ return `
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Platform Logic</div>
     <div class="platform-surface-card-title">How plans connect to the product</div>
-    <div class="platform-surface-card-copy">The next implementation step is to connect account roles, usage limits, premium locks, and Stripe so these plan levels become real.</div>
+    <div class="platform-surface-card-copy">The next implementation step is to connect account roles, usage limits, premium locks, Supabase Auth, and Stripe so these plan levels become real.</div>
   </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Subscriber UX</div>
     <div class="platform-surface-card-title">Clean upgrade path</div>
     <div class="platform-surface-card-copy">Upgrade prompts should appear elegantly during generation, inside the plans surface, and beside premium-only buttons without feeling pushy.</div>
+    <div class="surface-chip-row">
+      <span class="surface-chip primary">Supabase Auth</span>
+      <span class="surface-chip premium">Stripe Billing</span>
+    </div>
   </div>
 `
 }
@@ -2884,9 +2888,10 @@ return `
     <div class="platform-surface-card">
       <div class="platform-surface-card-label">Auth Entry</div>
       <div class="platform-surface-card-title">Sign in to Pluto3D</div>
-      <div class="platform-surface-card-copy">This UI is the scaffold for the real auth layer. The next step is to connect Google and account login through a proper provider.</div>
+      <div class="platform-surface-card-copy">This UI is the scaffold for the real auth layer. The recommended next step is Supabase Auth with Google login and account creation.</div>
       <div class="surface-chip-row">
-        <span class="surface-chip primary">Google Login Planned</span>
+        <span class="surface-chip primary">Supabase Auth</span>
+        <span class="surface-chip">Google Login Planned</span>
         <span class="surface-chip">Email Signup Planned</span>
       </div>
       <div class="surface-actions">
@@ -2910,7 +2915,7 @@ return `
     <div class="platform-surface-card wide">
       <div class="platform-surface-card-label">Why login matters</div>
       <div class="platform-surface-card-title">The foundation for plans, history, and premium access</div>
-      <div class="platform-surface-card-copy">Once auth is connected, Pluto3D can save generation history, remember usage, unlock subscriber-only tools, and keep the experience stable across devices.</div>
+      <div class="platform-surface-card-copy">Once auth is connected, Pluto3D can save generation history, remember usage, unlock subscriber-only tools, and keep the experience stable across devices. This is also the base for Stripe subscriptions later.</div>
     </div>
   </div>
 `
@@ -2937,7 +2942,7 @@ return `
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Account View</div>
     <div class="platform-surface-card-title">Profile will become your control center</div>
-    <div class="platform-surface-card-copy">Later this section will show account identity, plan, usage, saved outputs, and generated history from one clean dashboard.</div>
+    <div class="platform-surface-card-copy">Later this section will show account identity, plan, usage, saved outputs, and generated history from one clean dashboard after Supabase auth is connected.</div>
   </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">History</div>
