@@ -83,8 +83,6 @@ async function generateToy(){
 
     const data = await res.json()
 
-    window.incrementUsage("toyGeneration")
-
     if(!data.glb_url && !data.stl_url){
       status.innerHTML = "Failed"
       return
