@@ -237,6 +237,44 @@ color:#38bdf8;
 text-shadow: 0 0 10px rgba(56,189,248,0.5);
 }
 
+.viewer-modes{
+position:absolute;
+top:18px;
+right:20px;
+z-index:3;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+justify-content:flex-end;
+}
+
+.viewer-mode-btn{
+background:rgba(8, 15, 32, 0.72);
+border:1px solid rgba(56,189,248,0.35);
+color:#c4f1ff;
+padding:8px 12px;
+border-radius:999px;
+font-size:12px;
+letter-spacing:0.04em;
+cursor:pointer;
+backdrop-filter:blur(8px);
+box-shadow:0 0 20px rgba(14,165,233,0.12);
+transition:0.2s ease;
+}
+
+.viewer-mode-btn:hover{
+transform:translateY(-1px);
+border-color:rgba(56,189,248,0.75);
+color:#ffffff;
+}
+
+.viewer-mode-btn.active{
+background:linear-gradient(135deg, rgba(34,211,238,0.25), rgba(168,85,247,0.3));
+border-color:rgba(125,211,252,0.95);
+color:#ffffff;
+box-shadow:0 0 24px rgba(56,189,248,0.28);
+}
+
 #viewer{
 
 width:100%;
@@ -1000,14 +1038,7 @@ const testModel = looksLikeCar
 ? window.PLUTO_TEST_MODELS.car
 : window.PLUTO_TEST_MODELS.default
 
-// 🔥 pastro viewer para
-document.getElementById("viewer").innerHTML = `
-<div class="viewer-title">AI Viewer</div>
-<img id="svgViewer" style="display:none;">
-<button id="viewerDownload" class="viewer-download hidden">
-⬇ Download
-</button>
-`
+resetViewerShell()
 
 status.innerHTML = "Creating print-ready 3D test model..."
 progressBar.style.width = "35%"
@@ -1055,7 +1086,7 @@ if(fake) fake.remove()
 while(scene.children.length > 0){
 scene.remove(scene.children[0])
 }
-scene.add(light)
+addDefaultLights()
 
 status.innerHTML=""
 progressBar.style.width="0%"
@@ -1108,7 +1139,7 @@ setCurrentViewerAsset({
 while(scene.children.length > 0){
 scene.remove(scene.children[0])
 }
-scene.add(light)
+addDefaultLights()
 svgViewer.style.display = "block"
 // vetëm për SVG → efekt white/neon
 svgViewer.style.filter = "invert(1) brightness(2)"

@@ -15,24 +15,169 @@ const renderer = new THREE.WebGLRenderer({
 })
 
 renderer.setClearColor(0x000000, 0)
+renderer.setPixelRatio(window.devicePixelRatio || 1)
+renderer.outputEncoding = THREE.sRGBEncoding
+renderer.toneMapping = THREE.ACESFilmicToneMapping
+renderer.toneMappingExposure = 1.15
 renderer.setSize(
   viewerContainer.clientWidth,
   viewerContainer.clientHeight
 )
 
-document.getElementById("viewer").appendChild(renderer.domElement)
 renderer.domElement.style.position = "absolute"
 renderer.domElement.style.top = "0"
 renderer.domElement.style.left = "0"
 renderer.domElement.style.zIndex = "1"
 
-const light = new THREE.DirectionalLight(0xffffff, 1)
-light.position.set(2, 2, 2)
-scene.add(light)
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.4)
+directionalLight.position.set(2, 3, 4)
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.65)
+const hemisphereLight = new THREE.HemisphereLight(0x7dd3fc, 0x12061f, 0.85)
 
 camera.position.z = 3
 
 const controls = new THREE.OrbitControls(camera, renderer.domElement)
+window.currentViewerMode = window.currentViewerMode || "studio"
+
+const VIEWER_SHELL = `
+<button id="viewerDownload" class="viewer-download hidden">
+Download
+</button>
+<div class="viewer-title">AI Viewer</div>
+<div class="viewer-modes">
+  <button class="viewer-mode-btn" data-viewer-mode="studio">Studio</button>
+  <button class="viewer-mode-btn" data-viewer-mode="wireframe">Wireframe</button>
+  <button class="viewer-mode-btn" data-viewer-mode="print">Print Check</button>
+</div>
+<img
+  id="svgViewer"
+  style="
+    display:none;
+    position:absolute;
+    inset:0;
+    margin:auto;
+    width:70%;
+    height:auto;
+    max-width:700px;
+    object-fit:contain;
+    z-index:2;
+    filter:none;
+  "
+>
+`
+
+function addDefaultLights(){
+  scene.add(ambientLight)
+  scene.add(hemisphereLight)
+  scene.add(directionalLight)
+}
+
+function resetViewerShell(){
+  viewerContainer.innerHTML = VIEWER_SHELL
+  viewerContainer.appendChild(renderer.domElement)
+  bindViewerModeControls()
+  syncViewerModeButtons()
+}
+
+function bindViewerModeControls(){
+  viewerContainer.querySelectorAll("[data-viewer-mode]").forEach((button) => {
+    button.addEventListener("click", () => {
+      setViewerMode(button.dataset.viewerMode)
+    })
+  })
+}
+
+function syncViewerModeButtons(){
+  viewerContainer.querySelectorAll("[data-viewer-mode]").forEach((button) => {
+    const isActive = button.dataset.viewerMode === window.currentViewerMode
+    button.classList.toggle("active", isActive)
+  })
+}
+
+function getCurrentMeshList(){
+  if(!window.currentModel){
+    return []
+  }
+
+  if(window.currentModel.isMesh){
+    return [window.currentModel]
+  }
+
+  const meshes = []
+  window.currentModel.traverse((child) => {
+    if(child.isMesh){
+      meshes.push(child)
+    }
+  })
+
+  return meshes
+}
+
+function cloneMaterial(material){
+  if(Array.isArray(material)){
+    return material.map((item) => item.clone())
+  }
+
+  return material.clone()
+}
+
+function ensureOriginalMaterials(){
+  getCurrentMeshList().forEach((mesh) => {
+    if(!mesh.userData.plutoOriginalMaterial){
+      mesh.userData.plutoOriginalMaterial = cloneMaterial(mesh.material)
+    }
+  })
+}
+
+function buildModeMaterial(sourceMaterial, mode){
+  if(mode === "studio"){
+    return sourceMaterial.clone()
+  }
+
+  if(mode === "wireframe"){
+    const wireMaterial = sourceMaterial.clone()
+    wireMaterial.wireframe = true
+    wireMaterial.transparent = true
+    wireMaterial.opacity = 0.92
+    return wireMaterial
+  }
+
+  const printMaterial = new THREE.MeshStandardMaterial({
+    color: 0xff8a3d,
+    metalness: 0.08,
+    roughness: 0.72
+  })
+
+  return printMaterial
+}
+
+function applyViewerModeToModel(mode){
+  ensureOriginalMaterials()
+
+  getCurrentMeshList().forEach((mesh) => {
+    const originalMaterial = mesh.userData.plutoOriginalMaterial
+
+    if(Array.isArray(originalMaterial)){
+      mesh.material = originalMaterial.map((item) => buildModeMaterial(item, mode))
+      return
+    }
+
+    mesh.material = buildModeMaterial(originalMaterial, mode)
+  })
+}
+
+function setViewerMode(mode){
+  window.currentViewerMode = mode
+  syncViewerModeButtons()
+
+  if(window.currentModel){
+    applyViewerModeToModel(mode)
+  }
+}
+
+resetViewerShell()
+addDefaultLights()
 
 function loadModel(url){
   loadGLB(url, "model.glb")
@@ -44,6 +189,19 @@ function animate(){
 }
 
 animate()
+
+window.addEventListener("resize", () => {
+  const width = viewerContainer.clientWidth
+  const height = viewerContainer.clientHeight
+
+  if(!width || !height){
+    return
+  }
+
+  camera.aspect = width / height
+  camera.updateProjectionMatrix()
+  renderer.setSize(width, height)
+})
 
 function loadSTL(url, filename="model.stl"){
   const loader = new THREE.STLLoader()
@@ -64,17 +222,18 @@ function loadSTL(url, filename="model.stl"){
 
     const material = new THREE.MeshStandardMaterial({
       color: 0x00d9ff,
-      metalness: 0.3,
-      roughness: 0.4
+      metalness: 0.22,
+      roughness: 0.5
     })
 
     const mesh = new THREE.Mesh(geometry, material)
     window.currentModel = mesh
 
     geometry.center()
-    scene.add(light)
+    addDefaultLights()
     scene.add(mesh)
     geometry.center()
+    applyViewerModeToModel(window.currentViewerMode)
 
     const box = new THREE.Box3().setFromObject(mesh)
     const size = box.getSize(new THREE.Vector3()).length()
@@ -108,7 +267,7 @@ function loadGLB(url, filename="model.glb"){
       scene.remove(scene.children[0])
     }
 
-    scene.add(light)
+    addDefaultLights()
 
     const model = gltf.scene
     window.currentModel = model
@@ -126,6 +285,7 @@ function loadGLB(url, filename="model.glb"){
     model.scale.setScalar(scale)
 
     scene.add(model)
+    applyViewerModeToModel(window.currentViewerMode)
 
     camera.position.set(0, 0, 3)
     controls.update()
@@ -173,7 +333,7 @@ function loadFake3D(imageUrl){
     scene.remove(scene.children[0])
   }
 
-  scene.add(light)
+  addDefaultLights()
   window.currentModel = null
 
   setCurrentViewerAsset({
