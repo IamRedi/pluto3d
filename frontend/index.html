@@ -27,38 +27,80 @@ box-sizing:border-box;
   --text-main:#eff6ff;
   --text-soft:#94a3b8;
   --glow-cyan:0 0 30px rgba(56,189,248,0.18);
+  --body-background:
+    radial-gradient(circle at 20% 30%, rgba(88, 28, 135, 0.4), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(30, 64, 175, 0.4), transparent 40%),
+    linear-gradient(135deg, #020617, #081122, #19163a 58%, #0a132b);
+  --space-background:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+    radial-gradient(circle at 20% 30%, rgba(56,189,248,0.15), transparent),
+    radial-gradient(circle at 80% 70%, rgba(168,85,247,0.2), transparent),
+    radial-gradient(circle at 50% 80%, rgba(244,63,94,0.1), transparent),
+    #020617;
+  --sidebar-background:
+    linear-gradient(180deg, rgba(8, 14, 29, 0.92), rgba(6, 11, 24, 0.7));
+  --panel-background:
+    linear-gradient(180deg, rgba(7, 13, 28, 0.9), rgba(7, 13, 28, 0.72));
+  --viewer-background:
+    radial-gradient(circle at center, rgba(34,211,238,0.1), transparent 68%),
+    radial-gradient(circle at 18% 18%, rgba(251,113,133,0.1), transparent 28%),
+    radial-gradient(circle at 78% 24%, rgba(168,85,247,0.18), transparent 34%),
+    radial-gradient(circle at 74% 82%, rgba(56,189,248,0.16), transparent 36%);
+}
+
+body[data-theme="light"]{
+  --bg-deep:#e8f5ff;
+  --bg-panel:rgba(235, 245, 255, 0.88);
+  --bg-panel-strong:rgba(246, 250, 255, 0.96);
+  --line-soft:rgba(14, 116, 144, 0.14);
+  --line-bright:rgba(14, 116, 144, 0.35);
+  --cyan:#0891b2;
+  --blue:#0284c7;
+  --violet:#7c3aed;
+  --coral:#e11d48;
+  --text-main:#0f172a;
+  --text-soft:#475569;
+  --glow-cyan:0 0 30px rgba(8,145,178,0.12);
+  --body-background:
+    radial-gradient(circle at 20% 25%, rgba(34, 211, 238, 0.14), transparent 35%),
+    radial-gradient(circle at 80% 75%, rgba(99, 102, 241, 0.12), transparent 38%),
+    linear-gradient(135deg, #f8fcff, #eef7ff 45%, #e9f0ff 100%);
+  --space-background:
+    linear-gradient(rgba(8,15,35,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8,15,35,0.04) 1px, transparent 1px),
+    radial-gradient(circle at 20% 30%, rgba(56,189,248,0.1), transparent),
+    radial-gradient(circle at 80% 70%, rgba(168,85,247,0.08), transparent),
+    radial-gradient(circle at 50% 80%, rgba(244,63,94,0.05), transparent),
+    #edf6ff;
+  --sidebar-background:
+    linear-gradient(180deg, rgba(240, 248, 255, 0.98), rgba(229, 241, 255, 0.92));
+  --panel-background:
+    linear-gradient(180deg, rgba(244, 250, 255, 0.96), rgba(233, 244, 255, 0.9));
+  --viewer-background:
+    radial-gradient(circle at center, rgba(8,145,178,0.08), transparent 68%),
+    radial-gradient(circle at 18% 18%, rgba(225,29,72,0.05), transparent 28%),
+    radial-gradient(circle at 78% 24%, rgba(124,58,237,0.08), transparent 34%),
+    radial-gradient(circle at 74% 82%, rgba(2,132,199,0.08), transparent 36%);
 }
 
 body {
   margin: 0;
   font-family: Inter, sans-serif;
-  
-  background: radial-gradient(circle at 20% 30%, rgba(88, 28, 135, 0.4), transparent 40%),
-              radial-gradient(circle at 80% 70%, rgba(30, 64, 175, 0.4), transparent 40%),
-              linear-gradient(135deg, #020617, #081122, #19163a 58%, #0a132b);
-
+  background:var(--body-background);
   color: var(--text-main);
   overflow: hidden;
+  transition:background 0.25s ease, color 0.25s ease;
 }
 /* ===== SPACE BACKGROUND ===== */
 
 .space-bg{
 position:fixed;
 inset:0;
-
-background:
-linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
-
-radial-gradient(circle at 20% 30%, rgba(56,189,248,0.15), transparent),
-radial-gradient(circle at 80% 70%, rgba(168,85,247,0.2), transparent),
-radial-gradient(circle at 50% 80%, rgba(244,63,94,0.1), transparent),
-
-#020617;
-
+background:var(--space-background);
 background-size: 40px 40px, 40px 40px, cover, cover, cover, cover;
-
 z-index:-2;
+transition:background 0.25s ease;
 }
 
 .stars{
@@ -112,7 +154,7 @@ overflow-x:hidden;
 padding-top:35px;
 gap:25px;
 background:
-linear-gradient(180deg, rgba(8, 14, 29, 0.92), rgba(6, 11, 24, 0.7));
+var(--sidebar-background);
 backdrop-filter:blur(18px);
 border-right:1px solid var(--line-soft);
 box-shadow:inset -1px 0 0 rgba(255,255,255,0.04);
@@ -213,6 +255,30 @@ inset 0 1px 0 rgba(255,255,255,0.12),
 
 }
 
+.theme-toggle{
+width:92px;
+min-height:52px;
+margin-top:auto;
+margin-bottom:22px;
+padding:10px 12px;
+border-radius:18px;
+border:1px solid rgba(56,189,248,0.22);
+background:linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(12, 20, 39, 0.66));
+color:#d6f6ff;
+font-family:Orbitron;
+font-size:12px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+cursor:pointer;
+transition:0.2s;
+}
+
+.theme-toggle:hover{
+transform:translateY(-2px);
+border-color:rgba(103,232,249,0.62);
+box-shadow:0 12px 30px rgba(14,165,233,0.16);
+}
+
 /* panel */
 
 .panel{
@@ -220,7 +286,7 @@ padding:30px;
 overflow-y:auto;   /* duhet scroll */
 overflow-x:hidden;
 background:
-linear-gradient(180deg, rgba(7, 13, 28, 0.9), rgba(7, 13, 28, 0.72));
+var(--panel-background);
 backdrop-filter:blur(18px);
 border-right:1px solid var(--line-soft);
 box-shadow:inset -1px 0 0 rgba(255,255,255,0.035);
@@ -247,11 +313,7 @@ display:none;
 
 .viewer{
 position:relative;
-background:
-radial-gradient(circle at center, rgba(34,211,238,0.1), transparent 68%),
-radial-gradient(circle at 18% 18%, rgba(251,113,133,0.1), transparent 28%),
-radial-gradient(circle at 78% 24%, rgba(168,85,247,0.18), transparent 34%),
-radial-gradient(circle at 74% 82%, rgba(56,189,248,0.16), transparent 36%);
+background:var(--viewer-background);
 
 background-image:
 linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
@@ -477,10 +539,32 @@ inset 0 1px 0 rgba(255,255,255,0.08),
 0 20px 40px rgba(14,165,233,0.18);
 }
 
+body[data-theme="light"] button{
+background:linear-gradient(180deg, rgba(223, 239, 255, 0.96), rgba(205, 227, 248, 0.94));
+border:1px solid rgba(14,116,144,0.18);
+color:#0f172a;
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.65),
+0 14px 28px rgba(14,116,144,0.08);
+}
+
+body[data-theme="light"] button:hover{
+border-color:rgba(14,116,144,0.38);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.82),
+0 16px 30px rgba(14,116,144,0.12);
+}
+
 .btn-premium{
 background:
 linear-gradient(135deg, rgba(88,28,135,0.38), rgba(251,113,133,0.18));
 border:1px solid rgba(251,146,60,0.5);
+}
+
+body[data-theme="light"] .btn-premium{
+background:linear-gradient(135deg, rgba(245, 222, 255, 0.95), rgba(255, 229, 235, 0.96));
+border:1px solid rgba(234,88,12,0.28);
+color:#3b0764;
 }
 
 .btn-premium:hover{
@@ -566,6 +650,19 @@ border-radius:16px;
 padding:12px 14px;
 box-sizing:border-box;
 box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+body[data-theme="light"] textarea,
+body[data-theme="light"] select{
+background:rgba(248, 251, 255, 0.98);
+color:#0f172a;
+border:1px solid rgba(14,116,144,0.16);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+body[data-theme="light"] select option{
+background:#f8fbff;
+color:#0f172a;
 }
 
 textarea:focus,
@@ -1069,6 +1166,10 @@ to{background-position:1000px 1000px;}
 <div class="sidebtn" data-panel-trigger="ai" onclick="openPanel('ai')">AI</div>
 
 <div class="sidebtn" data-panel-trigger="toy" onclick="openPanel('toy')">Toy</div>
+
+<button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()">
+Night
+</button>
 
 </div>
 
@@ -1598,6 +1699,26 @@ alert(msg)
 
 /* panels */
 
+function applyTheme(theme){
+document.body.setAttribute("data-theme", theme)
+const themeToggle = document.getElementById("themeToggle")
+if(themeToggle){
+themeToggle.textContent = theme === "light" ? "Light" : "Night"
+}
+}
+
+function toggleTheme(){
+const currentTheme = document.body.getAttribute("data-theme") || "dark"
+const nextTheme = currentTheme === "dark" ? "light" : "dark"
+applyTheme(nextTheme)
+localStorage.setItem("plutoTheme", nextTheme)
+}
+
+function initializeTheme(){
+const storedTheme = localStorage.getItem("plutoTheme") || "dark"
+applyTheme(storedTheme)
+}
+
 function openPanel(name){
 
 document.querySelectorAll("[data-panel-trigger]")
@@ -1632,6 +1753,8 @@ status.innerHTML=""
 progressBar.style.width="0%"
 
 }
+
+initializeTheme()
 
 async function generateSVG(){
 
