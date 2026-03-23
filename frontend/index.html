@@ -908,6 +908,48 @@ line-height:1.65;
 color:#93a6c1;
 }
 
+.studio-control-group{
+display:flex;
+flex-direction:column;
+gap:8px;
+margin-top:8px;
+}
+
+.studio-control-label{
+display:flex;
+align-items:center;
+justify-content:space-between;
+font-size:12px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:#dffbff;
+}
+
+.studio-control-value{
+font-size:12px;
+color:#7dd3fc;
+}
+
+.studio-slider{
+width:100%;
+accent-color:var(--cyan);
+}
+
+.studio-preset-grid{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:10px;
+margin-top:10px;
+}
+
+.studio-preset-btn{
+margin-top:0;
+padding:10px 12px;
+font-size:11px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+}
+
 .studio-actions{
 margin-top:auto;
 display:flex;
@@ -1300,14 +1342,66 @@ filter:none;
           The next step will add playful toy presets like hero proportions, cute vinyl,
           and chunky mini figure styling.
         </p>
+
+        <div class="studio-preset-grid">
+          <button type="button" class="studio-preset-btn" onclick="applyToyStudioPreset('hero')">Hero</button>
+          <button type="button" class="studio-preset-btn" onclick="applyToyStudioPreset('chibi')">Chibi</button>
+          <button type="button" class="studio-preset-btn" onclick="applyToyStudioPreset('collector')">Collector</button>
+          <button type="button" class="studio-preset-btn" onclick="applyToyStudioPreset('mini')">Mini</button>
+        </div>
       </div>
 
       <div class="studio-card">
         <h3>Part Editing</h3>
-        <p>
-          We will expose smart controls for head, body, arms, and accessory parts when
-          the model supports separated meshes.
-        </p>
+        <p>Use the first safe controls to stylize the current toy model.</p>
+
+        <div class="studio-control-group">
+          <div class="studio-control-label">
+            <span>Head Scale</span>
+            <span class="studio-control-value" id="headScaleValue">1.00x</span>
+          </div>
+          <input
+            class="studio-slider"
+            id="headScaleControl"
+            type="range"
+            min="0.7"
+            max="1.8"
+            step="0.05"
+            value="1"
+          >
+        </div>
+
+        <div class="studio-control-group">
+          <div class="studio-control-label">
+            <span>Body Scale</span>
+            <span class="studio-control-value" id="bodyScaleValue">1.00x</span>
+          </div>
+          <input
+            class="studio-slider"
+            id="bodyScaleControl"
+            type="range"
+            min="0.75"
+            max="1.45"
+            step="0.05"
+            value="1"
+          >
+        </div>
+
+        <div class="studio-control-group">
+          <div class="studio-control-label">
+            <span>Chunky</span>
+            <span class="studio-control-value" id="chunkyValue">1.00x</span>
+          </div>
+          <input
+            class="studio-slider"
+            id="chunkyControl"
+            type="range"
+            min="0.8"
+            max="1.5"
+            step="0.05"
+            value="1"
+          >
+        </div>
       </div>
 
       <div class="studio-card">
@@ -1319,8 +1413,8 @@ filter:none;
       </div>
 
       <div class="studio-actions">
-        <button type="button">Apply Style</button>
-        <button type="button" class="btn-premium">Reset</button>
+        <button type="button" onclick="applyToyStudioControls()">Apply Style</button>
+        <button type="button" class="btn-premium" onclick="resetToyStudioStyle()">Reset</button>
       </div>
     </div>
 
@@ -1332,8 +1426,8 @@ filter:none;
 
       <div class="studio-stage">
         <div class="studio-stage-note">
-          This is the visual shell of the upcoming Toy Studio. Next we will place the live
-          model preview and interactive stylization controls inside this workspace.
+          The first style controls are now active. In the next step we will bring the live
+          model preview directly into this workspace for real-time studio editing.
         </div>
       </div>
     </div>
@@ -1348,6 +1442,7 @@ filter:none;
 <script src="test-models.js"></script>
 <script src="print-mode.js"></script>
 <script src="toy-mode.js"></script>
+<script src="toy-studio.js"></script>
 
 <script>
 

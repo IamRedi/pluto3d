@@ -199,6 +199,9 @@ function syncStudioLaunchButton(){
 function openToyStudio(){
   const overlay = document.getElementById("toyStudioOverlay")
   if(!overlay) return
+  if(typeof refreshToyStudioState === "function"){
+    refreshToyStudioState()
+  }
   overlay.classList.remove("hidden")
 }
 
@@ -274,6 +277,9 @@ function loadSTL(url, filename="model.stl"){
     mesh.scale.setScalar(scale)
     camera.position.set(0, 0, 3)
     controls.update()
+    if(typeof refreshToyStudioState === "function"){
+      refreshToyStudioState()
+    }
 
     setCurrentViewerAsset({
       type:"stl",
@@ -321,6 +327,9 @@ function loadGLB(url, filename="model.glb"){
 
     camera.position.set(0, 0, 3)
     controls.update()
+    if(typeof refreshToyStudioState === "function"){
+      refreshToyStudioState()
+    }
 
     setCurrentViewerAsset({
       type:"glb",
