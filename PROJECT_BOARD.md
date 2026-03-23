@@ -157,6 +157,116 @@ Core product direction:
 3. Prepare the app structure for auth and plans
 4. Add serious product sections like pricing, footer, and legal pages
 
+## Beta Readiness Checklist
+
+The product is considered ready for friend testing when the items below are stable.
+
+### Core App
+
+- [x] Local frontend works
+- [x] Local backend works
+- [x] Vercel frontend works
+- [x] Railway backend works
+- [x] AI image generation works with local `.env`
+- [x] SVG generation works
+- [x] Toy test mode works
+- [x] Print Fix works
+- [x] Viewer can show SVG, GLB, and STL
+
+### Toy Studio
+
+- [x] Floating control panel opens and closes cleanly
+- [x] Changes are visible in the main viewer
+- [ ] Presets feel polished and useful
+- [ ] Reset behavior is reliable in all toy flows
+- [ ] Part-aware editing exists for multi-mesh models
+
+### Product Surface
+
+- [ ] Landing page feels serious and premium
+- [ ] Pricing section exists
+- [ ] Footer exists
+- [ ] Privacy policy page exists
+- [ ] Terms page exists
+- [ ] Support/contact section exists
+- [ ] Beta label and tester guidance exist
+
+### Platform Layer
+
+- [ ] Auth strategy chosen
+- [ ] Login/signup UI exists
+- [ ] Google login exists
+- [ ] Plan gating exists
+- [ ] Premium-only buttons are visually locked
+- [ ] Usage limits are defined
+
+### Monetization
+
+- [ ] Stripe plan structure is defined
+- [ ] Subscription flow exists
+- [ ] Premium activation works
+- [ ] Free user loading sponsor/ad state exists
+
+## Current Sprint: Friend-Test Beta
+
+This is the recommended order for the next work period.
+
+1. Stabilize Toy Studio controls and presets
+2. Add a `Night Mode` toggle
+3. Build serious product UI sections:
+   - navbar
+   - hero
+   - pricing
+   - sponsor strip
+   - footer
+4. Add basic legal/support pages
+5. Define auth and plan architecture
+6. Add auth UI scaffold
+
+## Task Split
+
+### Codex Owns
+
+- code structure
+- frontend and backend implementation
+- product-board updates
+- premium/free flow planning
+- UI polishing
+- testing guidance
+
+### User Owns
+
+- `git push`
+- external dashboards:
+  - Vercel
+  - Railway
+  - Replicate
+  - future Supabase
+  - future Stripe
+- secret keys and env values
+- real-world friend testing feedback
+
+## Immediate Next Build Candidates
+
+Choose one of these when continuing:
+
+1. `Toy Studio polish`
+   - better preset logic
+   - better reset behavior
+   - better edit labels
+2. `Night Mode`
+   - global theme toggle
+   - saved preference
+3. `Serious landing layer`
+   - navbar
+   - hero
+   - pricing
+   - footer
+4. `Auth planning scaffold`
+   - choose stack
+   - define data model
+   - prepare UI entry points
+
 ## Next Recommended Tasks
 
 1. Improve Toy Studio presets and part-aware editing
