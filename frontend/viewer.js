@@ -45,10 +45,14 @@ const VIEWER_SHELL = `
 Download
 </button>
 <div class="viewer-title">AI Viewer</div>
-<div class="viewer-modes">
-  <button class="viewer-mode-btn" data-viewer-mode="studio">Studio</button>
-  <button class="viewer-mode-btn" data-viewer-mode="wireframe">Wireframe</button>
-  <button class="viewer-mode-btn" data-viewer-mode="print">Print Check</button>
+<div class="viewer-toolbar">
+  <button id="studioLaunch" class="studio-launch hidden" onclick="openToyStudio()">
+  Open Studio
+  </button>
+  <div class="viewer-modes">
+    <button class="viewer-mode-btn" data-viewer-mode="wireframe">Wire</button>
+    <button class="viewer-mode-btn" data-viewer-mode="print">Print</button>
+  </div>
 </div>
 <img
   id="svgViewer"
@@ -78,6 +82,7 @@ function resetViewerShell(){
   viewerContainer.appendChild(renderer.domElement)
   bindViewerModeControls()
   syncViewerModeButtons()
+  syncStudioLaunchButton()
 }
 
 function bindViewerModeControls(){
@@ -174,6 +179,33 @@ function setViewerMode(mode){
   if(window.currentModel){
     applyViewerModeToModel(mode)
   }
+}
+
+function syncStudioLaunchButton(){
+  const launchButton = document.getElementById("studioLaunch")
+
+  if(!launchButton){
+    return
+  }
+
+  const shouldShow = Boolean(window.currentViewerAsset) && (
+    window.currentViewerAsset.type === "glb" ||
+    window.currentViewerAsset.type === "stl"
+  )
+
+  launchButton.classList.toggle("hidden", !shouldShow)
+}
+
+function openToyStudio(){
+  const overlay = document.getElementById("toyStudioOverlay")
+  if(!overlay) return
+  overlay.classList.remove("hidden")
+}
+
+function closeToyStudio(){
+  const overlay = document.getElementById("toyStudioOverlay")
+  if(!overlay) return
+  overlay.classList.add("hidden")
 }
 
 resetViewerShell()

@@ -1,5 +1,8 @@
 function setCurrentViewerAsset(asset){
   window.currentViewerAsset = asset
+  if(typeof syncStudioLaunchButton === "function"){
+    syncStudioLaunchButton()
+  }
 
   const printStatus = document.getElementById("printStatus")
 
