@@ -1269,6 +1269,26 @@ linear-gradient(135deg, rgba(88,28,135,0.38), rgba(251,113,133,0.18));
 border:1px solid rgba(251,146,60,0.5);
 }
 
+.btn-premium.locked{
+position:relative;
+opacity:0.84;
+}
+
+.btn-premium.locked::after{
+content:"Premium";
+position:absolute;
+top:10px;
+right:12px;
+padding:4px 8px;
+border-radius:999px;
+background:rgba(2,6,23,0.72);
+border:1px solid rgba(251,146,60,0.32);
+font-size:10px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:#ffd6b0;
+}
+
 body[data-theme="light"] .btn-premium{
 background:linear-gradient(135deg, rgba(245, 222, 255, 0.95), rgba(255, 229, 235, 0.96));
 border:1px solid rgba(234,88,12,0.28);
@@ -2026,7 +2046,7 @@ style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10p
 Generate Free
 </button>
 
-<button class="btn-premium" onclick="generate3D()">
+<button class="btn-premium" data-premium-feature="premium-3d-generation" onclick="runPremiumAction('premium-3d-generation', generate3D)">
 Generate Premium
 </button>
 
@@ -2147,7 +2167,7 @@ style="width:100%;height:70px;border-radius:10px;padding:10px;"></textarea>
 
 <button onclick="convertTo3D()">Convert to 3D</button>
 
-<button class="btn-premium" onclick="convertTo3DPro()">3D PRO</button>
+<button class="btn-premium" data-premium-feature="pro-3d-conversion" onclick="runPremiumAction('pro-3d-conversion', convertTo3DPro)">3D PRO</button>
 
 </div>
 
@@ -2201,7 +2221,7 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <input type="range" id="rotateSlider" min="0" max="360" value="0">
 
 <button onclick="applyTransform()">Apply Transform</button>
-<button class="btn-premium" onclick="fixCurrentModelForPrint()">Fix for Print</button>
+<button class="btn-premium" data-premium-feature="print-fix" onclick="runPremiumAction('print-fix', fixCurrentModelForPrint)">Fix for Print</button>
 <div class="status" id="printStatus">Load a GLB model to enable print fix.</div>
 
 </div>
@@ -2997,6 +3017,37 @@ default:
 }
 }
 
+function isPremiumPreview(){
+return getAuthPreviewState().mode === "premium"
+}
+
+function openPremiumUpgradePrompt(featureKey){
+openPlatformSurface("plans")
+const body = document.getElementById("platformSurfaceBody")
+if(body){
+  body.insertAdjacentHTML("afterbegin", `
+    <div class="platform-surface-card wide" style="margin-bottom:16px;">
+      <div class="platform-surface-card-label">Premium Unlock</div>
+      <div class="platform-surface-card-title">This feature is locked in ${getAuthPreviewState().mode === "guest" ? "Guest" : "Free"} preview</div>
+      <div class="platform-surface-card-copy">
+        Feature key: <strong>${featureKey}</strong>. Upgrade flow will later take users from this lock state to the subscriber path through Supabase auth and Stripe billing.
+      </div>
+    </div>
+  `)
+}
+}
+
+function runPremiumAction(featureKey, action){
+if(!isPremiumPreview()){
+  openPremiumUpgradePrompt(featureKey)
+  return
+}
+
+if(typeof action === "function"){
+  action()
+}
+}
+
 function syncAuthPreviewUI(){
 const authState = getAuthPreviewState()
 const planBadge = document.getElementById("platformPlanBadge")
@@ -3014,6 +3065,15 @@ if(loginLink){
 if(profileLink){
   profileLink.textContent = authState.loggedIn ? authState.name : "Profile"
 }
+
+document.querySelectorAll("[data-premium-feature]").forEach((button) => {
+  const locked = authState.mode !== "premium"
+  button.classList.toggle("locked", locked)
+  button.setAttribute("aria-disabled", locked ? "true" : "false")
+  button.title = locked
+    ? "Locked in guest/free preview. Open Plans to upgrade."
+    : "Premium preview unlocked."
+})
 
 const surface = document.getElementById("platformSurface")
 if(surface && !surface.classList.contains("hidden")){
