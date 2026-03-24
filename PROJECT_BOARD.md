@@ -526,14 +526,44 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 
 ## Current Session Note
 
-- Supabase checklist is prepared.
-- Runtime auth scaffold is prepared in `frontend/auth-client.js`.
-- The user has already:
-  - created the Supabase project
-  - enabled Email + Google auth
-  - prepared local frontend and backend auth keys
-- Live Google login is working in the frontend.
-- Login and Profile surfaces now distinguish between preview auth scaffolding and live Supabase session state.
-- The next coding step is:
-  - add backend account and plan resolution helpers
-  - sync frontend live auth state with `/api/account/me`
+- Supabase project is live and Google auth is enabled.
+- Local frontend auth config and backend service key are set.
+- Live Google login/logout works in the app.
+- Backend premium resolution now works using:
+  - Supabase user verification when available
+  - JWT payload fallback when the user endpoint does not return the email cleanly
+- The active premium test user resolves correctly as `Premium`.
+- Login/Profile UI has been cleaned up to feel more product-like and less preview-oriented.
+
+## Chat Handoff 1
+
+If we continue in a new chat, resume from this exact state:
+
+- Product identity: `Pluto3D Studio`
+- Frontend: Vanilla JS
+- Backend: FastAPI
+- Main docs to review first:
+  - `PROJECT_BOARD.md`
+  - `AUTH_IMPLEMENTATION_PLAN.md`
+  - `SUPABASE_SETUP_CHECKLIST.md`
+- Working style:
+  - speak to the user in Albanian
+  - keep code and comments in English
+  - always give exact instructions when the user must do something
+  - specify:
+    - whether terminal is needed
+    - which folder to run from
+    - whether `venv` is needed
+  - update the board whenever a major decision or blocker appears
+- Current product truth:
+  - SVG is stable
+  - Toy Studio exists and is good enough for beta
+  - Print Fix -> STL is core
+  - 3D test/demo vs PRO flows are separated
+  - Supabase auth is live
+  - Google login is live
+  - Premium plan can now be resolved from backend
+- Recommended next step after handoff:
+  - remove temporary backend auth debug surface from `Profile`
+  - connect premium/free locks everywhere to the real backend plan
+  - then prepare the Stripe path

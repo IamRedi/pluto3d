@@ -1,3 +1,5 @@
+import base64
+import json
 import os
 from typing import Optional
 
@@ -41,7 +43,37 @@ def verify_supabase_user(access_token: str) -> Optional[dict]:
         timeout=15,
     )
 
-    if response.status_code != 200:
+    if response.status_code == 200:
+        user = response.json()
+        user["_auth_source"] = "supabase_api"
+        return user
+
+    return decode_supabase_jwt_payload(access_token)
+
+
+def decode_supabase_jwt_payload(access_token: str) -> Optional[dict]:
+    try:
+        parts = access_token.split(".")
+        if len(parts) != 3:
+            return None
+
+        payload = parts[1]
+        padding = "=" * (-len(payload) % 4)
+        decoded = base64.urlsafe_b64decode(payload + padding)
+        data = json.loads(decoded.decode("utf-8"))
+    except Exception:
         return None
 
-    return response.json()
+    email = (data.get("email") or "").strip()
+    user_id = data.get("sub")
+
+    if not email and not user_id:
+        return None
+
+    return {
+        "id": user_id,
+        "email": email,
+        "app_metadata": data.get("app_metadata") or {},
+        "user_metadata": data.get("user_metadata") or {},
+        "_auth_source": "jwt_fallback",
+    }

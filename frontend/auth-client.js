@@ -18,6 +18,8 @@ const DEFAULT_LIVE_STATE = {
   name: "Guest",
   email: "",
   planLabel: "Guest",
+  backendPlan: "guest",
+  backendDebug: null,
   session: null,
   user: null
 };
@@ -110,14 +112,24 @@ function buildLiveStateFromSession(session){
     name: plan.name,
     email: session.user.email || "",
     planLabel: plan.planLabel,
+    backendPlan: plan.mode,
+    backendDebug: null,
     session,
     user: session.user
   };
 }
 
 function mergeBackendAccountState(liveState, backendState){
-  if(!backendState?.authenticated){
+  if(!backendState){
     return liveState;
+  }
+
+  if(!backendState.authenticated){
+    return {
+      ...liveState,
+      backendPlan: backendState.plan || liveState.backendPlan || "guest",
+      backendDebug: backendState.debug || null
+    };
   }
 
   const user = backendState.user || {};
@@ -128,7 +140,9 @@ function mergeBackendAccountState(liveState, backendState){
     mode: backendPlan,
     planLabel: backendPlan === "premium" ? "Premium" : "Free Account",
     name: user.name || liveState.name,
-    email: user.email || liveState.email
+    email: user.email || liveState.email,
+    backendPlan,
+    backendDebug: backendState.debug || null
   };
 }
 

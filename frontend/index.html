@@ -3215,6 +3215,9 @@ return `
 
 function renderProfileSurface(){
 const authState = getAuthPreviewState()
+const liveState = typeof getLiveAuthState === "function"
+  ? getLiveAuthState()
+  : null
 const currentStatus = authState.loggedIn ? authState.name : "Guest"
 const currentPlan = authState.mode === "premium"
   ? "Premium"
@@ -3222,18 +3225,20 @@ const currentPlan = authState.mode === "premium"
     ? "Free Account"
     : "Guest"
 const usage = getUsageSnapshot()
-const authRuntime = typeof getAuthRuntimeStatus === "function"
-  ? getAuthRuntimeStatus()
-  : {
-      configured:false,
-      statusLabel:"Setup Needed",
+  const authRuntime = typeof getAuthRuntimeStatus === "function"
+    ? getAuthRuntimeStatus()
+    : {
+        configured:false,
+        statusLabel:"Setup Needed",
       detail:"Create Supabase first, then add frontend/auth-config.js."
     }
-const liveAuthReady = authRuntime.configured && authRuntime.clientReady
-
-return `
-  <div class="platform-surface-card wide">
-    <div class="surface-stat-grid">
+  const liveAuthReady = authRuntime.configured && authRuntime.clientReady
+  const backendDebug = liveState?.backendDebug || null
+  const backendPlan = liveState?.backendPlan || authState.mode || "guest"
+  
+  return `
+    <div class="platform-surface-card wide">
+      <div class="surface-stat-grid">
       <div class="surface-stat">
         <div class="surface-stat-value">${currentStatus}</div>
         <div class="surface-stat-label">Current Status</div>
@@ -3273,17 +3278,29 @@ return `
     </div>
     `}
   </div>
-  <div class="platform-surface-card">
-    <div class="platform-surface-card-label">Auth Runtime</div>
-    <div class="platform-surface-card-title">${authRuntime.statusLabel}</div>
-    <div class="platform-surface-card-copy">${authRuntime.detail}</div>
-    <div class="surface-chip-row">
-      <span class="surface-chip primary">Supabase Path</span>
-      <span class="surface-chip">${authRuntime.configured ? "Ready For Wiring" : "Needs Config"}</span>
+    <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Auth Runtime</div>
+      <div class="platform-surface-card-title">${authRuntime.statusLabel}</div>
+      <div class="platform-surface-card-copy">${authRuntime.detail}</div>
+      <div class="surface-chip-row">
+        <span class="surface-chip primary">Supabase Path</span>
+        <span class="surface-chip">${authRuntime.configured ? "Ready For Wiring" : "Needs Config"}</span>
+      </div>
     </div>
-  </div>
-`
-}
+    ${liveAuthReady && authState.loggedIn ? `
+    <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Backend Plan Debug</div>
+      <div class="platform-surface-card-title">Plan resolved from the API</div>
+      <div class="platform-surface-card-copy">This temporary panel helps us verify why an account resolves as Free or Premium. We can remove it after the premium path is confirmed.</div>
+      <ul class="platform-surface-list">
+        <li>Backend plan: ${backendPlan}</li>
+        <li>Matched email: ${backendDebug?.matched_email || "not returned yet"}</li>
+        <li>Premium list: ${backendDebug?.premium_emails?.length ? backendDebug.premium_emails.join(", ") : "empty"}</li>
+      </ul>
+    </div>
+    ` : ""}
+  `
+  }
 
 function renderPlatformSurfaceBody(config){
 switch(config.template){
