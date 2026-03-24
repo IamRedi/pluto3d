@@ -63,6 +63,10 @@ What the user will need to do:
 - copy the service role key
 - enable Google provider
 
+Reference checklist:
+
+- `SUPABASE_SETUP_CHECKLIST.md`
+
 ### Step 2: Frontend Session Scaffold
 
 Add a frontend auth module that can:

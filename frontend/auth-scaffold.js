@@ -55,7 +55,7 @@ const SPONSOR_PREVIEW_COPY = {
   free3dGeneration: {
     kicker: "3D Preview Sponsor",
     title: "Creating print-ready preview",
-    copy: "Free 3D generation can later show a partner card, countdown, or premium upsell while processing."
+    copy: "3D test generation can later show a partner card, countdown, or premium upsell while processing."
   }
 };
 

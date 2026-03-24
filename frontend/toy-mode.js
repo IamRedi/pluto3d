@@ -17,47 +17,40 @@ function getToyPromptCategory(prompt){
   return "robot"
 }
 
-async function generateToy(){
+async function generateToyTest(){
   if(!window.canUseFeature("toyGeneration")){
     window.openUsageLimitPrompt("toyGeneration")
     return
   }
 
-  const mode = document.getElementById("toyMode").value
+  const prompt = document.getElementById("toyPrompt").value.toLowerCase()
+  const status = document.getElementById("toyStatus")
+  const promptCategory = getToyPromptCategory(prompt)
+  const testModels = window.PLUTO_TEST_MODELS || {}
 
-  if(mode === "test"){
-    const prompt = document.getElementById("toyPrompt").value.toLowerCase()
-    const status = document.getElementById("toyStatus")
+  await window.showSponsorPreview("toyGeneration")
+  status.innerHTML = "Loading test toy model..."
 
-    await window.showSponsorPreview("toyGeneration")
-
-    status.innerHTML = "Loading local model..."
-
-    const promptCategory = getToyPromptCategory(prompt)
-
-    if(promptCategory === "car"){
-      loadGLB(window.PLUTO_TEST_MODELS.car.url, window.PLUTO_TEST_MODELS.car.filename)
-      showViewerDownload(window.PLUTO_TEST_MODELS.car.url, window.PLUTO_TEST_MODELS.car.filename)
-      window.incrementUsage("toyGeneration")
-      status.innerHTML = "Car test model loaded."
-      return
-    }
-
-    if(promptCategory === "robot"){
-      loadGLB(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
-      showViewerDownload(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
-      window.incrementUsage("toyGeneration")
-      status.innerHTML = "Robot test model loaded."
-      return
-    }
-
-    loadGLB(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
-    showViewerDownload(window.PLUTO_TEST_MODELS.default.url, window.PLUTO_TEST_MODELS.default.filename)
+  if(promptCategory === "car" && testModels.car?.url){
+    loadGLB(testModels.car.url, testModels.car.filename)
+    showViewerDownload(testModels.car.url, testModels.car.filename)
     window.incrementUsage("toyGeneration")
-    status.innerHTML = "Default robot test model loaded."
+    status.innerHTML = "Test car toy loaded. Open Studio to style it, then use Fix To Print."
     return
   }
 
+  if(!testModels.default?.url){
+    status.innerHTML = "Test toy models are not available."
+    return
+  }
+
+  loadGLB(testModels.default.url, testModels.default.filename)
+  showViewerDownload(testModels.default.url, testModels.default.filename)
+  window.incrementUsage("toyGeneration")
+  status.innerHTML = "Test toy loaded. Open Studio to style it, then use Fix To Print."
+}
+
+async function generateToyPro(){
   const prompt = document.getElementById("toyPrompt").value
   const template = document.getElementById("toyTemplate").value
   const size = document.getElementById("toySize").value
@@ -69,7 +62,7 @@ async function generateToy(){
   }
 
   await window.showSponsorPreview("toyGeneration")
-  status.innerHTML = "Generating toy..."
+  status.innerHTML = "Generating Toy PRO..."
 
   try{
     const res = await fetch(window.PLUTO_API_BASE + "/api/generate-toy", {
@@ -87,35 +80,62 @@ async function generateToy(){
     const data = await res.json()
 
     if(!data.glb_url && !data.stl_url){
-      status.innerHTML = "Failed"
+      status.innerHTML = "Toy PRO failed."
       return
     }
-
-    status.innerHTML = "Toy Ready 🎯"
 
     if(data.glb_url){
       const glbUrl = data.glb_url.startsWith("http")
         ? data.glb_url
         : window.PLUTO_API_BASE + data.glb_url
 
-      loadGLB(glbUrl, "toy.glb")
-      showViewerDownload(glbUrl, "toy.glb")
+      loadGLB(glbUrl, "toy-pro.glb")
+      showViewerDownload(glbUrl, "toy-pro.glb")
       window.incrementUsage("toyGeneration")
+      status.innerHTML = "Toy PRO ready. Open Studio to style it, then use Fix To Print."
       return
     }
 
     if(data.stl_url){
-      const stlUrl = window.PLUTO_API_BASE + data.stl_url
+      const stlUrl = data.stl_url.startsWith("http")
+        ? data.stl_url
+        : window.PLUTO_API_BASE + data.stl_url
 
-      loadSTL(stlUrl, "toy.stl")
-      showViewerDownload(stlUrl, "toy.stl")
+      loadSTL(stlUrl, "toy-pro.stl")
+      showViewerDownload(stlUrl, "toy-pro.stl")
       window.incrementUsage("toyGeneration")
+      status.innerHTML = "Toy PRO STL ready. You can still review it in the viewer."
       return
     }
 
-    status.innerHTML = "No model returned"
+    status.innerHTML = "No Toy PRO model returned."
   }catch(err){
     console.log(err)
-    status.innerHTML = "Error"
+    status.innerHTML = "Toy PRO generation error."
   }
 }
+
+function bindToyModeActions(){
+  const testButton = document.getElementById("generateToyTestBtn")
+  const proButton = document.getElementById("generateToyProBtn")
+
+  if(testButton && !testButton.dataset.bound){
+    testButton.addEventListener("click", generateToyTest)
+    testButton.dataset.bound = "1"
+  }
+
+  if(proButton && !proButton.dataset.bound){
+    proButton.addEventListener("click", () => {
+      if(typeof runPremiumAction === "function"){
+        runPremiumAction("premium-toy-generation", generateToyPro)
+      }
+    })
+    proButton.dataset.bound = "1"
+  }
+}
+
+window.generateToyTest = generateToyTest
+window.generateToyPro = generateToyPro
+window.generateToy = generateToyTest
+
+document.addEventListener("DOMContentLoaded", bindToyModeActions)

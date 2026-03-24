@@ -36,7 +36,8 @@ function getToyStudioControls(){
     head: document.getElementById("headScaleControl"),
     body: document.getElementById("bodyScaleControl"),
     chunky: document.getElementById("chunkyControl"),
-    tilt: document.getElementById("tiltControl")
+    tilt: document.getElementById("tiltControl"),
+    target: document.getElementById("toyStudioTarget")
   }
 }
 
@@ -171,9 +172,41 @@ function updateToyStudioMeta(state){
   }
 }
 
+function getToyStudioTarget(){
+  const controls = getToyStudioControls()
+  return controls.target?.value || "all"
+}
+
+function updateToyStudioTargetOptions(state){
+  const target = document.getElementById("toyStudioTarget")
+
+  if(!target){
+    return
+  }
+
+  const isSimple = !state || state.simpleMode
+
+  Array.from(target.options).forEach((option) => {
+    if(option.value === "all"){
+      option.disabled = false
+      option.hidden = false
+      option.textContent = isSimple ? "Whole Model" : "All Parts"
+      return
+    }
+
+    option.disabled = isSimple
+    option.hidden = isSimple
+  })
+
+  if(isSimple && target.value !== "all"){
+    target.value = "all"
+  }
+}
+
 function ensureToyStudioState(){
   if(!window.currentModel){
     updateToyStudioMeta(null)
+    updateToyStudioTargetOptions(null)
     return null
   }
 
@@ -189,6 +222,7 @@ function ensureToyStudioState(){
   }
 
   updateToyStudioMeta(window.toyStudioState)
+  updateToyStudioTargetOptions(window.toyStudioState)
 
   return window.toyStudioState
 }
@@ -247,6 +281,7 @@ function applyToyStudioControls(){
   const bodyScale = Number(controls.body?.value || 1)
   const chunky = Number(controls.chunky?.value || 1)
   const tilt = Number(controls.tilt?.value || 0)
+  const target = getToyStudioTarget()
 
   restoreToyStudioBaseState()
 
@@ -262,6 +297,26 @@ function applyToyStudioControls(){
     return
   }
 
+  if(target === "head"){
+    state.headEntries.forEach((entry) => {
+      applyEntryScale(entry, headScale * chunky, headScale, headScale * chunky)
+      entry.mesh.rotation.z = entry.baseRotation.z + THREE.MathUtils.degToRad(tilt * 0.8)
+    })
+
+    setToyStudioStatus("Style updated for the head group.", "active")
+    return
+  }
+
+  if(target === "body"){
+    state.bodyEntries.forEach((entry) => {
+      applyEntryScale(entry, bodyScale * chunky, bodyScale, bodyScale * chunky)
+      entry.mesh.rotation.z = entry.baseRotation.z + THREE.MathUtils.degToRad(tilt * 0.35)
+    })
+
+    setToyStudioStatus("Style updated for the body group.", "active")
+    return
+  }
+
   state.headEntries.forEach((entry) => {
     applyEntryScale(entry, headScale * chunky, headScale, headScale * chunky)
     entry.mesh.rotation.z = entry.baseRotation.z + THREE.MathUtils.degToRad(tilt * 0.8)
@@ -272,7 +327,7 @@ function applyToyStudioControls(){
     entry.mesh.rotation.z = entry.baseRotation.z + THREE.MathUtils.degToRad(tilt * 0.35)
   })
 
-  setToyStudioStatus("Style updated on the current toy model.", "active")
+  setToyStudioStatus("Style updated on all toy parts.", "active")
 }
 
 function resetToyStudioStyle(){
@@ -312,7 +367,8 @@ function applyToyStudioPreset(preset){
 function refreshToyStudioState(showStatus = true){
   window.toyStudioState = null
   updateToyStudioValueLabels()
-  updateToyStudioMeta(ensureToyStudioState())
+  const state = ensureToyStudioState()
+  updateToyStudioMeta(state)
   syncToyStudioPresetState(window.activeToyStudioPreset)
 
   if(showStatus){
@@ -332,6 +388,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return
     }
 
+    if(control === controls.target){
+      control.addEventListener("change", () => {
+        if(window.toyStudioState || window.currentModel){
+          applyToyStudioControls()
+        }
+      })
+      return
+    }
+
     control.addEventListener("input", () => {
       syncToyStudioPresetState(null)
       updateToyStudioValueLabels()
@@ -343,6 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setToyStudioControlsValues()
   updateToyStudioMeta(null)
+  updateToyStudioTargetOptions(null)
   setToyStudioPresetHint("Start from a preset to quickly explore different toy silhouettes.")
   setToyStudioStatus("Load a toy model to start editing.", "neutral")
 })

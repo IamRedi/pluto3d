@@ -60,7 +60,7 @@ Core product direction:
 - AI image generation
 - SVG conversion
 - Local toy generation with test models
-- 3D free test flow using test models
+- 3D test flow using local demo models
 - Print Fix pipeline:
   - GLB input
   - topology cleanup
@@ -180,7 +180,8 @@ These are not all needed immediately, but this is the expected future shape.
 - toy test mode
 - SVG tools
 - limited AI image generation
-- no premium 3D generation
+- no real 3D generation
+- only 3D test/demo generation
 
 ### Logged-in Free
 
@@ -188,6 +189,7 @@ These are not all needed immediately, but this is the expected future shape.
 - toy studio
 - print fix
 - sponsor or ad panel during generation
+- 3D stays in test/demo mode only
 
 ### Premium
 
@@ -227,6 +229,12 @@ These are not all needed immediately, but this is the expected future shape.
   - `Clean Background`
 - keep Toy Studio compact and visually clean
 - keep platform surfaces serious but lightweight
+- position 3D clearly as:
+  - `Generate Test`
+  - `Generate 3D PRO`
+- position Toy clearly as:
+  - `Generate Test Toy`
+  - `Generate Toy PRO`
 - avoid heavy backend dependencies unless they clearly improve quality
 
 ### Next
@@ -234,8 +242,12 @@ These are not all needed immediately, but this is the expected future shape.
 - polish Toy Studio presets so they feel more useful
 - improve Toy Studio reset behavior
 - add clearer Toy Studio feedback/status messaging
+- expand Toy Studio into part-aware editing lite
 - test sponsor/ad loading preview in all major flows
 - prepare Supabase setup checklist
+- keep 3D and Toy product language aligned with:
+  - `Test`
+  - `PRO`
 
 ### Later
 
@@ -278,6 +290,7 @@ Suggested scope for that task:
 - improve labels so they are easier to understand
 - make reset behavior more reliable
 - give Toy Studio lightweight status feedback for preset/apply/reset actions
+- add a first part-target selector for head/body/all edits
 - optionally add one extra simple control like `Tilt` or `Cute`
 
 ## Deferred / Difficult Tasks
@@ -298,6 +311,8 @@ Suggested scope for that task:
 - Keep the active SVG flow simple and clear instead of over-stylized
 - Prefer preprocessing changes before SVG conversion, not fake post-effects after conversion
 - Keep difficult computer-vision ideas parked until they clearly improve quality
+- Keep real 3D generation positioned as a premium feature, with test/demo generation only on free surfaces
+- Keep Toy generation positioned the same way: free test flow, premium real generation
 - Use `PROJECT_BOARD.md` as the main project memory and session handoff file
 
 ## Session Handoff
@@ -340,6 +355,10 @@ Recommended next implementation after commit:
 2. prepare frontend auth client scaffold
 3. prepare backend auth/plan service scaffold
 4. then connect real Supabase session state
+
+Current implementation note:
+
+- `SUPABASE_SETUP_CHECKLIST.md` is the user-facing setup guide for the first real auth step
 
 ## Key Reference Docs
 
