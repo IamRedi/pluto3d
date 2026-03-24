@@ -1,6 +1,32 @@
 window.toyStudioState = null
 window.activeToyStudioPreset = null
 
+const TOY_STUDIO_DEFAULTS = {
+  head: 1,
+  body: 1,
+  chunky: 1,
+  tilt: 0
+}
+
+const TOY_STUDIO_PRESETS = {
+  hero: {
+    label: "Hero Build",
+    values: { head: 1.12, body: 1.18, chunky: 1.06, tilt: 4 }
+  },
+  chibi: {
+    label: "Cute Chibi",
+    values: { head: 1.55, body: 0.84, chunky: 1.22, tilt: 0 }
+  },
+  collector: {
+    label: "Collector",
+    values: { head: 1.08, body: 1.04, chunky: 0.98, tilt: -2 }
+  },
+  mini: {
+    label: "Mini Vinyl",
+    values: { head: 1.22, body: 0.9, chunky: 1.28, tilt: 5 }
+  }
+}
+
 function getToyStudioControls(){
   return {
     head: document.getElementById("headScaleControl"),
@@ -32,6 +58,28 @@ function updateToyStudioValueLabels(){
   if(controls.tilt && tiltValue){
     tiltValue.textContent = `${Number(controls.tilt.value).toFixed(0)}°`
   }
+}
+
+function setToyStudioStatus(message, tone = "neutral"){
+  const status = document.getElementById("toyStudioStatus")
+
+  if(!status){
+    return
+  }
+
+  status.textContent = message
+  status.dataset.tone = tone
+}
+
+function setToyStudioControlsValues(values = TOY_STUDIO_DEFAULTS){
+  const controls = getToyStudioControls()
+
+  if(controls.head) controls.head.value = String(values.head ?? TOY_STUDIO_DEFAULTS.head)
+  if(controls.body) controls.body.value = String(values.body ?? TOY_STUDIO_DEFAULTS.body)
+  if(controls.chunky) controls.chunky.value = String(values.chunky ?? TOY_STUDIO_DEFAULTS.chunky)
+  if(controls.tilt) controls.tilt.value = String(values.tilt ?? TOY_STUDIO_DEFAULTS.tilt)
+
+  updateToyStudioValueLabels()
 }
 
 function getToyStudioMeshes(){
@@ -168,6 +216,7 @@ function applyToyStudioControls(){
   const state = ensureToyStudioState()
 
   if(!state){
+    setToyStudioStatus("Load a 3D toy model first.", "warning")
     alert("Load a 3D toy model first")
     return
   }
@@ -188,6 +237,7 @@ function applyToyStudioControls(){
       entry.mesh.rotation.z = entry.baseRotation.z + THREE.MathUtils.degToRad(tilt * 0.6)
     })
 
+    setToyStudioStatus("Style updated on the current toy model.", "active")
     return
   }
 
@@ -200,19 +250,23 @@ function applyToyStudioControls(){
     applyEntryScale(entry, bodyScale * chunky, bodyScale, bodyScale * chunky)
     entry.mesh.rotation.z = entry.baseRotation.z + THREE.MathUtils.degToRad(tilt * 0.35)
   })
+
+  setToyStudioStatus("Style updated on the current toy model.", "active")
 }
 
 function resetToyStudioStyle(){
-  const controls = getToyStudioControls()
+  const restored = restoreToyStudioBaseState()
 
-  if(controls.head) controls.head.value = "1"
-  if(controls.body) controls.body.value = "1"
-  if(controls.chunky) controls.chunky.value = "1"
-  if(controls.tilt) controls.tilt.value = "0"
-
-  updateToyStudioValueLabels()
-  restoreToyStudioBaseState()
+  setToyStudioControlsValues(TOY_STUDIO_DEFAULTS)
   syncToyStudioPresetState(null)
+  refreshToyStudioState(false)
+
+  if(restored){
+    setToyStudioStatus("Reset to the original toy proportions.", "success")
+    return
+  }
+
+  setToyStudioStatus("Reset controls are ready for the next toy model.", "neutral")
 }
 
 function applyToyStudioPreset(preset){
@@ -222,34 +276,31 @@ function applyToyStudioPreset(preset){
     return
   }
 
-  const presets = {
-    hero: { head: 1.12, body: 1.18, chunky: 1.06, tilt: 4 },
-    chibi: { head: 1.55, body: 0.84, chunky: 1.22, tilt: 0 },
-    collector: { head: 1.08, body: 1.04, chunky: 0.98, tilt: -2 },
-    mini: { head: 1.22, body: 0.9, chunky: 1.28, tilt: 5 }
-  }
+  const presetConfig = TOY_STUDIO_PRESETS[preset]
 
-  const values = presets[preset]
-
-  if(!values){
+  if(!presetConfig){
     return
   }
 
-  controls.head.value = String(values.head)
-  controls.body.value = String(values.body)
-  controls.chunky.value = String(values.chunky)
-  if(controls.tilt) controls.tilt.value = String(values.tilt)
-
-  updateToyStudioValueLabels()
+  setToyStudioControlsValues(presetConfig.values)
   syncToyStudioPresetState(preset)
   applyToyStudioControls()
+  setToyStudioStatus(`${presetConfig.label} preset applied.`, "active")
 }
 
-function refreshToyStudioState(){
+function refreshToyStudioState(showStatus = true){
   window.toyStudioState = null
   updateToyStudioValueLabels()
   updateToyStudioMeta(ensureToyStudioState())
   syncToyStudioPresetState(window.activeToyStudioPreset)
+
+  if(showStatus){
+    if(window.currentModel){
+      setToyStudioStatus("Studio synced with the current model.", "neutral")
+    }else{
+      setToyStudioStatus("Load a toy model to start editing.", "neutral")
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -269,6 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   })
 
-  updateToyStudioValueLabels()
+  setToyStudioControlsValues()
   updateToyStudioMeta(null)
+  setToyStudioStatus("Load a toy model to start editing.", "neutral")
 })

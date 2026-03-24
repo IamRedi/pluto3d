@@ -1905,16 +1905,63 @@ text-transform:uppercase;
 }
 
 .studio-preset-btn.active{
-border-color:rgba(103,232,249,0.62);
-background:linear-gradient(135deg, rgba(56,189,248,0.14), rgba(139,92,246,0.18));
-color:var(--cyan);
-box-shadow:0 12px 24px rgba(14,165,233,0.14);
+  border-color:rgba(103,232,249,0.62);
+  background:linear-gradient(135deg, rgba(56,189,248,0.14), rgba(139,92,246,0.18));
+  color:var(--cyan);
+  box-shadow:0 12px 24px rgba(14,165,233,0.14);
+}
+
+.studio-status{
+  margin-top:12px;
+  padding:11px 14px;
+  border-radius:16px;
+  border:1px solid rgba(125,211,252,0.14);
+  background:rgba(255,255,255,0.03);
+  font-size:12px;
+  line-height:1.6;
+  color:#b9d6ee;
+}
+
+.studio-status[data-tone="active"]{
+  border-color:rgba(103,232,249,0.28);
+  color:#dffbff;
+}
+
+.studio-status[data-tone="success"]{
+  border-color:rgba(74,222,128,0.24);
+  color:#dcfce7;
+}
+
+.studio-status[data-tone="warning"]{
+  border-color:rgba(251,191,36,0.24);
+  color:#fef3c7;
+}
+
+body[data-theme="light"] .studio-status{
+  background:rgba(255,255,255,0.68);
+  border-color:rgba(14,116,144,0.12);
+  color:#475569;
+}
+
+body[data-theme="light"] .studio-status[data-tone="active"]{
+  border-color:rgba(14,165,233,0.22);
+  color:#0f172a;
+}
+
+body[data-theme="light"] .studio-status[data-tone="success"]{
+  border-color:rgba(34,197,94,0.22);
+  color:#166534;
+}
+
+body[data-theme="light"] .studio-status[data-tone="warning"]{
+  border-color:rgba(245,158,11,0.22);
+  color:#92400e;
 }
 
 .studio-actions{
-margin-top:auto;
-display:flex;
-gap:10px;
+  margin-top:auto;
+  display:flex;
+  gap:10px;
 }
 
 .studio-actions button{
@@ -2485,9 +2532,13 @@ filter:none;
         </p>
       </div>
 
+      <div id="toyStudioStatus" class="studio-status" data-tone="neutral">
+        Load a toy model to start editing.
+      </div>
+
       <div class="studio-actions">
         <button type="button" onclick="applyToyStudioControls()">Apply Style</button>
-        <button type="button" onclick="resetToyStudioStyle()">Reset Style</button>
+        <button type="button" onclick="resetToyStudioStyle()">Reset To Base</button>
       </div>
     </div>
   </div>

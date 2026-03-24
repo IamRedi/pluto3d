@@ -233,6 +233,7 @@ These are not all needed immediately, but this is the expected future shape.
 
 - polish Toy Studio presets so they feel more useful
 - improve Toy Studio reset behavior
+- add clearer Toy Studio feedback/status messaging
 - test sponsor/ad loading preview in all major flows
 - prepare Supabase setup checklist
 
@@ -276,6 +277,7 @@ Suggested scope for that task:
 - make presets feel more distinct
 - improve labels so they are easier to understand
 - make reset behavior more reliable
+- give Toy Studio lightweight status feedback for preset/apply/reset actions
 - optionally add one extra simple control like `Tilt` or `Cute`
 
 ## Deferred / Difficult Tasks
