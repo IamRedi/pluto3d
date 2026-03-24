@@ -81,11 +81,12 @@ Add a frontend auth module that can:
 Suggested future frontend file:
 
 - `frontend/auth-client.js`
+- `frontend/auth-config.js`
 
 Expected first frontend integration tasks:
 
 - install Supabase JS client
-- create Supabase client with env vars
+- create Supabase client with `frontend/auth-config.js`
 - replace preview login buttons with real calls
 - read live session on startup
 - update header/profile/plans from session state
@@ -191,8 +192,7 @@ After auth is connected:
 
 ### Frontend
 
-- `SUPABASE_URL`
-- `SUPABASE_ANON_KEY`
+- `frontend/auth-config.js`
 
 ### Backend
 

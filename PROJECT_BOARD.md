@@ -162,8 +162,7 @@ These are not all needed immediately, but this is the expected future shape.
 
 ### Frontend
 
-- `SUPABASE_URL`
-- `SUPABASE_ANON_KEY`
+- `frontend/auth-config.js`
 
 ### Backend
 
@@ -248,6 +247,8 @@ These are not all needed immediately, but this is the expected future shape.
 - keep 3D and Toy product language aligned with:
   - `Test`
   - `PRO`
+- keep env example files ready for auth and billing keys
+- use a frontend auth config file instead of frontend env injection
 
 ### Later
 
@@ -359,6 +360,7 @@ Recommended next implementation after commit:
 Current implementation note:
 
 - `SUPABASE_SETUP_CHECKLIST.md` is the user-facing setup guide for the first real auth step
+- `frontend/auth-config.example.js` and `backend/.env.example` are now the reference config files for the next integration phase
 
 ## Key Reference Docs
 

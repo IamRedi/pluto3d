@@ -23,6 +23,10 @@ These steps are owned by the user because they require dashboard access.
 - Choose a project name for Pluto3D
 - Save the database password in a secure place
 
+Suggested project name:
+
+- `pluto3d-main`
+
 ### 2. Collect Keys
 
 From the Supabase project settings, collect:
@@ -31,12 +35,20 @@ From the Supabase project settings, collect:
 - `SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
 
+Where to find them:
+
+- `Project Settings -> API`
+
 ### 3. Enable Auth Providers
 
 In Supabase Auth settings:
 
 - enable Email provider
 - enable Google provider
+
+Where to do it:
+
+- `Authentication -> Providers`
 
 ### 4. Configure Google Login
 
@@ -49,18 +61,79 @@ For Google auth, the user will need:
 
 Then add the callback URL from Supabase into Google Cloud.
 
-### 5. Prepare Frontend Env
+Where to get the callback URL:
+
+- `Authentication -> Providers -> Google`
+
+What the user should do in Google Cloud:
+
+1. create or choose a Google Cloud project
+2. configure OAuth consent screen
+3. create a Web application OAuth client
+4. paste the Supabase callback URL into `Authorized redirect URIs`
+5. copy the Google client ID and secret back into Supabase
+
+Keep this simple:
+
+- one Google project
+- one OAuth client
+- one Supabase project
+- no extra providers yet
+
+### 5. Prepare Frontend Auth Config
+
+Because the frontend is currently a static Vanilla JS app, the first practical setup should use a small config file instead of build-time env injection.
 
 Later the frontend will need:
 
-- `SUPABASE_URL`
-- `SUPABASE_ANON_KEY`
+- `supabaseUrl`
+- `supabaseAnonKey`
+
+Reference file:
+
+- `frontend/auth-config.example.js`
+
+When the time comes, copy it to:
+
+- `frontend/auth-config.js`
 
 ### 6. Prepare Backend Env
 
 Later the backend will need:
 
 - `SUPABASE_SERVICE_ROLE_KEY`
+
+Reference file:
+
+- `backend/.env.example`
+
+## Exact Values To Bring Back
+
+When the dashboard setup is done, the user should bring back only these values:
+
+### Frontend
+
+- `supabaseUrl`
+- `supabaseAnonKey`
+
+### Backend
+
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+### Optional Later
+
+- Google login confirmed as enabled
+- screenshot of the Supabase API page if unsure
+
+## What Codex Needs From The User
+
+After setup, the user only needs to say:
+
+- Supabase project created
+- Google provider enabled
+- keys are ready
+
+Then Codex can continue with the real auth client integration.
 
 ## What Codex Will Do After Setup
 
@@ -87,3 +160,4 @@ The first auth milestone is complete when:
 - Keep preview auth logic until real Supabase auth is fully connected
 - Do not remove preview mode too early
 - Real billing and premium activation come after auth is stable
+- Keep Stripe out of scope until Google login and session state are stable
