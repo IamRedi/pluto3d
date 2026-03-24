@@ -3166,6 +3166,7 @@ return `
         <span class="surface-chip">Email Signup Planned</span>
       </div>
       <div class="surface-actions">
+        <button type="button" onclick="signInWithGoogleReal()">Continue With Google</button>
         <button type="button" onclick="signInPreview('free')">Preview Free Login</button>
         <button type="button" class="btn-premium" onclick="signInPreview('premium')">Preview Premium Login</button>
       </div>
@@ -3173,11 +3174,16 @@ return `
     <div class="platform-surface-card">
       <div class="surface-field">
         <div class="surface-mini-label">Email</div>
-        <input type="text" value="${isLoggedIn ? authState.email : "your@email.com"}" readonly>
+        <input id="loginEmailInput" type="text" value="${isLoggedIn ? authState.email : ""}" placeholder="your@email.com">
       </div>
       <div class="surface-field" style="margin-top:12px;">
-        <div class="surface-mini-label">State</div>
-        <input type="text" value="${isLoggedIn ? "Logged In Preview" : "Guest Preview"}" readonly>
+        <div class="surface-mini-label">Password</div>
+        <input id="loginPasswordInput" type="password" value="" placeholder="Password">
+      </div>
+      <div class="surface-actions">
+        <button type="button" onclick="signInWithEmailReal(document.getElementById('loginEmailInput')?.value, document.getElementById('loginPasswordInput')?.value)">Sign In With Email</button>
+        <button type="button" onclick="signUpWithEmailReal(document.getElementById('loginEmailInput')?.value, document.getElementById('loginPasswordInput')?.value)">Create Account</button>
+        <button type="button" onclick="signOutReal()">Sign Out Real</button>
       </div>
       <div class="surface-actions">
         <button type="button" onclick="signInPreview('free')">Use Free Preview</button>
@@ -3191,6 +3197,7 @@ return `
       <div class="surface-chip-row">
         <span class="surface-chip primary">Supabase</span>
         <span class="surface-chip">${authRuntime.configured ? "Config Detected" : "Config Missing"}</span>
+        <span class="surface-chip">${authRuntime.clientReady ? "Client Live" : "Client Booting"}</span>
       </div>
       <div class="surface-actions">
         <button type="button" onclick="signInWithGoogleReal()">Google Sign-In Next</button>
@@ -3255,6 +3262,7 @@ return `
     <div class="platform-surface-card-copy">Later this section will show account identity, plan, usage, saved outputs, and generated history from one clean dashboard after Supabase auth is connected.</div>
     <div class="surface-chip-row">
       <span class="surface-chip">${authState.email || "No email yet"}</span>
+      <span class="surface-chip primary">${authState.loggedIn ? "Live/Preview Session" : "Guest Session"}</span>
     </div>
   </div>
   <div class="platform-surface-card">

@@ -4,26 +4,111 @@ const DEFAULT_RUNTIME = {
   configured: false,
   sdkReady: false,
   configLoaded: false,
+  clientReady: false,
   statusLabel: "Setup Needed",
   detail: "Create Supabase first, then add frontend/auth-config.js.",
   source: "preview"
 };
 
+const DEFAULT_LIVE_STATE = {
+  enabled: false,
+  loading: true,
+  mode: "guest",
+  loggedIn: false,
+  name: "Guest",
+  email: "",
+  planLabel: "Guest Beta",
+  session: null,
+  user: null
+};
+
+let supabaseClient = null;
+
 function getConfig(){
   return window.PLUTO_AUTH_CONFIG || null;
 }
 
+function getPublicKey(config){
+  return config?.supabasePublishableKey || config?.supabaseAnonKey || "";
+}
+
 function hasConfig(){
   const config = getConfig();
-  return Boolean(
-    config?.supabaseUrl &&
-    (config?.supabasePublishableKey || config?.supabaseAnonKey)
-  );
+  return Boolean(config?.supabaseUrl && getPublicKey(config));
+}
+
+function setLiveAuthState(partial){
+  window.PLUTO_LIVE_AUTH_STATE = {
+    ...window.PLUTO_LIVE_AUTH_STATE,
+    ...partial
+  };
+
+  if(typeof window.syncAuthPreviewUI === "function"){
+    window.syncAuthPreviewUI();
+  }
+}
+
+function getLiveAuthState(){
+  return window.PLUTO_LIVE_AUTH_STATE || { ...DEFAULT_LIVE_STATE };
+}
+
+function derivePlan(user){
+  const appPlan = user?.app_metadata?.plan;
+  const userPlan = user?.user_metadata?.plan;
+  const plan = appPlan || userPlan || "free";
+
+  if(plan === "premium"){
+    return {
+      mode: "premium",
+      planLabel: "Premium",
+      name: user?.user_metadata?.full_name || user?.user_metadata?.name || "Pluto Premium"
+    };
+  }
+
+  return {
+    mode: "free",
+    planLabel: "Free Account",
+    name: user?.user_metadata?.full_name || user?.user_metadata?.name || "Pluto Creator"
+  };
+}
+
+function buildLiveStateFromSession(session){
+  if(!session?.user){
+    return { ...DEFAULT_LIVE_STATE, enabled: true, loading: false };
+  }
+
+  const plan = derivePlan(session.user);
+
+  return {
+    enabled: true,
+    loading: false,
+    mode: plan.mode,
+    loggedIn: true,
+    name: plan.name,
+    email: session.user.email || "",
+    planLabel: plan.planLabel,
+    session,
+    user: session.user
+  };
 }
 
 function buildRuntimeState(){
   const configReady = hasConfig();
   const sdkReady = Boolean(window.supabase?.createClient);
+  const clientReady = Boolean(supabaseClient);
+
+  if(configReady && sdkReady && clientReady){
+    return {
+      provider: "supabase",
+      configured: true,
+      sdkReady: true,
+      configLoaded: true,
+      clientReady: true,
+      statusLabel: "Live Auth Ready",
+      detail: "Supabase config and client are active. Login can now use real session state.",
+      source: "runtime"
+    };
+  }
 
   if(configReady && sdkReady){
     return {
@@ -31,8 +116,9 @@ function buildRuntimeState(){
       configured: true,
       sdkReady: true,
       configLoaded: true,
-      statusLabel: "Client Ready",
-      detail: "Supabase config and client library are both ready for live auth wiring.",
+      clientReady: false,
+      statusLabel: "Client Wiring",
+      detail: "Supabase config is loaded and the SDK is available. Final client wiring is in progress.",
       source: "runtime"
     };
   }
@@ -43,8 +129,9 @@ function buildRuntimeState(){
       configured: true,
       sdkReady: false,
       configLoaded: true,
+      clientReady: false,
       statusLabel: "Config Ready",
-      detail: "Supabase keys are present. The next step is wiring the live auth client.",
+      detail: "Supabase keys are present. The auth SDK is still loading.",
       source: "runtime"
     };
   }
@@ -68,7 +155,6 @@ function getAuthRuntimeStatus(){
 
 function ensureAuthConfigScript(){
   if(document.querySelector('script[data-auth-config="true"]')){
-    refreshAuthRuntimeStatus();
     return;
   }
 
@@ -76,37 +162,154 @@ function ensureAuthConfigScript(){
   script.src = "auth-config.js";
   script.dataset.authConfig = "true";
   script.async = true;
-  script.onload = () => refreshAuthRuntimeStatus();
+  script.onload = () => {
+    refreshAuthRuntimeStatus();
+    ensureSupabaseSdk();
+  };
   script.onerror = () => refreshAuthRuntimeStatus();
   document.head.appendChild(script);
+}
+
+function ensureSupabaseSdk(){
+  if(window.supabase?.createClient){
+    initializeSupabaseClient();
+    return;
+  }
+
+  if(document.querySelector('script[data-auth-sdk="true"]')){
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+  script.dataset.authSdk = "true";
+  script.async = true;
+  script.onload = () => initializeSupabaseClient();
+  script.onerror = () => refreshAuthRuntimeStatus();
+  document.head.appendChild(script);
+}
+
+async function initializeSupabaseClient(){
+  const config = getConfig();
+  const publicKey = getPublicKey(config);
+
+  if(!config?.supabaseUrl || !publicKey || !window.supabase?.createClient){
+    refreshAuthRuntimeStatus();
+    return;
+  }
+
+  if(!supabaseClient){
+    supabaseClient = window.supabase.createClient(config.supabaseUrl, publicKey);
+  }
+
+  setLiveAuthState({ enabled: true, loading: true });
+  refreshAuthRuntimeStatus();
+
+  const { data } = await supabaseClient.auth.getSession();
+  setLiveAuthState(buildLiveStateFromSession(data?.session || null));
+
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    setLiveAuthState(buildLiveStateFromSession(session));
+  });
+
+  refreshAuthRuntimeStatus();
+}
+
+function getRedirectUrl(){
+  return `${window.location.origin}${window.location.pathname}`;
 }
 
 function authNotReadyMessage(){
   const runtime = getAuthRuntimeStatus();
   return runtime.configured
-    ? "Supabase config is ready. Live auth wiring is the next build step."
-    : "Supabase is not configured yet. Follow SUPABASE_SETUP_CHECKLIST.md first.";
+    ? "Supabase config is ready, but the auth client is not fully loaded yet. Refresh the page once."
+    : "Supabase is not configured yet. Add values to frontend/auth-config.js first.";
 }
 
-function signInWithGoogleReal(){
-  alert(authNotReadyMessage());
+async function signInWithGoogleReal(){
+  if(!supabaseClient){
+    alert(authNotReadyMessage());
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: getRedirectUrl()
+    }
+  });
+
+  if(error){
+    alert(error.message || "Google sign-in failed.");
+  }
 }
 
-function signInWithEmailReal(){
-  alert(authNotReadyMessage());
+async function signInWithEmailReal(email, password){
+  if(!supabaseClient){
+    alert(authNotReadyMessage());
+    return;
+  }
+
+  if(!email || !password){
+    alert("Write email and password first.");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    alert(error.message || "Email sign-in failed.");
+  }
 }
 
-function signUpWithEmailReal(){
-  alert(authNotReadyMessage());
+async function signUpWithEmailReal(email, password){
+  if(!supabaseClient){
+    alert(authNotReadyMessage());
+    return;
+  }
+
+  if(!email || !password){
+    alert("Write email and password first.");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: getRedirectUrl()
+    }
+  });
+
+  if(error){
+    alert(error.message || "Email sign-up failed.");
+    return;
+  }
+
+  alert("Signup request sent. If email confirmation is enabled, check your inbox.");
 }
 
-function signOutReal(){
-  alert(authNotReadyMessage());
+async function signOutReal(){
+  if(!supabaseClient){
+    alert(authNotReadyMessage());
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.signOut();
+
+  if(error){
+    alert(error.message || "Sign out failed.");
+  }
 }
 
 window.PLUTO_AUTH_RUNTIME = { ...DEFAULT_RUNTIME };
+window.PLUTO_LIVE_AUTH_STATE = { ...DEFAULT_LIVE_STATE };
 window.refreshAuthRuntimeStatus = refreshAuthRuntimeStatus;
 window.getAuthRuntimeStatus = getAuthRuntimeStatus;
+window.getLiveAuthState = getLiveAuthState;
 window.signInWithGoogleReal = signInWithGoogleReal;
 window.signInWithEmailReal = signInWithEmailReal;
 window.signUpWithEmailReal = signUpWithEmailReal;
@@ -116,9 +319,11 @@ if(document.readyState === "loading"){
   document.addEventListener("DOMContentLoaded", () => {
     ensureAuthConfigScript();
     refreshAuthRuntimeStatus();
+    ensureSupabaseSdk();
   });
 }else{
   ensureAuthConfigScript();
   refreshAuthRuntimeStatus();
+  ensureSupabaseSdk();
 }
 })();

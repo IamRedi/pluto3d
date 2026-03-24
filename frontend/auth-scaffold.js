@@ -84,6 +84,17 @@ function buildAuthPreviewState(mode){
 }
 
 function getAuthPreviewState(){
+  const liveState = window.PLUTO_LIVE_AUTH_STATE;
+  if(liveState?.enabled && !liveState.loading){
+    return {
+      mode: liveState.mode || "guest",
+      loggedIn: Boolean(liveState.loggedIn),
+      name: liveState.name || "Guest",
+      email: liveState.email || "",
+      planLabel: liveState.planLabel || "Guest Beta"
+    };
+  }
+
   try{
     const raw = localStorage.getItem(AUTH_PREVIEW_STORAGE_KEY);
     if(!raw){

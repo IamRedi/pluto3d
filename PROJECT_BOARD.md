@@ -243,8 +243,8 @@ These are not all needed immediately, but this is the expected future shape.
 - add clearer Toy Studio feedback/status messaging
 - expand Toy Studio into part-aware editing lite
 - test sponsor/ad loading preview in all major flows
-- prepare Supabase setup checklist
 - prepare real auth runtime scaffold before live keys arrive
+- wire the first live Supabase session into Login and Profile
 - keep 3D and Toy product language aligned with:
   - `Test`
   - `PRO`
@@ -514,9 +514,9 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 
 - Supabase checklist is prepared.
 - Runtime auth scaffold is prepared in `frontend/auth-client.js`.
-- The next real external dependency step is owned by the user:
-  - create the Supabase project
-  - enable Email + Google auth
-  - collect `supabaseUrl`, `supabaseAnonKey`, and `SUPABASE_SERVICE_ROLE_KEY`
-- After that, the next coding step is:
+- The user has already:
+  - created the Supabase project
+  - enabled Email + Google auth
+  - prepared local frontend and backend auth keys
+- The next coding step is:
   - replace placeholder auth actions with live Supabase session wiring

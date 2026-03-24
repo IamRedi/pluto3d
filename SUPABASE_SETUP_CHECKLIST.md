@@ -80,7 +80,28 @@ Keep this simple:
 - one Supabase project
 - no extra providers yet
 
-### 5. Prepare Frontend Auth Config
+### 5. Configure Auth URLs In Supabase
+
+In Supabase, also set the allowed auth URLs.
+
+Go to:
+
+- `Authentication -> URL Configuration`
+
+Set at least:
+
+- `Site URL` = `http://127.0.0.1:5500`
+
+Add redirect URLs like:
+
+- `http://127.0.0.1:5500`
+- `http://localhost:5500`
+- your future production domain, for example:
+  - `https://pluto-3d.com`
+  - `https://www.pluto-3d.com`
+  - your Vercel preview or production URL if still needed
+
+### 6. Prepare Frontend Auth Config
 
 Because the frontend is currently a static Vanilla JS app, the first practical setup should use a small config file instead of build-time env injection.
 
@@ -97,7 +118,7 @@ When the time comes, copy it to:
 
 - `frontend/auth-config.js`
 
-### 6. Prepare Backend Env
+### 7. Prepare Backend Env
 
 Later the backend will need:
 
