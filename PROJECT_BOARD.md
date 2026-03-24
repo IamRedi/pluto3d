@@ -11,6 +11,9 @@ Pluto3D Studio is a web app for non-expert users that:
 - converts images into SVG
 - prepares 3D models for preview and 3D printing
 - offers a toy-style editing workflow
+- is being structured both as:
+  - Pluto3D's own flagship studio platform
+  - a future plug-and-play installable product for customers
 
 Current hosting:
 
@@ -54,6 +57,9 @@ Core product direction:
 - Print Fix is a core premium-value feature
 - Viewer stays unified for image, SVG, GLB, and STL
 - Toy Studio edits should be visible in the main viewer, not inside a second preview viewer
+- public install-time values should live in a simple frontend config layer
+- private credentials should stay in backend env only
+- the product should be deployable by configuration, not source edits, wherever possible
 
 ## Current Working Features
 
@@ -221,6 +227,7 @@ These are not all needed immediately, but this is the expected future shape.
 4. Add serious product sections like pricing, footer, and legal pages
 5. Keep live auth surfaces clean once Supabase is active and hide preview-only controls
 6. Use backend-owned plan resolution as the base for future premium gating
+7. Build a plug-and-play deployment foundation for buyer installs
 
 ## Working Board
 
@@ -491,10 +498,10 @@ Choose one of these when continuing:
 
 ## Next Recommended Tasks
 
-1. Improve Toy Studio presets and reset behavior
-2. Test sponsor/ad preview in all main flows
-3. Ask user to complete Supabase dashboard setup
-4. Start live Supabase auth client wiring after keys are ready
+1. Add Stripe webhook handling and persistent subscription state
+2. Define the first Supabase-backed billing/subscription data model
+3. Test sponsor/ad preview in all main flows against real free vs premium state
+4. Return to Toy Studio polish after billing path is structurally safe
 
 ## Decisions Log
 
@@ -534,6 +541,86 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - JWT payload fallback when the user endpoint does not return the email cleanly
 - The active premium test user resolves correctly as `Premium`.
 - Login/Profile UI has been cleaned up to feel more product-like and less preview-oriented.
+- Backend auth debug output has been removed from the profile-facing flow.
+- Premium-only UI locks now follow backend account plan resolution when live auth is active.
+- Usage limits still use the local beta counter path until server-side quotas and Stripe are added.
+- First Stripe billing scaffold now exists in backend and frontend.
+- Plans, Shop, and Profile now expose premium billing entry points.
+- Live Stripe activation is still blocked on keys, price ID, webhook sync, and customer persistence.
+- Subscription lifecycle scaffold now exists with a temporary local state adapter.
+- Backend plan resolution now checks normalized subscription state before tester fallback.
+- First Supabase billing schema draft now exists for `profiles` and `subscriptions`.
+- Supabase billing schema now also covers webhook event idempotency.
+- Frontend now has a public install config layer for brand, API base, support email, and auth public values.
+- Product distribution direction now explicitly includes self-host / plug-and-play installs.
+- Subscription persistence now supports a controlled mode switch:
+  - `local` for scaffold stability
+  - `supabase` for production persistence after schema setup
+- Billing readiness is now treated as a separate activation concept:
+  - Stripe configured
+  - webhook secret configured
+  - subscription store schema ready
+- Frontend billing surfaces now sync authenticated subscription state from the backend.
+- Billing config now exposes explicit activation blockers for safer rollout.
+- Billing config now exposes ordered next steps for activation handoff.
+- Account and billing flows now expose plan source and plan reason for rollout/debug traceability.
+- Profile now exposes a visible activation handoff map for live config values.
+- Billing return states now surface clean in-product feedback after Stripe redirects.
+- Billing activation now exposes measurable progress so readiness can be tracked as a rollout checklist, not just a blocker list.
+- Authenticated account/billing flows now auto-sync the Supabase `profiles` row so profile persistence starts before the first Stripe webhook arrives.
+- Plan resolution now treats `profiles.plan` as a stable production snapshot behind the subscription layer.
+- Activation handoff now reports separate frontend/backend/schema completion counts for cleaner production rollout.
+- Activation handoff now exposes a phase-based switch path for go-live sequencing.
+- Activation handoff now exposes the current switch phase and verification queue for the final live step.
+
+## Work Log
+
+### 2026-03-24
+
+- Collected activation value: frontend domain `https://pluto3d.vercel.app`.
+- Collected activation value: backend API URL `https://pluto3d-production.up.railway.app`.
+- Collected activation value: Supabase URL `https://jnpqcpsxyzhhsrceqepk.supabase.co`.
+- Collected activation value: Supabase publishable key `sb_publishable_yu8iT7e3ocTl7CCjpWFPNw_qeoGerPo`.
+- Collected activation secret: Supabase service role key received in chat and intentionally not stored in repo docs.
+- Stripe dashboard access is now ready; next activation values will be collected from Stripe one by one.
+- Collected activation value: Stripe publishable key received in test mode (`pk_test_...`).
+- Collected activation secret: Stripe secret key received in chat and intentionally not stored in repo docs.
+- Collected activation value: Stripe premium price ID received in test mode (`price_1TEcsCE38yXShlb4rri0c6kW`).
+- Collected activation secret: Stripe webhook secret received in chat and intentionally not stored in repo docs.
+- Local backend `.env` has now been synced with the collected Supabase and Stripe test values.
+- Local billing activation now resolves as ready in `local` store mode with the collected test keys.
+- Applied `backend/supabase_billing_schema.sql` successfully in Supabase SQL Editor.
+- Local backend store mode has now been switched from `local` to `supabase`.
+- Verified with Supabase connectivity that `profiles`, `subscriptions`, and `billing_webhook_events` are all ready in `supabase` mode.
+- Billing activation status now resolves as `activationReady=true` in local `supabase` mode; the next step is end-to-end checkout/webhook verification.
+- Railway backend env rollout is now in progress with Supabase + Stripe test values.
+- Live Railway verification is currently blocked because the billing/Supabase implementation changes are still local and not yet deployed from GitHub.
+- Removed temporary backend auth debug output from `/api/account/me`.
+- Removed the temporary backend plan debug card from the `Profile` surface.
+- Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.
+- Kept usage-limit preview behavior local on purpose as a temporary beta implementation.
+- Added the first Stripe-ready billing scaffold in FastAPI with checkout and portal session endpoints.
+- Added frontend billing runtime handling and premium upgrade entry points in `Plans`, `Shop`, and `Profile`.
+- Expanded backend env examples for Stripe publishable key, price ID, and redirect URLs.
+- Added Stripe webhook scaffold plus normalized customer/subscription state handling.
+- Chosen a temporary local JSON adapter for subscription state so the billing contract can stabilize before Supabase persistence is wired.
+- Added the first Supabase SQL schema draft for billing-ready `profiles` and `subscriptions`.
+- Added `frontend/app-config.js` as the public runtime install surface for buyer-friendly deployment.
+- Added `SELF_HOST_QUICKSTART.md` to document the one-hour-style install path.
+- Added a subscription storage adapter so billing state can move from local scaffold storage to Supabase without changing API contracts.
+- Added webhook event persistence support for the Supabase production path.
+- Added activation-readiness checks so billing can distinguish between scaffold-ready and production-ready.
+- Connected frontend billing runtime to backend subscription status and portal availability.
+- Added `PRODUCTION_ACTIVATION_RUNBOOK.md` for the future live switch to Supabase-backed billing persistence.
+- Added plan-source traceability so the app can show whether plan resolution comes from subscription persistence, tester fallback, or metadata.
+- Exposed activation handoff locations inside the Profile surface so rollout prep is visible from the product UI.
+- Added in-product billing return feedback for Stripe success/cancel/portal redirects.
+- Added activation progress metrics so Plans/Profile can show checklist completion and rollout maturity.
+- Added automatic Supabase profile sync from authenticated account/billing flows for a safer local-to-production persistence transition.
+- Added a profile-plan snapshot fallback so premium/free resolution stays stable even when subscription row timing lags during rollout.
+- Added handoff completion summaries so production activation can be tracked separately across frontend config, backend env, and schema readiness.
+- Added a phase-based switch path so go-live can be followed as an ordered activation sequence.
+- Added current-phase and verification-queue visibility so the final switch path is operationally clearer.
 
 ## Chat Handoff 1
 
@@ -564,6 +651,19 @@ If we continue in a new chat, resume from this exact state:
   - Google login is live
   - Premium plan can now be resolved from backend
 - Recommended next step after handoff:
-  - remove temporary backend auth debug surface from `Profile`
-  - connect premium/free locks everywhere to the real backend plan
-  - then prepare the Stripe path
+  - replace local subscription-state storage with Supabase persistence
+  - keep frontend install setup simple and config-driven
+  - connect webhook-driven premium activation
+
+Updated after the 2026-03-24 session:
+
+- backend auth debug surface is removed
+- premium/free locks now follow the real backend plan in live auth mode
+- first Stripe billing scaffold is now in place across backend and frontend
+- subscription lifecycle scaffold now exists behind the billing API
+- frontend public install config now exists for plug-and-play distribution
+- next recommended step is:
+  - replace local subscription-state storage with Supabase persistence
+  - keep frontend install setup simple and config-driven
+  - connect webhook-driven premium activation
+  - then validate Stripe checkout and portal end-to-end

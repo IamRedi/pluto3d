@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Header
 
 from app.services.auth import extract_bearer_token, verify_supabase_user
-from app.services.plans import get_premium_emails, resolve_user_plan
+from app.services.plans import resolve_user_plan_details
+from app.services.subscriptions import ensure_profile_for_user, get_subscription_summary_for_user, get_user_display_name
 
 
 router = APIRouter(prefix="/api/account", tags=["account"])
@@ -10,16 +11,12 @@ router = APIRouter(prefix="/api/account", tags=["account"])
 @router.get("/me")
 def get_account_me(authorization: str | None = Header(default=None)):
     token = extract_bearer_token(authorization)
-    debug_payload = {
-        "premium_emails": sorted(get_premium_emails()),
-    }
 
     if not token:
         return {
             "authenticated": False,
             "plan": "guest",
             "user": None,
-            "debug": debug_payload,
         }
 
     user = verify_supabase_user(token)
@@ -29,21 +26,20 @@ def get_account_me(authorization: str | None = Header(default=None)):
             "authenticated": False,
             "plan": "guest",
             "user": None,
-            "debug": debug_payload,
         }
+
+    plan_details = resolve_user_plan_details(user)
+    ensure_profile_for_user(user, plan=plan_details["plan"])
 
     return {
         "authenticated": True,
-        "plan": resolve_user_plan(user),
-        "debug": {
-            **debug_payload,
-            "matched_email": (user.get("email") or "").strip().lower(),
-        },
+        "plan": plan_details["plan"],
+        "planSource": plan_details["source"],
+        "planReason": plan_details["reason"],
+        "subscription": get_subscription_summary_for_user(user),
         "user": {
             "id": user.get("id"),
             "email": user.get("email"),
-            "name": (user.get("user_metadata") or {}).get("full_name")
-            or (user.get("user_metadata") or {}).get("name")
-            or "Pluto User",
+            "name": get_user_display_name(user),
         },
     }

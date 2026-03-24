@@ -29,6 +29,7 @@ Pluto3D Studio is a web app that converts images and prompts into SVG or 3D outp
 ## Project Structure
 
 - [`frontend/index.html`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/frontend/index.html): main UI shell
+- [`frontend/app-config.js`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/frontend/app-config.js): public install config for brand, API, support, and auth
 - [`frontend/runtime-config.js`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/frontend/runtime-config.js): environment-aware backend URL
 - [`frontend/test-models.js`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/frontend/test-models.js): local QA models for toy mode
 - [`frontend/print-mode.js`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/frontend/print-mode.js): print fix and transform logic
@@ -36,6 +37,8 @@ Pluto3D Studio is a web app that converts images and prompts into SVG or 3D outp
 - [`frontend/viewer.js`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/frontend/viewer.js): GLB/STL/fake preview viewer logic
 - [`backend/app/main.py`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/backend/app/main.py): FastAPI app entry
 - [`backend/app/routes/print_fix.py`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/backend/app/routes/print_fix.py): print repair route
+- [`SELF_HOST_QUICKSTART.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/SELF_HOST_QUICKSTART.md): plug-and-play deployment guide
+- [`PRODUCTION_ACTIVATION_RUNBOOK.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/PRODUCTION_ACTIVATION_RUNBOOK.md): live billing/subscription activation sequence
 
 ## Local Development
 
@@ -128,6 +131,23 @@ git push origin main
 - after `git push origin main`, confirm:
   - build logs complete
   - deploy logs show application startup complete
+
+## Plug-And-Play Direction
+
+Pluto3D is now being structured in two compatible modes:
+
+- flagship platform on your own domain
+- self-host / buyer install version with config-driven setup
+
+The install surface should stay simple:
+
+- edit `frontend/app-config.js`
+- edit `backend/.env`
+- connect domain, auth, and billing
+
+Reference:
+
+- [`SELF_HOST_QUICKSTART.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/SELF_HOST_QUICKSTART.md)
 
 ## Team Rules
 

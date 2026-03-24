@@ -207,6 +207,72 @@ Add Stripe for:
 - billing portal
 - webhook events
 
+Current scaffold status:
+
+- `backend/app/routes/billing.py` now exposes:
+  - `GET /api/billing/config`
+  - `GET /api/billing/status`
+  - `POST /api/billing/checkout-session`
+  - `POST /api/billing/portal-session`
+  - `POST /api/billing/webhook`
+- `backend/app/services/billing.py` now holds the first Stripe-ready service helpers
+- `backend/app/services/subscriptions.py` now normalizes customer and subscription state
+- Supabase schema now also includes:
+  - `billing_webhook_events`
+  - webhook replay / duplicate protection for the production persistence path
+- `frontend/billing-client.js` now loads billing runtime state and provides:
+  - `startPremiumCheckout()`
+  - `openBillingPortal()`
+  - authenticated billing status sync for subscription and portal availability
+- `frontend/app-config.js` now acts as the public install surface for:
+  - API base URL
+  - support email
+  - app branding
+  - Supabase public auth config
+- `frontend/index.html` now shows billing entry points in:
+  - `Plans`
+  - `Shop`
+  - `Profile`
+- `Profile` now also surfaces the live activation handoff map so the production values have a visible destination inside the app
+- the frontend now handles Stripe return states (`success`, `cancel`, `portal`) so billing redirects feel product-grade
+- `PRODUCTION_ACTIVATION_RUNBOOK.md` now documents the exact live activation sequence
+
+Current transition architecture:
+
+- premium UI gating reads backend-owned plan resolution
+- backend plan resolution now checks:
+  - normalized subscription state
+  - tester premium email fallback
+  - Supabase metadata fallback
+- subscription state is temporarily stored in a local JSON scaffold for development:
+  - `backend/data/billing_state.json`
+- this local store is an adapter layer, not the final source of truth
+- the intended production replacement is Supabase-backed `profiles` and `subscriptions` tables
+- first schema draft now lives in:
+  - `backend/supabase_billing_schema.sql`
+- adapter mode is controlled by:
+  - `PLUTO_SUBSCRIPTION_STORE=local|supabase`
+- billing config now reports activation readiness separately from basic Stripe key readiness
+- billing config now also reports explicit activation blockers so rollout can follow a deterministic checklist
+- billing config now also reports ordered next steps for activation handoff
+- billing config now also reports measurable activation progress (`completed/total/percent`) so rollout readiness is visible in-product
+- authenticated account and billing routes now auto-sync the Supabase `profiles` row so production persistence does not depend on the first webhook alone
+- backend plan resolution can now fall back to the Supabase `profiles.plan` snapshot when a fresh subscription row is not yet available
+- Supabase mode is considered activation-ready only when:
+  - Supabase env is present
+  - `profiles` exists
+  - `subscriptions` exists
+  - `billing_webhook_events` exists
+- frontend now reads backend subscription status so the account surface can show real billing state instead of only plan labels
+- backend now reports plan source and plan reason so account and billing debugging can trace where premium/free resolution came from
+
+What is still intentionally missing before live activation:
+
+- Stripe customer persistence in Supabase
+- subscription row sync into `profiles` or `subscriptions`
+- automatic premium activation after webhook confirmation
+- portal availability based on real persisted customer records across environments
+
 Important Stripe events:
 
 - `checkout.session.completed`
@@ -233,7 +299,12 @@ After auth is connected:
 
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `STRIPE_SECRET_KEY`
+- `STRIPE_PUBLISHABLE_KEY`
+- `STRIPE_PREMIUM_PRICE_ID`
 - `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_SUCCESS_URL`
+- `STRIPE_CANCEL_URL`
+- `STRIPE_PORTAL_RETURN_URL`
 - `REPLICATE_API_TOKEN`
 
 ## First Real Milestone
@@ -254,7 +325,9 @@ When continuing from the current stopping point:
 2. verify `/api/account/me` state during guest and logged-in flows
 3. connect premium/free gating to backend-backed account state
 4. prepare first real plan assignment path
-5. then move toward Stripe billing integration
+5. verify billing scaffold endpoints and frontend upgrade entry points
+6. replace the local subscription-state adapter with Supabase persistence
+7. add webhook-driven premium activation from real subscription records
 
 ## Second Real Milestone
 

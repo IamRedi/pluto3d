@@ -19,7 +19,9 @@ const DEFAULT_LIVE_STATE = {
   email: "",
   planLabel: "Guest",
   backendPlan: "guest",
-  backendDebug: null,
+  planSource: "guest",
+  planReason: "",
+  subscription: null,
   session: null,
   user: null
 };
@@ -50,7 +52,7 @@ async function fetchBackendAccountState(session){
 }
 
 function getConfig(){
-  return window.PLUTO_AUTH_CONFIG || null;
+  return window.PLUTO_AUTH_CONFIG || window.PLUTO_APP_CONFIG?.auth || null;
 }
 
 function getPublicKey(config){
@@ -68,6 +70,10 @@ function setLiveAuthState(partial){
     ...partial
   };
 
+  if(typeof window.refreshAuthenticatedBillingStatus === "function"){
+    window.refreshAuthenticatedBillingStatus();
+  }
+
   if(typeof window.syncAuthPreviewUI === "function"){
     window.syncAuthPreviewUI();
   }
@@ -77,43 +83,28 @@ function getLiveAuthState(){
   return window.PLUTO_LIVE_AUTH_STATE || { ...DEFAULT_LIVE_STATE };
 }
 
-function derivePlan(user){
-  const appPlan = user?.app_metadata?.plan;
-  const userPlan = user?.user_metadata?.plan;
-  const plan = appPlan || userPlan || "free";
-
-  if(plan === "premium"){
-    return {
-      mode: "premium",
-      planLabel: "Premium",
-      name: user?.user_metadata?.full_name || user?.user_metadata?.name || "Pluto Premium"
-    };
-  }
-
-  return {
-    mode: "free",
-    planLabel: "Free Account",
-    name: user?.user_metadata?.full_name || user?.user_metadata?.name || "Pluto Creator"
-  };
-}
-
 function buildLiveStateFromSession(session){
   if(!session?.user){
     return { ...DEFAULT_LIVE_STATE, enabled: true, loading: false };
   }
 
-  const plan = derivePlan(session.user);
+  const displayName =
+    session.user.user_metadata?.full_name ||
+    session.user.user_metadata?.name ||
+    "Pluto Creator";
 
   return {
     enabled: true,
     loading: false,
-    mode: plan.mode,
+    mode: "free",
     loggedIn: true,
-    name: plan.name,
+    name: displayName,
     email: session.user.email || "",
-    planLabel: plan.planLabel,
-    backendPlan: plan.mode,
-    backendDebug: null,
+    planLabel: "Free Account",
+    backendPlan: "free",
+    planSource: "session_default",
+    planReason: "Session exists before backend plan resolution returns.",
+    subscription: null,
     session,
     user: session.user
   };
@@ -127,8 +118,17 @@ function mergeBackendAccountState(liveState, backendState){
   if(!backendState.authenticated){
     return {
       ...liveState,
-      backendPlan: backendState.plan || liveState.backendPlan || "guest",
-      backendDebug: backendState.debug || null
+      mode: "guest",
+      loggedIn: false,
+      name: "Guest",
+      email: "",
+      planLabel: "Guest",
+      backendPlan: backendState.plan || "guest",
+      planSource: "guest",
+      planReason: "Backend returned an unauthenticated account state.",
+      subscription: null,
+      session: null,
+      user: null
     };
   }
 
@@ -142,7 +142,9 @@ function mergeBackendAccountState(liveState, backendState){
     name: user.name || liveState.name,
     email: user.email || liveState.email,
     backendPlan,
-    backendDebug: backendState.debug || null
+    planSource: backendState.planSource || liveState.planSource || "unknown",
+    planReason: backendState.planReason || liveState.planReason || "",
+    subscription: backendState.subscription || null
   };
 }
 

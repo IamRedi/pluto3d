@@ -961,6 +961,56 @@ grid-template-columns:repeat(3, minmax(0, 1fr));
 gap:12px;
 }
 
+.product-banner{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:14px;
+padding:12px 14px;
+margin-top:12px;
+border-radius:18px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.product-banner.hidden{
+display:none;
+}
+
+.product-banner.success{
+border-color:rgba(34,197,94,0.35);
+background:linear-gradient(180deg, rgba(22,163,74,0.12), rgba(255,255,255,0.02));
+}
+
+.product-banner.info{
+border-color:rgba(56,189,248,0.3);
+background:linear-gradient(180deg, rgba(14,165,233,0.1), rgba(255,255,255,0.02));
+}
+
+.product-banner.neutral{
+border-color:rgba(148,163,184,0.24);
+}
+
+.product-banner-copy{
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+.product-banner-title{
+font-size:13px;
+font-weight:700;
+letter-spacing:0.04em;
+text-transform:uppercase;
+}
+
+.product-banner-text{
+font-size:13px;
+line-height:1.55;
+color:var(--text-soft);
+}
+
 .product-card{
 padding:14px 16px;
 border-radius:20px;
@@ -2111,8 +2161,8 @@ to{background-position:1000px 1000px;}
   <div class="platform-brand">
     <div class="platform-brand-mark"></div>
     <div class="platform-brand-copy">
-      <div class="platform-brand-name">Pluto3D</div>
-      <div class="platform-brand-subtitle">Creative Print Studio</div>
+      <div id="platformBrandName" class="platform-brand-name">Pluto3D</div>
+      <div id="platformBrandSubtitle" class="platform-brand-subtitle">Creative Print Studio</div>
     </div>
   </div>
 
@@ -2147,7 +2197,7 @@ to{background-position:1000px 1000px;}
 
 </div>
 
-<div class="logo">Pluto</div>
+<div id="sidebarBrandName" class="logo">Pluto</div>
 
 </div>
 
@@ -2174,7 +2224,7 @@ to{background-position:1000px 1000px;}
     <div class="product-topbar-main">
       <div class="product-brand">
         <div class="product-kicker">Beta Workspace</div>
-        <div class="product-name">Pluto3D Studio</div>
+        <div id="productStudioName" class="product-name">Pluto3D Studio</div>
       </div>
       <div class="product-badges">
         <span class="badge badge-beta">Friend Test Build</span>
@@ -2183,6 +2233,14 @@ to{background-position:1000px 1000px;}
       </div>
     </div>
     <button type="button" class="product-close" onclick="dismissProductRail()">×</button>
+  </div>
+
+  <div id="productBillingBanner" class="product-banner hidden">
+    <div class="product-banner-copy">
+      <div id="productBillingBannerTitle" class="product-banner-title"></div>
+      <div id="productBillingBannerText" class="product-banner-text"></div>
+    </div>
+    <button type="button" class="product-close" onclick="dismissBillingBanner()">Ã—</button>
   </div>
 
   <div class="product-cards">
@@ -2606,10 +2664,12 @@ filter:none;
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+<script src="app-config.js"></script>
 <script src="runtime-config.js"></script>
 <script src="test-models.js"></script>
 <script src="auth-scaffold.js"></script>
 <script src="auth-client.js"></script>
+<script src="billing-client.js"></script>
 <script src="print-mode.js"></script>
 <script src="toy-mode.js"></script>
 <script src="toy-studio.js"></script>
@@ -2617,6 +2677,110 @@ filter:none;
 <script>
 
 const API_BASE = window.PLUTO_API_BASE
+
+function getPublicAppConfig(){
+return window.PLUTO_APP_CONFIG || {}
+}
+
+function getAppName(){
+return getPublicAppConfig().appName || "Pluto3D"
+}
+
+function getStudioName(){
+return getPublicAppConfig().studioName || `${getAppName()} Studio`
+}
+
+function getBrandSubtitle(){
+return getPublicAppConfig().brandSubtitle || "Creative Print Studio"
+}
+
+function getSupportEmail(){
+return (getPublicAppConfig().supportEmail || "").trim()
+}
+
+function getSupportLabel(){
+return getPublicAppConfig().supportLabel || "Email Support"
+}
+
+function getSupportContactLine(){
+const supportEmail = getSupportEmail()
+
+if(!supportEmail){
+  return "Support contact can be configured from frontend/app-config.js for each install."
+}
+
+return `${getSupportLabel()}: ${supportEmail}`
+}
+
+function applyPublicAppConfig(){
+document.title = getStudioName()
+
+const platformBrandName = document.getElementById("platformBrandName")
+if(platformBrandName){
+  platformBrandName.textContent = getAppName()
+}
+
+const platformBrandSubtitle = document.getElementById("platformBrandSubtitle")
+if(platformBrandSubtitle){
+  platformBrandSubtitle.textContent = getBrandSubtitle()
+}
+
+const sidebarBrandName = document.getElementById("sidebarBrandName")
+if(sidebarBrandName){
+  sidebarBrandName.textContent = getAppName()
+}
+
+const productStudioName = document.getElementById("productStudioName")
+if(productStudioName){
+  productStudioName.textContent = getStudioName()
+}
+
+const panelFooterTagline = document.getElementById("panelFooterTagline") || document.querySelector(".panel-footer > div:first-child")
+if(panelFooterTagline){
+  panelFooterTagline.textContent = `${getStudioName()} Beta - AI-assisted creation for simple 3D workflows.`
+}
+}
+
+function syncBillingReturnBanner(){
+const banner = document.getElementById("productBillingBanner")
+const title = document.getElementById("productBillingBannerTitle")
+const text = document.getElementById("productBillingBannerText")
+
+if(!banner || !title || !text){
+  return
+}
+
+const billingRuntime = typeof getBillingRuntime === "function"
+  ? getBillingRuntime()
+  : null
+const returnState = billingRuntime?.returnState || null
+
+banner.classList.remove("success", "info", "neutral")
+
+if(!returnState){
+  banner.classList.add("hidden")
+  title.textContent = ""
+  text.textContent = ""
+  return
+}
+
+banner.classList.remove("hidden")
+banner.classList.add(returnState.tone || "info")
+title.textContent = returnState.title || "Billing update"
+text.textContent = returnState.copy || ""
+}
+
+function dismissBillingBanner(){
+if(typeof getBillingRuntime !== "function"){
+  return
+}
+
+window.PLUTO_BILLING_RUNTIME = {
+  ...getBillingRuntime(),
+  returnState: null
+}
+syncBillingReturnBanner()
+}
 
 const input = document.getElementById("fileInput")
 const preview = document.getElementById("preview")
@@ -2873,7 +3037,7 @@ template: "login"
 },
 privacy: {
 title: "Privacy",
-subtitle: "Privacy will explain how uploads, prompts, generated assets, and account data are handled inside Pluto3D Studio.",
+subtitle: `Privacy will explain how uploads, prompts, generated assets, and account data are handled inside ${getStudioName()}.`,
 cards: [
   {
     label: "Uploads",
@@ -2916,12 +3080,12 @@ cards: [
   {
     label: "Beta Help",
     title: "Friend tester support",
-    copy: "During beta, support can stay lightweight with direct feedback, bug reporting, and simple issue follow-up."
+    copy: `During beta, support can stay lightweight with direct feedback, bug reporting, and simple issue follow-up. ${getSupportContactLine()}`
   },
   {
     label: "Future",
     title: "Customer support layer",
-    copy: "Later this can include FAQ, contact flow, account help, billing help, and product guidance for non-expert users."
+    copy: `Later this can include FAQ, contact flow, account help, billing help, and product guidance for non-expert users. ${getSupportContactLine()}`
   }
 ]
 }
@@ -2940,8 +3104,47 @@ return `
 }).join("")
 }
 
+function renderBillingActivationSummary(billingRuntime){
+const progress = billingRuntime?.activationProgress || null
+const blockers = billingRuntime?.activationBlockers || []
+const nextSteps = billingRuntime?.activationNextSteps || []
+const checklist = billingRuntime?.activationChecklist || []
+
+if(!progress && !blockers.length && !nextSteps.length){
+  return ""
+}
+
+return `
+  <div class="platform-surface-card-copy" style="margin-top:12px;">${progress?.label || "Billing activation"}${progress?.completed || progress?.completed === 0 ? ` • ${progress.completed}/${progress.total || 0}` : ""}</div>
+  ${progress?.detail ? `<div class="platform-surface-card-copy" style="margin-top:8px;">${progress.detail}</div>` : ""}
+  ${checklist.length ? `
+  <ul class="platform-surface-list">
+    ${checklist.slice(0, 4).map((item) => `<li>${item.done ? "Ready" : "Pending"}: ${item.label}</li>`).join("")}
+  </ul>
+  ` : ""}
+  ${blockers.length ? `
+  <ul class="platform-surface-list">
+    ${blockers.slice(0, 3).map((item) => `<li>${item}</li>`).join("")}
+  </ul>
+  ` : ""}
+  ${nextSteps.length ? `
+  <div class="platform-surface-card-copy" style="margin-top:12px;">Next: ${nextSteps[0]}</div>
+  ` : ""}
+`
+}
+
 function renderPlansSurface(){
 const authState = getAuthPreviewState()
+const liveState = typeof getLiveAuthState === "function"
+  ? getLiveAuthState()
+  : null
+const billingRuntime = typeof getBillingRuntime === "function"
+  ? getBillingRuntime()
+  : null
+const activationProgress = billingRuntime?.activationProgress || null
+const planSource = liveState?.enabled && !liveState.loading
+  ? "Backend Account"
+  : "Preview State"
 const currentPlan = authState.mode === "premium"
   ? "Premium"
   : authState.mode === "free"
@@ -2958,8 +3161,9 @@ return `
   <div class="platform-surface-card wide">
     <div class="surface-chip-row" style="margin-bottom:16px;">
       <span class="surface-chip primary">Current UI State: ${currentPlan}</span>
+      <span class="surface-chip">${planSource}</span>
       <span class="surface-chip">Auth Provider: Supabase</span>
-      <span class="surface-chip premium">Billing: Stripe</span>
+      <span class="surface-chip premium">Billing: ${billingRuntime?.activationReady ? "Activation Ready" : billingRuntime?.ready ? "Stripe Ready" : "Stripe Scaffold"}</span>
     </div>
     <div class="surface-plan-grid">
       <div class="surface-plan-card">
@@ -2987,20 +3191,24 @@ return `
       <div class="surface-plan-card featured">
         <div class="surface-plan-tier">Premium</div>
         <div class="surface-plan-title">Subscriber</div>
-        <div class="surface-plan-price">$19 <span>/ month target</span></div>
+        <div class="surface-plan-price">${billingRuntime?.priceLabel || "$19 / month target"}</div>
         <ul class="surface-plan-list">
           <li>Premium 3D generation</li>
           <li>No ads during generation</li>
           <li>Better limits and faster flow</li>
           <li>Future creator-grade tools</li>
         </ul>
+        <div class="surface-actions">
+          <button type="button" onclick="startPremiumCheckout()">${authState.loggedIn ? "Upgrade To Premium" : "Sign In To Upgrade"}</button>
+          ${authState.mode === "premium" ? `<button type="button" onclick="openBillingPortal()">Manage Billing</button>` : ""}
+        </div>
       </div>
     </div>
   </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Platform Logic</div>
     <div class="platform-surface-card-title">How plans connect to the product</div>
-    <div class="platform-surface-card-copy">The next implementation step is to connect account roles, usage limits, premium locks, Supabase Auth, and Stripe so these plan levels become real.</div>
+    <div class="platform-surface-card-copy">Account roles and premium locks now flow through the backend. The next layer is Stripe checkout, webhook sync, and server-owned subscription state.</div>
     <ul class="platform-surface-list">
       <li>AI image limit: ${limits.aiImage === null ? "Unlimited" : limits.aiImage}</li>
       <li>SVG limit: ${limits.svgGeneration === null ? "Unlimited" : limits.svgGeneration}</li>
@@ -3014,8 +3222,11 @@ return `
     <div class="platform-surface-card-copy">Upgrade prompts should appear elegantly during generation, inside the plans surface, and beside premium-only buttons without feeling pushy.</div>
     <div class="surface-chip-row">
       <span class="surface-chip primary">Supabase Auth</span>
-      <span class="surface-chip premium">Stripe Billing</span>
+      <span class="surface-chip premium">${billingRuntime?.detail || "Stripe billing path pending"}</span>
+      <span class="surface-chip">${billingRuntime?.storeDetail || "Billing store pending"}</span>
+      ${activationProgress ? `<span class="surface-chip">${activationProgress.completed}/${activationProgress.total} Ready</span>` : ""}
     </div>
+    ${renderBillingActivationSummary(billingRuntime)}
   </div>
 `
 }
@@ -3112,6 +3323,11 @@ return `
 }
 
 function renderShopSurface(){
+const authState = getAuthPreviewState()
+const billingRuntime = typeof getBillingRuntime === "function"
+  ? getBillingRuntime()
+  : null
+
 return `
   <div class="surface-grid">
     <div class="platform-surface-card">
@@ -3128,6 +3344,13 @@ return `
       <div class="platform-surface-card-label">Revenue Layer</div>
       <div class="platform-surface-card-title">Monetize beyond subscriptions</div>
       <div class="platform-surface-card-copy">This gives Pluto3D a second revenue path through asset packs, collaborations, sponsors, and creator-oriented digital products.</div>
+      <div class="surface-actions">
+        <button type="button" onclick="startPremiumCheckout()">${authState.loggedIn ? "Unlock Premium" : "Sign In To Unlock"}</button>
+      </div>
+      <div class="surface-chip-row">
+        <span class="surface-chip">${billingRuntime?.premiumPlanName || "Pluto3D Premium"}</span>
+        <span class="surface-chip premium">${billingRuntime?.priceLabel || "$19 / month target"}</span>
+      </div>
     </div>
     <div class="platform-surface-card wide">
       <div class="platform-surface-card-label">Suggested First Catalog</div>
@@ -3218,6 +3441,9 @@ const authState = getAuthPreviewState()
 const liveState = typeof getLiveAuthState === "function"
   ? getLiveAuthState()
   : null
+const billingRuntime = typeof getBillingRuntime === "function"
+  ? getBillingRuntime()
+  : null
 const currentStatus = authState.loggedIn ? authState.name : "Guest"
 const currentPlan = authState.mode === "premium"
   ? "Premium"
@@ -3233,8 +3459,24 @@ const usage = getUsageSnapshot()
       detail:"Create Supabase first, then add frontend/auth-config.js."
     }
   const liveAuthReady = authRuntime.configured && authRuntime.clientReady
-  const backendDebug = liveState?.backendDebug || null
   const backendPlan = liveState?.backendPlan || authState.mode || "guest"
+  const planSource = liveState?.planSource || "unknown"
+  const planReason = liveState?.planReason || ""
+  const subscription = billingRuntime?.subscription || liveState?.subscription || null
+  const subscriptionStatus = subscription?.status || "none"
+  const subscriptionPlan = subscription?.plan || backendPlan
+  const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
+  const activationProgress = billingRuntime?.activationProgress || null
+  const activationHandoff = billingRuntime?.activationHandoff || null
+  const handoffSummary = activationHandoff?.summary || {}
+  const frontendConfigItems = activationHandoff?.frontendPublicConfig || []
+  const backendEnvItems = activationHandoff?.backendEnv || []
+  const switchPath = activationHandoff?.switchPath || []
+  const verificationChecklist = activationHandoff?.verificationChecklist || []
+  const frontendSummary = handoffSummary.frontendConfig || null
+  const backendSummary = handoffSummary.backendEnv || null
+  const schemaSummary = activationHandoff?.supabaseActivation?.summary || handoffSummary.schema || null
+  const currentPhase = handoffSummary.currentPhase || null
   
   return `
     <div class="platform-surface-card wide">
@@ -3260,6 +3502,26 @@ const usage = getUsageSnapshot()
     <div class="surface-chip-row">
       <span class="surface-chip">${authState.email || "No email yet"}</span>
       <span class="surface-chip primary">${authState.loggedIn ? "Live Session" : "Guest Session"}</span>
+      <span class="surface-chip premium">${billingRuntime?.ready ? "Billing Ready" : "Billing Scaffold"}</span>
+    </div>
+  </div>
+  <div class="platform-surface-card">
+    <div class="platform-surface-card-label">Subscription</div>
+    <div class="platform-surface-card-title">${authState.mode === "premium" ? "Premium access is active" : "Premium upgrade path is prepared"}</div>
+    <div class="platform-surface-card-copy">${authState.mode === "premium" ? "The account now resolves through the billing path. The next step is full production rollout with live subscription persistence and portal management." : "Stripe checkout is scaffolded in the backend and ready to be activated once live Stripe keys, price IDs, webhooks, and persistence are fully enabled."}</div>
+    <div class="surface-chip-row">
+      <span class="surface-chip primary">Status: ${subscriptionStatus}</span>
+      <span class="surface-chip">Plan: ${subscriptionPlan}</span>
+      <span class="surface-chip">Source: ${planSource}</span>
+      <span class="surface-chip">${billingRuntime?.storeMode === "supabase" ? "Store: Supabase" : "Store: Local Scaffold"}</span>
+      ${activationProgress ? `<span class="surface-chip">${activationProgress.percent}% Activation</span>` : ""}
+    </div>
+    ${planReason ? `
+    <div class="platform-surface-card-copy" style="margin-top:12px;">${planReason}</div>
+    ` : ""}
+    ${renderBillingActivationSummary(billingRuntime)}
+    <div class="surface-actions">
+      <button type="button" onclick="${authState.mode === "premium" && canManageBilling ? "openBillingPortal()" : "startPremiumCheckout()"}">${authState.mode === "premium" && canManageBilling ? "Manage Billing" : authState.loggedIn ? "Upgrade To Premium" : "Sign In To Upgrade"}</button>
     </div>
   </div>
   <div class="platform-surface-card">
@@ -3278,27 +3540,46 @@ const usage = getUsageSnapshot()
     </div>
     `}
   </div>
+  <div class="platform-surface-card">
+    <div class="platform-surface-card-label">Activation Handoff</div>
+    <div class="platform-surface-card-title">Where the live values will go</div>
+    <div class="platform-surface-card-copy">This panel is the live handoff map for production activation. When you are ready with the real values, we will fill these exact locations in order.</div>
+    <div class="surface-chip-row">
+      ${frontendSummary ? `<span class="surface-chip primary">Frontend: ${frontendSummary.completed}/${frontendSummary.total}</span>` : ""}
+      ${backendSummary ? `<span class="surface-chip">Backend: ${backendSummary.completed}/${backendSummary.total}</span>` : ""}
+      ${schemaSummary ? `<span class="surface-chip">${schemaSummary.completed}/${schemaSummary.total} Schema</span>` : ""}
+      ${currentPhase ? `<span class="surface-chip premium">${currentPhase.label}</span>` : ""}
+    </div>
+    ${currentPhase?.detail ? `
+    <div class="platform-surface-card-copy" style="margin-top:12px;">${currentPhase.detail}</div>
+    ` : ""}
+    <ul class="platform-surface-list">
+      ${frontendConfigItems.slice(0, 3).map((item) => `<li>${item.configured ? "Ready" : "Pending"}: ${item.location} -> ${item.key}</li>`).join("")}
+      ${backendEnvItems.slice(0, 4).map((item) => `<li>${item.configured ? "Ready" : "Pending"}: backend/.env -> ${item.key}</li>`).join("")}
+    </ul>
+    ${switchPath.length ? `
+    <div class="platform-surface-card-copy" style="margin-top:12px;">Switch path:</div>
+    <ul class="platform-surface-list">
+      ${switchPath.map((phase) => `<li>${phase.status === "ready" ? "Ready" : phase.status === "external" ? "Awaiting install values" : "Pending"}: ${phase.label}</li>`).join("")}
+    </ul>
+    ` : ""}
+    ${verificationChecklist.length ? `
+    <div class="platform-surface-card-copy" style="margin-top:12px;">Verification queue:</div>
+    <ul class="platform-surface-list">
+      ${verificationChecklist.map((item) => `<li>${item.status === "pending" ? "Pending" : "Blocked"}: ${item.label}</li>`).join("")}
+    </ul>
+    ` : ""}
+  </div>
     <div class="platform-surface-card">
       <div class="platform-surface-card-label">Auth Runtime</div>
       <div class="platform-surface-card-title">${authRuntime.statusLabel}</div>
       <div class="platform-surface-card-copy">${authRuntime.detail}</div>
       <div class="surface-chip-row">
         <span class="surface-chip primary">Supabase Path</span>
-        <span class="surface-chip">${authRuntime.configured ? "Ready For Wiring" : "Needs Config"}</span>
+        <span class="surface-chip">${authRuntime.configured ? "Live Config" : "Needs Config"}</span>
+        <span class="surface-chip">${liveAuthReady ? `Plan: ${backendPlan}` : "Plan Sync Pending"}</span>
       </div>
     </div>
-    ${liveAuthReady && authState.loggedIn ? `
-    <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Backend Plan Debug</div>
-      <div class="platform-surface-card-title">Plan resolved from the API</div>
-      <div class="platform-surface-card-copy">This temporary panel helps us verify why an account resolves as Free or Premium. We can remove it after the premium path is confirmed.</div>
-      <ul class="platform-surface-list">
-        <li>Backend plan: ${backendPlan}</li>
-        <li>Matched email: ${backendDebug?.matched_email || "not returned yet"}</li>
-        <li>Premium list: ${backendDebug?.premium_emails?.length ? backendDebug.premium_emails.join(", ") : "empty"}</li>
-      </ul>
-    </div>
-    ` : ""}
   `
   }
 
@@ -3330,9 +3611,9 @@ if(body){
   body.insertAdjacentHTML("afterbegin", `
     <div class="platform-surface-card wide" style="margin-bottom:16px;">
       <div class="platform-surface-card-label">Premium Unlock</div>
-      <div class="platform-surface-card-title">This feature is locked in ${getAuthPreviewState().mode === "guest" ? "Guest" : "Free"} preview</div>
+      <div class="platform-surface-card-title">This feature is locked for ${getAuthPreviewState().mode === "guest" ? "Guest" : "Free"} accounts</div>
       <div class="platform-surface-card-copy">
-        Feature key: <strong>${featureKey}</strong>. Upgrade flow will later take users from this lock state to the subscriber path through Supabase auth and Stripe billing.
+        Feature key: <strong>${featureKey}</strong>. Premium access now follows the account plan resolved by the backend, with Stripe planned as the next upgrade path.
       </div>
     </div>
   `)
@@ -3357,9 +3638,9 @@ if(body){
   body.insertAdjacentHTML("afterbegin", `
     <div class="platform-surface-card wide" style="margin-bottom:16px;">
       <div class="platform-surface-card-label">Usage Limit Reached</div>
-      <div class="platform-surface-card-title">${getUsageLabel(featureKey)} is currently limited in this preview state</div>
+      <div class="platform-surface-card-title">${getUsageLabel(featureKey)} is currently limited for your account tier</div>
       <div class="platform-surface-card-copy">
-        Your current preview mode is <strong>${getAuthPreviewState().planLabel}</strong>. Real plan logic will later use Supabase account state and backend checks.
+        Your current plan is <strong>${getAuthPreviewState().planLabel}</strong>. Usage limits still use local beta counters, while premium locks follow the backend account plan.
       </div>
     </div>
   `)
@@ -3407,6 +3688,8 @@ if(loginLink){
 if(profileLink){
   profileLink.textContent = authState.loggedIn ? authState.name : "Profile"
 }
+
+syncBillingReturnBanner()
 
 document.querySelectorAll("[data-premium-feature]").forEach((button) => {
   const locked = authState.mode !== "premium"
@@ -3498,9 +3781,11 @@ progressBar.style.width="0%"
 
 }
 
+applyPublicAppConfig()
 initializeTheme()
 initializeProductRail()
 syncAuthPreviewUI()
+syncBillingReturnBanner()
 
 document.getElementById("svgDetail")?.addEventListener("change", triggerSvgAutoRegenerate)
 document.getElementById("svgCleanBackground")?.addEventListener("change", triggerSvgAutoRegenerate)
