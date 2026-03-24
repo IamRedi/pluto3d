@@ -244,6 +244,7 @@ These are not all needed immediately, but this is the expected future shape.
 - expand Toy Studio into part-aware editing lite
 - test sponsor/ad loading preview in all major flows
 - prepare Supabase setup checklist
+- prepare real auth runtime scaffold before live keys arrive
 - keep 3D and Toy product language aligned with:
   - `Test`
   - `PRO`
@@ -361,6 +362,7 @@ Current implementation note:
 
 - `SUPABASE_SETUP_CHECKLIST.md` is the user-facing setup guide for the first real auth step
 - `frontend/auth-config.example.js` and `backend/.env.example` are now the reference config files for the next integration phase
+- `frontend/auth-client.js` is now the runtime scaffold that detects frontend auth config and prepares the UI for live Supabase wiring
 
 ## Key Reference Docs
 
@@ -465,9 +467,7 @@ Choose one of these when continuing:
    - Toy
    - Free 3D
 3. `Supabase setup checklist`
-   - user steps
-   - env vars
-   - implementation order
+   - completed and documented
 4. `Auth integration`
    - Supabase project
    - frontend auth client
@@ -478,8 +478,8 @@ Choose one of these when continuing:
 
 1. Improve Toy Studio presets and reset behavior
 2. Test sponsor/ad preview in all main flows
-3. Create Supabase setup checklist
-4. Start real auth client scaffold after the checklist is ready
+3. Ask user to complete Supabase dashboard setup
+4. Start live Supabase auth client wiring after keys are ready
 
 ## Decisions Log
 
@@ -508,3 +508,14 @@ Whenever a major decision changes, add it to:
 - Decisions Log
 
 Whenever a task is completed, move the board forward instead of keeping old temporary notes in chat.
+
+## Current Session Note
+
+- Supabase checklist is prepared.
+- Runtime auth scaffold is prepared in `frontend/auth-client.js`.
+- The next real external dependency step is owned by the user:
+  - create the Supabase project
+  - enable Email + Google auth
+  - collect `supabaseUrl`, `supabaseAnonKey`, and `SUPABASE_SERVICE_ROLE_KEY`
+- After that, the next coding step is:
+  - replace placeholder auth actions with live Supabase session wiring

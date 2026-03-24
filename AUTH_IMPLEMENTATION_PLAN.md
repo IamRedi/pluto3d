@@ -91,6 +91,13 @@ Expected first frontend integration tasks:
 - read live session on startup
 - update header/profile/plans from session state
 
+Current scaffold status:
+
+- `frontend/auth-client.js` now exists as a safe runtime scaffold
+- it detects whether `frontend/auth-config.js` is present
+- it reports auth readiness in the Login and Profile surfaces
+- live Google/email auth calls are still placeholders until the real Supabase client is connected
+
 ## Step 3: User Data Model
 
 Recommended initial tables:

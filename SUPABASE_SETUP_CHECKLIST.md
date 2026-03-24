@@ -145,6 +145,12 @@ Once the user completes the checklist above, Codex will:
 4. replace preview plan state with real session state
 5. prepare backend plan checks
 
+Current codebase note:
+
+- the project now includes `frontend/auth-client.js`
+- this file already checks whether `frontend/auth-config.js` exists
+- after the keys are ready, the next coding step is to replace the placeholder auth calls with the real Supabase client logic
+
 ## First Real Auth Milestone
 
 The first auth milestone is complete when:
