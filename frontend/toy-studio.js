@@ -11,18 +11,22 @@ const TOY_STUDIO_DEFAULTS = {
 const TOY_STUDIO_PRESETS = {
   hero: {
     label: "Hero Build",
+    hint: "Larger upper body, confident stance, and a stronger collectible silhouette.",
     values: { head: 1.12, body: 1.18, chunky: 1.06, tilt: 4 }
   },
   chibi: {
     label: "Cute Chibi",
+    hint: "Pushes the head larger and the body smaller for a softer toy-like character look.",
     values: { head: 1.55, body: 0.84, chunky: 1.22, tilt: 0 }
   },
   collector: {
     label: "Collector",
+    hint: "Keeps proportions balanced and cleaner for a premium shelf-display figure.",
     values: { head: 1.08, body: 1.04, chunky: 0.98, tilt: -2 }
   },
   mini: {
     label: "Mini Vinyl",
+    hint: "Compact body with extra roundness for a stylized mini figure or vinyl toy feel.",
     values: { head: 1.22, body: 0.9, chunky: 1.28, tilt: 5 }
   }
 }
@@ -69,6 +73,16 @@ function setToyStudioStatus(message, tone = "neutral"){
 
   status.textContent = message
   status.dataset.tone = tone
+}
+
+function setToyStudioPresetHint(message){
+  const hint = document.getElementById("toyStudioPresetHint")
+
+  if(!hint){
+    return
+  }
+
+  hint.textContent = message
 }
 
 function setToyStudioControlsValues(values = TOY_STUDIO_DEFAULTS){
@@ -202,6 +216,13 @@ function syncToyStudioPresetState(activePreset = null){
     const isActive = button.dataset.preset === activePreset
     button.classList.toggle("active", isActive)
   })
+
+  if(activePreset && TOY_STUDIO_PRESETS[activePreset]){
+    setToyStudioPresetHint(TOY_STUDIO_PRESETS[activePreset].hint)
+    return
+  }
+
+  setToyStudioPresetHint("Start from a preset to quickly explore different toy silhouettes.")
 }
 
 function applyEntryScale(entry, factorX, factorY, factorZ){
@@ -322,5 +343,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setToyStudioControlsValues()
   updateToyStudioMeta(null)
+  setToyStudioPresetHint("Start from a preset to quickly explore different toy silhouettes.")
   setToyStudioStatus("Load a toy model to start editing.", "neutral")
 })

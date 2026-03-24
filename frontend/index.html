@@ -78,11 +78,11 @@ body[data-theme="light"]{
   --panel-background:
     linear-gradient(180deg, rgba(244, 250, 255, 0.96), rgba(233, 244, 255, 0.9));
   --viewer-background:
-    radial-gradient(circle at center, rgba(8,145,178,0.12), transparent 64%),
-    radial-gradient(circle at 18% 18%, rgba(225,29,72,0.08), transparent 26%),
-    radial-gradient(circle at 78% 24%, rgba(124,58,237,0.1), transparent 32%),
-    radial-gradient(circle at 74% 82%, rgba(2,132,199,0.1), transparent 34%),
-    linear-gradient(180deg, rgba(214, 229, 244, 0.92), rgba(196, 214, 233, 0.96));
+    radial-gradient(circle at center, rgba(34,211,238,0.08), transparent 68%),
+    radial-gradient(circle at 18% 18%, rgba(251,113,133,0.06), transparent 28%),
+    radial-gradient(circle at 78% 24%, rgba(168,85,247,0.1), transparent 34%),
+    radial-gradient(circle at 74% 82%, rgba(56,189,248,0.1), transparent 36%),
+    linear-gradient(180deg, rgba(54, 77, 116, 0.82), rgba(41, 60, 92, 0.92));
 }
 
 body {
@@ -1911,6 +1911,23 @@ text-transform:uppercase;
   box-shadow:0 12px 24px rgba(14,165,233,0.14);
 }
 
+.studio-preset-hint{
+  margin-top:12px;
+  padding:11px 13px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(125,211,252,0.1);
+  font-size:12px;
+  line-height:1.6;
+  color:#a9bfd6;
+}
+
+body[data-theme="light"] .studio-preset-hint{
+  background:rgba(255,255,255,0.68);
+  border-color:rgba(14,116,144,0.1);
+  color:#475569;
+}
+
 .studio-status{
   margin-top:12px;
   padding:11px 14px;
@@ -2443,8 +2460,7 @@ filter:none;
       <div class="studio-card">
         <h3>Style Presets</h3>
         <p>
-          The next step will add playful toy presets like hero proportions, cute vinyl,
-          and chunky mini figure styling.
+          Choose a quick toy direction first, then fine-tune the sliders for the final look.
         </p>
 
         <div class="studio-preset-grid">
@@ -2452,6 +2468,10 @@ filter:none;
           <button type="button" class="studio-preset-btn" data-preset="chibi" onclick="applyToyStudioPreset('chibi')">Cute Chibi</button>
           <button type="button" class="studio-preset-btn" data-preset="collector" onclick="applyToyStudioPreset('collector')">Collector</button>
           <button type="button" class="studio-preset-btn" data-preset="mini" onclick="applyToyStudioPreset('mini')">Mini Vinyl</button>
+        </div>
+
+        <div id="toyStudioPresetHint" class="studio-preset-hint">
+          Start from a preset to quickly explore different toy silhouettes.
         </div>
       </div>
 
@@ -2744,6 +2764,9 @@ if(themeToggle){
 if(themeToggleIcon){
   themeToggleIcon.textContent = theme === "light" ? "☀" : "☾"
 }
+if(typeof applySvgThemeStyle === "function"){
+  applySvgThemeStyle()
+}
 }
 
 function toggleTheme(){
@@ -2759,6 +2782,14 @@ if(rail){
 rail.classList.add("hidden")
 }
 localStorage.setItem("plutoProductRailDismissed", "1")
+}
+
+function applySvgThemeStyle(){
+const svgViewer = document.getElementById("svgViewer")
+if(!svgViewer) return
+
+const theme = document.body.getAttribute("data-theme") || "dark"
+svgViewer.style.filter = theme === "light" ? "none" : "invert(1) brightness(2)"
 }
 
 function initializeProductRail(){
@@ -3453,7 +3484,7 @@ scene.remove(scene.children[0])
 addDefaultLights()
 svgViewer.style.display = "block"
 // vetëm për SVG → efekt white/neon
-svgViewer.style.filter = "invert(1) brightness(2)"
+applySvgThemeStyle()
 
 
 const download = document.getElementById("downloadSVG")
