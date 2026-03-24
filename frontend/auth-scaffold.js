@@ -12,7 +12,7 @@ const AUTH_PREVIEW_DEFAULT = {
   loggedIn: false,
   name: "Guest",
   email: "",
-  planLabel: "Guest Beta"
+  planLabel: "Guest"
 };
 
 const USAGE_LIMITS = {
@@ -66,7 +66,7 @@ function buildAuthPreviewState(mode){
       loggedIn: true,
       name: "Pluto Premium",
       email: "premium@pluto3d.app",
-      planLabel: "Premium Preview"
+      planLabel: "Premium"
     };
   }
 
@@ -91,7 +91,7 @@ function getAuthPreviewState(){
       loggedIn: Boolean(liveState.loggedIn),
       name: liveState.name || "Guest",
       email: liveState.email || "",
-      planLabel: liveState.planLabel || "Guest Beta"
+      planLabel: liveState.planLabel || "Guest"
     };
   }
 

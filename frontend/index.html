@@ -2943,10 +2943,10 @@ return `
 function renderPlansSurface(){
 const authState = getAuthPreviewState()
 const currentPlan = authState.mode === "premium"
-  ? "Premium Preview"
+  ? "Premium"
   : authState.mode === "free"
     ? "Free Account"
-    : "Guest Beta"
+    : "Guest"
 const limits = {
   aiImage: getUsageLimit("aiImage"),
   svgGeneration: getUsageLimit("svgGeneration"),
@@ -3002,9 +3002,9 @@ return `
     <div class="platform-surface-card-title">How plans connect to the product</div>
     <div class="platform-surface-card-copy">The next implementation step is to connect account roles, usage limits, premium locks, Supabase Auth, and Stripe so these plan levels become real.</div>
     <ul class="platform-surface-list">
-      <li>AI image preview limit: ${limits.aiImage === null ? "Unlimited" : limits.aiImage}</li>
-      <li>SVG preview limit: ${limits.svgGeneration === null ? "Unlimited" : limits.svgGeneration}</li>
-      <li>Toy preview limit: ${limits.toyGeneration === null ? "Unlimited" : limits.toyGeneration}</li>
+      <li>AI image limit: ${limits.aiImage === null ? "Unlimited" : limits.aiImage}</li>
+      <li>SVG limit: ${limits.svgGeneration === null ? "Unlimited" : limits.svgGeneration}</li>
+      <li>Toy generation limit: ${limits.toyGeneration === null ? "Unlimited" : limits.toyGeneration}</li>
       <li>3D test generation limit: ${limits.free3dGeneration === null ? "Unlimited" : limits.free3dGeneration}</li>
     </ul>
   </div>
@@ -3153,22 +3153,21 @@ const authRuntime = typeof getAuthRuntimeStatus === "function"
       statusLabel:"Setup Needed",
       detail:"Create Supabase first, then add frontend/auth-config.js."
     }
+const liveAuthReady = authRuntime.configured && authRuntime.clientReady
 
 return `
   <div class="surface-grid">
     <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Auth Entry</div>
+      <div class="platform-surface-card-label">Account Access</div>
       <div class="platform-surface-card-title">Sign in to Pluto3D</div>
-      <div class="platform-surface-card-copy">This UI is the scaffold for the real auth layer. The recommended next step is Supabase Auth with Google login and account creation.</div>
+      <div class="platform-surface-card-copy">${liveAuthReady ? "Google and email auth are now connected. Use this surface to enter the workspace with a real Pluto3D account." : "This account surface is ready for the live auth layer. The next step is finishing Supabase login, plan syncing, and billing access."}</div>
       <div class="surface-chip-row">
         <span class="surface-chip primary">Supabase Auth</span>
-        <span class="surface-chip">Google Login Planned</span>
-        <span class="surface-chip">Email Signup Planned</span>
+        <span class="surface-chip">${liveAuthReady ? "Google Login Live" : "Google Login Ready"}</span>
+        <span class="surface-chip">${liveAuthReady ? "Email Auth Live" : "Email Auth Ready"}</span>
       </div>
       <div class="surface-actions">
         <button type="button" onclick="signInWithGoogleReal()">Continue With Google</button>
-        <button type="button" onclick="signInPreview('free')">Preview Free Login</button>
-        <button type="button" class="btn-premium" onclick="signInPreview('premium')">Preview Premium Login</button>
       </div>
     </div>
     <div class="platform-surface-card">
@@ -3185,23 +3184,15 @@ return `
         <button type="button" onclick="signUpWithEmailReal(document.getElementById('loginEmailInput')?.value, document.getElementById('loginPasswordInput')?.value)">Create Account</button>
         <button type="button" onclick="signOutReal()">Sign Out Real</button>
       </div>
-      <div class="surface-actions">
-        <button type="button" onclick="signInPreview('free')">Use Free Preview</button>
-        <button type="button" onclick="signOutPreview()">Sign Out Preview</button>
-      </div>
     </div>
     <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Auth Runtime</div>
-      <div class="platform-surface-card-title">${authRuntime.statusLabel}</div>
-      <div class="platform-surface-card-copy">${authRuntime.detail}</div>
+      <div class="platform-surface-card-label">Auth Status</div>
+      <div class="platform-surface-card-title">${liveAuthReady ? "Live Auth Ready" : authRuntime.statusLabel}</div>
+      <div class="platform-surface-card-copy">${liveAuthReady ? "Supabase session handling is now active in the app. The next auth milestone is plan resolution, protected premium access, and billing." : authRuntime.detail}</div>
       <div class="surface-chip-row">
         <span class="surface-chip primary">Supabase</span>
         <span class="surface-chip">${authRuntime.configured ? "Config Detected" : "Config Missing"}</span>
         <span class="surface-chip">${authRuntime.clientReady ? "Client Live" : "Client Booting"}</span>
-      </div>
-      <div class="surface-actions">
-        <button type="button" onclick="signInWithGoogleReal()">Google Sign-In Next</button>
-        <button type="button" onclick="signUpWithEmailReal()">Email Auth Next</button>
       </div>
     </div>
     <div class="platform-surface-card wide">
@@ -3211,11 +3202,11 @@ return `
     </div>
     <div class="platform-surface-card wide">
       <div class="platform-surface-card-label">Setup Checklist</div>
-      <div class="platform-surface-card-title">Supabase comes next</div>
-      <div class="platform-surface-card-copy">The next real integration step is now documented in the project files. After the Supabase project is created and keys are collected, Pluto3D can move from preview auth to live Google login and real sessions.</div>
+      <div class="platform-surface-card-title">${liveAuthReady ? "Auth foundation is live" : "Supabase comes next"}</div>
+      <div class="platform-surface-card-copy">${liveAuthReady ? "The next auth milestone is backend plan resolution, real premium assignment, and Stripe billing. Frontend login and session state are already live." : "The next real integration step is now documented in the project files. After the Supabase project is created and keys are collected, Pluto3D can move from preview auth to live Google login and real sessions."}</div>
       <div class="surface-chip-row">
-        <span class="surface-chip primary">SUPABASE_SETUP_CHECKLIST.md</span>
-        <span class="surface-chip">Next Platform Step</span>
+        <span class="surface-chip primary">${liveAuthReady ? "Live Session Ready" : "SUPABASE_SETUP_CHECKLIST.md"}</span>
+        <span class="surface-chip">${liveAuthReady ? "Next: Plan + Billing" : "Next Platform Step"}</span>
       </div>
     </div>
   </div>
@@ -3226,10 +3217,10 @@ function renderProfileSurface(){
 const authState = getAuthPreviewState()
 const currentStatus = authState.loggedIn ? authState.name : "Guest"
 const currentPlan = authState.mode === "premium"
-  ? "Premium Preview"
+  ? "Premium"
   : authState.mode === "free"
     ? "Free Account"
-    : "Guest Beta"
+    : "Guest"
 const usage = getUsageSnapshot()
 const authRuntime = typeof getAuthRuntimeStatus === "function"
   ? getAuthRuntimeStatus()
@@ -3238,6 +3229,7 @@ const authRuntime = typeof getAuthRuntimeStatus === "function"
       statusLabel:"Setup Needed",
       detail:"Create Supabase first, then add frontend/auth-config.js."
     }
+const liveAuthReady = authRuntime.configured && authRuntime.clientReady
 
 return `
   <div class="platform-surface-card wide">
@@ -3252,17 +3244,17 @@ return `
       </div>
       <div class="surface-stat">
         <div class="surface-stat-value">${usage.aiImage + usage.svgGeneration + usage.toyGeneration + usage.free3dGeneration}</div>
-        <div class="surface-stat-label">Preview Actions</div>
+        <div class="surface-stat-label">Usage Snapshot</div>
       </div>
     </div>
   </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Account View</div>
-    <div class="platform-surface-card-title">Profile will become your control center</div>
-    <div class="platform-surface-card-copy">Later this section will show account identity, plan, usage, saved outputs, and generated history from one clean dashboard after Supabase auth is connected.</div>
+    <div class="platform-surface-card-title">${liveAuthReady ? "Your account session is live" : "Profile will become your control center"}</div>
+    <div class="platform-surface-card-copy">${liveAuthReady ? "Pluto3D now reads your real Supabase session. The next step is to attach plan state, generation history, and subscriber access to this account." : "Later this section will show account identity, plan, usage, saved outputs, and generated history from one clean dashboard after Supabase auth is connected."}</div>
     <div class="surface-chip-row">
       <span class="surface-chip">${authState.email || "No email yet"}</span>
-      <span class="surface-chip primary">${authState.loggedIn ? "Live/Preview Session" : "Guest Session"}</span>
+      <span class="surface-chip primary">${authState.loggedIn ? "Live Session" : "Guest Session"}</span>
     </div>
   </div>
   <div class="platform-surface-card">
@@ -3270,14 +3262,16 @@ return `
     <div class="platform-surface-card-title">Saved generations will appear here</div>
     <div class="platform-surface-card-copy">Once login is active, users should be able to revisit their image generations, toy edits, SVG exports, and print-ready files.</div>
     <ul class="platform-surface-list">
-      <li>AI image previews used: ${usage.aiImage}</li>
-      <li>SVG previews used: ${usage.svgGeneration}</li>
-      <li>Toy previews used: ${usage.toyGeneration}</li>
+      <li>AI image actions used: ${usage.aiImage}</li>
+      <li>SVG actions used: ${usage.svgGeneration}</li>
+      <li>Toy actions used: ${usage.toyGeneration}</li>
       <li>3D test generations used: ${usage.free3dGeneration}</li>
     </ul>
+    ${liveAuthReady ? "" : `
     <div class="surface-actions">
-      <button type="button" onclick="resetUsagePreview()">Reset Preview Usage</button>
+      <button type="button" onclick="resetUsagePreview()">Reset Usage</button>
     </div>
+    `}
   </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Auth Runtime</div>
@@ -3402,8 +3396,8 @@ document.querySelectorAll("[data-premium-feature]").forEach((button) => {
   button.classList.toggle("locked", locked)
   button.setAttribute("aria-disabled", locked ? "true" : "false")
   button.title = locked
-    ? "Locked in guest/free preview. Open Plans to upgrade."
-    : "Premium preview unlocked."
+    ? "Locked for Guest and Free plans. Open Plans to upgrade."
+    : "Premium access unlocked."
 })
 
 const surface = document.getElementById("platformSurface")

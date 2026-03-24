@@ -63,8 +63,10 @@ app.include_router(ai_router)
 
 from app.routes import toy
 from app.routes import print_fix
+from app.routes import account
 app.include_router(print_fix.router)
 app.include_router(toy.router, prefix="/api")
+app.include_router(account.router)
 
 import os
 

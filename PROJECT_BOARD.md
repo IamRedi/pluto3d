@@ -167,6 +167,7 @@ These are not all needed immediately, but this is the expected future shape.
 ### Backend
 
 - `SUPABASE_SERVICE_ROLE_KEY`
+- `PLUTO_PREMIUM_EMAILS`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
 - `REPLICATE_API_TOKEN`
@@ -218,6 +219,8 @@ These are not all needed immediately, but this is the expected future shape.
 2. Improve styling presets and controls
 3. Prepare the app structure for auth and plans
 4. Add serious product sections like pricing, footer, and legal pages
+5. Keep live auth surfaces clean once Supabase is active and hide preview-only controls
+6. Use backend-owned plan resolution as the base for future premium gating
 
 ## Working Board
 
@@ -245,6 +248,11 @@ These are not all needed immediately, but this is the expected future shape.
 - test sponsor/ad loading preview in all major flows
 - prepare real auth runtime scaffold before live keys arrive
 - wire the first live Supabase session into Login and Profile
+- add backend auth and plan service scaffold
+- sync frontend live session with backend account route
+- reduce preview-only auth controls once live auth is stable
+- remove preview-heavy wording from Login/Profile where live auth already exists
+- add a temporary backend premium assignment path before Stripe goes live
 - keep 3D and Toy product language aligned with:
   - `Test`
   - `PRO`
@@ -253,8 +261,6 @@ These are not all needed immediately, but this is the expected future shape.
 
 ### Later
 
-- Google login
-- real Supabase session state
 - Stripe subscriptions
 - real plan validation in FastAPI
 - gallery/history backed by real user data
@@ -263,6 +269,13 @@ These are not all needed immediately, but this is the expected future shape.
 
 - YOLO / Ultralytics auto-focus for SVG
 - any heavy segmentation pipeline on Railway
+
+## Latest Product Decisions
+
+- live Supabase auth works locally with Google login
+- `Login` and `Profile` should feel like real account surfaces, not preview labs
+- premium testing should move to backend-owned plan resolution
+- before Stripe, selected tester emails can be marked premium through backend env
 - second preview viewer inside Toy Studio
 
 ### Needs From User Later
@@ -316,6 +329,7 @@ Suggested scope for that task:
 - Keep real 3D generation positioned as a premium feature, with test/demo generation only on free surfaces
 - Keep Toy generation positioned the same way: free test flow, premium real generation
 - Use `PROJECT_BOARD.md` as the main project memory and session handoff file
+- Treat invalid frontend auth transitions as `guest` in `/api/account/me` to avoid noisy 401 logs during login/logout refresh cycles
 
 ## Session Handoff
 
@@ -518,5 +532,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - created the Supabase project
   - enabled Email + Google auth
   - prepared local frontend and backend auth keys
+- Live Google login is working in the frontend.
+- Login and Profile surfaces now distinguish between preview auth scaffolding and live Supabase session state.
 - The next coding step is:
-  - replace placeholder auth actions with live Supabase session wiring
+  - add backend account and plan resolution helpers
+  - sync frontend live auth state with `/api/account/me`

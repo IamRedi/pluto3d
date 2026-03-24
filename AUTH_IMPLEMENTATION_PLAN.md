@@ -97,7 +97,8 @@ Current scaffold status:
 - it detects whether `frontend/auth-config.js` is present
 - it accepts either `supabasePublishableKey` or the older `supabaseAnonKey`
 - it reports auth readiness in the Login and Profile surfaces
-- live Google/email auth calls are still placeholders until the real Supabase client is connected
+- live Google/email auth is now connected through the Supabase JS client
+- live session state is now visible in the header, Login, and Profile surfaces
 
 ## Step 3: User Data Model
 
@@ -172,6 +173,32 @@ Expected first backend integration tasks:
 - protect premium endpoints
 - prepare usage tracking hooks
 
+Current backend scaffold status:
+
+- `backend/app/services/auth.py` verifies Supabase user tokens
+- `backend/app/services/plans.py` resolves `guest/free/premium`
+- `backend/app/routes/account.py` exposes `/api/account/me`
+- invalid or expired auth transitions are treated as `guest` for cleaner frontend refresh behavior
+- premium can now be assigned temporarily through `PLUTO_PREMIUM_EMAILS` in `backend/.env`
+
+## Temporary Premium Assignment Path
+
+Before Stripe is connected, Pluto3D can mark selected tester accounts as premium using:
+
+- `PLUTO_PREMIUM_EMAILS`
+
+Example:
+
+```env
+PLUTO_PREMIUM_EMAILS=your-email@example.com,another-premium-user@example.com
+```
+
+This allows:
+
+- testing premium locks with a real logged-in user
+- verifying the premium UI path before billing is added
+- keeping the backend as the source of truth for plan checks
+
 ## Step 6: Stripe Integration
 
 Add Stripe for:
@@ -223,12 +250,11 @@ The first production-grade auth milestone is complete when:
 
 When continuing from the current stopping point:
 
-1. test the sponsor/ad loading preview
-2. commit and push current local changes
-3. prepare Supabase setup checklist for the user
-4. add `frontend/auth-client.js`
-5. add frontend env handling for Supabase
-6. connect real session state
+1. verify login/logout locally with live Supabase auth
+2. verify `/api/account/me` state during guest and logged-in flows
+3. connect premium/free gating to backend-backed account state
+4. prepare first real plan assignment path
+5. then move toward Stripe billing integration
 
 ## Second Real Milestone
 

@@ -17,12 +17,35 @@ const DEFAULT_LIVE_STATE = {
   loggedIn: false,
   name: "Guest",
   email: "",
-  planLabel: "Guest Beta",
+  planLabel: "Guest",
   session: null,
   user: null
 };
 
 let supabaseClient = null;
+
+async function fetchBackendAccountState(session){
+  if(!session?.access_token || typeof API_BASE === "undefined"){
+    return null;
+  }
+
+  try{
+    const response = await fetch(`${API_BASE}/api/account/me`, {
+      headers: {
+        Authorization: `Bearer ${session.access_token}`
+      }
+    });
+
+    if(!response.ok){
+      return null;
+    }
+
+    return await response.json();
+  }catch(error){
+    console.warn("Backend account sync failed:", error);
+    return null;
+  }
+}
 
 function getConfig(){
   return window.PLUTO_AUTH_CONFIG || null;
@@ -89,6 +112,23 @@ function buildLiveStateFromSession(session){
     planLabel: plan.planLabel,
     session,
     user: session.user
+  };
+}
+
+function mergeBackendAccountState(liveState, backendState){
+  if(!backendState?.authenticated){
+    return liveState;
+  }
+
+  const user = backendState.user || {};
+  const backendPlan = backendState.plan === "premium" ? "premium" : "free";
+
+  return {
+    ...liveState,
+    mode: backendPlan,
+    planLabel: backendPlan === "premium" ? "Premium" : "Free Account",
+    name: user.name || liveState.name,
+    email: user.email || liveState.email
   };
 }
 
@@ -206,10 +246,15 @@ async function initializeSupabaseClient(){
   refreshAuthRuntimeStatus();
 
   const { data } = await supabaseClient.auth.getSession();
-  setLiveAuthState(buildLiveStateFromSession(data?.session || null));
+  const firstSession = data?.session || null;
+  const firstState = buildLiveStateFromSession(firstSession);
+  const firstBackendState = await fetchBackendAccountState(firstSession);
+  setLiveAuthState(mergeBackendAccountState(firstState, firstBackendState));
 
-  supabaseClient.auth.onAuthStateChange((_event, session) => {
-    setLiveAuthState(buildLiveStateFromSession(session));
+  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+    const nextState = buildLiveStateFromSession(session);
+    const backendState = await fetchBackendAccountState(session);
+    setLiveAuthState(mergeBackendAccountState(nextState, backendState));
   });
 
   refreshAuthRuntimeStatus();
