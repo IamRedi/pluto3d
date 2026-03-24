@@ -363,6 +363,7 @@ Current implementation note:
 - `SUPABASE_SETUP_CHECKLIST.md` is the user-facing setup guide for the first real auth step
 - `frontend/auth-config.example.js` and `backend/.env.example` are now the reference config files for the next integration phase
 - `frontend/auth-client.js` is now the runtime scaffold that detects frontend auth config and prepares the UI for live Supabase wiring
+- `frontend/auth-config.js` is the local file where the user will paste `supabaseUrl` and `supabasePublishableKey`
 
 ## Key Reference Docs
 

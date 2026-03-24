@@ -87,7 +87,7 @@ Because the frontend is currently a static Vanilla JS app, the first practical s
 Later the frontend will need:
 
 - `supabaseUrl`
-- `supabaseAnonKey`
+- `supabasePublishableKey`
 
 Reference file:
 
@@ -114,7 +114,7 @@ When the dashboard setup is done, the user should bring back only these values:
 ### Frontend
 
 - `supabaseUrl`
-- `supabaseAnonKey`
+- `supabasePublishableKey`
 
 ### Backend
 
@@ -149,6 +149,7 @@ Current codebase note:
 
 - the project now includes `frontend/auth-client.js`
 - this file already checks whether `frontend/auth-config.js` exists
+- `frontend/auth-config.js` should now use `supabaseUrl` + `supabasePublishableKey`
 - after the keys are ready, the next coding step is to replace the placeholder auth calls with the real Supabase client logic
 
 ## First Real Auth Milestone

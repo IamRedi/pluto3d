@@ -47,7 +47,7 @@ This means the product UX is already shaped before the real auth backend is conn
 Create a new Supabase project and collect:
 
 - `SUPABASE_URL`
-- `SUPABASE_ANON_KEY`
+- `SUPABASE_PUBLISHABLE_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
 
 Enable:
@@ -59,7 +59,7 @@ What the user will need to do:
 
 - create the Supabase project
 - copy the project URL
-- copy the anon key
+- copy the publishable key
 - copy the service role key
 - enable Google provider
 
@@ -95,6 +95,7 @@ Current scaffold status:
 
 - `frontend/auth-client.js` now exists as a safe runtime scaffold
 - it detects whether `frontend/auth-config.js` is present
+- it accepts either `supabasePublishableKey` or the older `supabaseAnonKey`
 - it reports auth readiness in the Login and Profile surfaces
 - live Google/email auth calls are still placeholders until the real Supabase client is connected
 

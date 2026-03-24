@@ -15,7 +15,10 @@ function getConfig(){
 
 function hasConfig(){
   const config = getConfig();
-  return Boolean(config?.supabaseUrl && config?.supabaseAnonKey);
+  return Boolean(
+    config?.supabaseUrl &&
+    (config?.supabasePublishableKey || config?.supabaseAnonKey)
+  );
 }
 
 function buildRuntimeState(){
