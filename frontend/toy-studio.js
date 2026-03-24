@@ -1,4 +1,5 @@
 window.toyStudioState = null
+window.activeToyStudioPreset = null
 
 function getToyStudioControls(){
   return {
@@ -146,6 +147,15 @@ function restoreToyStudioBaseState(){
   return true
 }
 
+function syncToyStudioPresetState(activePreset = null){
+  window.activeToyStudioPreset = activePreset
+
+  document.querySelectorAll(".studio-preset-btn").forEach((button) => {
+    const isActive = button.dataset.preset === activePreset
+    button.classList.toggle("active", isActive)
+  })
+}
+
 function applyEntryScale(entry, factorX, factorY, factorZ){
   entry.mesh.scale.set(
     entry.baseScale.x * factorX,
@@ -202,6 +212,7 @@ function resetToyStudioStyle(){
 
   updateToyStudioValueLabels()
   restoreToyStudioBaseState()
+  syncToyStudioPresetState(null)
 }
 
 function applyToyStudioPreset(preset){
@@ -212,10 +223,10 @@ function applyToyStudioPreset(preset){
   }
 
   const presets = {
-    hero: { head: 1.05, body: 1.1, chunky: 1.08, tilt: 3 },
-    chibi: { head: 1.45, body: 0.88, chunky: 1.18, tilt: 0 },
-    collector: { head: 1.1, body: 1.02, chunky: 1.0, tilt: -2 },
-    mini: { head: 1.18, body: 0.92, chunky: 1.22, tilt: 4 }
+    hero: { head: 1.12, body: 1.18, chunky: 1.06, tilt: 4 },
+    chibi: { head: 1.55, body: 0.84, chunky: 1.22, tilt: 0 },
+    collector: { head: 1.08, body: 1.04, chunky: 0.98, tilt: -2 },
+    mini: { head: 1.22, body: 0.9, chunky: 1.28, tilt: 5 }
   }
 
   const values = presets[preset]
@@ -230,6 +241,7 @@ function applyToyStudioPreset(preset){
   if(controls.tilt) controls.tilt.value = String(values.tilt)
 
   updateToyStudioValueLabels()
+  syncToyStudioPresetState(preset)
   applyToyStudioControls()
 }
 
@@ -237,6 +249,7 @@ function refreshToyStudioState(){
   window.toyStudioState = null
   updateToyStudioValueLabels()
   updateToyStudioMeta(ensureToyStudioState())
+  syncToyStudioPresetState(window.activeToyStudioPreset)
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -248,6 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     control.addEventListener("input", () => {
+      syncToyStudioPresetState(null)
       updateToyStudioValueLabels()
       if(window.toyStudioState || window.currentModel){
         applyToyStudioControls()

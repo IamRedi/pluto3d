@@ -78,10 +78,11 @@ body[data-theme="light"]{
   --panel-background:
     linear-gradient(180deg, rgba(244, 250, 255, 0.96), rgba(233, 244, 255, 0.9));
   --viewer-background:
-    radial-gradient(circle at center, rgba(8,145,178,0.08), transparent 68%),
-    radial-gradient(circle at 18% 18%, rgba(225,29,72,0.05), transparent 28%),
-    radial-gradient(circle at 78% 24%, rgba(124,58,237,0.08), transparent 34%),
-    radial-gradient(circle at 74% 82%, rgba(2,132,199,0.08), transparent 36%);
+    radial-gradient(circle at center, rgba(8,145,178,0.12), transparent 64%),
+    radial-gradient(circle at 18% 18%, rgba(225,29,72,0.08), transparent 26%),
+    radial-gradient(circle at 78% 24%, rgba(124,58,237,0.1), transparent 32%),
+    radial-gradient(circle at 74% 82%, rgba(2,132,199,0.1), transparent 34%),
+    linear-gradient(180deg, rgba(214, 229, 244, 0.92), rgba(196, 214, 233, 0.96));
 }
 
 body {
@@ -800,27 +801,37 @@ inset 0 1px 0 rgba(255,255,255,0.12),
 }
 
 .theme-toggle{
-width:92px;
-min-height:52px;
+width:54px;
+height:54px;
+min-height:54px;
 margin-top:auto;
 margin-bottom:22px;
-padding:10px 12px;
-border-radius:18px;
+padding:0;
+border-radius:999px;
 border:1px solid rgba(56,189,248,0.22);
 background:linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(12, 20, 39, 0.66));
 color:#d6f6ff;
-font-family:Orbitron;
-font-size:12px;
-letter-spacing:0.08em;
-text-transform:uppercase;
+font-size:20px;
+line-height:1;
 cursor:pointer;
 transition:0.2s;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .theme-toggle:hover{
 transform:translateY(-2px);
 border-color:rgba(103,232,249,0.62);
 box-shadow:0 12px 30px rgba(14,165,233,0.16);
+}
+
+.theme-toggle-icon{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+width:100%;
+height:100%;
 }
 
 /* panel */
@@ -1058,6 +1069,18 @@ animation: neuralMove 40s linear infinite;
 
 pointer-events:none;
 z-index:0;
+}
+
+body[data-theme="light"] .viewer{
+border:1px solid rgba(14,116,144,0.18);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.22),
+0 28px 70px rgba(148,163,184,0.18);
+}
+
+body[data-theme="light"] .viewer::before{
+opacity:0.07;
+mix-blend-mode:multiply;
 }
 .viewer::after{
 content:"";
@@ -1676,6 +1699,15 @@ inset 0 1px 0 rgba(255,255,255,0.06),
 0 30px 90px rgba(2,6,23,0.48);
 }
 
+body[data-theme="light"] .studio-modal{
+background:
+linear-gradient(180deg, rgba(246,250,255,0.98), rgba(233,242,252,0.96));
+border:1px solid rgba(14,116,144,0.16);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.7),
+0 26px 70px rgba(148,163,184,0.18);
+}
+
 .studio-sidebar{
 padding:24px;
 background:
@@ -1690,6 +1722,11 @@ scrollbar-width:none;
 -ms-overflow-style:none;
 }
 
+body[data-theme="light"] .studio-sidebar{
+background:
+linear-gradient(180deg, rgba(248,251,255,0.98), rgba(236,244,252,0.94));
+}
+
 .studio-sidebar::-webkit-scrollbar{
 display:none;
 }
@@ -1702,11 +1739,19 @@ text-transform:uppercase;
 color:#ecfeff;
 }
 
+body[data-theme="light"] .studio-modal-title{
+color:#0f172a;
+}
+
 .studio-modal-subtitle{
 font-size:14px;
 line-height:1.6;
 color:#96a8c3;
 max-width:30ch;
+}
+
+body[data-theme="light"] .studio-modal-subtitle{
+color:#475569;
 }
 
 .studio-chip-row{
@@ -1726,12 +1771,24 @@ text-transform:uppercase;
 color:#c9f5ff;
 }
 
+body[data-theme="light"] .studio-chip{
+background:rgba(8,145,178,0.06);
+border:1px solid rgba(14,116,144,0.12);
+color:#0f172a;
+}
+
 .studio-card{
 padding:18px;
 border-radius:22px;
 background:rgba(255,255,255,0.03);
 border:1px solid rgba(125,211,252,0.12);
 box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+body[data-theme="light"] .studio-card{
+background:rgba(255,255,255,0.64);
+border:1px solid rgba(14,116,144,0.1);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.75);
 }
 
 .studio-card h3{
@@ -1742,11 +1799,19 @@ text-transform:uppercase;
 color:#ecfeff;
 }
 
+body[data-theme="light"] .studio-card h3{
+color:#0f172a;
+}
+
 .studio-card p{
 margin:0;
 font-size:13px;
 line-height:1.65;
 color:#93a6c1;
+}
+
+body[data-theme="light"] .studio-card p{
+color:#475569;
 }
 
 .studio-control-group{
@@ -1766,9 +1831,17 @@ text-transform:uppercase;
 color:#dffbff;
 }
 
+body[data-theme="light"] .studio-control-label{
+color:#0f172a;
+}
+
 .studio-control-value{
 font-size:12px;
 color:#7dd3fc;
+}
+
+body[data-theme="light"] .studio-control-value{
+color:#0891b2;
 }
 
 .studio-meta{
@@ -1784,6 +1857,11 @@ background:rgba(255,255,255,0.03);
 border:1px solid rgba(125,211,252,0.1);
 }
 
+body[data-theme="light"] .studio-meta-item{
+background:rgba(255,255,255,0.62);
+border:1px solid rgba(14,116,144,0.1);
+}
+
 .studio-meta-label{
 font-size:11px;
 letter-spacing:0.08em;
@@ -1792,10 +1870,18 @@ color:#7fa6ba;
 margin-bottom:6px;
 }
 
+body[data-theme="light"] .studio-meta-label{
+color:#64748b;
+}
+
 .studio-meta-value{
 font-size:15px;
 font-weight:600;
 color:#eefcff;
+}
+
+body[data-theme="light"] .studio-meta-value{
+color:#0f172a;
 }
 
 .studio-slider{
@@ -1816,6 +1902,13 @@ padding:10px 12px;
 font-size:11px;
 letter-spacing:0.08em;
 text-transform:uppercase;
+}
+
+.studio-preset-btn.active{
+border-color:rgba(103,232,249,0.62);
+background:linear-gradient(135deg, rgba(56,189,248,0.14), rgba(139,92,246,0.18));
+color:var(--cyan);
+box-shadow:0 12px 24px rgba(14,165,233,0.14);
 }
 
 .studio-actions{
@@ -1980,8 +2073,8 @@ to{background-position:1000px 1000px;}
 
 <div class="sidebtn" data-panel-trigger="toy" onclick="openPanel('toy')">Toy</div>
 
-<button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()">
-Night
+<button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+<span id="themeToggleIcon" class="theme-toggle-icon">☾</span>
 </button>
 
 </div>
@@ -2308,10 +2401,10 @@ filter:none;
         </p>
 
         <div class="studio-preset-grid">
-          <button type="button" class="studio-preset-btn" onclick="applyToyStudioPreset('hero')">Hero</button>
-          <button type="button" class="studio-preset-btn" onclick="applyToyStudioPreset('chibi')">Chibi</button>
-          <button type="button" class="studio-preset-btn" onclick="applyToyStudioPreset('collector')">Collector</button>
-          <button type="button" class="studio-preset-btn" onclick="applyToyStudioPreset('mini')">Mini</button>
+          <button type="button" class="studio-preset-btn" data-preset="hero" onclick="applyToyStudioPreset('hero')">Hero Build</button>
+          <button type="button" class="studio-preset-btn" data-preset="chibi" onclick="applyToyStudioPreset('chibi')">Cute Chibi</button>
+          <button type="button" class="studio-preset-btn" data-preset="collector" onclick="applyToyStudioPreset('collector')">Collector</button>
+          <button type="button" class="studio-preset-btn" data-preset="mini" onclick="applyToyStudioPreset('mini')">Mini Vinyl</button>
         </div>
       </div>
 
@@ -2321,7 +2414,7 @@ filter:none;
 
         <div class="studio-control-group">
           <div class="studio-control-label">
-            <span>Head Scale</span>
+            <span>Head Emphasis</span>
             <span class="studio-control-value" id="headScaleValue">1.00x</span>
           </div>
           <input
@@ -2337,7 +2430,7 @@ filter:none;
 
         <div class="studio-control-group">
           <div class="studio-control-label">
-            <span>Body Scale</span>
+            <span>Body Presence</span>
             <span class="studio-control-value" id="bodyScaleValue">1.00x</span>
           </div>
           <input
@@ -2353,7 +2446,7 @@ filter:none;
 
         <div class="studio-control-group">
           <div class="studio-control-label">
-            <span>Chunky</span>
+            <span>Chunkiness</span>
             <span class="studio-control-value" id="chunkyValue">1.00x</span>
           </div>
           <input
@@ -2369,7 +2462,7 @@ filter:none;
 
         <div class="studio-control-group">
           <div class="studio-control-label">
-            <span>Tilt</span>
+            <span>Pose Tilt</span>
             <span class="studio-control-value" id="tiltValue">0°</span>
           </div>
           <input
@@ -2394,7 +2487,7 @@ filter:none;
 
       <div class="studio-actions">
         <button type="button" onclick="applyToyStudioControls()">Apply Style</button>
-        <button type="button" class="btn-premium" onclick="resetToyStudioStyle()">Reset</button>
+        <button type="button" onclick="resetToyStudioStyle()">Reset Style</button>
       </div>
     </div>
   </div>
@@ -2592,8 +2685,13 @@ alert(msg)
 function applyTheme(theme){
 document.body.setAttribute("data-theme", theme)
 const themeToggle = document.getElementById("themeToggle")
+const themeToggleIcon = document.getElementById("themeToggleIcon")
 if(themeToggle){
-themeToggle.textContent = theme === "light" ? "Light" : "Night"
+  themeToggle.title = theme === "light" ? "Switch to dark mode" : "Switch to light mode"
+  themeToggle.setAttribute("aria-label", themeToggle.title)
+}
+if(themeToggleIcon){
+  themeToggleIcon.textContent = theme === "light" ? "☀" : "☾"
 }
 }
 

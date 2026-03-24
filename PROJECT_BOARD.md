@@ -218,6 +218,66 @@ These are not all needed immediately, but this is the expected future shape.
 3. Prepare the app structure for auth and plans
 4. Add serious product sections like pricing, footer, and legal pages
 
+## Working Board
+
+### Now
+
+- keep SVG stable with only:
+  - `Detail`
+  - `Clean Background`
+- keep Toy Studio compact and visually clean
+- keep platform surfaces serious but lightweight
+- avoid heavy backend dependencies unless they clearly improve quality
+
+### Next
+
+- polish Toy Studio presets so they feel more useful
+- improve Toy Studio reset behavior
+- test sponsor/ad loading preview in all major flows
+- prepare Supabase setup checklist
+
+### Later
+
+- Google login
+- real Supabase session state
+- Stripe subscriptions
+- real plan validation in FastAPI
+- gallery/history backed by real user data
+
+### Parked
+
+- YOLO / Ultralytics auto-focus for SVG
+- any heavy segmentation pipeline on Railway
+- second preview viewer inside Toy Studio
+
+### Needs From User Later
+
+- Supabase project
+- Google auth enablement
+- Stripe account and keys
+- final domain connection
+- production testing feedback from friends
+
+## Recommended Next Task
+
+The best next task is:
+
+- `Toy Studio preset polish`
+
+Why:
+
+- it improves the product’s core editing value
+- it is visible immediately in the main viewer
+- it does not require new infrastructure
+- it is safer than jumping to real auth integration too early
+
+Suggested scope for that task:
+
+- make presets feel more distinct
+- improve labels so they are easier to understand
+- make reset behavior more reliable
+- optionally add one extra simple control like `Tilt` or `Cute`
+
 ## Deferred / Difficult Tasks
 
 - SVG subject isolation with YOLO / Ultralytics is deferred.
@@ -231,6 +291,13 @@ These are not all needed immediately, but this is the expected future shape.
   - revisit only if we later need a stronger object-isolation pipeline
   - keep the active SVG backend free of YOLO dependencies for stability
 
+## Latest Product Decisions
+
+- Keep the active SVG flow simple and clear instead of over-stylized
+- Prefer preprocessing changes before SVG conversion, not fake post-effects after conversion
+- Keep difficult computer-vision ideas parked until they clearly improve quality
+- Use `PROJECT_BOARD.md` as the main project memory and session handoff file
+
 ## Session Handoff
 
 Current stop point:
@@ -240,6 +307,10 @@ Current stop point:
 - premium lock preview is working
 - usage limits preview is working
 - sponsor/ad loading preview is implemented for free plans
+- SVG currently uses:
+  - `Detail`
+  - `Clean Background`
+- YOLO-based focus crop is removed from the active flow
 
 Files touched in the current unfinished local step:
 
@@ -251,14 +322,15 @@ Files touched in the current unfinished local step:
 
 When resuming, start with:
 
-1. test sponsor/ad loading preview in:
-   - AI
-   - SVG
-   - Toy
-   - Free 3D
-2. confirm premium preview skips sponsor loading
-3. commit and push the current local changes
-4. begin the real Supabase setup checklist
+1. open this board and check:
+   - `Working Board`
+   - `Recommended Next Task`
+   - `Latest Product Decisions`
+2. decide whether we are in:
+   - studio polish
+   - platform/auth work
+   - SVG refinement
+3. if unclear, review the current changed files before coding
 
 Recommended next implementation after commit:
 
@@ -328,17 +400,10 @@ The product is considered ready for friend testing when the items below are stab
 This is the recommended order for the next work period.
 
 1. Stabilize Toy Studio controls and presets
-2. Add a `Night Mode` toggle
-3. Build serious product UI sections:
-   - navbar
-   - hero
-   - pricing
-   - sponsor strip
-   - footer
-4. Add basic legal/support pages
-5. Define auth and plan architecture
-6. Add auth UI scaffold
-7. Lock the recommended stack: Supabase + Stripe
+2. Keep SVG simple and reliable
+3. Keep platform surfaces serious and presentable
+4. Prepare auth integration in a controlled way
+5. Avoid heavy features until beta feedback proves they are worth it
 
 ## Task Split
 
@@ -371,19 +436,16 @@ Choose one of these when continuing:
    - better preset logic
    - better reset behavior
    - better edit labels
-2. `Night Mode`
-   - global theme toggle
-   - saved preference
-3. `Serious landing layer`
-   - navbar
-   - hero
-   - pricing
-   - footer
-4. `Auth planning scaffold`
-   - choose stack
-   - define data model
-   - prepare UI entry points
-5. `Auth integration`
+2. `Sponsor flow testing`
+   - AI
+   - SVG
+   - Toy
+   - Free 3D
+3. `Supabase setup checklist`
+   - user steps
+   - env vars
+   - implementation order
+4. `Auth integration`
    - Supabase project
    - frontend auth client
    - backend plan checks
@@ -391,14 +453,10 @@ Choose one of these when continuing:
 
 ## Next Recommended Tasks
 
-1. Improve Toy Studio presets and part-aware editing
-2. Add a `Night Mode` toggle
-3. Add a serious landing/product layer:
-   - hero
-   - pricing
-   - sponsor strip
-   - footer
-4. Add auth system planning and scaffolding
+1. Improve Toy Studio presets and reset behavior
+2. Test sponsor/ad preview in all main flows
+3. Create Supabase setup checklist
+4. Start real auth client scaffold after the checklist is ready
 
 ## Decisions Log
 
