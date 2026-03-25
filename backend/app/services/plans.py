@@ -29,7 +29,7 @@ def resolve_user_plan_details(user: Optional[dict]) -> dict:
         }
 
     subscription_details = resolve_subscription_plan_details_from_store(user)
-    if subscription_details:
+    if subscription_details and subscription_details["source"] == "subscription_record":
         return {
             "plan": subscription_details["plan"],
             "source": subscription_details["source"],
@@ -42,6 +42,13 @@ def resolve_user_plan_details(user: Optional[dict]) -> dict:
             "plan": "premium",
             "source": "tester_email",
             "reason": "Plan resolved from PLUTO_PREMIUM_EMAILS fallback.",
+        }
+
+    if subscription_details:
+        return {
+            "plan": subscription_details["plan"],
+            "source": subscription_details["source"],
+            "reason": subscription_details["reason"],
         }
 
     app_plan = (user.get("app_metadata") or {}).get("plan")

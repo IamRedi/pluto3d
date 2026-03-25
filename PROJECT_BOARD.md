@@ -595,6 +595,10 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Billing activation status now resolves as `activationReady=true` in local `supabase` mode; the next step is end-to-end checkout/webhook verification.
 - Railway backend env rollout is now in progress with Supabase + Stripe test values.
 - Live Railway verification is currently blocked because the billing/Supabase implementation changes are still local and not yet deployed from GitHub.
+- Live Railway `/api/billing/activation-status` now returns `activationReady=true` with `storeMode=supabase` and no blockers.
+- The backend production path is now structurally live; the next step is an end-to-end Stripe checkout/webhook smoke test.
+- Smoke test observation: after Stripe return to the site, the frontend can appear as `guest`, so live auth restore after checkout needs verification.
+- Found a plan-resolution edge case in `supabase` mode: `profile_snapshot=free` could override `PLUTO_PREMIUM_EMAILS`; tester-email fallback now needs to stay ahead of profile-snapshot fallback.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.
