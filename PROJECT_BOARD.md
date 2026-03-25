@@ -654,6 +654,17 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Added a phase-based switch path so go-live can be followed as an ordered activation sequence.
 - Added current-phase and verification-queue visibility so the final switch path is operationally clearer.
 
+## Work Log - 2026-03-25 UI Polish Pass
+
+- Cleaned user-facing `beta`, `preview`, and placeholder wording from `frontend/index.html` so the product reads more like a launch-ready platform than an internal scaffold.
+- Updated Gallery, Login, Profile, Shop, Support, and billing copy to reflect the current live stack instead of future-state language.
+- Replaced broken visible encoding artifacts in footer, download CTA, status text, and several plan/profile surfaces without changing underlying auth or billing logic.
+- Kept the pass intentionally low-risk: no auth, billing, or routing behavior was changed, and the remaining encoding artifacts are currently limited to internal comments rather than user-facing UI.
+- Next recommended focus after this pass:
+  - visual polish and hierarchy refinement
+  - spacing, typography, and card consistency across surfaces
+  - only after that, run the first real live-payment smoke test
+
 ## Chat Handoff 1
 
 If we continue in a new chat, resume from this exact state:
