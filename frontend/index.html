@@ -349,8 +349,9 @@ backdrop-filter:blur(16px);
 }
 
 .platform-surface[data-surface="login"] .platform-surface-panel{
-width:min(560px, 100%);
-max-height:min(720px, calc(100dvh - 140px));
+width:min(680px, 100%);
+max-height:none;
+overflow:visible;
 }
 
 .platform-surface[data-surface="profile"] .platform-surface-panel{
@@ -367,6 +368,10 @@ border-bottom:none;
 .platform-surface[data-surface="login"] .platform-surface-body,
 .platform-surface[data-surface="profile"] .platform-surface-body{
 padding:12px 24px 24px;
+}
+
+.platform-surface[data-surface="login"] .platform-surface-body{
+overflow:visible;
 }
 
 .platform-surface[data-surface="login"] .platform-surface-title,
@@ -717,12 +722,19 @@ flex-direction:column;
 gap:14px;
 }
 
+.auth-entry-fields{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:14px;
+}
+
 .auth-entry-card .surface-actions{
 margin-top:2px;
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
 }
 
 .auth-entry-card .surface-actions button{
-flex:1 1 0;
 min-width:0;
 }
 
@@ -2347,6 +2359,11 @@ padding:12px 18px 18px;
 grid-template-columns:1fr;
 }
 
+.auth-entry-fields,
+.auth-entry-card .surface-actions{
+grid-template-columns:1fr;
+}
+
 .workspace,
 .viewer,
 .panel,
@@ -3729,13 +3746,15 @@ return `
       </button>
       <div class="auth-divider">Or continue with email</div>
       <div class="auth-entry-stack">
-      <div class="surface-field">
-        <div class="surface-mini-label">Email</div>
-        <input id="loginEmailInput" type="text" value="${isLoggedIn ? authState.email : ""}" placeholder="your@email.com">
-      </div>
-      <div class="surface-field" style="margin-top:12px;">
-        <div class="surface-mini-label">Password</div>
-        <input id="loginPasswordInput" type="password" value="" placeholder="Password">
+      <div class="auth-entry-fields">
+        <div class="surface-field">
+          <div class="surface-mini-label">Email</div>
+          <input id="loginEmailInput" type="text" value="${isLoggedIn ? authState.email : ""}" placeholder="your@email.com">
+        </div>
+        <div class="surface-field">
+          <div class="surface-mini-label">Password</div>
+          <input id="loginPasswordInput" type="password" value="" placeholder="Password">
+        </div>
       </div>
       <div class="surface-actions">
         <button type="button" onclick="signInWithEmailReal(document.getElementById('loginEmailInput')?.value, document.getElementById('loginPasswordInput')?.value)">Sign In With Email</button>
