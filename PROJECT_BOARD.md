@@ -665,6 +665,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Simplified `Login` into a minimal Google-or-email entry surface and removed extra checklist/status panels that customers do not need to see.
 - Reduced `Profile` further so it shows only account, subscription, and usage essentials instead of duplicate stats and helper controls.
 - Trimmed the visible `Login` surface even further so customers see only `Account Access` and `Email`, with no extra subtitle-heavy onboarding copy.
+- Added a compact centered modal treatment for `Login` and `Profile` so those surfaces feel lighter, less dashboard-like, and more like polished product dialogs over the blurred studio background.
 - Next recommended focus after this pass:
   - visual polish and hierarchy refinement
   - spacing, typography, and card consistency across surfaces
