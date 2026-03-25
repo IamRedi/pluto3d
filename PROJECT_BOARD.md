@@ -662,6 +662,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Kept the pass intentionally low-risk: no auth, billing, or routing behavior was changed, and the remaining encoding artifacts are currently limited to internal comments rather than user-facing UI.
 - Simplified `Plans` and `Profile` so they read like customer-facing product surfaces rather than operator/debug dashboards.
 - Removed activation-handoff and runtime-detail blocks from the visible account UI to reduce noise and improve perceived product quality.
+- Simplified `Login` into a minimal Google-or-email entry surface and removed extra checklist/status panels that customers do not need to see.
+- Reduced `Profile` further so it shows only account, subscription, and usage essentials instead of duplicate stats and helper controls.
 - Next recommended focus after this pass:
   - visual polish and hierarchy refinement
   - spacing, typography, and card consistency across surfaces

@@ -3468,31 +3468,35 @@ return `
 function renderLoginSurface(){
 const authState = getAuthPreviewState()
 const isLoggedIn = authState.loggedIn
-const authRuntime = typeof getAuthRuntimeStatus === "function"
-  ? getAuthRuntimeStatus()
-  : {
-      configured:false,
-      statusLabel:"Setup Needed",
-      detail:"Create Supabase first, then add Supabase values to frontend/app-config.js."
-    }
-const liveAuthReady = authRuntime.configured && authRuntime.clientReady
 
 return `
   <div class="surface-grid">
-    <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Account Access</div>
-      <div class="platform-surface-card-title">Sign in to Pluto3D</div>
-      <div class="platform-surface-card-copy">${liveAuthReady ? "Google and email auth are connected. Use this surface to enter the workspace with a real Pluto3D account." : "This account surface is wired for live auth and ready to finalize plan syncing, saved history, and billing access."}</div>
+    ${isLoggedIn ? `
+    <div class="platform-surface-card wide">
+      <div class="platform-surface-card-label">Login</div>
+      <div class="platform-surface-card-title">You are already signed in</div>
+      <div class="platform-surface-card-copy">Continue with your Pluto3D account or sign out to use another email.</div>
       <div class="surface-chip-row">
-        <span class="surface-chip primary">Supabase Auth</span>
-        <span class="surface-chip">${liveAuthReady ? "Google Login Live" : "Google Login Ready"}</span>
-        <span class="surface-chip">${liveAuthReady ? "Email Auth Live" : "Email Auth Ready"}</span>
+        <span class="surface-chip">${authState.email || "Account active"}</span>
       </div>
+      <div class="surface-actions">
+        <button type="button" onclick="openPlatformSurface('profile')">Open Profile</button>
+        <button type="button" onclick="signOutReal()">Sign Out</button>
+      </div>
+    </div>
+    ` : `
+    <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Login</div>
+      <div class="platform-surface-card-title">Continue with Google</div>
+      <div class="platform-surface-card-copy">Use your Google account for the fastest way into Pluto3D.</div>
       <div class="surface-actions">
         <button type="button" onclick="signInWithGoogleReal()">Continue with Google</button>
       </div>
     </div>
     <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Email Login</div>
+      <div class="platform-surface-card-title">Use email and password</div>
+      <div class="platform-surface-card-copy">Sign in or create your account with email.</div>
       <div class="surface-field">
         <div class="surface-mini-label">Email</div>
         <input id="loginEmailInput" type="text" value="${isLoggedIn ? authState.email : ""}" placeholder="your@email.com">
@@ -3504,33 +3508,9 @@ return `
       <div class="surface-actions">
         <button type="button" onclick="signInWithEmailReal(document.getElementById('loginEmailInput')?.value, document.getElementById('loginPasswordInput')?.value)">Sign In With Email</button>
         <button type="button" onclick="signUpWithEmailReal(document.getElementById('loginEmailInput')?.value, document.getElementById('loginPasswordInput')?.value)">Create Account</button>
-        <button type="button" onclick="signOutReal()">Sign Out</button>
       </div>
     </div>
-    <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Auth Status</div>
-      <div class="platform-surface-card-title">${liveAuthReady ? "Live Auth Ready" : authRuntime.statusLabel}</div>
-      <div class="platform-surface-card-copy">${liveAuthReady ? "Supabase session handling is active in the app. The next milestone is polished account history, protected premium access, and billing lifecycle clarity." : authRuntime.detail}</div>
-      <div class="surface-chip-row">
-        <span class="surface-chip primary">Supabase</span>
-        <span class="surface-chip">${authRuntime.configured ? "Config Detected" : "Config Missing"}</span>
-        <span class="surface-chip">${authRuntime.clientReady ? "Client Live" : "Client Booting"}</span>
-      </div>
-    </div>
-    <div class="platform-surface-card wide">
-      <div class="platform-surface-card-label">Why login matters</div>
-      <div class="platform-surface-card-title">The foundation for plans, history, and premium access</div>
-      <div class="platform-surface-card-copy">Auth now gives Pluto3D a stable account layer for generation history, usage tracking, subscriber-only tools, and consistent access across devices.</div>
-    </div>
-    <div class="platform-surface-card wide">
-      <div class="platform-surface-card-label">Setup Checklist</div>
-      <div class="platform-surface-card-title">${liveAuthReady ? "Auth foundation is live" : "Supabase comes next"}</div>
-      <div class="platform-surface-card-copy">${liveAuthReady ? "The auth foundation is live. The next milestone is richer account history, cleaner billing lifecycle copy, and a final live-payment verification pass." : "The next integration step is documented in the project files. After Supabase is configured, Pluto3D can move cleanly from local auth testing to live Google login and real sessions."}</div>
-      <div class="surface-chip-row">
-        <span class="surface-chip primary">${liveAuthReady ? "Live Sessions Active" : "SUPABASE_SETUP_CHECKLIST.md"}</span>
-        <span class="surface-chip">${liveAuthReady ? "Next: Plan + Billing" : "Next Platform Step"}</span>
-      </div>
-    </div>
+    `}
   </div>
 `
 }
@@ -3544,11 +3524,6 @@ const billingRuntime = typeof getBillingRuntime === "function"
   ? getBillingRuntime()
   : null
 const currentStatus = authState.loggedIn ? authState.name : "Guest"
-const currentPlan = authState.mode === "premium"
-  ? "Premium"
-  : authState.mode === "free"
-    ? "Free Account"
-    : "Guest"
 const usage = getUsageSnapshot()
 const authRuntime = typeof getAuthRuntimeStatus === "function"
   ? getAuthRuntimeStatus()
@@ -3575,30 +3550,12 @@ const lifecycle = getBillingLifecycleDetails({
 })
   
 return `
-  <div class="platform-surface-card wide">
-      <div class="surface-stat-grid">
-      <div class="surface-stat">
-        <div class="surface-stat-value">${currentStatus}</div>
-        <div class="surface-stat-label">Account</div>
-      </div>
-      <div class="surface-stat">
-        <div class="surface-stat-value">${currentPlan}</div>
-        <div class="surface-stat-label">Plan</div>
-      </div>
-      <div class="surface-stat">
-        <div class="surface-stat-value">${usage.aiImage + usage.svgGeneration + usage.toyGeneration + usage.free3dGeneration}</div>
-        <div class="surface-stat-label">Actions Used</div>
-      </div>
-    </div>
-  </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Account</div>
-    <div class="platform-surface-card-title">${liveAuthReady ? "Your Pluto3D account is connected" : "Profile is ready to become your control center"}</div>
-    <div class="platform-surface-card-copy">${liveAuthReady ? "This account is now tied to the live Pluto3D session, plan state, and future saved creation history." : "This section is designed to hold account identity, plan status, usage, saved outputs, and generated history in one clean dashboard."}</div>
+    <div class="platform-surface-card-title">${authState.loggedIn ? currentStatus : "Guest Account"}</div>
+    <div class="platform-surface-card-copy">${liveAuthReady ? "Signed in and ready to continue across the workspace." : "Sign in to keep your account, plan, and future history together."}</div>
     <div class="surface-chip-row">
       <span class="surface-chip">${authState.email || "No email yet"}</span>
-      <span class="surface-chip primary">${authState.loggedIn ? "Authenticated Session" : "Guest Session"}</span>
-      ${liveAuthReady ? `<span class="surface-chip premium">Live Account</span>` : ""}
     </div>
   </div>
   <div class="platform-surface-card">
@@ -3609,27 +3566,20 @@ return `
       <span class="surface-chip primary">Status: ${subscriptionStatusLabel}</span>
       <span class="surface-chip">Plan: ${subscriptionPlan}</span>
       ${renewalDate ? `<span class="surface-chip">Current Period: ${renewalDate}</span>` : ""}
-      ${lifecycle.supportLabel ? `<span class="surface-chip premium">${lifecycle.supportLabel}</span>` : ""}
     </div>
     <div class="surface-actions">
       ${lifecycle.actionLabel ? `<button type="button" onclick="${lifecycle.actionHandler}">${lifecycle.actionLabel}</button>` : ""}
     </div>
   </div>
   <div class="platform-surface-card">
-    <div class="platform-surface-card-label">Activity</div>
-    <div class="platform-surface-card-title">Usage snapshot</div>
-    <div class="platform-surface-card-copy">This section keeps a simple view of what has been used so far, while fuller saved-history surfaces can grow later without cluttering the account panel.</div>
+    <div class="platform-surface-card-label">Usage</div>
+    <div class="platform-surface-card-title">Activity so far</div>
     <ul class="platform-surface-list">
       <li>AI image actions used: ${usage.aiImage}</li>
       <li>SVG actions used: ${usage.svgGeneration}</li>
       <li>Toy actions used: ${usage.toyGeneration}</li>
       <li>3D test generations used: ${usage.free3dGeneration}</li>
     </ul>
-    ${liveAuthReady ? "" : `
-    <div class="surface-actions">
-      <button type="button" onclick="resetUsagePreview()">Reset Usage</button>
-    </div>
-    `}
   </div>
 `
 }
