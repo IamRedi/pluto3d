@@ -349,8 +349,8 @@ backdrop-filter:blur(16px);
 }
 
 .platform-surface[data-surface="login"] .platform-surface-panel{
-width:min(760px, 100%);
-max-height:min(760px, calc(100dvh - 140px));
+width:min(560px, 100%);
+max-height:min(720px, calc(100dvh - 140px));
 }
 
 .platform-surface[data-surface="profile"] .platform-surface-panel{
@@ -381,7 +381,7 @@ display:none;
 }
 
 .platform-surface[data-surface="login"] .surface-grid{
-grid-template-columns:repeat(2, minmax(0, 1fr));
+grid-template-columns:1fr;
 align-items:stretch;
 }
 
@@ -610,6 +610,120 @@ margin-top:12px;
 width:auto;
 min-width:150px;
 margin-top:0;
+}
+
+.auth-entry-card{
+display:flex;
+flex-direction:column;
+gap:18px;
+padding:24px 24px 26px;
+}
+
+.auth-brand-lockup{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.auth-brand-mark{
+width:44px;
+height:44px;
+border-radius:14px;
+background:radial-gradient(circle at 35% 35%, #dffcff, #38bdf8 48%, #1d4ed8 100%);
+box-shadow:0 0 24px rgba(56,189,248,0.22);
+flex-shrink:0;
+}
+
+.auth-brand-copy{
+display:flex;
+flex-direction:column;
+gap:4px;
+}
+
+.auth-brand-label{
+font-size:11px;
+letter-spacing:0.14em;
+text-transform:uppercase;
+color:var(--text-soft);
+}
+
+.auth-brand-title{
+font-size:22px;
+font-weight:700;
+line-height:1.15;
+color:var(--text-main);
+}
+
+.auth-provider-button{
+width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:12px;
+min-height:58px;
+padding:0 18px;
+border-radius:18px;
+border:1px solid rgba(103,232,249,0.22);
+background:linear-gradient(180deg, rgba(20, 32, 56, 0.96), rgba(13, 23, 43, 0.92));
+box-shadow:
+  inset 0 1px 0 rgba(255,255,255,0.06),
+  0 16px 36px rgba(2,6,23,0.22);
+font-size:18px;
+font-weight:700;
+color:var(--text-main);
+}
+
+body[data-theme="light"] .auth-provider-button{
+background:linear-gradient(180deg, rgba(248, 251, 255, 0.99), rgba(237, 245, 255, 0.96));
+border-color:rgba(14,116,144,0.18);
+}
+
+.auth-provider-badge{
+width:28px;
+height:28px;
+border-radius:999px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+background:#ffffff;
+color:#111827;
+font-size:15px;
+font-weight:800;
+box-shadow:0 6px 16px rgba(15,23,42,0.14);
+}
+
+.auth-divider{
+display:flex;
+align-items:center;
+gap:14px;
+font-size:11px;
+font-weight:700;
+letter-spacing:0.14em;
+text-transform:uppercase;
+color:var(--text-soft);
+}
+
+.auth-divider::before,
+.auth-divider::after{
+content:"";
+flex:1;
+height:1px;
+background:var(--line-soft);
+}
+
+.auth-entry-stack{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.auth-entry-card .surface-actions{
+margin-top:2px;
+}
+
+.auth-entry-card .surface-actions button{
+flex:1 1 0;
+min-width:0;
 }
 
 .surface-stat-grid{
@@ -3583,9 +3697,14 @@ const isLoggedIn = authState.loggedIn
 return `
   <div class="surface-grid">
     ${isLoggedIn ? `
-    <div class="platform-surface-card wide">
-      <div class="platform-surface-card-label">Account Access</div>
-      <div class="platform-surface-card-title">You are already signed in</div>
+    <div class="platform-surface-card auth-entry-card wide">
+      <div class="auth-brand-lockup">
+        <div class="auth-brand-mark"></div>
+        <div class="auth-brand-copy">
+          <div class="auth-brand-label">Account Access</div>
+          <div class="auth-brand-title">You are already signed in</div>
+        </div>
+      </div>
       <div class="platform-surface-card-copy">Continue with your account or sign out to use another email.</div>
       <div class="surface-chip-row">
         <span class="surface-chip">${authState.email || "Account active"}</span>
@@ -3596,16 +3715,20 @@ return `
       </div>
     </div>
     ` : `
-    <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Account Access</div>
-      <div class="platform-surface-card-title">Continue with Google</div>
-      <div class="surface-actions">
-        <button type="button" onclick="signInWithGoogleReal()">Continue with Google</button>
+    <div class="platform-surface-card auth-entry-card wide">
+      <div class="auth-brand-lockup">
+        <div class="auth-brand-mark"></div>
+        <div class="auth-brand-copy">
+          <div class="auth-brand-label">Account Access</div>
+          <div class="auth-brand-title">Sign in to Pluto3D</div>
+        </div>
       </div>
-    </div>
-    <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Email</div>
-      <div class="platform-surface-card-title">Email and password</div>
+      <button type="button" class="auth-provider-button" onclick="signInWithGoogleReal()">
+        <span class="auth-provider-badge">G</span>
+        <span>Continue with Google</span>
+      </button>
+      <div class="auth-divider">Or continue with email</div>
+      <div class="auth-entry-stack">
       <div class="surface-field">
         <div class="surface-mini-label">Email</div>
         <input id="loginEmailInput" type="text" value="${isLoggedIn ? authState.email : ""}" placeholder="your@email.com">
@@ -3617,6 +3740,7 @@ return `
       <div class="surface-actions">
         <button type="button" onclick="signInWithEmailReal(document.getElementById('loginEmailInput')?.value, document.getElementById('loginPasswordInput')?.value)">Sign In With Email</button>
         <button type="button" onclick="signUpWithEmailReal(document.getElementById('loginEmailInput')?.value, document.getElementById('loginPasswordInput')?.value)">Create Account</button>
+      </div>
       </div>
     </div>
     `}

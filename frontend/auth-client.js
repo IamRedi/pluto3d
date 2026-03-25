@@ -363,6 +363,11 @@ async function signInWithEmailReal(email, password){
 
   if(error){
     alert(error.message || "Email sign-in failed.");
+    return;
+  }
+
+  if(typeof closePlatformSurface === "function"){
+    closePlatformSurface();
   }
 }
 
@@ -403,6 +408,11 @@ async function signOutReal(){
 
   if(error){
     alert(error.message || "Sign out failed.");
+    return;
+  }
+
+  if(typeof closePlatformSurface === "function"){
+    closePlatformSurface();
   }
 }
 
