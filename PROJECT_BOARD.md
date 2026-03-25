@@ -660,6 +660,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Updated Gallery, Login, Profile, Shop, Support, and billing copy to reflect the current live stack instead of future-state language.
 - Replaced broken visible encoding artifacts in footer, download CTA, status text, and several plan/profile surfaces without changing underlying auth or billing logic.
 - Kept the pass intentionally low-risk: no auth, billing, or routing behavior was changed, and the remaining encoding artifacts are currently limited to internal comments rather than user-facing UI.
+- Simplified `Plans` and `Profile` so they read like customer-facing product surfaces rather than operator/debug dashboards.
+- Removed activation-handoff and runtime-detail blocks from the visible account UI to reduce noise and improve perceived product quality.
 - Next recommended focus after this pass:
   - visual polish and hierarchy refinement
   - spacing, typography, and card consistency across surfaces
