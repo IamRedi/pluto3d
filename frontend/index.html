@@ -349,12 +349,15 @@ backdrop-filter:blur(16px);
 }
 
 .platform-surface[data-surface="login"] .platform-surface-panel{
-width:min(620px, calc(100vw - 48px));
+width:auto;
+max-width:min(620px, calc(100vw - 48px));
 max-height:none;
 overflow:visible;
 background:transparent;
 border:none;
 box-shadow:none;
+display:inline-flex;
+align-items:center;
 }
 
 .platform-surface[data-surface="profile"] .platform-surface-panel{
@@ -369,8 +372,7 @@ border-bottom:none;
 }
 
 .platform-surface[data-surface="login"] .platform-surface-header{
-max-width:620px;
-width:100%;
+width:min(620px, calc(100vw - 48px));
 margin:0 auto;
 padding:0 12px 10px;
 }
@@ -382,8 +384,7 @@ padding:12px 24px 24px;
 
 .platform-surface[data-surface="login"] .platform-surface-body{
 overflow:visible;
-max-width:620px;
-width:100%;
+width:min(620px, calc(100vw - 48px));
 margin:0 auto;
 }
 
