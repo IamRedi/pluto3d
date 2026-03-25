@@ -90,6 +90,10 @@ Before calling the rollout production-ready, confirm:
 - Stripe success/cancel/portal URLs point to the final custom domain, not `vercel.app`
 - `goLiveBlockers` is empty in the billing runtime
 
+Reference:
+
+- `STRIPE_LIVE_SWITCH_CHECKLIST.md`
+
 ## Activation Notes
 
 - `GET /api/account/me` and `GET /api/billing/status` now auto-sync the authenticated user's `profiles` row when Supabase persistence is active

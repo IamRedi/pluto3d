@@ -620,6 +620,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Final handoff requirement from the user: deliver a clean infrastructure/account summary that lists every connected platform, domain, backend/service, auth/billing dependency, and likely recurring paid surface (for example Vercel, Railway, Supabase, Stripe, Cloudflare), while keeping private secrets separate from the inventory itself.
 - Added `INFRASTRUCTURE_INVENTORY.md` as the operator-facing map of domains, services, paid surfaces, config locations, and secret boundaries so Pluto3D is easier to operate and easier to sell as a plug-and-play stack.
 - Billing activation handoff now counts `siteUrl` as a first-class frontend config item, so the final custom-domain launch target is part of readiness tracking instead of being an implied value.
+- Added `PLUG_AND_PLAY_DEPLOY_CHECKLIST.md` and aligned `backend/.env.example` with custom-domain production examples so buyer installs follow a cleaner real-world checklist instead of localhost-style defaults.
+- Added `STRIPE_LIVE_SWITCH_CHECKLIST.md` so the final `Stripe test -> live` step is documented as an operator runbook instead of being left to memory when onboarding/verification is complete.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.
