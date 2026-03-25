@@ -213,6 +213,17 @@ def _supabase_select_single(table: str, params: dict) -> Optional[dict]:
     return rows[0] if rows else None
 
 
+def _supabase_patch(table: str, *, params: dict, payload: dict) -> None:
+    response = requests.patch(
+        _get_supabase_rest_url(table),
+        headers=_get_supabase_headers(prefer="return=minimal"),
+        params=params,
+        json=payload,
+        timeout=15,
+    )
+    response.raise_for_status()
+
+
 def _supabase_table_exists(table: str) -> bool:
     response = requests.get(
         _get_supabase_rest_url(table),
@@ -234,9 +245,10 @@ def _supabase_upsert_profile(
     if not user_id:
         return
 
+    normalized_email = normalize_email(email)
     payload = {
         "id": user_id,
-        "email": normalize_email(email) or None,
+        "email": normalized_email or None,
         "plan": plan or "free",
     }
 
@@ -245,6 +257,53 @@ def _supabase_upsert_profile(
 
     if stripe_customer_id:
         payload["stripe_customer_id"] = stripe_customer_id
+
+    existing_by_id = _supabase_select_single(
+        "profiles",
+        {
+            "select": "id,email",
+            "id": f"eq.{user_id}",
+            "limit": "1",
+        },
+    )
+
+    if existing_by_id:
+        _supabase_patch(
+            "profiles",
+            params={"id": f"eq.{user_id}"},
+            payload=payload,
+        )
+        return
+
+    existing_by_email = None
+    if normalized_email:
+        existing_by_email = _supabase_select_single(
+            "profiles",
+            {
+                "select": "id,email",
+                "email": f"eq.{normalized_email}",
+                "limit": "1",
+            },
+        )
+
+    if existing_by_email:
+        patch_payload = {
+            "plan": payload["plan"],
+            "email": payload["email"],
+        }
+
+        if display_name:
+            patch_payload["display_name"] = display_name
+
+        if stripe_customer_id:
+            patch_payload["stripe_customer_id"] = stripe_customer_id
+
+        _supabase_patch(
+            "profiles",
+            params={"id": f"eq.{existing_by_email.get('id')}"},
+            payload=patch_payload,
+        )
+        return
 
     requests.post(
         _get_supabase_rest_url("profiles"),
@@ -442,19 +501,31 @@ def get_profile_record_for_user(user: Optional[dict]) -> Optional[dict]:
     email = normalize_email(user.get("email"))
 
     if _can_use_supabase_store():
-        params = {
-            "select": "id,email,display_name,plan,stripe_customer_id,updated_at",
-            "limit": "1",
-        }
+        select = "id,email,display_name,plan,stripe_customer_id,updated_at"
 
         if user_id:
-            params["id"] = f"eq.{user_id}"
-        elif email:
-            params["email"] = f"eq.{email}"
-        else:
-            return None
+            record = _supabase_select_single(
+                "profiles",
+                {
+                    "select": select,
+                    "id": f"eq.{user_id}",
+                    "limit": "1",
+                },
+            )
+            if record:
+                return record
 
-        return _supabase_select_single("profiles", params)
+        if email:
+            return _supabase_select_single(
+                "profiles",
+                {
+                    "select": select,
+                    "email": f"eq.{email}",
+                    "limit": "1",
+                },
+            )
+
+        return None
 
     return None
 
@@ -502,22 +573,42 @@ def get_subscription_record_for_user(user: Optional[dict]) -> Optional[dict]:
     customer_id = get_customer_id_for_user(user)
 
     if _can_use_supabase_store():
-        params = {
-            "select": "stripe_customer_id,stripe_subscription_id,status,plan,current_period_end",
-            "order": "updated_at.desc",
-            "limit": "1",
-        }
+        select = "stripe_customer_id,stripe_subscription_id,status,plan,current_period_end"
+        record = None
 
         if user_id:
-            params["user_id"] = f"eq.{user_id}"
-        elif email:
-            params["email"] = f"eq.{email}"
-        elif customer_id:
-            params["stripe_customer_id"] = f"eq.{customer_id}"
-        else:
-            return None
+            record = _supabase_select_single(
+                "subscriptions",
+                {
+                    "select": select,
+                    "order": "updated_at.desc",
+                    "limit": "1",
+                    "user_id": f"eq.{user_id}",
+                },
+            )
 
-        record = _supabase_select_single("subscriptions", params)
+        if not record and email:
+            record = _supabase_select_single(
+                "subscriptions",
+                {
+                    "select": select,
+                    "order": "updated_at.desc",
+                    "limit": "1",
+                    "email": f"eq.{email}",
+                },
+            )
+
+        if not record and customer_id:
+            record = _supabase_select_single(
+                "subscriptions",
+                {
+                    "select": select,
+                    "order": "updated_at.desc",
+                    "limit": "1",
+                    "stripe_customer_id": f"eq.{customer_id}",
+                },
+            )
+
         if not record:
             return None
 

@@ -603,6 +603,10 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Supabase live auth redirect URLs were updated to include `https://pluto3d.vercel.app` and `https://pluto3d.vercel.app/`; `Site URL` was then checked in the same live config before retesting the Vercel login flow.
 - Live checkout smoke test found the next real billing issue: a subscription could be stored as `checkout_completed` instead of its real Stripe status, so `/api/account/me` still resolved `free` while the billing panel showed a subscription record.
 - Billing hardening update: `checkout.session.completed` now fetches the real Stripe subscription status immediately, webhook handling now accepts `customer.subscription.created`, and stale `checkout_completed` rows can self-refresh from Stripe on the next plan lookup.
+- Live verification now shows both premium paths working independently:
+  - Stripe-backed subscription accounts can resolve `premium` from `subscription_record`.
+  - Tester fallback accounts can resolve `premium` from `PLUTO_PREMIUM_EMAILS`.
+- Remaining live blocker is narrower now: one expected tester account still resolves `free`, so the next check is the exact authenticated email string shown in Profile versus the Railway `PLUTO_PREMIUM_EMAILS` value.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.
