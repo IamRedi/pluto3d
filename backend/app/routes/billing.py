@@ -17,7 +17,7 @@ from app.services.billing import (
     is_stripe_ready,
     resolve_billing_urls,
 )
-from app.services.plans import resolve_user_plan, resolve_user_plan_details
+from app.services.plans import get_premium_emails, resolve_user_plan_details
 from app.services.subscriptions import (
     ensure_profile_for_user,
     get_customer_id_for_user,
@@ -29,6 +29,56 @@ from app.services.subscriptions import (
 
 
 router = APIRouter(prefix="/api/billing", tags=["billing"])
+
+
+def _fallback_plan_details(user: dict) -> dict:
+    email = (user.get("email") or "").strip().lower()
+    if email and email in get_premium_emails():
+        return {
+            "plan": "premium",
+            "source": "tester_email",
+            "reason": "Plan resolved from PLUTO_PREMIUM_EMAILS fallback after a backend sync recovery.",
+        }
+
+    return {
+        "plan": "free",
+        "source": "default_free",
+        "reason": "Plan fell back to free after a backend sync recovery.",
+    }
+
+
+def _resolve_plan_details_safely(user: dict) -> dict:
+    try:
+        return resolve_user_plan_details(user)
+    except Exception:
+        return _fallback_plan_details(user)
+
+
+def _ensure_profile_safely(user: dict, plan: str) -> None:
+    try:
+        ensure_profile_for_user(user, plan=plan)
+    except Exception:
+        return
+
+
+def _get_customer_id_safely(user: dict) -> str:
+    try:
+        return get_customer_id_for_user(user)
+    except Exception:
+        return ""
+
+
+def _get_subscription_summary_safely(user: dict) -> dict:
+    try:
+        return get_subscription_summary_for_user(user)
+    except Exception:
+        return {
+            "customerId": None,
+            "subscriptionId": None,
+            "status": None,
+            "plan": None,
+            "currentPeriodEnd": None,
+        }
 
 
 def _get_webhook_secret() -> str:
@@ -180,10 +230,10 @@ def get_billing_activation_handoff_route():
 @router.get("/status")
 def get_billing_status(authorization: str | None = Header(default=None)):
     user = _get_authenticated_user(authorization)
-    plan_details = resolve_user_plan_details(user)
-    ensure_profile_for_user(user, plan=plan_details["plan"])
-    customer_id = get_customer_id_for_user(user)
-    subscription = get_subscription_summary_for_user(user)
+    plan_details = _resolve_plan_details_safely(user)
+    _ensure_profile_safely(user, plan=plan_details["plan"])
+    customer_id = _get_customer_id_safely(user)
+    subscription = _get_subscription_summary_safely(user)
     return {
         "authenticated": True,
         "plan": plan_details["plan"],
@@ -201,8 +251,8 @@ def create_billing_checkout_session(
     authorization: str | None = Header(default=None),
 ):
     user = _get_authenticated_user(authorization)
-    plan = resolve_user_plan(user)
-    ensure_profile_for_user(user, plan=plan)
+    plan = _resolve_plan_details_safely(user)["plan"]
+    _ensure_profile_safely(user, plan=plan)
 
     if plan == "premium":
         raise HTTPException(status_code=409, detail="Premium is already active for this account.")
@@ -242,9 +292,9 @@ def create_billing_portal_session(
     authorization: str | None = Header(default=None),
 ):
     user = _get_authenticated_user(authorization)
-    plan_details = resolve_user_plan_details(user)
-    ensure_profile_for_user(user, plan=plan_details["plan"])
-    customer_id = get_customer_id_for_user(user)
+    plan_details = _resolve_plan_details_safely(user)
+    _ensure_profile_safely(user, plan=plan_details["plan"])
+    customer_id = _get_customer_id_safely(user)
 
     if not customer_id:
         raise HTTPException(
