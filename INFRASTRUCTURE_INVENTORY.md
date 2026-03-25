@@ -118,8 +118,8 @@ Role:
 
 Current state:
 
-- test mode is active
-- live mode is not finalized yet
+- live mode keys are now configured
+- the next step is a first end-to-end live checkout and webhook verification
 
 Why it matters:
 
@@ -298,13 +298,16 @@ Already working:
 - premium tester fallback
 - Stripe test checkout path
 - Supabase billing persistence
+- Stripe live keys
+- Stripe live webhook secret
+- Stripe live premium price
+- custom-domain billing return URLs
 
 Still external / operator-driven:
 
-- Stripe live onboarding
-- Stripe live keys
-- final live webhook secret
-- final confirmation of custom-domain billing redirects
+- first end-to-end live checkout verification
+- first live webhook persistence verification
+- first live billing-portal verification
 
 ## Operator Checklist
 

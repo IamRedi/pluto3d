@@ -626,6 +626,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Frontend auth redirects now prefer the public `siteUrl` config value, so login/signup callbacks follow the canonical install domain instead of whichever preview host is open.
 - Frontend auth bootstrap now prefers `frontend/app-config.js` directly and only falls back to `frontend/auth-config.js` for legacy installs, reducing plug-and-play setup friction.
 - Billing/profile surfaces now also show whether the operator is viewing the canonical launch host or a preview host, making domain-rollout checks easier during support and handoff.
+- Stripe live mode is now structurally configured in Railway with live keys, live price ID, live webhook secret, Supabase persistence, and custom-domain billing URLs. The remaining step is the first end-to-end live checkout/webhook/portal smoke test.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.

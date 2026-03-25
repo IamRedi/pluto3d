@@ -121,3 +121,18 @@ Stripe live switch is complete when:
 - a real subscribed account becomes premium
 - portal access works
 - the final domain stays stable through login and billing redirects
+
+## Current Pluto3D Status
+
+The structural live-switch work is now complete when these are true:
+
+- Railway reports `activationReady=true`
+- Railway reports `goLiveReady=true`
+- `stripeMode.mode=live`
+- `domainStatus.mode=custom`
+
+At that point, the only remaining work is operational verification:
+
+- first real checkout
+- first live webhook persistence confirmation
+- first live portal test
