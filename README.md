@@ -40,6 +40,7 @@ Pluto3D Studio is a web app that converts images and prompts into SVG or 3D outp
 - [`SELF_HOST_QUICKSTART.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/SELF_HOST_QUICKSTART.md): plug-and-play deployment guide
 - [`PRODUCTION_ACTIVATION_RUNBOOK.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/PRODUCTION_ACTIVATION_RUNBOOK.md): live billing/subscription activation sequence
 - [`INFRASTRUCTURE_INVENTORY.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/INFRASTRUCTURE_INVENTORY.md): operator map of domains, services, billing surfaces, and secret boundaries
+- [`PLATFORM_ACCOUNTS_OVERVIEW.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/PLATFORM_ACCOUNTS_OVERVIEW.md): plain-language map of which account/service does what and where costs are likely to appear
 - [`PLUG_AND_PLAY_DEPLOY_CHECKLIST.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/PLUG_AND_PLAY_DEPLOY_CHECKLIST.md): buyer/self-host install checklist for the packaged stack
 - [`STRIPE_LIVE_SWITCH_CHECKLIST.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/STRIPE_LIVE_SWITCH_CHECKLIST.md): exact checklist for moving billing from Stripe test mode to live mode
 
