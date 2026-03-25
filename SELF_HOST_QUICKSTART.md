@@ -31,7 +31,7 @@ This file is safe to edit per customer install because it contains only public r
 ### Frontend
 
 - `frontend/app-config.js`
-- optional: `frontend/auth-config.js`
+- optional legacy fallback: `frontend/auth-config.js`
 
 ### Backend
 

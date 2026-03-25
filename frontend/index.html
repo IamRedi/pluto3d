@@ -3531,7 +3531,7 @@ const authRuntime = typeof getAuthRuntimeStatus === "function"
   : {
       configured:false,
       statusLabel:"Setup Needed",
-      detail:"Create Supabase first, then add frontend/auth-config.js."
+      detail:"Create Supabase first, then add Supabase values to frontend/app-config.js."
     }
 const liveAuthReady = authRuntime.configured && authRuntime.clientReady
 
@@ -3613,7 +3613,7 @@ const usage = getUsageSnapshot()
     : {
         configured:false,
         statusLabel:"Setup Needed",
-      detail:"Create Supabase first, then add frontend/auth-config.js."
+      detail:"Create Supabase first, then add Supabase values to frontend/app-config.js."
     }
   const liveAuthReady = authRuntime.configured && authRuntime.clientReady
   const backendPlan = liveState?.backendPlan || authState.mode || "guest"

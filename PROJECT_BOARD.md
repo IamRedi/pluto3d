@@ -168,7 +168,7 @@ These are not all needed immediately, but this is the expected future shape.
 
 ### Frontend
 
-- `frontend/auth-config.js`
+- `frontend/app-config.js`
 
 ### Backend
 
@@ -382,9 +382,9 @@ Recommended next implementation after commit:
 Current implementation note:
 
 - `SUPABASE_SETUP_CHECKLIST.md` is the user-facing setup guide for the first real auth step
-- `frontend/auth-config.example.js` and `backend/.env.example` are now the reference config files for the next integration phase
+- `frontend/app-config.example.js` and `backend/.env.example` are now the main reference config files for the next integration phase
 - `frontend/auth-client.js` is now the runtime scaffold that detects frontend auth config and prepares the UI for live Supabase wiring
-- `frontend/auth-config.js` is the local file where the user will paste `supabaseUrl` and `supabasePublishableKey`
+- `frontend/auth-config.js` remains only as a legacy optional fallback; the main install surface is `frontend/app-config.js`
 
 ## Key Reference Docs
 
@@ -624,6 +624,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Added `PLUG_AND_PLAY_DEPLOY_CHECKLIST.md` and aligned `backend/.env.example` with custom-domain production examples so buyer installs follow a cleaner real-world checklist instead of localhost-style defaults.
 - Added `STRIPE_LIVE_SWITCH_CHECKLIST.md` so the final `Stripe test -> live` step is documented as an operator runbook instead of being left to memory when onboarding/verification is complete.
 - Frontend auth redirects now prefer the public `siteUrl` config value, so login/signup callbacks follow the canonical install domain instead of whichever preview host is open.
+- Frontend auth bootstrap now prefers `frontend/app-config.js` directly and only falls back to `frontend/auth-config.js` for legacy installs, reducing plug-and-play setup friction.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.

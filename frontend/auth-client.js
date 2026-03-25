@@ -6,7 +6,7 @@ const DEFAULT_RUNTIME = {
   configLoaded: false,
   clientReady: false,
   statusLabel: "Setup Needed",
-  detail: "Create Supabase first, then add frontend/auth-config.js.",
+  detail: "Create Supabase first, then add Supabase values to frontend/app-config.js.",
   source: "preview"
 };
 
@@ -231,6 +231,18 @@ function getAuthRuntimeStatus(){
 }
 
 function ensureAuthConfigScript(){
+  if(window.PLUTO_APP_CONFIG?.auth?.supabaseUrl && getPublicKey(window.PLUTO_APP_CONFIG?.auth)){
+    refreshAuthRuntimeStatus();
+    ensureSupabaseSdk();
+    return;
+  }
+
+  if(window.PLUTO_AUTH_CONFIG?.supabaseUrl && getPublicKey(window.PLUTO_AUTH_CONFIG)){
+    refreshAuthRuntimeStatus();
+    ensureSupabaseSdk();
+    return;
+  }
+
   if(document.querySelector('script[data-auth-config="true"]')){
     return;
   }
@@ -312,7 +324,7 @@ function authNotReadyMessage(){
   const runtime = getAuthRuntimeStatus();
   return runtime.configured
     ? "Supabase config is ready, but the auth client is not fully loaded yet. Refresh the page once."
-    : "Supabase is not configured yet. Add values to frontend/auth-config.js first.";
+    : "Supabase is not configured yet. Add values to frontend/app-config.js first.";
 }
 
 async function signInWithGoogleReal(){
