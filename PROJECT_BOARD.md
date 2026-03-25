@@ -616,6 +616,10 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - `CNAME www -> cname.vercel-dns.com`
   - proxy kept on `DNS only` for the Vercel connection path
 - Vercel now validates `pluto-3d.com`; `www.pluto-3d.com` is attached in production with only a DNS-change recommendation remaining, so the launch target can move from `pluto3d.vercel.app` to `https://www.pluto-3d.com`.
+- Supabase `Site URL` and the main production redirect URLs were updated for the `pluto-3d.com` rollout path, Railway billing return URLs were switched to `https://www.pluto-3d.com`, and the launch-target config change was pushed.
+- Final handoff requirement from the user: deliver a clean infrastructure/account summary that lists every connected platform, domain, backend/service, auth/billing dependency, and likely recurring paid surface (for example Vercel, Railway, Supabase, Stripe, Cloudflare), while keeping private secrets separate from the inventory itself.
+- Added `INFRASTRUCTURE_INVENTORY.md` as the operator-facing map of domains, services, paid surfaces, config locations, and secret boundaries so Pluto3D is easier to operate and easier to sell as a plug-and-play stack.
+- Billing activation handoff now counts `siteUrl` as a first-class frontend config item, so the final custom-domain launch target is part of readiness tracking instead of being an implied value.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.

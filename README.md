@@ -39,6 +39,7 @@ Pluto3D Studio is a web app that converts images and prompts into SVG or 3D outp
 - [`backend/app/routes/print_fix.py`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/backend/app/routes/print_fix.py): print repair route
 - [`SELF_HOST_QUICKSTART.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/SELF_HOST_QUICKSTART.md): plug-and-play deployment guide
 - [`PRODUCTION_ACTIVATION_RUNBOOK.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/PRODUCTION_ACTIVATION_RUNBOOK.md): live billing/subscription activation sequence
+- [`INFRASTRUCTURE_INVENTORY.md`](/c:/Users/Lenovo/Desktop/photo-to-3d-app/INFRASTRUCTURE_INVENTORY.md): operator map of domains, services, billing surfaces, and secret boundaries
 
 ## Local Development
 

@@ -393,6 +393,12 @@ def get_billing_activation_handoff() -> dict:
             "description": "Public studio/product title.",
         },
         {
+            "key": "siteUrl",
+            "location": "frontend/app-config.js",
+            "required": True,
+            "description": "Public frontend launch domain.",
+        },
+        {
             "key": "apiBase",
             "location": "frontend/app-config.js",
             "required": True,
