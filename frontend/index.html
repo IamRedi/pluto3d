@@ -32,21 +32,21 @@ box-sizing:border-box;
     radial-gradient(circle at 80% 70%, rgba(30, 64, 175, 0.4), transparent 40%),
     linear-gradient(135deg, #020617, #081122, #19163a 58%, #0a132b);
   --space-background:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
-    radial-gradient(circle at 20% 30%, rgba(56,189,248,0.15), transparent),
-    radial-gradient(circle at 80% 70%, rgba(168,85,247,0.2), transparent),
-    radial-gradient(circle at 50% 80%, rgba(244,63,94,0.1), transparent),
-    #020617;
+    radial-gradient(circle at 18% 22%, rgba(56,189,248,0.1), transparent 20%),
+    radial-gradient(circle at 76% 26%, rgba(99,102,241,0.14), transparent 24%),
+    radial-gradient(circle at 72% 78%, rgba(168,85,247,0.12), transparent 26%),
+    radial-gradient(circle at 50% 52%, rgba(255,255,255,0.03), transparent 38%),
+    linear-gradient(180deg, #010103 0%, #03050a 34%, #050814 66%, #02040a 100%);
   --sidebar-background:
     linear-gradient(180deg, rgba(8, 14, 29, 0.92), rgba(6, 11, 24, 0.7));
   --panel-background:
     linear-gradient(180deg, rgba(7, 13, 28, 0.9), rgba(7, 13, 28, 0.72));
   --viewer-background:
-    radial-gradient(circle at center, rgba(34,211,238,0.1), transparent 68%),
-    radial-gradient(circle at 18% 18%, rgba(251,113,133,0.1), transparent 28%),
-    radial-gradient(circle at 78% 24%, rgba(168,85,247,0.18), transparent 34%),
-    radial-gradient(circle at 74% 82%, rgba(56,189,248,0.16), transparent 36%);
+    radial-gradient(circle at 50% 48%, rgba(28, 43, 88, 0.42), transparent 30%),
+    radial-gradient(circle at 18% 18%, rgba(56,189,248,0.08), transparent 24%),
+    radial-gradient(circle at 78% 24%, rgba(168,85,247,0.12), transparent 28%),
+    radial-gradient(circle at 74% 82%, rgba(244,63,94,0.08), transparent 32%),
+    linear-gradient(180deg, rgba(2, 4, 10, 0.98), rgba(4, 7, 16, 0.96));
 }
 
 body[data-theme="light"]{
@@ -67,12 +67,10 @@ body[data-theme="light"]{
     radial-gradient(circle at 80% 75%, rgba(99, 102, 241, 0.12), transparent 38%),
     linear-gradient(135deg, #f8fcff, #eef7ff 45%, #e9f0ff 100%);
   --space-background:
-    linear-gradient(rgba(8,15,35,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(8,15,35,0.04) 1px, transparent 1px),
-    radial-gradient(circle at 20% 30%, rgba(56,189,248,0.1), transparent),
-    radial-gradient(circle at 80% 70%, rgba(168,85,247,0.08), transparent),
-    radial-gradient(circle at 50% 80%, rgba(244,63,94,0.05), transparent),
-    #edf6ff;
+    radial-gradient(circle at 20% 26%, rgba(56,189,248,0.12), transparent 24%),
+    radial-gradient(circle at 80% 28%, rgba(99,102,241,0.08), transparent 28%),
+    radial-gradient(circle at 52% 78%, rgba(244,63,94,0.05), transparent 24%),
+    linear-gradient(180deg, #f9fcff 0%, #eef5ff 56%, #e7f0ff 100%);
   --sidebar-background:
     linear-gradient(180deg, rgba(240, 248, 255, 0.98), rgba(229, 241, 255, 0.92));
   --panel-background:
@@ -438,16 +436,17 @@ justify-content:center;
 grid-template-columns:repeat(3, minmax(0, 1fr));
 }
 
-.platform-surface[data-surface="profile"] .platform-surface-card:nth-child(1){
+.platform-surface[data-surface="profile"] .profile-hero-card{
 grid-column:1 / -1;
 }
 
-.platform-surface[data-surface="profile"] .platform-surface-card:nth-child(2){
+.platform-surface[data-surface="profile"] .profile-subscription-card{
 grid-column:1 / span 2;
 }
 
-.platform-surface[data-surface="profile"] .platform-surface-card:nth-child(3){
-grid-column:3 / span 1;
+.platform-surface[data-surface="profile"] .profile-usage-card,
+.platform-surface[data-surface="profile"] .profile-support-card{
+grid-column:span 1;
 }
 
 .platform-surface-card{
@@ -783,6 +782,109 @@ text-transform:uppercase;
 color:var(--text-soft);
 }
 
+.profile-hero-card{
+display:flex;
+flex-direction:column;
+gap:18px;
+padding:22px 22px 24px;
+background:
+linear-gradient(180deg, rgba(11, 20, 39, 0.94), rgba(9, 17, 33, 0.88)),
+radial-gradient(circle at top right, rgba(56,189,248,0.12), transparent 28%);
+}
+
+body[data-theme="light"] .profile-hero-card{
+background:
+linear-gradient(180deg, rgba(247, 251, 255, 0.99), rgba(238, 246, 255, 0.96)),
+radial-gradient(circle at top right, rgba(56,189,248,0.08), transparent 30%);
+}
+
+.profile-hero-top{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:18px;
+flex-wrap:wrap;
+}
+
+.profile-identity{
+display:flex;
+flex-direction:column;
+gap:8px;
+min-width:0;
+}
+
+.profile-kicker{
+font-size:11px;
+letter-spacing:0.16em;
+text-transform:uppercase;
+color:var(--text-soft);
+}
+
+.profile-name{
+font-size:28px;
+font-weight:700;
+line-height:1.1;
+color:var(--text-main);
+}
+
+.profile-email{
+font-size:14px;
+line-height:1.6;
+color:var(--text-soft);
+word-break:break-word;
+}
+
+.profile-hero-meta{
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+gap:10px;
+min-width:220px;
+}
+
+.profile-summary-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:12px;
+}
+
+.profile-summary-block{
+padding:16px 16px 17px;
+border-radius:18px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.profile-summary-label{
+font-size:11px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+margin-bottom:8px;
+}
+
+.profile-summary-value{
+font-size:20px;
+font-weight:700;
+line-height:1.2;
+color:var(--text-main);
+}
+
+.profile-summary-copy{
+margin-top:6px;
+font-size:12px;
+line-height:1.55;
+color:var(--text-soft);
+}
+
+.profile-support-list{
+margin:14px 0 0;
+padding-left:18px;
+color:var(--text-soft);
+line-height:1.85;
+}
+
 .gallery-grid{
 display:grid;
 grid-template-columns:1.2fr 0.8fr;
@@ -877,7 +979,8 @@ white-space:nowrap;
 position:fixed;
 inset:0;
 background:var(--space-background);
-background-size: 40px 40px, 40px 40px, cover, cover, cover, cover;
+background-size:cover;
+background-position:center;
 z-index:-2;
 transition:background 0.25s ease;
 }
@@ -899,7 +1002,7 @@ to{background-position:1000px 1000px;}
 
 .workspace{
 display:grid;
-grid-template-columns:160px 460px minmax(0, 1fr);
+grid-template-columns:154px minmax(440px, 540px) minmax(0, 1fr);
 height:calc(100dvh - 62px);
 max-height:calc(100dvh - 62px);
 overflow:hidden;
@@ -930,8 +1033,6 @@ height:calc(100dvh - 62px);
 min-height:calc(100dvh - 62px);
 overflow-y:auto;
 overflow-x:hidden;
-padding-top:35px;
-gap:25px;
 background:
 var(--sidebar-background);
 backdrop-filter:blur(18px);
@@ -942,8 +1043,8 @@ display:flex;
 flex-direction:column;
 align-items:center;
 
-padding-top:25px;
-gap:20px;
+padding:24px 14px 20px;
+gap:16px;
 
 }
 
@@ -961,7 +1062,7 @@ display:flex;
 flex-direction:column;
 align-items:center;
 gap:10px;
-margin-bottom:20px;
+margin-bottom:10px;
 }
 
 .logo-orb{
@@ -987,8 +1088,9 @@ animation:pulseOrb 3s infinite;
 }
 .sidebtn{
 
-width:92px;
-height:78px;
+width:100%;
+max-width:108px;
+height:66px;
 
 border-radius:22px;
 
@@ -1005,8 +1107,8 @@ box-shadow:
 inset 0 1px 0 rgba(255,255,255,0.08),
 0 16px 40px rgba(2,6,23,0.28);
 font-family:Orbitron;
-font-size:15px;
-letter-spacing:0.08em;
+font-size:13px;
+letter-spacing:0.1em;
 color:#d6f6ff;
 
 transition:0.2s;
@@ -1039,7 +1141,7 @@ width:54px;
 height:54px;
 min-height:54px;
 margin-top:auto;
-margin-bottom:22px;
+margin-bottom:10px;
 padding:0;
 border-radius:999px;
 border:1px solid rgba(56,189,248,0.22);
@@ -1071,7 +1173,7 @@ height:100%;
 /* panel */
 
 .panel{
-padding:30px;
+padding:28px 28px 30px;
 overflow-y:auto;   /* duhet scroll */
 overflow-x:hidden;
 background:
@@ -1091,9 +1193,9 @@ display:none;   /* Chrome, Safari */
 .product-rail{
 display:flex;
 flex-direction:column;
-gap:14px;
-padding:0 0 10px;
-margin:0 0 24px;
+gap:16px;
+padding:0 0 14px;
+margin:0 0 28px;
 }
 
 .product-rail.hidden{
@@ -1102,49 +1204,56 @@ display:none;
 
 .product-topbar{
 display:flex;
-align-items:center;
+align-items:flex-start;
 justify-content:space-between;
-gap:14px;
-padding:12px 14px;
-border-radius:20px;
+gap:16px;
+padding:16px 18px 18px;
+border-radius:24px;
 background:var(--bg-panel-strong);
 border:1px solid var(--line-soft);
-box-shadow:0 14px 34px rgba(2,6,23,0.18);
+box-shadow:0 18px 40px rgba(2,6,23,0.22);
 }
 
 .product-topbar-main{
 display:flex;
-align-items:center;
+align-items:flex-start;
 justify-content:space-between;
-gap:12px;
+gap:16px;
 flex:1;
 }
 
 .product-brand{
 display:flex;
 flex-direction:column;
-gap:4px;
+gap:7px;
 }
 
 .product-kicker{
-font-size:11px;
-letter-spacing:0.14em;
+font-size:10px;
+letter-spacing:0.18em;
 text-transform:uppercase;
 color:var(--cyan);
-font-weight:600;
+font-weight:700;
 }
 
 .product-name{
 font-family:Orbitron;
-font-size:18px;
+font-size:22px;
 letter-spacing:0.08em;
 text-transform:uppercase;
+}
+
+.product-lead{
+max-width:560px;
+font-size:13px;
+line-height:1.65;
+color:var(--text-soft);
 }
 
 .product-badges{
 display:flex;
 align-items:center;
-gap:10px;
+gap:8px;
 flex-wrap:wrap;
 justify-content:flex-end;
 }
@@ -1164,11 +1273,11 @@ line-height:1;
 display:inline-flex;
 align-items:center;
 justify-content:center;
-padding:8px 12px;
+padding:8px 11px;
 border-radius:999px;
-font-size:11px;
-font-weight:600;
-letter-spacing:0.08em;
+font-size:10px;
+font-weight:700;
+letter-spacing:0.11em;
 text-transform:uppercase;
 border:1px solid var(--line-soft);
 background:rgba(255,255,255,0.04);
@@ -1192,7 +1301,7 @@ color:#d8b4fe;
 .product-cards{
 display:grid;
 grid-template-columns:repeat(3, minmax(0, 1fr));
-gap:12px;
+gap:14px;
 }
 
 .product-banner{
@@ -1246,56 +1355,84 @@ color:var(--text-soft);
 }
 
 .product-card{
-padding:14px 16px;
-border-radius:20px;
-background:rgba(255,255,255,0.03);
+padding:18px 18px 20px;
+border-radius:22px;
+background:
+linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025)),
+radial-gradient(circle at top right, rgba(56,189,248,0.1), transparent 34%);
 border:1px solid var(--line-soft);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.04),
+0 16px 34px rgba(2,6,23,0.12);
 }
 
 .product-card-label{
-font-size:11px;
-letter-spacing:0.12em;
+font-size:10px;
+letter-spacing:0.16em;
 text-transform:uppercase;
 color:var(--text-soft);
-margin-bottom:8px;
+margin-bottom:10px;
 }
 
 .product-card-title{
-font-size:15px;
+font-size:17px;
 font-weight:700;
-margin-bottom:6px;
+margin-bottom:8px;
 }
 
 .product-card-copy{
 font-size:13px;
-line-height:1.55;
+line-height:1.7;
 color:var(--text-soft);
 }
 
 .panel-footer{
-margin-top:26px;
-padding:16px 18px 24px;
+margin-top:30px;
+padding:18px 20px 24px;
 border-top:1px solid var(--line-soft);
 display:flex;
-align-items:center;
+align-items:flex-start;
 justify-content:space-between;
-gap:14px;
+gap:18px;
 flex-wrap:wrap;
 color:var(--text-soft);
 font-size:12px;
+}
+
+.panel-footer-copy{
+display:flex;
+flex-direction:column;
+gap:7px;
+max-width:520px;
+}
+
+.panel-footer-title{
+font-size:12px;
+font-weight:700;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-main);
+}
+
+.panel-footer-meta{
+font-size:13px;
+line-height:1.65;
+color:var(--text-soft);
 }
 
 .panel-footer-links{
 display:flex;
 gap:14px;
 flex-wrap:wrap;
+align-items:center;
 }
 
 .panel-footer-link{
 color:inherit;
 text-decoration:none;
-letter-spacing:0.04em;
+letter-spacing:0.08em;
+text-transform:uppercase;
+font-size:11px;
 }
 
 .panel-footer-link:hover{
@@ -1317,12 +1454,6 @@ display:none;
 .viewer{
 position:relative;
 background:var(--viewer-background);
-
-background-image:
-linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-
-background-size: 60px 60px;
 border: 1px solid rgba(99, 102, 241, 0.18);
 backdrop-filter: blur(10px);
 box-shadow:
@@ -1344,9 +1475,14 @@ content:"";
 position:absolute;
 inset:0;
 
-background:url("https://www.transparenttextures.com/patterns/circuit-board.png");
+background:
+radial-gradient(circle at 12% 18%, rgba(255,255,255,0.24) 0 1px, transparent 1.6px),
+radial-gradient(circle at 78% 28%, rgba(255,255,255,0.2) 0 1px, transparent 1.8px),
+radial-gradient(circle at 66% 70%, rgba(255,255,255,0.16) 0 1px, transparent 1.6px),
+radial-gradient(circle at 30% 78%, rgba(255,255,255,0.18) 0 1px, transparent 1.8px);
+background-size:100% 100%;
 
-opacity:0.12;
+opacity:0.36;
 mix-blend-mode:screen;
 
 animation: neuralMove 40s linear infinite;
@@ -1363,8 +1499,8 @@ inset 0 1px 0 rgba(255,255,255,0.22),
 }
 
 body[data-theme="light"] .viewer::before{
-opacity:0.07;
-mix-blend-mode:multiply;
+opacity:0.14;
+mix-blend-mode:soft-light;
 }
 .viewer::after{
 content:"";
@@ -1372,7 +1508,8 @@ position:absolute;
 inset:0;
 
 background:
-radial-gradient(circle at center, rgba(168,85,247,0.2), transparent 70%);
+radial-gradient(circle at center, rgba(56,189,248,0.12), transparent 42%),
+radial-gradient(circle at center, rgba(0,0,0,0.22), transparent 74%);
 
 animation: neuralPulse 6s ease-in-out infinite;
 
@@ -1478,9 +1615,9 @@ box-shadow:
 /* panels */
 
 .toolpanel{
-
 display:block;
-
+padding:4px 2px 0;
+max-width:660px;
 }
 
 .hidden{
@@ -1492,23 +1629,29 @@ display:none;
 /* title */
 
 .section-title{
-
 font-family:Orbitron;
 font-size:22px;
 color:var(--cyan);
-margin-bottom:20px;
-letter-spacing:0.06em;
+margin-bottom:8px;
+letter-spacing:0.08em;
 text-transform:uppercase;
+}
 
+.section-intro{
+margin-bottom:18px;
+font-size:13px;
+line-height:1.65;
+color:var(--text-soft);
+max-width:560px;
 }
 
 /* upload */
 
 .dropzone{
 border-radius:22px;
-padding:35px;
+padding:30px 26px;
 text-align:center;
-margin-bottom:15px;
+margin-bottom:16px;
 
 background:
 linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
@@ -1524,7 +1667,7 @@ inset 0 1px 0 rgba(255,255,255,0.05),
 button{
 width:100%;
 padding:14px 16px;
-margin-top:8px;
+margin-top:10px;
 
 border-radius:16px;
 cursor:pointer;
@@ -1652,18 +1795,17 @@ linear-gradient(90deg,#38bdf8,#22d3ee,#a855f7);
 /* status */
 
 .status{
-
-margin-top:10px;
+margin-top:12px;
 font-size:13px;
+line-height:1.6;
 color:#7dd3fc;
-
 }
 
 label{
 display:block;
 margin-bottom:8px;
-font-size:13px;
-letter-spacing:0.05em;
+font-size:12px;
+letter-spacing:0.12em;
 text-transform:uppercase;
 color:#8ab4c8;
 }
@@ -1682,7 +1824,7 @@ background:rgba(6, 12, 24, 0.92);
 color:var(--text-main);
 border:1px solid rgba(125,211,252,0.16);
 border-radius:16px;
-padding:12px 14px;
+padding:13px 14px;
 box-sizing:border-box;
 box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
 }
@@ -1801,6 +1943,65 @@ body{
 overflow-x:hidden;
 overflow-y:auto;
 }
+.app-shell{
+height:auto;
+max-height:none;
+min-height:100dvh;
+overflow:visible;
+}
+.platform-header{
+padding:12px 12px 10px;
+gap:10px;
+position:sticky;
+top:0;
+z-index:25;
+}
+.platform-brand-name{
+font-size:14px;
+}
+.platform-brand-subtitle{
+font-size:10px;
+}
+.platform-actions{
+align-items:center;
+justify-content:space-between;
+}
+.platform-plan-badge{
+height:30px;
+padding:0 10px;
+font-size:10px;
+}
+.platform-pill{
+height:34px;
+padding:0 12px;
+font-size:11px;
+}
+.platform-link{
+height:34px;
+padding:0 12px;
+font-size:11px;
+}
+.platform-surface{
+inset:68px 10px 10px 10px;
+}
+.platform-surface-panel{
+border-radius:24px;
+}
+.platform-surface-header{
+padding:16px 16px 10px;
+}
+.platform-surface-body{
+padding:14px;
+gap:14px;
+}
+.platform-surface-title{
+font-size:18px;
+}
+.platform-surface-close{
+min-width:40px;
+height:40px;
+padding:0 12px;
+}
 .studio-overlay{
 top:12px;
 left:12px;
@@ -1817,7 +2018,7 @@ display:block !important;
 order:3;
 
 width:100% !important;
-height:300px !important;
+height:280px !important;
 
 min-height:200px;
 flex-shrink:0;
@@ -1862,7 +2063,7 @@ align-items:center;
 
 width:100%;
 height:auto;
-padding:10px;
+padding:10px 8px;
 overflow:visible;
 
 background:rgba(2,6,23,0.6);
@@ -1876,6 +2077,7 @@ display:none;
 /* butona si app */
 .sidebtn{
 width:60px;
+max-width:none;
 height:50px;
 font-size:12px;
 }
@@ -1883,19 +2085,49 @@ font-size:12px;
 /* panel */
 .panel{
 width:100%;
-padding:15px;
-margin-bottom:80px; /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ mos mbulohet nga sidebar */
+padding:14px 14px 18px;
+margin-bottom:72px; /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ mos mbulohet nga sidebar */
 }
 
 /* viewer TOP si hero */
 .viewer{
 width:100%;
-height:300px;
+height:280px;
 }
 
 /* title mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â« i vogÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«l */
 .viewer-title{
 font-size:14px;
+}
+.product-topbar{
+padding:14px 14px 16px;
+}
+.product-name{
+font-size:20px;
+}
+.product-cards{
+gap:12px;
+}
+.toolpanel{
+max-width:none;
+padding:0;
+}
+.section-title{
+font-size:19px;
+}
+.section-intro{
+font-size:12px;
+margin-bottom:14px;
+}
+.dropzone{
+padding:22px 16px;
+}
+.panel-footer{
+padding:16px 0 14px;
+gap:12px;
+}
+.panel-footer-links{
+gap:10px;
 }
 
 /* svg responsive */
@@ -2328,11 +2560,28 @@ align-items:flex-start;
 align-self:flex-end;
 }
 
+.product-lead{
+max-width:none;
+}
+
 .platform-header{
 height:auto;
 min-height:unset;
 padding:12px 16px;
 flex-wrap:wrap;
+gap:12px;
+align-items:flex-start;
+}
+
+.platform-brand{
+width:100%;
+}
+
+.platform-actions{
+width:100%;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:8px;
 }
 
 .platform-nav{
@@ -2341,6 +2590,7 @@ width:100%;
 justify-content:flex-start;
 overflow-x:auto;
 scrollbar-width:none;
+padding-bottom:2px;
 }
 
 .platform-nav::-webkit-scrollbar{
@@ -2354,6 +2604,11 @@ inset:74px 14px 14px 14px;
 .platform-surface-body{
 grid-template-columns:1fr;
 padding:18px;
+}
+
+.platform-surface-header{
+padding:18px 18px 12px;
+gap:12px;
 }
 
 .platform-surface[data-surface="login"],
@@ -2377,6 +2632,16 @@ padding:12px 18px 18px;
 grid-template-columns:1fr;
 }
 
+.profile-hero-top,
+.profile-summary-grid{
+grid-template-columns:1fr;
+}
+
+.profile-hero-meta{
+align-items:flex-start;
+min-width:0;
+}
+
 .auth-entry-fields,
 .auth-entry-card .surface-actions{
 grid-template-columns:1fr;
@@ -2394,9 +2659,14 @@ min-height:unset;
 .surface-grid,
 .surface-plan-grid,
 .surface-stat-grid,
+.profile-summary-grid,
 .gallery-grid,
 .gallery-wall{
 grid-template-columns:1fr;
+}
+
+.panel-footer{
+padding-bottom:18px;
 }
 }
 
@@ -2485,11 +2755,12 @@ to{background-position:1000px 1000px;}
       <div class="product-brand">
         <div class="product-kicker">Creative Production Workspace</div>
         <div id="productStudioName" class="product-name">Pluto3D Studio</div>
+        <div class="product-lead">Build image, SVG, toy, and print-ready 3D outputs inside one focused workspace with cleaner production rhythm.</div>
       </div>
       <div class="product-badges">
-        <span class="badge badge-beta">Workspace Live</span>
-        <span class="badge badge-free">SVG + Print Live</span>
-        <span class="badge badge-premium">Premium Billing Ready</span>
+        <span class="badge badge-beta">Studio Ready</span>
+        <span class="badge badge-free">SVG + Print</span>
+        <span class="badge badge-premium">Premium Path</span>
       </div>
     </div>
     <button type="button" class="product-close" onclick="dismissProductRail()">×</button>
@@ -2527,6 +2798,7 @@ to{background-position:1000px 1000px;}
 <div id="panel-3d" class="toolpanel">
 
 <div class="section-title">3D Generator</div>
+<div class="section-intro">Upload a reference image, start with a test model, or move into the premium Meshy path when you want full 3D output.</div>
 
 <div class="dropzone" id="drop3d">
 
@@ -2562,6 +2834,7 @@ Download 3D Model
 <div id="panel-svg" class="toolpanel hidden">
 
 <div class="section-title">SVG Generator</div>
+<div class="section-intro">Turn images into cleaner vector outputs with a lighter control set that keeps the workflow fast and readable.</div>
 
 <div class="dropzone" id="dropSVG">
 
@@ -2621,6 +2894,7 @@ style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10p
 <div id="panel-ai" class="toolpanel hidden">
 
 <div class="section-title">AI Photo Studio</div>
+<div class="section-intro">Generate concept images, refine the visual direction, then move the result into SVG or premium 3D conversion.</div>
 
 <!-- DRAG & DROP -->
 
@@ -2678,6 +2952,7 @@ style="width:100%;height:70px;border-radius:10px;padding:10px;"></textarea>
 <div id="panel-toy" class="toolpanel hidden">
 
 <div class="section-title">Toy Generator</div>
+<div class="section-intro">Shape toy-style concepts, push them through studio styling, and prepare the result for print cleanup in one place.</div>
 
 <label>Prompt</label>
 
@@ -2711,6 +2986,7 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <div style="margin-top:25px;">
 
 <div class="section-title">Print Mode</div>
+<div class="section-intro">Scale, rotate, and clean the current toy model before exporting a print-ready STL.</div>
 
 <label>Scale</label>
 <input type="range" id="scaleSlider" min="0.2" max="3" step="0.1" value="1">
@@ -2726,7 +3002,11 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 </div>
 
 <div class="panel-footer">
-  <div>Pluto3D Studio - AI-assisted creation for clean 2D to 3D workflows.</div>
+  <div class="panel-footer-copy">
+    <div class="panel-footer-title">Pluto3D Studio</div>
+    <div id="panelFooterTagline" class="panel-footer-meta">AI-assisted creation for clean 2D to 3D workflows.</div>
+    <div id="panelFooterSupport" class="panel-footer-meta">Email Support: support@pluto3d.app</div>
+  </div>
   <div class="panel-footer-links">
     <a href="#" class="panel-footer-link" onclick="openPlatformSurface('plans'); return false;">Plans</a>
     <a href="#" class="panel-footer-link" onclick="openPlatformSurface('privacy'); return false;">Privacy</a>
@@ -3040,7 +3320,12 @@ if(productStudioName){
 
 const panelFooterTagline = document.getElementById("panelFooterTagline") || document.querySelector(".panel-footer > div:first-child")
 if(panelFooterTagline){
-  panelFooterTagline.textContent = `${getStudioName()} - AI-assisted creation for clean 2D to 3D workflows.`
+  panelFooterTagline.textContent = `${getStudioName()} is built for polished image, SVG, toy, and print-ready 3D workflows.`
+}
+
+const panelFooterSupport = document.getElementById("panelFooterSupport")
+if(panelFooterSupport){
+  panelFooterSupport.textContent = getSupportContactLine()
 }
 }
 
@@ -3251,7 +3536,7 @@ if(themeToggle){
   themeToggle.setAttribute("aria-label", themeToggle.title)
 }
 if(themeToggleIcon){
-  themeToggleIcon.textContent = theme === "light" ? "L" : "D"
+  themeToggleIcon.textContent = theme === "light" ? "☾" : "☀"
 }
 if(typeof applySvgThemeStyle === "function"){
   applySvgThemeStyle()
@@ -3818,37 +4103,113 @@ const lifecycle = getBillingLifecycleDetails({
   subscription,
   backendPlan
 })
+const accountTitle = authState.loggedIn ? currentStatus : "Guest Account"
+const accountCopy = liveAuthReady
+  ? "Signed in and ready to continue across the workspace with your current plan and billing state."
+  : "Sign in to keep your account, plan, and future history together."
+const planLabel = String(backendPlan || "guest")
+  .replace(/_/g, " ")
+  .replace(/\b\w/g, (char) => char.toUpperCase())
+const sourceLabel = String(planSource || "backend")
+  .replace(/_/g, " ")
+  .replace(/\b\w/g, (char) => char.toUpperCase())
+const usageTotal = Object.values(usage).reduce((sum, value) => sum + Number(value || 0), 0)
   
 return `
-  <div class="platform-surface-card">
-    <div class="platform-surface-card-label">Account</div>
-    <div class="platform-surface-card-title">${authState.loggedIn ? currentStatus : "Guest Account"}</div>
-    <div class="platform-surface-card-copy">${liveAuthReady ? "Signed in and ready to continue across the workspace." : "Sign in to keep your account, plan, and future history together."}</div>
-    <div class="surface-chip-row">
-      <span class="surface-chip">${authState.email || "No email yet"}</span>
+  <div class="platform-surface-card profile-hero-card wide">
+    <div class="profile-hero-top">
+      <div class="profile-identity">
+        <div class="profile-kicker">Profile Overview</div>
+        <div class="profile-name">${accountTitle}</div>
+        <div class="profile-email">${authState.email || "No email connected yet"}</div>
+      </div>
+      <div class="profile-hero-meta">
+        <div class="surface-chip-row" style="margin-top:0;">
+          <span class="surface-chip primary">${authState.planLabel}</span>
+          <span class="surface-chip">${subscriptionStatusLabel}</span>
+        </div>
+        <div class="surface-actions" style="margin-top:0;">
+          ${authState.loggedIn ? `<button type="button" onclick="signOutReal()">Sign Out</button>` : `<button type="button" onclick="openPlatformSurface('login')">Open Login</button>`}
+          ${lifecycle.actionLabel ? `<button type="button" onclick="${lifecycle.actionHandler}">${lifecycle.actionLabel}</button>` : ""}
+        </div>
+      </div>
+    </div>
+    <div class="platform-surface-card-copy">${accountCopy}</div>
+    <div class="profile-summary-grid">
+      <div class="profile-summary-block">
+        <div class="profile-summary-label">Account State</div>
+        <div class="profile-summary-value">${authState.loggedIn ? "Active Session" : "Guest Mode"}</div>
+        <div class="profile-summary-copy">${liveAuthReady ? "Live auth is ready and the account surface is synced for continued use." : "A real account unlocks saved identity, billing, and smoother continuity."}</div>
+      </div>
+      <div class="profile-summary-block">
+        <div class="profile-summary-label">Resolved Plan</div>
+        <div class="profile-summary-value">${planLabel}</div>
+        <div class="profile-summary-copy">Source: ${sourceLabel}</div>
+      </div>
+      <div class="profile-summary-block">
+        <div class="profile-summary-label">Current Billing</div>
+        <div class="profile-summary-value">${renewalDate || "No renewal yet"}</div>
+        <div class="profile-summary-copy">${canManageBilling ? "Billing portal is available for this account." : "Portal access appears after the first subscription is linked."}</div>
+      </div>
     </div>
   </div>
-  <div class="platform-surface-card">
+  <div class="platform-surface-card profile-subscription-card">
     <div class="platform-surface-card-label">Subscription</div>
     <div class="platform-surface-card-title">${lifecycle.title}</div>
     <div class="platform-surface-card-copy">${lifecycle.copy}</div>
     <div class="surface-chip-row">
       <span class="surface-chip primary">Status: ${subscriptionStatusLabel}</span>
       <span class="surface-chip">Plan: ${subscriptionPlan}</span>
+      <span class="surface-chip">${lifecycle.supportLabel}</span>
       ${renewalDate ? `<span class="surface-chip">Current Period: ${renewalDate}</span>` : ""}
     </div>
     <div class="surface-actions">
       ${lifecycle.actionLabel ? `<button type="button" onclick="${lifecycle.actionHandler}">${lifecycle.actionLabel}</button>` : ""}
+      ${!authState.loggedIn ? `<button type="button" onclick="openPlatformSurface('login')">Sign In</button>` : ""}
     </div>
   </div>
-  <div class="platform-surface-card">
+  <div class="platform-surface-card profile-usage-card">
     <div class="platform-surface-card-label">Usage</div>
-    <div class="platform-surface-card-title">Activity so far</div>
-    <ul class="platform-surface-list">
-      <li>AI image actions used: ${usage.aiImage}</li>
-      <li>SVG actions used: ${usage.svgGeneration}</li>
-      <li>Toy actions used: ${usage.toyGeneration}</li>
-      <li>3D test generations used: ${usage.free3dGeneration}</li>
+    <div class="platform-surface-card-title">Activity snapshot</div>
+    <div class="platform-surface-card-copy">A compact view of the current staged usage counters across the main creation flows.</div>
+    <div class="surface-stat-grid" style="margin-top:14px;">
+      <div class="surface-stat">
+        <div class="surface-stat-value">${usage.aiImage}</div>
+        <div class="surface-stat-label">AI Images</div>
+      </div>
+      <div class="surface-stat">
+        <div class="surface-stat-value">${usage.svgGeneration}</div>
+        <div class="surface-stat-label">SVG Actions</div>
+      </div>
+      <div class="surface-stat">
+        <div class="surface-stat-value">${usage.toyGeneration}</div>
+        <div class="surface-stat-label">Toy Actions</div>
+      </div>
+      <div class="surface-stat">
+        <div class="surface-stat-value">${usage.free3dGeneration}</div>
+        <div class="surface-stat-label">3D Tests</div>
+      </div>
+      <div class="surface-stat">
+        <div class="surface-stat-value">${usageTotal}</div>
+        <div class="surface-stat-label">Total Actions</div>
+      </div>
+      <div class="surface-stat">
+        <div class="surface-stat-value">${authState.loggedIn ? "Saved" : "Local"}</div>
+        <div class="surface-stat-label">Session Mode</div>
+      </div>
+    </div>
+  </div>
+  <div class="platform-surface-card profile-support-card">
+    <div class="platform-surface-card-label">Support</div>
+    <div class="platform-surface-card-title">Need help with account or billing?</div>
+    <div class="platform-surface-card-copy">Support is positioned to stay clean and human: account questions, upgrade help, and rollout issues all route through the same contact path.</div>
+    <div class="surface-chip-row">
+      <span class="surface-chip">${getSupportLabel()}</span>
+    </div>
+    <ul class="profile-support-list">
+      <li>${getSupportContactLine()}</li>
+      <li>Use Plans for upgrade context and Support for account or billing questions.</li>
+      <li>Keep the workspace clean while account actions stay lightweight and separate.</li>
     </ul>
   </div>
 `
@@ -4403,7 +4764,14 @@ job_id: currentJobId
 
 const data = await res.json()
 
-loadModel(API_BASE + data.model_url)
+if(!res.ok || !data.task_id){
+alert(data.detail || data.error || "3D generation could not be started")
+return
+}
+
+status.innerHTML = "Sending to Meshy..."
+progressBar.style.width = "4%"
+checkStatus(data.task_id)
 
 }
 async function convertTo3DPro(){
@@ -4433,7 +4801,14 @@ image_url: viewer.src
 
 const data = await res.json()
 
-loadModel(API_BASE + data.model_url)
+if(!res.ok || !data.task_id){
+alert(data.detail || data.error || "3D PRO generation could not be started")
+return
+}
+
+status.innerHTML = "Sending to Meshy..."
+progressBar.style.width = "4%"
+checkStatus(data.task_id)
 
 }
 

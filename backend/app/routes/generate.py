@@ -1,9 +1,11 @@
-from fastapi import APIRouter
-import requests
 import base64
 from pathlib import Path
+
+import requests
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from app.config import MESHY_API_KEY
+
+from app.config import get_meshy_api_key
 
 router = APIRouter()
 
@@ -40,6 +42,68 @@ class GenerateRequest(BaseModel):
     job_id: str
 
 
+class GenerateFromImageRequest(BaseModel):
+    image_url: str
+
+
+def _build_meshy_headers(*, include_json_content_type: bool = False) -> dict:
+    meshy_api_key = get_meshy_api_key()
+
+    if not meshy_api_key:
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                "Meshy 3D generation is not configured on this backend. "
+                "Set MESHY_API_KEY and restart the server."
+            ),
+        )
+
+    headers = {
+        "Authorization": f"Bearer {meshy_api_key}",
+    }
+
+    if include_json_content_type:
+        headers["Content-Type"] = "application/json"
+
+    return headers
+
+
+def _start_meshy_image_to_3d(payload: dict) -> dict:
+    try:
+        res = requests.post(
+            "https://api.meshy.ai/openapi/v1/image-to-3d",
+            headers=_build_meshy_headers(include_json_content_type=True),
+            json=payload,
+            timeout=90,
+        )
+    except requests.RequestException as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Meshy request failed before task creation: {exc}",
+        ) from exc
+
+    try:
+        data = res.json()
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Meshy returned a non-JSON response during task creation.",
+        ) from exc
+
+    if res.status_code >= 400:
+        raise HTTPException(status_code=502, detail=data)
+
+    task_id = (data.get("result") or "").strip()
+
+    if not task_id:
+        raise HTTPException(
+            status_code=502,
+            detail=data or "Meshy did not return a task id.",
+        )
+
+    return {"task_id": task_id}
+
+
 # =========================
 # GENERATE 3D
 # =========================
@@ -65,35 +129,34 @@ async def generate_3d(req: GenerateRequest):
 
     data_uri = f"data:image/png;base64,{img_base64}"
 
-    headers = {
-        "Authorization": f"Bearer {MESHY_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
     payload = {
         "image_url": data_uri,
         "enable_pbr": True,
         "should_texture": True
     }
 
-    res = requests.post(
-        "https://api.meshy.ai/openapi/v1/image-to-3d",
-        headers=headers,
-        json=payload
-    )
+    return _start_meshy_image_to_3d(payload)
 
-    data = res.json()
 
-    print("CREATE RESPONSE:", data)
+@router.post("/image-to-3d")
+async def generate_3d_from_upload(req: GenerateRequest):
+    return await generate_3d(req)
 
-    if "result" not in data:
-        return {"error": data}
 
-    task_id = data["result"]
+@router.post("/image-to-3d-pro")
+async def generate_3d_pro(req: GenerateFromImageRequest):
+    image_url = (req.image_url or "").strip()
 
-    return {
-        "task_id": task_id
+    if not image_url:
+        raise HTTPException(status_code=400, detail="image_url is required.")
+
+    payload = {
+        "image_url": image_url,
+        "enable_pbr": True,
+        "should_texture": True,
     }
+
+    return _start_meshy_image_to_3d(payload)
 
 
 # =========================
@@ -102,17 +165,28 @@ async def generate_3d(req: GenerateRequest):
 
 @router.get("/job/{task_id}")
 def check_status(task_id: str):
+    try:
+        res = requests.get(
+            f"https://api.meshy.ai/openapi/v1/image-to-3d/{task_id}",
+            headers=_build_meshy_headers(),
+            timeout=90,
+        )
+    except requests.RequestException as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Meshy status check failed: {exc}",
+        ) from exc
 
-    headers = {
-        "Authorization": f"Bearer {MESHY_API_KEY}"
-    }
+    try:
+        data = res.json()
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Meshy returned a non-JSON response during status polling.",
+        ) from exc
 
-    res = requests.get(
-        f"https://api.meshy.ai/openapi/v1/image-to-3d/{task_id}",
-        headers=headers
-    )
-
-    data = res.json()
+    if res.status_code >= 400:
+        raise HTTPException(status_code=502, detail=data)
 
     print("STATUS RESPONSE:", data)
 
@@ -130,34 +204,6 @@ def check_status(task_id: str):
     "progress": 100,
     "model_url": f"/outputs/{task_id}/model.glb?ts={task_id}"
 }
-
-    return {
-        "status": status,
-        "progress": progress
-    }
-
-    # ======================
-    # MODEL READY
-    # ======================
-
-    if status == "SUCCEEDED":
-
-        try:
-            glb_url = result["model_urls"]["glb"]
-        except:
-            return {"error": data}
-
-        local_path = save_model(glb_url, task_id)
-
-        return {
-            "status": "SUCCEEDED",
-            "progress": 100,
-            "model_url": f"/outputs/{task_id}/model.glb"
-        }
-
-    # ======================
-    # STILL PROCESSING
-    # ======================
 
     return {
         "status": status,

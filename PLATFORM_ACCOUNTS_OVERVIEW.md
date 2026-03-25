@@ -169,8 +169,8 @@ Purpose:
 
 Current status:
 
-- test mode is active
-- live mode is not finalized yet
+- live mode is configured in production
+- the remaining work is the first real checkout, webhook, and portal smoke test
 
 What depends on it:
 

@@ -677,6 +677,57 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - spacing, typography, and card consistency across surfaces
   - only after that, run the first real live-payment smoke test
 
+## Work Log - 2026-03-25 System Audit
+
+- Reviewed the required handoff docs before continuing:
+  - `PROJECT_BOARD.md`
+  - `AUTH_IMPLEMENTATION_PLAN.md`
+  - `SUPABASE_SETUP_CHECKLIST.md`
+  - plus the current production/self-host/infra runbooks
+- Verified repo baseline:
+  - git worktree was clean at audit start
+  - head commit matched `89d148c Auto-fit login shell around centered auth card`
+- Local backend safety checks passed at the code level:
+  - `backend/app` compiled successfully with `python -m compileall app`
+  - FastAPI app imported successfully
+  - local smoke checks confirmed `GET /` and unauthenticated `GET /api/account/me` return expected healthy responses
+- Local billing smoke checks only became fully readable after allowing network access to Supabase:
+  - local backend currently reports `activationReady=true`
+  - local backend currently reports `goLiveReady=false`
+  - local backend currently reports `stripeMode.mode=test`
+  - local backend currently reports `domainStatus.mode=temporary`
+- Production verification matched the user handoff summary:
+  - live Railway `GET /api/billing/activation-status` now returns `activationReady=true`
+  - live Railway `GET /api/billing/activation-status` now returns `goLiveReady=true`
+  - live Railway now reports `stripeMode.mode=live`
+  - live Railway now reports `domainStatus.mode=custom`
+  - deployed `https://www.pluto-3d.com/app-config.js` matches the current public frontend config values
+- Frontend audit result:
+  - external frontend JavaScript files passed `node --check`
+  - no UI logic was changed during this audit
+- Important operational note:
+  - local backend env does not currently mirror the deployed Railway live env for billing/domain mode
+  - this means local billing/account runtime indicators can disagree with production until local env is intentionally aligned
+- Documentation drift found:
+  - `INFRASTRUCTURE_INVENTORY.md` reflects live Stripe/custom-domain status
+  - `PLATFORM_ACCOUNTS_OVERVIEW.md` still says Stripe test mode is active
+  - future handoff docs should keep the platform overview aligned with the live backend truth
+- Technical debt/risk found during the audit:
+  - `backend/app/config.py` exposed that Meshy auth was still repo-coupled instead of env-driven
+  - this was then moved onto `MESHY_API_KEY` so future deploys can use backend env instead of hardcoded source state
+- Meshy hardening follow-up:
+  - `Generate 3D PRO` flow has now been reconnected to a real async Meshy task flow instead of expecting an immediate `model_url`
+  - Meshy auth is now env-based through `MESHY_API_KEY` instead of a hardcoded repo value
+  - local `backend/.env` still needs a real `MESHY_API_KEY` value before local PRO generation will succeed again
+  - Railway must also expose `MESHY_API_KEY` before this change is deployed to production
+- UI polish follow-up:
+  - `Profile` now has a cleaner premium hierarchy with a stronger account overview, clearer subscription state, compact usage stats, and lighter support presentation
+  - workspace footer/legal/support presentation is now more structured and less like a temporary note block
+  - workspace column rhythm was tightened slightly and the account/footer surfaces now scale more cleanly through the existing responsive layout
+  - workspace hierarchy pass added a stronger top rail, cleaner section intros, tighter panel spacing, and a more intentional sidebar rhythm without changing product logic
+  - mobile/desktop consistency pass tightened header actions, modal spacing, panel/viewer balance, and mobile breakpoint rhythm so the UI holds together more cleanly across sizes
+  - theme polish test now uses sun/moon toggle icons and a deeper universe-style background direction with the thin grid feel removed from the main backdrop
+
 ## Chat Handoff 1
 
 If we continue in a new chat, resume from this exact state:

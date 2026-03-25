@@ -78,6 +78,7 @@ window.PLUTO_APP_CONFIG = {
 At minimum, the backend install needs:
 
 - `REPLICATE_API_TOKEN`
+- `MESHY_API_KEY`
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `PLUTO_PREMIUM_EMAILS`
