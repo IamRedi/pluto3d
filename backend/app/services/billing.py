@@ -1,5 +1,6 @@
 import os
 from typing import Optional
+from urllib.parse import urlparse
 
 import requests
 from app.services.subscriptions import get_subscription_store_status
@@ -90,6 +91,86 @@ def get_stripe_portal_return_url() -> str:
     return os.getenv("STRIPE_PORTAL_RETURN_URL", "").strip()
 
 
+def _detect_key_mode(value: str, *, live_prefix: str, test_prefix: str) -> str:
+    normalized = (value or "").strip()
+    if not normalized:
+        return "missing"
+    if normalized.startswith(live_prefix):
+        return "live"
+    if normalized.startswith(test_prefix):
+        return "test"
+    return "unknown"
+
+
+def get_stripe_mode() -> dict:
+    secret_mode = _detect_key_mode(
+        get_stripe_secret_key(),
+        live_prefix="sk_live_",
+        test_prefix="sk_test_",
+    )
+    publishable_mode = _detect_key_mode(
+        get_stripe_publishable_key(),
+        live_prefix="pk_live_",
+        test_prefix="pk_test_",
+    )
+
+    concrete_modes = {
+        mode
+        for mode in [secret_mode, publishable_mode]
+        if mode in {"live", "test"}
+    }
+
+    if not concrete_modes:
+        overall = "unconfigured"
+    elif len(concrete_modes) > 1:
+        overall = "mixed"
+    else:
+        overall = next(iter(concrete_modes))
+
+    return {
+        "mode": overall,
+        "secretKeyMode": secret_mode,
+        "publishableKeyMode": publishable_mode,
+    }
+
+
+def _classify_return_url_mode(url: str) -> str:
+    parsed = urlparse((url or "").strip())
+    hostname = (parsed.hostname or "").strip().lower()
+
+    if not hostname:
+        return "missing"
+
+    if hostname in {"127.0.0.1", "localhost"}:
+        return "local"
+
+    if hostname.endswith(".vercel.app"):
+        return "temporary"
+
+    return "custom"
+
+
+def get_billing_domain_status() -> dict:
+    success_mode = _classify_return_url_mode(get_stripe_success_url())
+    cancel_mode = _classify_return_url_mode(get_stripe_cancel_url())
+    portal_mode = _classify_return_url_mode(get_stripe_portal_return_url())
+    concrete_modes = {mode for mode in [success_mode, cancel_mode, portal_mode] if mode != "missing"}
+
+    if not concrete_modes:
+        overall = "missing"
+    elif len(concrete_modes) > 1:
+        overall = "mixed"
+    else:
+        overall = next(iter(concrete_modes))
+
+    return {
+        "mode": overall,
+        "successUrlMode": success_mode,
+        "cancelUrlMode": cancel_mode,
+        "portalReturnUrlMode": portal_mode,
+    }
+
+
 def is_stripe_ready() -> bool:
     return bool(
         get_stripe_secret_key()
@@ -101,8 +182,11 @@ def is_stripe_ready() -> bool:
 
 def get_billing_activation_status() -> dict:
     subscription_store = get_subscription_store_status()
+    stripe_mode = get_stripe_mode()
+    domain_status = get_billing_domain_status()
     webhook_secret_configured = bool(os.getenv("STRIPE_WEBHOOK_SECRET", "").strip())
     blockers = []
+    go_live_blockers = []
 
     if not get_stripe_secret_key():
         blockers.append("Missing STRIPE_SECRET_KEY")
@@ -124,6 +208,24 @@ def get_billing_activation_status() -> dict:
 
     if not webhook_secret_configured:
         blockers.append("Missing STRIPE_WEBHOOK_SECRET")
+
+    if stripe_mode["mode"] != "live":
+        if stripe_mode["mode"] == "test":
+            go_live_blockers.append("Stripe is still configured in test mode.")
+        elif stripe_mode["mode"] == "mixed":
+            go_live_blockers.append("Stripe keys are mixed between test and live modes.")
+        else:
+            go_live_blockers.append("Stripe mode is not yet ready for live billing.")
+
+    if domain_status["mode"] != "custom":
+        if domain_status["mode"] == "temporary":
+            go_live_blockers.append("Billing return URLs still point to a temporary Vercel domain.")
+        elif domain_status["mode"] == "local":
+            go_live_blockers.append("Billing return URLs still point to localhost.")
+        elif domain_status["mode"] == "mixed":
+            go_live_blockers.append("Billing return URLs are split across temporary and custom domains.")
+        else:
+            go_live_blockers.append("Billing return URLs still need a final custom domain.")
 
     if subscription_store["mode"] == "supabase":
         if not subscription_store["supabaseEnvReady"]:
@@ -224,7 +326,9 @@ def get_billing_activation_status() -> dict:
 
     return {
         "activationReady": len(blockers) == 0,
+        "goLiveReady": len(blockers) == 0 and len(go_live_blockers) == 0,
         "blockers": blockers,
+        "goLiveBlockers": go_live_blockers,
         "nextSteps": next_steps,
         "checklist": checklist,
         "progress": {
@@ -235,6 +339,8 @@ def get_billing_activation_status() -> dict:
             "detail": progress_detail,
         },
         "subscriptionStore": subscription_store,
+        "stripeMode": stripe_mode,
+        "domainStatus": domain_status,
     }
 
 
@@ -257,7 +363,11 @@ def get_billing_public_config() -> dict:
         "activationChecklist": activation_status["checklist"],
         "activationProgress": activation_status["progress"],
         "activationBlockers": activation_status["blockers"],
+        "goLiveReady": activation_status["goLiveReady"],
+        "goLiveBlockers": activation_status["goLiveBlockers"],
         "activationNextSteps": activation_status["nextSteps"],
+        "stripeMode": activation_status["stripeMode"],
+        "domainStatus": activation_status["domainStatus"],
         "premiumPlan": {
             "code": "premium-monthly",
             "name": "Pluto3D Premium",
@@ -457,12 +567,15 @@ def get_billing_activation_handoff() -> dict:
     return {
         "summary": {
             "activationReady": activation_status["activationReady"],
+            "goLiveReady": activation_status["goLiveReady"],
             "storeMode": subscription_store["mode"],
             "progress": activation_status["progress"],
             "currentPhase": current_phase,
             "backendEnv": backend_env_summary,
             "schema": schema_summary,
             "verificationReady": activation_status["activationReady"],
+            "stripeMode": activation_status["stripeMode"],
+            "domainStatus": activation_status["domainStatus"],
         },
         "frontendPublicConfig": frontend_public_config,
         "backendEnv": backend_env,
@@ -477,6 +590,7 @@ def get_billing_activation_handoff() -> dict:
         "switchPath": switch_path,
         "verificationChecklist": verification_checklist,
         "blockers": activation_status["blockers"],
+        "goLiveBlockers": activation_status["goLiveBlockers"],
         "nextSteps": activation_status["nextSteps"],
     }
 

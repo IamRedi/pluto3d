@@ -3107,6 +3107,7 @@ return `
 function renderBillingActivationSummary(billingRuntime){
 const progress = billingRuntime?.activationProgress || null
 const blockers = billingRuntime?.activationBlockers || []
+const goLiveBlockers = billingRuntime?.goLiveBlockers || []
 const nextSteps = billingRuntime?.activationNextSteps || []
 const checklist = billingRuntime?.activationChecklist || []
 
@@ -3125,6 +3126,11 @@ return `
   ${blockers.length ? `
   <ul class="platform-surface-list">
     ${blockers.slice(0, 3).map((item) => `<li>${item}</li>`).join("")}
+  </ul>
+  ` : ""}
+  ${goLiveBlockers.length ? `
+  <ul class="platform-surface-list">
+    ${goLiveBlockers.slice(0, 2).map((item) => `<li>${item}</li>`).join("")}
   </ul>
   ` : ""}
   ${nextSteps.length ? `
@@ -3164,6 +3170,37 @@ const labels = {
 }
 
 return labels[normalized] || normalized.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+function getStripeModeLabel(stripeMode){
+const mode = stripeMode?.mode || "unconfigured"
+if(mode === "live"){
+  return "Stripe Live Mode"
+}
+if(mode === "test"){
+  return "Stripe Test Mode"
+}
+if(mode === "mixed"){
+  return "Stripe Mixed Mode"
+}
+return "Stripe Unconfigured"
+}
+
+function getDomainModeLabel(domainStatus){
+const mode = domainStatus?.mode || "missing"
+if(mode === "custom"){
+  return "Custom Domain Ready"
+}
+if(mode === "temporary"){
+  return "Temporary Domain"
+}
+if(mode === "local"){
+  return "Local Redirects"
+}
+if(mode === "mixed"){
+  return "Mixed Redirect Domains"
+}
+return "Domain Pending"
 }
 
 function getBillingLifecycleDetails({ authState, billingRuntime, planSource, subscription, backendPlan }){
@@ -3226,6 +3263,8 @@ const subscription = billingRuntime?.subscription || liveState?.subscription || 
 const subscriptionStatus = getSubscriptionStatusLabel(subscription?.status || "none")
 const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
 const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
+const stripeModeLabel = getStripeModeLabel(billingRuntime?.stripeMode)
+const domainModeLabel = getDomainModeLabel(billingRuntime?.domainStatus)
 const primaryPlanActionLabel = authState.mode === "premium"
   ? (canManageBilling ? "Manage Billing" : "Premium Active")
   : (authState.loggedIn ? "Upgrade To Premium" : "Sign In To Upgrade")
@@ -3296,6 +3335,8 @@ return `
           <span class="surface-chip primary">${subscriptionStatus}</span>
           <span class="surface-chip">${authState.mode === "premium" ? "Premium Active" : "Ready To Upgrade"}</span>
           <span class="surface-chip">${canManageBilling ? "Portal Available" : "Portal After Subscription"}</span>
+          <span class="surface-chip">${stripeModeLabel}</span>
+          <span class="surface-chip">${domainModeLabel}</span>
           ${renewalDate ? `<span class="surface-chip">Renews ${renewalDate}</span>` : ""}
         </div>
       </div>
@@ -3564,6 +3605,8 @@ const usage = getUsageSnapshot()
   const subscriptionPlan = subscription?.plan || backendPlan
   const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
   const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
+  const stripeModeLabel = getStripeModeLabel(billingRuntime?.stripeMode)
+  const domainModeLabel = getDomainModeLabel(billingRuntime?.domainStatus)
   const lifecycle = getBillingLifecycleDetails({
     authState,
     billingRuntime,
@@ -3619,6 +3662,8 @@ const usage = getUsageSnapshot()
       <span class="surface-chip">Plan: ${subscriptionPlan}</span>
       <span class="surface-chip">Source: ${planSource}</span>
       <span class="surface-chip">${billingRuntime?.storeMode === "supabase" ? "Store: Supabase" : "Store: Local Scaffold"}</span>
+      <span class="surface-chip">${stripeModeLabel}</span>
+      <span class="surface-chip">${domainModeLabel}</span>
       ${renewalDate ? `<span class="surface-chip">Current Period: ${renewalDate}</span>` : ""}
       ${lifecycle.supportLabel ? `<span class="surface-chip premium">${lifecycle.supportLabel}</span>` : ""}
       ${activationProgress ? `<span class="surface-chip">${activationProgress.percent}% Activation</span>` : ""}

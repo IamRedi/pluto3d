@@ -15,8 +15,9 @@ Reach this target state:
 
 - `PLUTO_SUBSCRIPTION_STORE=supabase`
 - Supabase billing schema applied
-- Stripe checkout active
+- Stripe checkout active in `live` mode
 - Stripe webhook active
+- billing return URLs moved off temporary preview domains and onto the final custom domain
 - backend plan resolution driven by persisted subscription records
 
 ## System Truth Sources
@@ -29,6 +30,7 @@ Use these as the live activation sources of truth:
 
 The activation handoff now also exposes a phase-based `switchPath` so rollout can be followed as an ordered go-live sequence.
 It also exposes a current switch phase and a verification queue so the team can see what is blocked versus what is ready for smoke testing.
+Billing runtime now also exposes Stripe mode and billing-domain status so test-vs-live rollout gaps are visible in-product.
 
 ## What The User Will Need To Provide
 
@@ -78,6 +80,14 @@ Values:
 8. Confirm webhook updates subscription persistence
 9. Confirm `/api/account/me` resolves premium from persisted subscription state
 10. Confirm billing portal opens for the subscribed user
+
+## Final Go-Live Checks
+
+Before calling the rollout production-ready, confirm:
+
+- Stripe keys are `live`, not `test`
+- Stripe success/cancel/portal URLs point to the final custom domain, not `vercel.app`
+- `goLiveBlockers` is empty in the billing runtime
 
 ## Activation Notes
 

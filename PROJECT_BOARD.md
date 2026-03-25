@@ -609,6 +609,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Remaining live blocker is narrower now: one expected tester account still resolves `free`, so the next check is the exact authenticated email string shown in Profile versus the Railway `PLUTO_PREMIUM_EMAILS` value.
 - Added a production safeguard for legacy Supabase rows: `/api/account/me` and `/api/billing/status` now fall back to `tester_email/default_free` instead of leaving the frontend stuck on `session_default` when profile/subscription sync hits an inconsistent row.
 - Billing UX moved past raw debug-style chips: `Profile` and `Plans` now show human-readable subscription status, current billing-period date when available, clearer tester-vs-Stripe lifecycle copy, and smarter `Upgrade` vs `Manage Billing` actions.
+- Billing runtime now exposes launch-awareness for the final rollout: `Stripe test/live mode`, `temporary/custom domain` status, and go-live blockers now surface in both backend status payloads and the frontend billing surfaces.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.

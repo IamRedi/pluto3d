@@ -19,6 +19,19 @@ const DEFAULT_BILLING_RUNTIME = {
     detail: "Billing scaffold is loading."
   },
   activationBlockers: [],
+  goLiveReady: false,
+  goLiveBlockers: [],
+  stripeMode: {
+    mode: "unconfigured",
+    secretKeyMode: "missing",
+    publishableKeyMode: "missing"
+  },
+  domainStatus: {
+    mode: "missing",
+    successUrlMode: "missing",
+    cancelUrlMode: "missing",
+    portalReturnUrlMode: "missing"
+  },
   activationNextSteps: [],
   activationHandoff: null,
   returnState: null
@@ -176,6 +189,10 @@ async function refreshBillingRuntime(){
       subscription: null,
       activationProgress: data.activationProgress || DEFAULT_BILLING_RUNTIME.activationProgress,
       activationBlockers: data.activationBlockers || [],
+      goLiveReady: Boolean(data.goLiveReady),
+      goLiveBlockers: data.goLiveBlockers || [],
+      stripeMode: data.stripeMode || DEFAULT_BILLING_RUNTIME.stripeMode,
+      domainStatus: data.domainStatus || DEFAULT_BILLING_RUNTIME.domainStatus,
       activationNextSteps: data.activationNextSteps || []
     });
   }catch(error){
@@ -191,6 +208,10 @@ async function refreshBillingRuntime(){
         detail: "Billing activation progress could not be loaded."
       },
       activationBlockers: ["Billing runtime is unavailable"],
+      goLiveReady: false,
+      goLiveBlockers: ["Billing runtime is unavailable"],
+      stripeMode: DEFAULT_BILLING_RUNTIME.stripeMode,
+      domainStatus: DEFAULT_BILLING_RUNTIME.domainStatus,
       activationNextSteps: ["Restore billing runtime access before proceeding."],
       activationHandoff: null
     });
