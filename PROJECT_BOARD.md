@@ -611,6 +611,11 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Billing UX moved past raw debug-style chips: `Profile` and `Plans` now show human-readable subscription status, current billing-period date when available, clearer tester-vs-Stripe lifecycle copy, and smarter `Upgrade` vs `Manage Billing` actions.
 - Billing runtime now exposes launch-awareness for the final rollout: `Stripe test/live mode`, `temporary/custom domain` status, and go-live blockers now surface in both backend status payloads and the frontend billing surfaces.
 - Public install config now includes `siteUrl`, so the final launch domain is an explicit config value and can be surfaced in billing/account UI without depending only on the current host.
+- Added the first real `pluto-3d.com` DNS records in Cloudflare for the final domain rollout:
+  - root `A @ -> 216.198.79.1`
+  - `CNAME www -> cname.vercel-dns.com`
+  - proxy kept on `DNS only` for the Vercel connection path
+- Vercel now validates `pluto-3d.com`; `www.pluto-3d.com` is attached in production with only a DNS-change recommendation remaining, so the launch target can move from `pluto3d.vercel.app` to `https://www.pluto-3d.com`.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.
