@@ -727,6 +727,11 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - workspace hierarchy pass added a stronger top rail, cleaner section intros, tighter panel spacing, and a more intentional sidebar rhythm without changing product logic
   - mobile/desktop consistency pass tightened header actions, modal spacing, panel/viewer balance, and mobile breakpoint rhythm so the UI holds together more cleanly across sizes
   - theme polish test now uses sun/moon toggle icons and a deeper universe-style background direction with the thin grid feel removed from the main backdrop
+  - theme direction has now moved further toward a Windows-like graphite shell with green accent states across sidebar buttons, profile cards, premium CTAs, viewer controls, progress bars, and drag/drop highlights
+  - theme styling is now being refactored onto centralized semantic tokens in `frontend/index.html` so future palette changes can be made from one theme layer instead of hunting hardcoded button and panel colors
+  - login shell has now been tightened to sit closer to the auth card itself, with the remaining login-specific blue surface styling moved onto the same graphite/green token direction
+  - login modal width is now controlled by a single `--login-modal-width` token so the auth surface can be widened or tightened later without hunting multiple layout rules
+  - a few tiny login micro-adjustments are still parked for later visual refinement, but the current width/centering/theme direction is now acceptable as the working baseline
 
 ## Chat Handoff 1
 
