@@ -625,6 +625,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Added `STRIPE_LIVE_SWITCH_CHECKLIST.md` so the final `Stripe test -> live` step is documented as an operator runbook instead of being left to memory when onboarding/verification is complete.
 - Frontend auth redirects now prefer the public `siteUrl` config value, so login/signup callbacks follow the canonical install domain instead of whichever preview host is open.
 - Frontend auth bootstrap now prefers `frontend/app-config.js` directly and only falls back to `frontend/auth-config.js` for legacy installs, reducing plug-and-play setup friction.
+- Billing/profile surfaces now also show whether the operator is viewing the canonical launch host or a preview host, making domain-rollout checks easier during support and handoff.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.

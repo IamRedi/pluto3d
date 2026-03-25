@@ -2716,6 +2716,31 @@ try{
 }
 }
 
+function getCurrentHostLabel(){
+const hostname = (window.location.hostname || "").trim()
+return hostname || "Unknown host"
+}
+
+function getLaunchHostStatusLabel(){
+const siteUrl = getSiteUrl()
+const currentHost = getCurrentHostLabel().toLowerCase()
+
+if(!siteUrl){
+  return "Launch Host Pending"
+}
+
+try{
+  const configuredHost = (new URL(siteUrl).hostname || "").toLowerCase()
+  if(!configuredHost){
+    return "Launch Host Pending"
+  }
+
+  return configuredHost === currentHost ? "Viewing Launch Host" : "Viewing Preview Host"
+}catch(error){
+  return "Launch Host Pending"
+}
+}
+
 function getSupportLabel(){
 return getPublicAppConfig().supportLabel || "Email Support"
 }
@@ -3282,6 +3307,8 @@ const subscriptionStatus = getSubscriptionStatusLabel(subscription?.status || "n
 const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
 const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
 const configuredDomainLabel = getConfiguredDomainLabel()
+const currentHostLabel = getCurrentHostLabel()
+const launchHostStatusLabel = getLaunchHostStatusLabel()
 const stripeModeLabel = getStripeModeLabel(billingRuntime?.stripeMode)
 const domainModeLabel = getDomainModeLabel(billingRuntime?.domainStatus)
 const primaryPlanActionLabel = authState.mode === "premium"
@@ -3357,6 +3384,8 @@ return `
           <span class="surface-chip">${stripeModeLabel}</span>
           <span class="surface-chip">${domainModeLabel}</span>
           <span class="surface-chip">Launch Target: ${configuredDomainLabel}</span>
+          <span class="surface-chip">${launchHostStatusLabel}</span>
+          <span class="surface-chip">Current Host: ${currentHostLabel}</span>
           ${renewalDate ? `<span class="surface-chip">Renews ${renewalDate}</span>` : ""}
         </div>
       </div>
@@ -3626,6 +3655,8 @@ const usage = getUsageSnapshot()
   const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
   const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
   const configuredDomainLabel = getConfiguredDomainLabel()
+  const currentHostLabel = getCurrentHostLabel()
+  const launchHostStatusLabel = getLaunchHostStatusLabel()
   const stripeModeLabel = getStripeModeLabel(billingRuntime?.stripeMode)
   const domainModeLabel = getDomainModeLabel(billingRuntime?.domainStatus)
   const lifecycle = getBillingLifecycleDetails({
@@ -3686,6 +3717,8 @@ const usage = getUsageSnapshot()
       <span class="surface-chip">${stripeModeLabel}</span>
       <span class="surface-chip">${domainModeLabel}</span>
       <span class="surface-chip">Launch Target: ${configuredDomainLabel}</span>
+      <span class="surface-chip">${launchHostStatusLabel}</span>
+      <span class="surface-chip">Current Host: ${currentHostLabel}</span>
       ${renewalDate ? `<span class="surface-chip">Current Period: ${renewalDate}</span>` : ""}
       ${lifecycle.supportLabel ? `<span class="surface-chip premium">${lifecycle.supportLabel}</span>` : ""}
       ${activationProgress ? `<span class="surface-chip">${activationProgress.percent}% Activation</span>` : ""}
