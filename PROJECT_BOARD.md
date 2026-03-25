@@ -670,6 +670,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Removed the forced desktop scroll behavior from `Login` and shifted the email/password area into a cleaner horizontal layout so the auth dialog feels fixed, balanced, and less like a long form panel.
 - Reduced the visible outer shell of the `Login` overlay so the user mainly sees a centered auth card over blur, instead of a larger dashboard-like container behind it.
 - Re-expanded the `Login` dialog width after review so the centered auth card keeps the cleaner modal feel without looking cramped on desktop.
+- Tightened the outer `Login` shell again so the visible modal frame stays close to the auth card size instead of leaving a large empty panel around it.
 - Next recommended focus after this pass:
   - visual polish and hierarchy refinement
   - spacing, typography, and card consistency across surfaces
