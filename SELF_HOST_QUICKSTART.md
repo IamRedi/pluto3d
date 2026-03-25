@@ -21,6 +21,7 @@ This file is safe to edit per customer install because it contains only public r
 - app name
 - studio name
 - brand subtitle
+- site URL
 - API base URL
 - support email
 - Supabase public auth values
@@ -61,6 +62,7 @@ window.PLUTO_APP_CONFIG = {
   appName: "CustomerBrand",
   studioName: "CustomerBrand Studio",
   brandSubtitle: "Creative Print Studio",
+  siteUrl: "https://studio.customer.com",
   apiBase: "https://api.customer.com",
   supportEmail: "support@customer.com",
   supportLabel: "Email Support",
@@ -124,6 +126,7 @@ The product should be installable by editing config, not source code.
 That means:
 
 - domain changes should live in config
+- the public site URL should live in config
 - support email should live in config
 - auth public values should live in config
 - backend private credentials should live in backend env

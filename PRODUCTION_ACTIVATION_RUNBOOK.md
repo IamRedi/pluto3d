@@ -44,6 +44,7 @@ Values:
 
 - `appName`
 - `studioName`
+- `siteUrl`
 - `apiBase`
 - `supportEmail`
 - `auth.supabaseUrl`

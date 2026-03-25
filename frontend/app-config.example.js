@@ -2,6 +2,7 @@ window.PLUTO_APP_CONFIG = {
   appName: "Pluto3D",
   studioName: "Pluto3D Studio",
   brandSubtitle: "Creative Print Studio",
+  siteUrl: "https://studio.customer.com",
   apiBase: "https://your-api-domain.com",
   supportEmail: "support@your-domain.com",
   supportLabel: "Email Support",

@@ -2698,6 +2698,24 @@ function getSupportEmail(){
 return (getPublicAppConfig().supportEmail || "").trim()
 }
 
+function getSiteUrl(){
+return (getPublicAppConfig().siteUrl || "").trim()
+}
+
+function getConfiguredDomainLabel(){
+const siteUrl = getSiteUrl()
+
+if(!siteUrl){
+  return "Domain pending"
+}
+
+try{
+  return new URL(siteUrl).hostname || siteUrl
+}catch(error){
+  return siteUrl
+}
+}
+
 function getSupportLabel(){
 return getPublicAppConfig().supportLabel || "Email Support"
 }
@@ -3263,6 +3281,7 @@ const subscription = billingRuntime?.subscription || liveState?.subscription || 
 const subscriptionStatus = getSubscriptionStatusLabel(subscription?.status || "none")
 const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
 const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
+const configuredDomainLabel = getConfiguredDomainLabel()
 const stripeModeLabel = getStripeModeLabel(billingRuntime?.stripeMode)
 const domainModeLabel = getDomainModeLabel(billingRuntime?.domainStatus)
 const primaryPlanActionLabel = authState.mode === "premium"
@@ -3337,6 +3356,7 @@ return `
           <span class="surface-chip">${canManageBilling ? "Portal Available" : "Portal After Subscription"}</span>
           <span class="surface-chip">${stripeModeLabel}</span>
           <span class="surface-chip">${domainModeLabel}</span>
+          <span class="surface-chip">Launch Target: ${configuredDomainLabel}</span>
           ${renewalDate ? `<span class="surface-chip">Renews ${renewalDate}</span>` : ""}
         </div>
       </div>
@@ -3605,6 +3625,7 @@ const usage = getUsageSnapshot()
   const subscriptionPlan = subscription?.plan || backendPlan
   const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
   const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
+  const configuredDomainLabel = getConfiguredDomainLabel()
   const stripeModeLabel = getStripeModeLabel(billingRuntime?.stripeMode)
   const domainModeLabel = getDomainModeLabel(billingRuntime?.domainStatus)
   const lifecycle = getBillingLifecycleDetails({
@@ -3664,6 +3685,7 @@ const usage = getUsageSnapshot()
       <span class="surface-chip">${billingRuntime?.storeMode === "supabase" ? "Store: Supabase" : "Store: Local Scaffold"}</span>
       <span class="surface-chip">${stripeModeLabel}</span>
       <span class="surface-chip">${domainModeLabel}</span>
+      <span class="surface-chip">Launch Target: ${configuredDomainLabel}</span>
       ${renewalDate ? `<span class="surface-chip">Current Period: ${renewalDate}</span>` : ""}
       ${lifecycle.supportLabel ? `<span class="surface-chip premium">${lifecycle.supportLabel}</span>` : ""}
       ${activationProgress ? `<span class="surface-chip">${activationProgress.percent}% Activation</span>` : ""}
