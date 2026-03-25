@@ -130,6 +130,7 @@ That means:
 - support email should live in config
 - auth public values should live in config
 - backend private credentials should live in backend env
+- auth redirects should follow `siteUrl`, not whichever preview host happens to be open
 
 ## Recommended One-Hour Install Order
 
@@ -156,4 +157,8 @@ Still to finalize for true plug-and-play distribution:
 
 - replace temporary local subscription-state adapter with Supabase persistence
 - add Stripe webhook-driven premium activation
-- add final install checklist for buyer handoff
+- keep the buyer handoff checklist updated as the install surface matures
+
+Reference:
+
+- `PLUG_AND_PLAY_DEPLOY_CHECKLIST.md`

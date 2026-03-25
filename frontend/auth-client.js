@@ -59,6 +59,27 @@ function getPublicKey(config){
   return config?.supabasePublishableKey || config?.supabaseAnonKey || "";
 }
 
+function normalizeConfiguredSiteUrl(value){
+  if(typeof value !== "string"){
+    return "";
+  }
+
+  const trimmed = value.trim();
+
+  if(!trimmed){
+    return "";
+  }
+
+  try{
+    const normalized = new URL(trimmed);
+    normalized.hash = "";
+    normalized.search = "";
+    return normalized.toString().replace(/\/$/, "");
+  }catch(error){
+    return "";
+  }
+}
+
 function hasConfig(){
   const config = getConfig();
   return Boolean(config?.supabaseUrl && getPublicKey(config));
@@ -277,7 +298,14 @@ async function initializeSupabaseClient(){
 }
 
 function getRedirectUrl(){
-  return `${window.location.origin}${window.location.pathname}`;
+  const configuredSiteUrl = normalizeConfiguredSiteUrl(window.PLUTO_APP_CONFIG?.siteUrl);
+  const currentPath = window.location.pathname || "/";
+
+  if(configuredSiteUrl){
+    return currentPath === "/" ? configuredSiteUrl : `${configuredSiteUrl}${currentPath}`;
+  }
+
+  return `${window.location.origin}${currentPath}`;
 }
 
 function authNotReadyMessage(){
