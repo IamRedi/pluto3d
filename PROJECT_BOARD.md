@@ -599,6 +599,10 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - The backend production path is now structurally live; the next step is an end-to-end Stripe checkout/webhook smoke test.
 - Smoke test observation: after Stripe return to the site, the frontend can appear as `guest`, so live auth restore after checkout needs verification.
 - Found a plan-resolution edge case in `supabase` mode: `profile_snapshot=free` could override `PLUTO_PREMIUM_EMAILS`; tester-email fallback now needs to stay ahead of profile-snapshot fallback.
+- Likely live auth blocker: Supabase OAuth/site redirect configuration may still point to `http://127.0.0.1:5500`, which would explain post-login return to localhost instead of the Vercel app.
+- Supabase live auth redirect URLs were updated to include `https://pluto3d.vercel.app` and `https://pluto3d.vercel.app/`; `Site URL` was then checked in the same live config before retesting the Vercel login flow.
+- Live checkout smoke test found the next real billing issue: a subscription could be stored as `checkout_completed` instead of its real Stripe status, so `/api/account/me` still resolved `free` while the billing panel showed a subscription record.
+- Billing hardening update: `checkout.session.completed` now fetches the real Stripe subscription status immediately, webhook handling now accepts `customer.subscription.created`, and stale `checkout_completed` rows can self-refresh from Stripe on the next plan lookup.
 - Removed temporary backend auth debug output from `/api/account/me`.
 - Removed the temporary backend plan debug card from the `Profile` surface.
 - Switched live premium locking to a backend-resolved plan flow instead of trusting frontend auth metadata.

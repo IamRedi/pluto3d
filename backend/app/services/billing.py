@@ -525,6 +525,18 @@ def create_portal_session(*, customer_id: str, return_url: str) -> dict:
     return response.json()
 
 
+def get_stripe_subscription(subscription_id: str) -> dict:
+    response = requests.get(
+        f"https://api.stripe.com/v1/subscriptions/{subscription_id}",
+        headers={
+            "Authorization": f"Bearer {get_stripe_secret_key()}",
+        },
+        timeout=20,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
 def resolve_billing_urls(origin: Optional[str]) -> tuple[str, str, str]:
     base_origin = (origin or "").strip().rstrip("/")
     success_url = get_stripe_success_url()

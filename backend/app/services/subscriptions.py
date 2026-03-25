@@ -145,6 +145,62 @@ def _to_period_end_value(current_period_end: Optional[int]) -> Optional[str]:
         return None
 
 
+def _can_use_stripe_api() -> bool:
+    return bool(os.getenv("STRIPE_SECRET_KEY", "").strip())
+
+
+def _fetch_stripe_subscription(subscription_id: str) -> Optional[dict]:
+    if not subscription_id or not _can_use_stripe_api():
+        return None
+
+    response = requests.get(
+        f"https://api.stripe.com/v1/subscriptions/{subscription_id}",
+        headers={
+            "Authorization": f"Bearer {os.getenv('STRIPE_SECRET_KEY', '').strip()}",
+        },
+        timeout=15,
+    )
+
+    if response.status_code != 200:
+        return None
+
+    return response.json()
+
+
+def _refresh_checkout_completed_record(record: Optional[dict]) -> Optional[dict]:
+    if not record or record.get("status") != "checkout_completed":
+        return record
+
+    subscription_id = (record.get("subscription_id") or "").strip()
+    customer_id = (record.get("customer_id") or "").strip()
+    subscription = _fetch_stripe_subscription(subscription_id)
+    if not subscription:
+        return record
+
+    metadata = subscription.get("metadata") or {}
+    refreshed_status = (subscription.get("status") or "").strip() or "checkout_completed"
+    refreshed_record = {
+        "customer_id": customer_id or (subscription.get("customer") or "").strip(),
+        "subscription_id": subscription_id,
+        "status": refreshed_status,
+        "plan_code": (metadata.get("plan") or record.get("plan_code") or "premium").strip(),
+        "current_period_end": subscription.get("current_period_end"),
+    }
+
+    record_subscription_state(
+        subscription_id=subscription_id,
+        customer_id=refreshed_record["customer_id"],
+        status=refreshed_status,
+        plan_code=refreshed_record["plan_code"],
+        email=(metadata.get("email") or record.get("email") or "").strip(),
+        user_id=(metadata.get("user_id") or record.get("user_id") or "").strip(),
+        current_period_end=subscription.get("current_period_end"),
+        source_event="subscription_refresh",
+    )
+
+    return refreshed_record
+
+
 def _supabase_select_single(table: str, params: dict) -> Optional[dict]:
     response = requests.get(
         _get_supabase_rest_url(table),
@@ -465,23 +521,25 @@ def get_subscription_record_for_user(user: Optional[dict]) -> Optional[dict]:
         if not record:
             return None
 
-        return {
+        return _refresh_checkout_completed_record(
+            {
             "customer_id": record.get("stripe_customer_id"),
             "subscription_id": record.get("stripe_subscription_id"),
             "status": record.get("status"),
             "plan_code": record.get("plan"),
             "current_period_end": record.get("current_period_end"),
-        }
+            }
+        )
 
     state = _load_state()
 
     for subscription in _get_subscription_bucket(state).values():
         if user_id and subscription.get("user_id") == user_id:
-            return subscription
+            return _refresh_checkout_completed_record(subscription)
         if email and subscription.get("email") == email:
-            return subscription
+            return _refresh_checkout_completed_record(subscription)
         if customer_id and subscription.get("customer_id") == customer_id:
-            return subscription
+            return _refresh_checkout_completed_record(subscription)
 
     return None
 

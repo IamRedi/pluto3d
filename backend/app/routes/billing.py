@@ -10,6 +10,7 @@ from app.services.billing import (
     get_billing_activation_handoff,
     create_checkout_session,
     create_portal_session,
+    get_stripe_subscription,
     get_billing_activation_status,
     get_billing_public_config,
     get_stripe_portal_return_url,
@@ -79,18 +80,37 @@ def _handle_checkout_completed(event: dict) -> None:
     record_customer_link(customer_id=customer_id, user_id=user_id, email=email)
 
     if subscription_id:
+        subscription_status = "checkout_completed"
+        current_period_end = None
+
+        try:
+            subscription = get_stripe_subscription(subscription_id)
+            subscription_metadata = subscription.get("metadata") or {}
+            metadata = {
+                **subscription_metadata,
+                **metadata,
+            }
+            subscription_status = (subscription.get("status") or "").strip() or subscription_status
+            current_period_end = subscription.get("current_period_end")
+            user_id = (metadata.get("user_id") or user_id).strip()
+            email = (metadata.get("email") or email).strip()
+        except Exception:
+            # Keep the checkout record even if the follow-up Stripe read fails.
+            pass
+
         record_subscription_state(
             subscription_id=subscription_id,
             customer_id=customer_id,
-            status="checkout_completed",
+            status=subscription_status,
             plan_code=(metadata.get("plan") or "premium").strip(),
             email=email,
             user_id=user_id,
+            current_period_end=current_period_end,
             source_event=event.get("type") or "",
         )
 
 
-def _handle_subscription_updated(event: dict) -> None:
+def _handle_subscription_changed(event: dict) -> None:
     data = (event.get("data") or {}).get("object") or {}
     metadata = data.get("metadata") or {}
     record_customer_link(
@@ -284,8 +304,10 @@ async def handle_billing_webhook(
 
     if event_type == "checkout.session.completed":
         _handle_checkout_completed(event)
+    elif event_type == "customer.subscription.created":
+        _handle_subscription_changed(event)
     elif event_type == "customer.subscription.updated":
-        _handle_subscription_updated(event)
+        _handle_subscription_changed(event)
     elif event_type == "customer.subscription.deleted":
         _handle_subscription_deleted(event)
 
