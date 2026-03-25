@@ -669,6 +669,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Redesigned `Login` into a single focused auth card with a cleaner Google-first flow, email divider, and automatic modal close on sign-out so the user lands back in the workspace context.
 - Removed the forced desktop scroll behavior from `Login` and shifted the email/password area into a cleaner horizontal layout so the auth dialog feels fixed, balanced, and less like a long form panel.
 - Reduced the visible outer shell of the `Login` overlay so the user mainly sees a centered auth card over blur, instead of a larger dashboard-like container behind it.
+- Re-expanded the `Login` dialog width after review so the centered auth card keeps the cleaner modal feel without looking cramped on desktop.
 - Next recommended focus after this pass:
   - visual polish and hierarchy refinement
   - spacing, typography, and card consistency across surfaces
