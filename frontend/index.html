@@ -3133,6 +3133,86 @@ return `
 `
 }
 
+function formatBillingDate(value){
+if(!value){
+  return ""
+}
+
+const date = new Date(value)
+if(Number.isNaN(date.getTime())){
+  return ""
+}
+
+return new Intl.DateTimeFormat(undefined, {
+  year: "numeric",
+  month: "short",
+  day: "numeric"
+}).format(date)
+}
+
+function getSubscriptionStatusLabel(status){
+const normalized = (status || "none").toLowerCase()
+const labels = {
+  active: "Active",
+  trialing: "Trialing",
+  canceled: "Canceled",
+  incomplete: "Incomplete",
+  incomplete_expired: "Incomplete Expired",
+  past_due: "Past Due",
+  unpaid: "Unpaid",
+  none: "No Subscription"
+}
+
+return labels[normalized] || normalized.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+function getBillingLifecycleDetails({ authState, billingRuntime, planSource, subscription, backendPlan }){
+const subscriptionStatus = (subscription?.status || "none").toLowerCase()
+const currentPeriodEnd = formatBillingDate(subscription?.currentPeriodEnd)
+const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
+const isPremium = authState.mode === "premium"
+
+if(isPremium && subscriptionStatus === "active"){
+  return {
+    title: "Premium access is active",
+    copy: currentPeriodEnd
+      ? `This account is on an active Stripe subscription. The current billing period runs until ${currentPeriodEnd}.`
+      : "This account is on an active Stripe subscription and premium access is now controlled by the billing system.",
+    actionLabel: canManageBilling ? "Manage Billing" : null,
+    actionHandler: canManageBilling ? "openBillingPortal()" : "",
+    supportLabel: currentPeriodEnd ? `Renews through ${currentPeriodEnd}` : "Stripe subscription linked"
+  }
+}
+
+if(isPremium && planSource === "tester_email"){
+  return {
+    title: "Premium access is active",
+    copy: "This account is premium through the tester fallback path. It is ideal for rollout verification before full Stripe ownership is required.",
+    actionLabel: null,
+    actionHandler: "",
+    supportLabel: "Tester premium path"
+  }
+}
+
+if(isPremium && backendPlan === "premium"){
+  return {
+    title: "Premium access is active",
+    copy: "Premium is active for this account, and the next billing-facing step is keeping the portal and subscription lifecycle polished.",
+    actionLabel: canManageBilling ? "Manage Billing" : null,
+    actionHandler: canManageBilling ? "openBillingPortal()" : "",
+    supportLabel: canManageBilling ? "Billing portal available" : "Premium without portal link yet"
+  }
+}
+
+return {
+  title: "Premium upgrade path is prepared",
+  copy: "This account is currently on the free path. Premium can be activated through Stripe checkout, then managed from the billing portal once a customer link exists.",
+  actionLabel: authState.loggedIn ? "Upgrade To Premium" : "Sign In To Upgrade",
+  actionHandler: authState.loggedIn ? "startPremiumCheckout()" : "startPremiumCheckout()",
+  supportLabel: canManageBilling ? "Portal available after subscription" : "Portal unlocks after first subscription"
+}
+}
+
 function renderPlansSurface(){
 const authState = getAuthPreviewState()
 const liveState = typeof getLiveAuthState === "function"
@@ -3142,6 +3222,16 @@ const billingRuntime = typeof getBillingRuntime === "function"
   ? getBillingRuntime()
   : null
 const activationProgress = billingRuntime?.activationProgress || null
+const subscription = billingRuntime?.subscription || liveState?.subscription || null
+const subscriptionStatus = getSubscriptionStatusLabel(subscription?.status || "none")
+const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
+const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
+const primaryPlanActionLabel = authState.mode === "premium"
+  ? (canManageBilling ? "Manage Billing" : "Premium Active")
+  : (authState.loggedIn ? "Upgrade To Premium" : "Sign In To Upgrade")
+const primaryPlanActionHandler = authState.mode === "premium"
+  ? (canManageBilling ? "openBillingPortal()" : "")
+  : "startPremiumCheckout()"
 const planSource = liveState?.enabled && !liveState.loading
   ? "Backend Account"
   : "Preview State"
@@ -3199,8 +3289,14 @@ return `
           <li>Future creator-grade tools</li>
         </ul>
         <div class="surface-actions">
-          <button type="button" onclick="startPremiumCheckout()">${authState.loggedIn ? "Upgrade To Premium" : "Sign In To Upgrade"}</button>
-          ${authState.mode === "premium" ? `<button type="button" onclick="openBillingPortal()">Manage Billing</button>` : ""}
+          ${primaryPlanActionHandler ? `<button type="button" onclick="${primaryPlanActionHandler}">${primaryPlanActionLabel}</button>` : `<button type="button" disabled>${primaryPlanActionLabel}</button>`}
+          ${authState.mode === "premium" && canManageBilling ? `<button type="button" onclick="openBillingPortal()">Manage Billing</button>` : ""}
+        </div>
+        <div class="surface-chip-row">
+          <span class="surface-chip primary">${subscriptionStatus}</span>
+          <span class="surface-chip">${authState.mode === "premium" ? "Premium Active" : "Ready To Upgrade"}</span>
+          <span class="surface-chip">${canManageBilling ? "Portal Available" : "Portal After Subscription"}</span>
+          ${renewalDate ? `<span class="surface-chip">Renews ${renewalDate}</span>` : ""}
         </div>
       </div>
     </div>
@@ -3464,8 +3560,17 @@ const usage = getUsageSnapshot()
   const planReason = liveState?.planReason || ""
   const subscription = billingRuntime?.subscription || liveState?.subscription || null
   const subscriptionStatus = subscription?.status || "none"
+  const subscriptionStatusLabel = getSubscriptionStatusLabel(subscriptionStatus)
   const subscriptionPlan = subscription?.plan || backendPlan
   const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
+  const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
+  const lifecycle = getBillingLifecycleDetails({
+    authState,
+    billingRuntime,
+    planSource,
+    subscription,
+    backendPlan
+  })
   const activationProgress = billingRuntime?.activationProgress || null
   const activationHandoff = billingRuntime?.activationHandoff || null
   const handoffSummary = activationHandoff?.summary || {}
@@ -3507,13 +3612,15 @@ const usage = getUsageSnapshot()
   </div>
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Subscription</div>
-    <div class="platform-surface-card-title">${authState.mode === "premium" ? "Premium access is active" : "Premium upgrade path is prepared"}</div>
-    <div class="platform-surface-card-copy">${authState.mode === "premium" ? "The account now resolves through the billing path. The next step is full production rollout with live subscription persistence and portal management." : "Stripe checkout is scaffolded in the backend and ready to be activated once live Stripe keys, price IDs, webhooks, and persistence are fully enabled."}</div>
+    <div class="platform-surface-card-title">${lifecycle.title}</div>
+    <div class="platform-surface-card-copy">${lifecycle.copy}</div>
     <div class="surface-chip-row">
-      <span class="surface-chip primary">Status: ${subscriptionStatus}</span>
+      <span class="surface-chip primary">Status: ${subscriptionStatusLabel}</span>
       <span class="surface-chip">Plan: ${subscriptionPlan}</span>
       <span class="surface-chip">Source: ${planSource}</span>
       <span class="surface-chip">${billingRuntime?.storeMode === "supabase" ? "Store: Supabase" : "Store: Local Scaffold"}</span>
+      ${renewalDate ? `<span class="surface-chip">Current Period: ${renewalDate}</span>` : ""}
+      ${lifecycle.supportLabel ? `<span class="surface-chip premium">${lifecycle.supportLabel}</span>` : ""}
       ${activationProgress ? `<span class="surface-chip">${activationProgress.percent}% Activation</span>` : ""}
     </div>
     ${planReason ? `
@@ -3521,7 +3628,7 @@ const usage = getUsageSnapshot()
     ` : ""}
     ${renderBillingActivationSummary(billingRuntime)}
     <div class="surface-actions">
-      <button type="button" onclick="${authState.mode === "premium" && canManageBilling ? "openBillingPortal()" : "startPremiumCheckout()"}">${authState.mode === "premium" && canManageBilling ? "Manage Billing" : authState.loggedIn ? "Upgrade To Premium" : "Sign In To Upgrade"}</button>
+      ${lifecycle.actionLabel ? `<button type="button" onclick="${lifecycle.actionHandler}">${lifecycle.actionLabel}</button>` : ""}
     </div>
   </div>
   <div class="platform-surface-card">
