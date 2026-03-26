@@ -1081,6 +1081,40 @@ gap:10px;
 min-width:220px;
 }
 
+.profile-meta-list{
+display:flex;
+flex-direction:column;
+gap:8px;
+width:100%;
+}
+
+.profile-meta-item{
+display:flex;
+align-items:baseline;
+justify-content:space-between;
+gap:14px;
+padding:0;
+border:none;
+background:none;
+box-shadow:none;
+}
+
+.profile-meta-label{
+font-size:11px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+flex-shrink:0;
+}
+
+.profile-meta-value{
+font-size:14px;
+font-weight:600;
+line-height:1.45;
+color:var(--text-main);
+text-align:right;
+}
+
 .profile-summary-grid{
 display:grid;
 grid-template-columns:repeat(3, minmax(0, 1fr));
@@ -1122,6 +1156,41 @@ margin:14px 0 0;
 padding-left:18px;
 color:var(--text-soft);
 line-height:1.85;
+}
+
+.profile-usage-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:14px 18px;
+margin-top:14px;
+}
+
+.profile-usage-item{
+padding:6px 0 0;
+border-top:1px solid var(--line-soft);
+}
+
+.profile-usage-value{
+font-size:22px;
+font-weight:700;
+line-height:1.1;
+color:var(--cyan);
+margin-bottom:8px;
+}
+
+.profile-usage-label{
+font-size:11px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+line-height:1.5;
+}
+
+.profile-support-note{
+margin-top:12px;
+font-size:12px;
+line-height:1.6;
+color:var(--text-soft);
 }
 
 .gallery-grid{
@@ -4159,6 +4228,9 @@ const subscription = billingRuntime?.subscription || liveState?.subscription || 
 const subscriptionStatus = subscription?.status || "none"
 const subscriptionStatusLabel = getSubscriptionStatusLabel(subscriptionStatus)
 const subscriptionPlan = subscription?.plan || backendPlan
+const subscriptionPlanLabel = String(subscriptionPlan || "guest")
+  .replace(/_/g, " ")
+  .replace(/\b\w/g, (char) => char.toUpperCase())
 const canManageBilling = Boolean(billingRuntime?.customerPortalAvailable)
 const renewalDate = formatBillingDate(subscription?.currentPeriodEnd)
 const lifecycle = getBillingLifecycleDetails({
@@ -4189,9 +4261,15 @@ return `
         <div class="profile-email">${authState.email || "No email connected yet"}</div>
       </div>
       <div class="profile-hero-meta">
-        <div class="surface-chip-row" style="margin-top:0;">
-          <span class="surface-chip primary">${authState.planLabel}</span>
-          <span class="surface-chip">${subscriptionStatusLabel}</span>
+        <div class="profile-meta-list">
+          <div class="profile-meta-item">
+            <div class="profile-meta-label">Plan</div>
+            <div class="profile-meta-value">${authState.planLabel}</div>
+          </div>
+          <div class="profile-meta-item">
+            <div class="profile-meta-label">Status</div>
+            <div class="profile-meta-value">${subscriptionStatusLabel}</div>
+          </div>
         </div>
         <div class="surface-actions" style="margin-top:0;">
           ${authState.loggedIn ? `<button type="button" onclick="signOutReal()">Sign Out</button>` : `<button type="button" onclick="openPlatformSurface('login')">Open Login</button>`}
@@ -4222,11 +4300,24 @@ return `
     <div class="platform-surface-card-label">Subscription</div>
     <div class="platform-surface-card-title">${lifecycle.title}</div>
     <div class="platform-surface-card-copy">${lifecycle.copy}</div>
-    <div class="surface-chip-row">
-      <span class="surface-chip primary">Status: ${subscriptionStatusLabel}</span>
-      <span class="surface-chip">Plan: ${subscriptionPlan}</span>
-      <span class="surface-chip">${lifecycle.supportLabel}</span>
-      ${renewalDate ? `<span class="surface-chip">Current Period: ${renewalDate}</span>` : ""}
+    <div class="profile-meta-list">
+      <div class="profile-meta-item">
+        <div class="profile-meta-label">Status</div>
+        <div class="profile-meta-value">${subscriptionStatusLabel}</div>
+      </div>
+      <div class="profile-meta-item">
+        <div class="profile-meta-label">Plan</div>
+        <div class="profile-meta-value">${subscriptionPlanLabel}</div>
+      </div>
+      <div class="profile-meta-item">
+        <div class="profile-meta-label">Billing</div>
+        <div class="profile-meta-value">${lifecycle.supportLabel}</div>
+      </div>
+      ${renewalDate ? `
+      <div class="profile-meta-item">
+        <div class="profile-meta-label">Current Period</div>
+        <div class="profile-meta-value">${renewalDate}</div>
+      </div>` : ""}
     </div>
     <div class="surface-actions">
       ${lifecycle.actionLabel ? `<button type="button" onclick="${lifecycle.actionHandler}">${lifecycle.actionLabel}</button>` : ""}
@@ -4237,30 +4328,30 @@ return `
     <div class="platform-surface-card-label">Usage</div>
     <div class="platform-surface-card-title">Activity snapshot</div>
     <div class="platform-surface-card-copy">A compact view of the current usage counters across the main creation flows.</div>
-    <div class="surface-stat-grid" style="margin-top:14px;">
-      <div class="surface-stat">
-        <div class="surface-stat-value">${usage.aiImage}</div>
-        <div class="surface-stat-label">AI Images</div>
+    <div class="profile-usage-grid">
+      <div class="profile-usage-item">
+        <div class="profile-usage-value">${usage.aiImage}</div>
+        <div class="profile-usage-label">AI Images</div>
       </div>
-      <div class="surface-stat">
-        <div class="surface-stat-value">${usage.svgGeneration}</div>
-        <div class="surface-stat-label">SVG Actions</div>
+      <div class="profile-usage-item">
+        <div class="profile-usage-value">${usage.svgGeneration}</div>
+        <div class="profile-usage-label">SVG Actions</div>
       </div>
-      <div class="surface-stat">
-        <div class="surface-stat-value">${usage.toyGeneration}</div>
-        <div class="surface-stat-label">Toy Actions</div>
+      <div class="profile-usage-item">
+        <div class="profile-usage-value">${usage.toyGeneration}</div>
+        <div class="profile-usage-label">Toy Actions</div>
       </div>
-      <div class="surface-stat">
-        <div class="surface-stat-value">${usage.free3dGeneration}</div>
-        <div class="surface-stat-label">3D Tests</div>
+      <div class="profile-usage-item">
+        <div class="profile-usage-value">${usage.free3dGeneration}</div>
+        <div class="profile-usage-label">3D Actions</div>
       </div>
-      <div class="surface-stat">
-        <div class="surface-stat-value">${usageTotal}</div>
-        <div class="surface-stat-label">Total Actions</div>
+      <div class="profile-usage-item">
+        <div class="profile-usage-value">${usageTotal}</div>
+        <div class="profile-usage-label">Total Actions</div>
       </div>
-      <div class="surface-stat">
-        <div class="surface-stat-value">${authState.loggedIn ? "Saved" : "Local"}</div>
-        <div class="surface-stat-label">Session Mode</div>
+      <div class="profile-usage-item">
+        <div class="profile-usage-value">${authState.loggedIn ? "Saved" : "Local"}</div>
+        <div class="profile-usage-label">Session Mode</div>
       </div>
     </div>
   </div>
@@ -4268,9 +4359,7 @@ return `
     <div class="platform-surface-card-label">Support</div>
     <div class="platform-surface-card-title">Need help with account or billing?</div>
     <div class="platform-surface-card-copy">Support stays clean and human: account questions, upgrade help, and billing issues all route through the same contact path.</div>
-    <div class="surface-chip-row">
-      <span class="surface-chip">${getSupportLabel()}</span>
-    </div>
+    <div class="profile-support-note">${getSupportLabel()}</div>
     <ul class="profile-support-list">
       <li>${getSupportContactLine()}</li>
       <li>Use Plans for upgrade context and Support for account or billing questions.</li>

@@ -737,6 +737,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - the main viewer now stays deep black in both dark and light theme modes so the 3D stage keeps the same stronger visual depth regardless of surrounding UI theme
   - the attempted structural redesign of the `Toy` panel was rolled back after review; the simpler toy layout remains the baseline for now
   - `Toy Studio` launch is now constrained to the `Toy` panel and only appears after a toy model is loaded into the viewer, so the editing flow stays contextual instead of floating globally across the workspace
+  - `Profile` metadata and usage counters are being flattened away from glass-chip/button treatment so only real actions read as buttons while account information reads like plain product data
 
 ## Chat Handoff 1
 
