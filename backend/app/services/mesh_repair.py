@@ -5,14 +5,12 @@ from pathlib import Path
 import trimesh
 
 
-def load_and_repair_mesh(input_path: str | Path, simplify_target: int = 50000) -> trimesh.Trimesh:
-    """Load a source mesh and run Pluto3D's print repair pipeline."""
+def load_and_repair_mesh(input_path: str | Path, simplify_target: int | None = None) -> trimesh.Trimesh:
+    """Load a source mesh and run a lighter print repair pipeline."""
     mesh = trimesh.load(str(input_path), force="mesh")
 
     if isinstance(mesh, trimesh.Scene):
         mesh = trimesh.util.concatenate(tuple(mesh.geometry.values()))
-
-    mesh.fill_holes()
 
     try:
         mesh.update_faces(mesh.nondegenerate_faces())
