@@ -209,8 +209,8 @@ body[data-theme="light"]{
   --field-focus-border:rgba(74, 140, 90, 0.4);
   --field-focus-shadow:0 0 0 1px rgba(74, 140, 90, 0.12), 0 0 20px rgba(88,184,115,0.06);
   --viewer-border:rgba(74, 118, 83, 0.16);
-  --viewer-ambient:radial-gradient(circle at center, rgba(88,184,115,0.08), transparent 42%), radial-gradient(circle at center, rgba(255,255,255,0.18), transparent 72%);
-  --viewer-core-glow:0 0 48px rgba(88,184,115,0.16);
+  --viewer-ambient:radial-gradient(circle at center, rgba(88,184,115,0.12), transparent 42%), radial-gradient(circle at center, rgba(0,0,0,0.22), transparent 74%);
+  --viewer-core-glow:0 0 60px rgba(88,184,115,0.18);
   --viewer-chip-bg:rgba(246, 249, 246, 0.9);
   --viewer-chip-border:rgba(74, 118, 83, 0.18);
   --viewer-chip-text:#17361d;
@@ -272,11 +272,11 @@ body[data-theme="light"]{
   --panel-background:
     linear-gradient(180deg, rgba(245, 249, 245, 0.97), rgba(235, 242, 236, 0.92));
   --viewer-background:
-    radial-gradient(circle at center, rgba(88,184,115,0.08), transparent 68%),
-    radial-gradient(circle at 18% 18%, rgba(132,170,96,0.06), transparent 28%),
-    radial-gradient(circle at 78% 24%, rgba(95,135,103,0.08), transparent 34%),
-    radial-gradient(circle at 74% 82%, rgba(63,155,88,0.08), transparent 36%),
-    linear-gradient(180deg, rgba(85, 98, 87, 0.82), rgba(68, 82, 70, 0.92));
+    radial-gradient(circle at 50% 48%, rgba(28, 45, 31, 0.42), transparent 30%),
+    radial-gradient(circle at 18% 18%, rgba(88,184,115,0.08), transparent 24%),
+    radial-gradient(circle at 78% 24%, rgba(148,184,97,0.08), transparent 28%),
+    radial-gradient(circle at 74% 82%, rgba(76,121,84,0.08), transparent 32%),
+    linear-gradient(180deg, rgba(7, 9, 8, 0.98), rgba(12, 15, 13, 0.96));
 }
 
 body {
@@ -1752,6 +1752,7 @@ color:var(--text-soft);
 max-width:560px;
 }
 
+
 /* upload */
 
 .dropzone{
@@ -3023,15 +3024,14 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <button id="generateToyProBtn" class="btn-premium" data-premium-feature="premium-toy-generation" onclick="runPremiumAction('premium-toy-generation', generateToyPro)">Generate Toy PRO</button>
 
 <div class="status" id="toyStatus"></div>
+<button id="toyPanelStudioLaunch" class="studio-launch hidden" type="button" onclick="openToyStudio()">Open Toy Studio</button>
 <div id="toyGallery" class="preview"></div>
-<div style="margin-top:25px;">
 
 <div class="section-title">Print Mode</div>
 <div class="section-intro">Scale, rotate, and clean the current toy model before exporting a print-ready STL.</div>
 
 <label>Scale</label>
 <input type="range" id="scaleSlider" min="0.2" max="3" step="0.1" value="1">
-
 <label>Rotate Y</label>
 <input type="range" id="rotateSlider" min="0" max="360" value="0">
 
@@ -3039,7 +3039,6 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <button onclick="fixCurrentModelForPrint()">Fix To Print</button>
 <div class="status" id="printStatus">Load a toy model to prepare a print-ready STL.</div>
 
-</div>
 </div>
 
 <div class="panel-footer">
@@ -3063,7 +3062,7 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 Download
 </button>
 <button id="studioLaunch" class="studio-launch hidden" onclick="openToyStudio()">
-Open Studio
+Open Toy Studio
 </button>
 <div class="viewer-title">Studio Viewer</div>
 
@@ -3207,18 +3206,18 @@ filter:none;
       <div class="studio-card">
         <h3>Print Path</h3>
         <p>
-          Studio edits will stay connected to your existing print-fix pipeline so the
-          toy can move directly toward print-ready STL export.
+          Studio edits stay connected to the print pipeline, so the toy can move directly
+          from shaping into a cleaner STL export path.
         </p>
       </div>
 
       <div id="toyStudioStatus" class="studio-status" data-tone="neutral">
-        Load a toy model to start editing.
+        Load a toy model to start shaping.
       </div>
 
       <div class="studio-actions">
-        <button type="button" onclick="applyToyStudioControls()">Apply Style</button>
-        <button type="button" onclick="resetToyStudioStyle()">Reset To Base</button>
+        <button type="button" onclick="applyToyStudioControls()">Apply Changes</button>
+        <button type="button" onclick="resetToyStudioStyle()">Reset Shape</button>
       </div>
     </div>
   </div>
@@ -3412,6 +3411,7 @@ const status = document.getElementById("status")
 const progressBar = document.getElementById("progressBar")
 
 let currentJobId=null
+window.currentWorkspacePanel = window.currentWorkspacePanel || "3d"
 
 
 async function upload(){
@@ -4446,6 +4446,7 @@ syncPlatformLinks("workspace")
 }
 
 function openPanel(name){
+window.currentWorkspacePanel = name
 
 document.querySelectorAll("[data-panel-trigger]")
 .forEach(btn=>btn.classList.remove("active"))
@@ -4477,6 +4478,10 @@ addDefaultLights()
 
 status.innerHTML=""
 progressBar.style.width="0%"
+
+if(typeof syncStudioLaunchButton === "function"){
+syncStudioLaunchButton()
+}
 
 }
 

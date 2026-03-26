@@ -46,9 +46,6 @@ Download
 </button>
 <div class="viewer-title">AI Viewer</div>
 <div class="viewer-toolbar">
-  <button id="studioLaunch" class="studio-launch hidden" onclick="openToyStudio()">
-  Open Studio
-  </button>
   <div class="viewer-modes">
     <button class="viewer-mode-btn" data-viewer-mode="wireframe">Wire</button>
     <button class="viewer-mode-btn" data-viewer-mode="print">Print</button>
@@ -182,13 +179,14 @@ function setViewerMode(mode){
 }
 
 function syncStudioLaunchButton(){
-  const launchButton = document.getElementById("studioLaunch")
+  const launchButton = document.getElementById("toyPanelStudioLaunch")
 
   if(!launchButton){
     return
   }
 
-  const shouldShow = Boolean(window.currentViewerAsset) && (
+  const activePanel = window.currentWorkspacePanel || "3d"
+  const shouldShow = activePanel === "toy" && Boolean(window.currentViewerAsset) && (
     window.currentViewerAsset.type === "glb" ||
     window.currentViewerAsset.type === "stl"
   )
@@ -197,6 +195,14 @@ function syncStudioLaunchButton(){
 }
 
 function openToyStudio(){
+  if((window.currentWorkspacePanel || "3d") !== "toy"){
+    return
+  }
+
+  if(!window.currentViewerAsset){
+    return
+  }
+
   const overlay = document.getElementById("toyStudioOverlay")
   if(!overlay) return
   if(typeof refreshToyStudioState === "function"){

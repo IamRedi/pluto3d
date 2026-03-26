@@ -734,6 +734,9 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - a few tiny login micro-adjustments are still parked for later visual refinement, but the current width/centering/theme direction is now acceptable as the working baseline
   - the opening product rail/test-ad style surface has now been removed from the workspace, and customer-facing copy across Workspace, Plans, Gallery, Shop, Privacy, Terms, and Support has been cleaned to reduce test/demo/future-state language
   - `Plans`, `Gallery`, and `Shop` now have a cleaner final-pass hierarchy with summary feature blocks and calmer premium copy so those surfaces read more like real product sections than placeholder content
+  - the main viewer now stays deep black in both dark and light theme modes so the 3D stage keeps the same stronger visual depth regardless of surrounding UI theme
+  - the attempted structural redesign of the `Toy` panel was rolled back after review; the simpler toy layout remains the baseline for now
+  - `Toy Studio` launch is now constrained to the `Toy` panel and only appears after a toy model is loaded into the viewer, so the editing flow stays contextual instead of floating globally across the workspace
 
 ## Chat Handoff 1
 
