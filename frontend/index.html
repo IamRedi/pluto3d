@@ -4298,6 +4298,10 @@ default:
 }
 
 function isPremiumPreview(){
+if(typeof window.isLocalTestMode === "function" && window.isLocalTestMode()){
+return true
+}
+
 return getAuthPreviewState().mode === "premium"
 }
 

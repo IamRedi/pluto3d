@@ -6,6 +6,7 @@ window.PLUTO_AUTH_STACK = {
 
 const AUTH_PREVIEW_STORAGE_KEY = "plutoAuthPreviewState";
 const AUTH_USAGE_STORAGE_KEY = "plutoUsagePreviewState";
+const IS_LOCAL_TEST_MODE = ["127.0.0.1", "localhost"].includes(window.location.hostname);
 
 const AUTH_PREVIEW_DEFAULT = {
   mode: "guest",
@@ -136,6 +137,10 @@ function getCurrentUsageBucket(){
 }
 
 function getUsageLimit(featureKey){
+  if(IS_LOCAL_TEST_MODE){
+    return null;
+  }
+
   const mode = getCurrentUsageBucket();
   return USAGE_LIMITS[mode]?.[featureKey] ?? null;
 }
@@ -182,6 +187,10 @@ function resetUsagePreview(){
 }
 
 function shouldShowSponsorPreview(){
+  if(IS_LOCAL_TEST_MODE){
+    return false;
+  }
+
   return getAuthPreviewState().mode !== "premium";
 }
 
@@ -255,3 +264,4 @@ window.incrementUsage = incrementUsage;
 window.resetUsagePreview = resetUsagePreview;
 window.shouldShowSponsorPreview = shouldShowSponsorPreview;
 window.showSponsorPreview = showSponsorPreview;
+window.isLocalTestMode = () => IS_LOCAL_TEST_MODE;

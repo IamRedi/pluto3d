@@ -95,6 +95,29 @@ function setCurrentViewerAsset(asset){
   window.currentViewerAsset = asset || null
   window.currentViewerIsIdle = Boolean(asset && asset.type === "idle")
   syncStudioLaunchButton()
+
+  const printStatus = document.getElementById("printStatus")
+
+  if(!printStatus){
+    return
+  }
+
+  if(!asset || asset.type === "idle"){
+    printStatus.innerHTML = "Load a GLB model to enable print fix."
+    return
+  }
+
+  if(asset.type === "glb"){
+    printStatus.innerHTML = "GLB model ready. Click Fix for Print to create STL."
+    return
+  }
+
+  if(asset.type === "stl"){
+    printStatus.innerHTML = "Print-ready STL loaded. You can download it now."
+    return
+  }
+
+  printStatus.innerHTML = "Print fix works only with GLB models."
 }
 
 function clearSceneContents(){
@@ -103,7 +126,12 @@ function clearSceneContents(){
   }
 }
 
-function clearViewerOverlayArtifacts(){
+function clearViewerOverlayArtifacts(options = {}){
+  const {
+    hideDownload = true,
+    hideAiCore = true
+  } = options
+
   const svgViewer = document.getElementById("svgViewer")
   if(svgViewer){
     svgViewer.style.display = "none"
@@ -120,12 +148,12 @@ function clearViewerOverlayArtifacts(){
   }
 
   const viewerDownload = document.getElementById("viewerDownload")
-  if(viewerDownload){
+  if(hideDownload && viewerDownload){
     viewerDownload.classList.add("hidden")
   }
 
   const aiCore = document.querySelector(".ai-core")
-  if(aiCore){
+  if(hideAiCore && aiCore){
     aiCore.style.display = "none"
   }
 }
@@ -153,17 +181,15 @@ function applyIdleViewerLook(model){
       return
     }
 
-    child.material = new THREE.MeshPhysicalMaterial({
-      color: 0xa9c4ea,
-      emissive: 0x26476f,
-      emissiveIntensity: 0.42,
-      metalness: 0.22,
+    child.material = new THREE.MeshStandardMaterial({
+      color: 0xe6f1ff,
+      emissive: 0x5a82ad,
+      emissiveIntensity: 0.46,
+      metalness: 0.04,
       roughness: 0.18,
-      transmission: 0.12,
       transparent: true,
       opacity: 0.94,
-      clearcoat: 0.72,
-      clearcoatRoughness: 0.18
+      side: THREE.DoubleSide
     })
   })
 }
@@ -388,7 +414,7 @@ function loadSTL(url, filename="model.stl"){
   loader.load(url, (geometry) => {
     window.viewerIdleRequestId += 1
     window.currentViewerIsIdle = false
-    clearViewerOverlayArtifacts()
+    clearViewerOverlayArtifacts({ hideDownload: false })
     clearSceneContents()
 
     const material = new THREE.MeshStandardMaterial({
@@ -433,7 +459,7 @@ function loadGLB(url, filename="model.glb"){
 
     window.viewerIdleRequestId += 1
     window.currentViewerIsIdle = false
-    clearViewerOverlayArtifacts()
+    clearViewerOverlayArtifacts({ hideDownload: false })
     clearSceneContents()
 
     addDefaultLights()

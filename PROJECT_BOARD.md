@@ -745,6 +745,11 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - the top header brand now drops the square icon and keeps only the `Pluto3D` wordmark with subtitle so the main navigation bar feels cleaner and less logo-heavy
   - the main viewer can now fall back to a slow-rotating idle featured GLB when no active asset is loaded, using `frontend/app-config.js` (`idleViewerModelUrl`) so the placeholder model can be swapped later without changing viewer logic
   - the idle viewer test model has been switched from `Robot.glb` to `f1car.glb`, with a slightly faster rotation and a lower resting position so the featured placeholder sits better in the frame
+  - the first idle-viewer pass introduced two frontend regressions that are now being corrected: real GLB/STL loads must keep the download button visible, and the shared viewer asset setter must still update print status instead of losing that feedback to the idle-viewer helper layer
+  - production `3D` free generation is also showing a separate backend issue in Railway HTTP logs: `POST /api/print-fix` is returning `502`, so that path needs backend-side investigation and should not be confused with the viewer-only regressions
+  - localhost testing now bypasses guest/free usage limits, premium locks, and sponsor wait states so the full frontend can be exercised safely on `127.0.0.1` / `localhost` before validating production behavior
+  - the idle `f1car` placeholder is being kept intentionally separate from real generated models and tuned with a lighter double-sided hologram material so it reads as a featured ambient preview rather than a dark silhouette
+  - localhost testing is now being opened up deliberately: guest/free usage limits and premium locks are bypassed only on `127.0.0.1` / `localhost`, and sponsor preview waits are disabled there so full workspace testing can happen cleanly before checking production again
 
 ## Chat Handoff 1
 
