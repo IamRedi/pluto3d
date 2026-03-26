@@ -26,6 +26,31 @@ Core product direction:
 - use APIs for expensive generation tasks
 - keep editing, cleanup, print-fix, and presentation as Pluto3D's real value
 
+## Version Tracks
+
+### Frozen Production
+
+- live version: `v1`
+- live domain: `https://www.pluto-3d.com`
+- frozen baseline branch: `main`
+- frozen release branch: `release/v1-launch`
+- frozen release tag: `v1-launch-2026-03-26`
+
+Rule:
+
+- do not use this line for normal feature work
+- only production bug fixes should touch it
+
+### Active Development
+
+- active version: `v1.1`
+- active branch: `develop`
+
+Rule:
+
+- all new implementation work should continue here
+- keep version-tracking notes in `VERSION_WORKFLOW.md`
+
 ## Current Architecture
 
 ### Frontend
@@ -221,13 +246,14 @@ These are not all needed immediately, but this is the expected future shape.
 
 ## Current Active Tasks
 
-1. Keep production stable during the friend-test beta round
-2. Collect UX issues without destabilizing auth, billing, or backend runtime
-3. Keep client-facing surfaces premium, minimal, and non-technical
-4. Leave heavy backend work paused unless it directly protects stability
-5. Keep documentation and handoff notes current after every meaningful step
-6. Preserve plug-and-play deployment value for future buyer installs
-7. Build the `.1` backlog from real testing feedback instead of speculation
+1. Keep `v1` production stable and frozen unless a real live bug requires a hotfix
+2. Continue all normal product work on `v1.1` through `develop`
+3. Collect UX issues without destabilizing auth, billing, or backend runtime
+4. Keep client-facing surfaces premium, minimal, and non-technical
+5. Leave heavy backend work paused unless it directly protects stability
+6. Keep documentation and handoff notes current after every meaningful step
+7. Preserve plug-and-play deployment value for future buyer installs
+8. Build the `.1` backlog from real testing feedback instead of speculation
 
 ## Working Board
 
@@ -379,6 +405,7 @@ Current implementation note:
 
 ## Key Reference Docs
 
+- `VERSION_WORKFLOW.md`
 - `PROJECT_BOARD.md`
 - `README.md`
 - `AUTH_IMPLEMENTATION_PLAN.md`
@@ -758,6 +785,14 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - backend auth no longer accepts a raw decoded JWT payload as a fallback authenticated user when Supabase verification fails
 - JWT claims are now used only to fill missing verified fields after `/auth/v1/user` succeeds, which keeps premium/account routes safer during auth API failures or malformed tokens
 
+### 2026-03-26 Version Split
+
+- `v1` is now treated as the first frozen launch version
+- `main` remains the frozen production baseline for `v1`
+- `release/v1-launch` and `v1-launch-2026-03-26` were created as stable release references
+- active development now moves to `develop` as `v1.1`
+- `VERSION_WORKFLOW.md` is now the internal manual for branch usage, hotfix flow, and version-state recovery
+
 ## Chat Handoff 1
 
 If we continue in a new chat, resume from this exact state:
@@ -824,15 +859,16 @@ Use this section first when a new chat resumes the project.
 
 If anything is unclear, check these first in this order:
 
-1. `PROJECT_BOARD.md`
-2. `AUTH_IMPLEMENTATION_PLAN.md`
-3. `SUPABASE_SETUP_CHECKLIST.md`
-4. `PRODUCTION_ACTIVATION_RUNBOOK.md`
-5. `SELF_HOST_QUICKSTART.md`
-6. `INFRASTRUCTURE_INVENTORY.md`
-7. `PLATFORM_ACCOUNTS_OVERVIEW.md`
-8. `PLUG_AND_PLAY_DEPLOY_CHECKLIST.md`
-9. `STRIPE_LIVE_SWITCH_CHECKLIST.md`
+1. `VERSION_WORKFLOW.md`
+2. `PROJECT_BOARD.md`
+3. `AUTH_IMPLEMENTATION_PLAN.md`
+4. `SUPABASE_SETUP_CHECKLIST.md`
+5. `PRODUCTION_ACTIVATION_RUNBOOK.md`
+6. `SELF_HOST_QUICKSTART.md`
+7. `INFRASTRUCTURE_INVENTORY.md`
+8. `PLATFORM_ACCOUNTS_OVERVIEW.md`
+9. `PLUG_AND_PLAY_DEPLOY_CHECKLIST.md`
+10. `STRIPE_LIVE_SWITCH_CHECKLIST.md`
 
 ### How We Work In This Project
 
