@@ -3612,10 +3612,12 @@ status.innerHTML = "Preparing your 3D result..."
 progressBar.style.width = "35%"
 
 try{
-const stlUrl = await createPrintReadyStl(testModel.url, testModel.filename)
+if(!testModel?.url){
+throw new Error("Test model is not available.")
+}
 
-loadSTL(stlUrl, "free-test-print.stl")
-showViewerDownload(stlUrl, "free-test-print.stl")
+loadGLB(testModel.url, testModel.filename || "free-test.glb")
+showViewerDownload(testModel.url, testModel.filename || "free-test.glb")
 incrementUsage("free3dGeneration")
 progressBar.style.width = "100%"
 status.innerHTML = "3D result is ready."

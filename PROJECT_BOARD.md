@@ -757,6 +757,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - `print-fix` is now being hardened for low-RAM production: uploaded GLBs are streamed to disk in chunks instead of being fully read into memory, the repair/export path is serialized behind a single-job queue, temporary upload files are cleaned up after each request, and the repair pipeline itself has been lightened by disabling the extra simplify step for now
   - localhost testing is now being opened up deliberately: guest/free usage limits and premium locks are bypassed only on `127.0.0.1` / `localhost`, and sponsor preview waits are disabled there so full workspace testing can happen cleanly before checking production again
   - real `print-fix` is now intentionally paused for the current social-circle/public testing round so repeated STL repair attempts cannot take down the main backend; the button keeps a short preparation feel and then serves a stable placeholder STL download until version `.1` revisits the proper queue/worker solution
+  - `3D test` preview no longer routes the viewer through the temporary STL/print-fix path; it now loads the same GLB-style test asset path used by `Toy test`, so preview quality stays consistent across both surfaces
+  - the empty-viewer `f1car` fallback is now being shifted back toward real GLB presentation instead of a full material override, using dedicated idle-only lights so the car stays visible without diverging too far from the cleaner `Toy` viewer look
 
 ## Chat Handoff 1
 

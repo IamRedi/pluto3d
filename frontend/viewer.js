@@ -34,6 +34,10 @@ directionalLight.position.set(2, 3, 4)
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.65)
 const hemisphereLight = new THREE.HemisphereLight(0x7dd3fc, 0x12061f, 0.85)
+const idleKeyLight = new THREE.DirectionalLight(0xf4f9ff, 1.85)
+idleKeyLight.position.set(-2.6, 2.8, 4.2)
+const idleFillLight = new THREE.DirectionalLight(0xaed6ff, 1.05)
+idleFillLight.position.set(2.4, 1.6, -2.4)
 const idleModelLoader = new THREE.GLTFLoader()
 
 window.currentViewerMode = window.currentViewerMode || "studio"
@@ -77,6 +81,11 @@ function addDefaultLights(){
   scene.add(ambientLight)
   scene.add(hemisphereLight)
   scene.add(directionalLight)
+}
+
+function addIdleViewerLights(){
+  scene.add(idleKeyLight)
+  scene.add(idleFillLight)
 }
 
 function getIdleViewerModelUrl(){
@@ -175,25 +184,6 @@ function fitModelToViewer(model){
   controls.update()
 }
 
-function applyIdleViewerLook(model){
-  model.traverse((child) => {
-    if(!child.isMesh){
-      return
-    }
-
-    child.material = new THREE.MeshStandardMaterial({
-      color: 0xe6f1ff,
-      emissive: 0x5a82ad,
-      emissiveIntensity: 0.46,
-      metalness: 0.04,
-      roughness: 0.18,
-      transparent: true,
-      opacity: 0.94,
-      side: THREE.DoubleSide
-    })
-  })
-}
-
 function restoreIdleViewer(){
   if(window.currentViewerAsset && window.currentViewerAsset.type !== "idle"){
     return
@@ -214,13 +204,13 @@ function restoreIdleViewer(){
 
     clearSceneContents()
     addDefaultLights()
+    addIdleViewerLights()
 
     const model = gltf.scene
     window.currentModel = model
 
     fitModelToViewer(model)
     model.position.y -= 0.12
-    applyIdleViewerLook(model)
     scene.add(model)
 
     setCurrentViewerAsset({
