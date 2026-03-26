@@ -44,6 +44,7 @@ window.currentViewerMode = "wireframe"
 window.currentViewerAsset = window.currentViewerAsset || null
 window.currentViewerIsIdle = window.currentViewerIsIdle || false
 window.viewerIdleRequestId = window.viewerIdleRequestId || 0
+window.viewerPrintCtaArmed = false
 
 camera.position.z = 3
 
@@ -327,6 +328,7 @@ function applyViewerModeToModel(mode){
 
 function setViewerMode(mode){
   window.currentViewerMode = mode
+  window.viewerPrintCtaArmed = mode === "print"
   syncViewerModeButtons()
   syncViewerPrintCta()
 
@@ -367,7 +369,7 @@ function syncViewerPrintCta(){
   }
 
   const asset = window.currentViewerAsset
-  const show = window.currentViewerMode === "print" && Boolean(asset) && (
+  const show = window.viewerPrintCtaArmed && window.currentViewerMode === "print" && Boolean(asset) && (
     asset.type === "glb" || asset.type === "stl"
   )
 
@@ -473,6 +475,7 @@ function loadSTL(url, filename="model.stl"){
 
   loader.load(url, (geometry) => {
     window.currentViewerMode = "wireframe"
+    window.viewerPrintCtaArmed = false
     syncViewerModeButtons()
     syncViewerPrintCta()
     window.viewerIdleRequestId += 1
@@ -521,6 +524,7 @@ function loadGLB(url, filename="model.glb"){
     console.log("GLB loaded:", url)
 
     window.currentViewerMode = "wireframe"
+    window.viewerPrintCtaArmed = false
     syncViewerModeButtons()
     syncViewerPrintCta()
     window.viewerIdleRequestId += 1

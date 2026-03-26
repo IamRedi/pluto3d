@@ -762,6 +762,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - print-mode viewer UX is being extended with a dedicated STL download CTA: when `Print` mode is active, a plain-text printer note and a second large STL-focused button appear near the top-right controls so printer-targeted export feels explicit without replacing the main GLB download CTA
   - the STL CTA is now being tightened so it appears only for real loaded/generated models (GLB/STL), with a smaller `Direct to printer` note and a cleaner `Bambu Lab / Prusa .stl` button presentation under the `Wire / Print` controls
   - viewer mode now resets back to `Wire` on load and on each new asset so the STL CTA stays hidden until the user explicitly presses `Print`
+  - the STL CTA now also uses an explicit user-action flag, so it only appears after the user has actively pressed `Print` in the current viewer session rather than from any carried viewer state
 
 ## Chat Handoff 1
 
