@@ -738,6 +738,11 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - the attempted structural redesign of the `Toy` panel was rolled back after review; the simpler toy layout remains the baseline for now
   - `Toy Studio` launch is now constrained to the `Toy` panel and only appears after a toy model is loaded into the viewer, so the editing flow stays contextual instead of floating globally across the workspace
   - `Profile` metadata and usage counters are being flattened away from glass-chip/button treatment so only real actions read as buttons while account information reads like plain product data
+  - the green accent palette has been softened slightly at the theme-token level so the Windows-like graphite look stays cleaner and less loud across buttons, controls, progress, and accents
+  - `Gallery` is being simplified into two clean sections: latest history on top and featured best work below, with `Robot.glb` and `f1car.glb` used as the current showcase anchors
+  - `Shop` is being reduced to a single clean placeholder field so it can later grow into a real catalog/gallery surface without carrying half-finished filler blocks
+  - the sidebar orb has been decoupled visually from the green accent palette and moved to a softer grey-blue pulse, while the sidebar label itself stays `Pluto` instead of inheriting the full `Pluto3D` app name
+  - the top header brand now drops the square icon and keeps only the `Pluto3D` wordmark with subtitle so the main navigation bar feels cleaner and less logo-heavy
 
 ## Chat Handoff 1
 
