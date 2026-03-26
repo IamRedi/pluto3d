@@ -794,6 +794,43 @@ color:var(--text-soft);
 line-height:1.8;
 }
 
+.surface-feature-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:12px;
+margin-top:16px;
+}
+
+.surface-feature-item{
+padding:14px 16px;
+border-radius:18px;
+border:1px solid var(--line-soft);
+background:var(--surface-card);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.surface-feature-label{
+font-size:10px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+margin-bottom:8px;
+}
+
+.surface-feature-value{
+font-size:15px;
+font-weight:700;
+line-height:1.35;
+color:var(--text-main);
+}
+
+.surface-inline-note{
+margin-top:14px;
+font-size:12px;
+line-height:1.65;
+color:var(--text-soft);
+}
+
 .surface-mini-label{
 font-size:11px;
 letter-spacing:0.12em;
@@ -2697,6 +2734,7 @@ min-height:unset;
 
 .surface-grid,
 .surface-plan-grid,
+.surface-feature-grid,
 .surface-stat-grid,
 .profile-summary-grid,
 .gallery-grid,
@@ -3788,6 +3826,20 @@ return `
   <div class="platform-surface-card wide">
     <div class="platform-surface-card-title">Choose the Pluto3D plan that fits your workflow</div>
     <div class="platform-surface-card-copy">Start free, create with a real account, and move to Premium when you want the fastest path into full 3D generation and billing-managed access.</div>
+    <div class="surface-feature-grid">
+      <div class="surface-feature-item">
+        <div class="surface-feature-label">Guest</div>
+        <div class="surface-feature-value">Fast first look with simple workspace access.</div>
+      </div>
+      <div class="surface-feature-item">
+        <div class="surface-feature-label">Free Account</div>
+        <div class="surface-feature-value">More room to create with account-linked continuity.</div>
+      </div>
+      <div class="surface-feature-item">
+        <div class="surface-feature-label">Premium</div>
+        <div class="surface-feature-value">Full 3D path, billing management, and higher-output flow.</div>
+      </div>
+    </div>
     <div class="surface-plan-grid">
       <div class="surface-plan-card">
         <div class="surface-plan-tier">Guest</div>
@@ -3853,6 +3905,7 @@ return `
       <span class="surface-chip primary">${currentPlan}</span>
       <span class="surface-chip premium">${billingRuntime?.priceLabel || "Premium pricing"}</span>
     </div>
+    <div class="surface-inline-note">The customer-facing goal is a simple upgrade path: clear access, clear billing state, and no operator-style clutter.</div>
   </div>
 `
 }
@@ -3865,6 +3918,20 @@ return `
         <div class="platform-surface-card-label">Featured Work</div>
         <div class="platform-surface-card-title">A cleaner library of saved and printable results</div>
         <div class="platform-surface-card-copy">Gallery brings together styled toy outputs, printable files, vectors, and source imagery inside one polished account surface.</div>
+        <div class="surface-feature-grid">
+          <div class="surface-feature-item">
+            <div class="surface-feature-label">Saved Outputs</div>
+            <div class="surface-feature-value">3D, SVG, image, and print assets stay grouped together.</div>
+          </div>
+          <div class="surface-feature-item">
+            <div class="surface-feature-label">Readable Status</div>
+            <div class="surface-feature-value">File state stays visible without turning into a technical dashboard.</div>
+          </div>
+          <div class="surface-feature-item">
+            <div class="surface-feature-label">Quick Return</div>
+            <div class="surface-feature-value">Assets can send users back into the workspace in one step.</div>
+          </div>
+        </div>
         <div class="gallery-wall" style="margin-top:16px;">
           <div class="gallery-tile">
             <div>
@@ -3942,6 +4009,7 @@ return `
         <div class="platform-surface-card-label">Library Direction</div>
         <div class="platform-surface-card-title">Built for saved outputs and quick return paths</div>
         <div class="platform-surface-card-copy">The gallery direction is a simple asset library with filters, saved outputs, and one-click return paths back into the workspace.</div>
+        <div class="surface-inline-note">The goal is a gallery that feels like a polished creative library, not a technical job log.</div>
       </div>
     </div>
   </div>
@@ -3960,6 +4028,20 @@ return `
       <div class="platform-surface-card-label">Catalog</div>
       <div class="platform-surface-card-title">Presets, packs, and printable kits</div>
       <div class="platform-surface-card-copy">Shop is the clean commercial layer for curated toy styles, printable kits, and creator-ready asset packs.</div>
+      <div class="surface-feature-grid">
+        <div class="surface-feature-item">
+          <div class="surface-feature-label">Style Packs</div>
+          <div class="surface-feature-value">Curated presets for faster visual direction.</div>
+        </div>
+        <div class="surface-feature-item">
+          <div class="surface-feature-label">Print Kits</div>
+          <div class="surface-feature-value">Printable bundles built for cleaner output paths.</div>
+        </div>
+        <div class="surface-feature-item">
+          <div class="surface-feature-label">Creator Assets</div>
+          <div class="surface-feature-value">Premium assets that fit the same product language.</div>
+        </div>
+      </div>
       <div class="surface-chip-row">
         <span class="surface-chip">Preset Packs</span>
         <span class="surface-chip">Printable Kits</span>
@@ -3987,6 +4069,7 @@ return `
         <li>Print-ready starter bundle</li>
         <li>Branded showcase collection</li>
       </ul>
+      <div class="surface-inline-note">The shop should read like a premium catalog extension of the studio, not a separate experimental page.</div>
     </div>
   </div>
 `
