@@ -40,7 +40,7 @@ const idleFillLight = new THREE.DirectionalLight(0xaed6ff, 1.05)
 idleFillLight.position.set(2.4, 1.6, -2.4)
 const idleModelLoader = new THREE.GLTFLoader()
 
-window.currentViewerMode = window.currentViewerMode || "studio"
+window.currentViewerMode = "wireframe"
 window.currentViewerAsset = window.currentViewerAsset || null
 window.currentViewerIsIdle = window.currentViewerIsIdle || false
 window.viewerIdleRequestId = window.viewerIdleRequestId || 0
@@ -194,7 +194,7 @@ function restoreIdleViewer(){
     return
   }
 
-  window.currentViewerMode = "studio"
+  window.currentViewerMode = "wireframe"
   const idleUrl = getIdleViewerModelUrl()
   const requestId = ++window.viewerIdleRequestId
 
@@ -472,7 +472,7 @@ function loadSTL(url, filename="model.stl"){
   const loader = new THREE.STLLoader()
 
   loader.load(url, (geometry) => {
-    window.currentViewerMode = "studio"
+    window.currentViewerMode = "wireframe"
     syncViewerModeButtons()
     syncViewerPrintCta()
     window.viewerIdleRequestId += 1
@@ -520,7 +520,7 @@ function loadGLB(url, filename="model.glb"){
   loader.load(url, (gltf) => {
     console.log("GLB loaded:", url)
 
-    window.currentViewerMode = "studio"
+    window.currentViewerMode = "wireframe"
     syncViewerModeButtons()
     syncViewerPrintCta()
     window.viewerIdleRequestId += 1

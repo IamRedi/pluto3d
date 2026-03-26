@@ -761,6 +761,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - the empty-viewer `f1car` fallback is now being shifted back toward real GLB presentation instead of a full material override, using dedicated idle-only lights so the car stays visible without diverging too far from the cleaner `Toy` viewer look
   - print-mode viewer UX is being extended with a dedicated STL download CTA: when `Print` mode is active, a plain-text printer note and a second large STL-focused button appear near the top-right controls so printer-targeted export feels explicit without replacing the main GLB download CTA
   - the STL CTA is now being tightened so it appears only for real loaded/generated models (GLB/STL), with a smaller `Direct to printer` note and a cleaner `Bambu Lab / Prusa .stl` button presentation under the `Wire / Print` controls
+  - viewer mode now resets back to `Wire` on load and on each new asset so the STL CTA stays hidden until the user explicitly presses `Print`
 
 ## Chat Handoff 1
 
