@@ -528,8 +528,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
 - Local frontend auth config and backend service key are set.
 - Live Google login/logout works in the app.
 - Backend premium resolution now works using:
-  - Supabase user verification when available
-  - JWT payload fallback when the user endpoint does not return the email cleanly
+  - Supabase user verification as the required auth gate
+  - JWT payload claim merge only for missing verified fields like email or metadata
 - The active premium test user resolves correctly as `Premium`.
 - Login/Profile UI has been cleaned up to feel more product-like and less preview-oriented.
 - Backend auth debug output has been removed from the profile-facing flow.
@@ -752,6 +752,11 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - the STL CTA now also uses an explicit user-action flag, so it only appears after the user has actively pressed `Print` in the current viewer session rather than from any carried viewer state
   - viewer CTA gating has been tightened again so the STL CTA is now tied to the currently loaded asset and the actually active `Print` button state; the idle showroom model also stays visually clean in `Wire` instead of turning into dense mesh noise after a `Print -> Wire` toggle
   - the idle rotating showroom GLB has been scaled up again so the empty-viewer hero model reads larger and more intentional inside the stage before any real user asset is loaded
+
+### 2026-03-26 Auth Hardening
+
+- backend auth no longer accepts a raw decoded JWT payload as a fallback authenticated user when Supabase verification fails
+- JWT claims are now used only to fill missing verified fields after `/auth/v1/user` succeeds, which keeps premium/account routes safer during auth API failures or malformed tokens
 
 ## Chat Handoff 1
 

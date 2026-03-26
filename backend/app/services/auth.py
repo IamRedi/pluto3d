@@ -34,21 +34,26 @@ def verify_supabase_user(access_token: str) -> Optional[dict]:
     if not supabase_url or not service_role_key or not access_token:
         return None
 
-    response = requests.get(
-        f"{supabase_url}/auth/v1/user",
-        headers={
-            "apikey": service_role_key,
-            "Authorization": f"Bearer {access_token}",
-        },
-        timeout=15,
-    )
+    try:
+        response = requests.get(
+            f"{supabase_url}/auth/v1/user",
+            headers={
+                "apikey": service_role_key,
+                "Authorization": f"Bearer {access_token}",
+            },
+            timeout=15,
+        )
+    except requests.RequestException:
+        return None
 
     if response.status_code == 200:
         user = response.json()
+        claims = decode_supabase_jwt_payload(access_token)
+        user = _merge_verified_user_with_token_claims(user, claims)
         user["_auth_source"] = "supabase_api"
         return user
 
-    return decode_supabase_jwt_payload(access_token)
+    return None
 
 
 def decode_supabase_jwt_payload(access_token: str) -> Optional[dict]:
@@ -77,3 +82,24 @@ def decode_supabase_jwt_payload(access_token: str) -> Optional[dict]:
         "user_metadata": data.get("user_metadata") or {},
         "_auth_source": "jwt_fallback",
     }
+
+
+def _merge_verified_user_with_token_claims(user: dict, claims: Optional[dict]) -> dict:
+    if not claims:
+        return user
+
+    merged_user = dict(user)
+
+    if not merged_user.get("email") and claims.get("email"):
+        merged_user["email"] = claims["email"]
+
+    if not merged_user.get("id") and claims.get("id"):
+        merged_user["id"] = claims["id"]
+
+    if not merged_user.get("app_metadata") and claims.get("app_metadata"):
+        merged_user["app_metadata"] = claims["app_metadata"]
+
+    if not merged_user.get("user_metadata") and claims.get("user_metadata"):
+        merged_user["user_metadata"] = claims["user_metadata"]
+
+    return merged_user

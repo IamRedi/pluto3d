@@ -176,6 +176,7 @@ Expected first backend integration tasks:
 Current backend scaffold status:
 
 - `backend/app/services/auth.py` verifies Supabase user tokens
+- decoded JWT claims are only used to supplement missing verified fields after Supabase accepts the token
 - `backend/app/services/plans.py` resolves `guest/free/premium`
 - `backend/app/routes/account.py` exposes `/api/account/me`
 - invalid or expired auth transitions are treated as `guest` for cleaner frontend refresh behavior
