@@ -7,6 +7,8 @@ window.PLUTO_APP_CONFIG = {
   supportEmail: "support@pluto3d.app",
   supportLabel: "Email Support",
   idleViewerModelUrl: "models/f1car.glb",
+  printFixPaused: true,
+  printFixPlaceholderStlUrl: "models/print-ready-preview.stl",
   auth: {
     supabaseUrl: "https://jnpqcpsxyzhhsrceqepk.supabase.co",
     supabasePublishableKey: "sb_publishable_yu8iT7e3ocTl7CCjpWFPNw_qeoGerPo"

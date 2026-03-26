@@ -276,6 +276,10 @@ These are not all needed immediately, but this is the expected future shape.
 
 - YOLO / Ultralytics auto-focus for SVG
 - any heavy segmentation pipeline on Railway
+- version `.1` backend scaling work:
+  - real concurrent `print-fix` queue / worker path
+  - memory sizing strategy for Railway or alternate compute host
+  - broader multi-user load handling beyond `print-fix`
 
 ## Latest Product Decisions
 
@@ -752,6 +756,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - Railway `print-fix` investigation found a concrete backend bug: the repair pipeline was calling outdated `trimesh` methods (`remove_degenerate_faces`, `remove_duplicate_faces`, `simplify_quadratic_decimation`) that do not exist in the pinned version, so the mesh repair layer is being updated to use the compatible `nondegenerate_faces`, `unique_faces`, and `simplify_quadric_decimation` path instead
   - `print-fix` is now being hardened for low-RAM production: uploaded GLBs are streamed to disk in chunks instead of being fully read into memory, the repair/export path is serialized behind a single-job queue, temporary upload files are cleaned up after each request, and the repair pipeline itself has been lightened by disabling the extra simplify step for now
   - localhost testing is now being opened up deliberately: guest/free usage limits and premium locks are bypassed only on `127.0.0.1` / `localhost`, and sponsor preview waits are disabled there so full workspace testing can happen cleanly before checking production again
+  - real `print-fix` is now intentionally paused for the current social-circle/public testing round so repeated STL repair attempts cannot take down the main backend; the button keeps a short preparation feel and then serves a stable placeholder STL download until version `.1` revisits the proper queue/worker solution
 
 ## Chat Handoff 1
 

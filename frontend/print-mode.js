@@ -34,6 +34,22 @@ function resolveAssetUrl(url){
   return new URL(url, window.location.href).href
 }
 
+function isPrintFixPaused(){
+  return Boolean(window.PLUTO_APP_CONFIG?.printFixPaused)
+}
+
+function getPrintFixPlaceholderUrl(){
+  return resolveAssetUrl(
+    window.PLUTO_APP_CONFIG?.printFixPlaceholderStlUrl || "models/print-ready-preview.stl"
+  )
+}
+
+function wait(ms){
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms)
+  })
+}
+
 async function createPrintReadyStl(sourceUrl, sourceFilename = "model.glb"){
   const sourceRes = await fetch(sourceUrl)
 
@@ -76,6 +92,17 @@ async function fixCurrentModelForPrint(){
 
   if(!currentViewerAsset || currentViewerAsset.type !== "glb"){
     alert("Load a GLB model first")
+    return
+  }
+
+  if(isPrintFixPaused()){
+    printStatus.innerHTML = "Preparing print-ready STL preview..."
+    await wait(900)
+
+    const stlUrl = getPrintFixPlaceholderUrl()
+    loadSTL(stlUrl, "print-ready-preview.stl")
+    showViewerDownload(stlUrl, "print-ready-preview.stl")
+    printStatus.innerHTML = "Print fix is paused during public testing. A ready STL preview is available for download."
     return
   }
 
