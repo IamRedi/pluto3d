@@ -743,6 +743,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - `Shop` is being reduced to a single clean placeholder field so it can later grow into a real catalog/gallery surface without carrying half-finished filler blocks
   - the sidebar orb has been decoupled visually from the green accent palette and moved to a softer grey-blue pulse, while the sidebar label itself stays `Pluto` instead of inheriting the full `Pluto3D` app name
   - the top header brand now drops the square icon and keeps only the `Pluto3D` wordmark with subtitle so the main navigation bar feels cleaner and less logo-heavy
+  - the main viewer can now fall back to a slow-rotating idle featured GLB when no active asset is loaded, using `frontend/app-config.js` (`idleViewerModelUrl`) so the placeholder model can be swapped later without changing viewer logic
+  - the idle viewer test model has been switched from `Robot.glb` to `f1car.glb`, with a slightly faster rotation and a lower resting position so the featured placeholder sits better in the frame
 
 ## Chat Handoff 1
 

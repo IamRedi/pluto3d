@@ -34,11 +34,16 @@ directionalLight.position.set(2, 3, 4)
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.65)
 const hemisphereLight = new THREE.HemisphereLight(0x7dd3fc, 0x12061f, 0.85)
+const idleModelLoader = new THREE.GLTFLoader()
+
+window.currentViewerMode = window.currentViewerMode || "studio"
+window.currentViewerAsset = window.currentViewerAsset || null
+window.currentViewerIsIdle = window.currentViewerIsIdle || false
+window.viewerIdleRequestId = window.viewerIdleRequestId || 0
 
 camera.position.z = 3
 
 const controls = new THREE.OrbitControls(camera, renderer.domElement)
-window.currentViewerMode = window.currentViewerMode || "studio"
 
 const VIEWER_SHELL = `
 <button id="viewerDownload" class="viewer-download hidden">
@@ -72,6 +77,135 @@ function addDefaultLights(){
   scene.add(ambientLight)
   scene.add(hemisphereLight)
   scene.add(directionalLight)
+}
+
+function getIdleViewerModelUrl(){
+  return window.PLUTO_APP_CONFIG?.idleViewerModelUrl || "models/f1car.glb"
+}
+
+function resolveAssetUrl(url){
+  try{
+    return new URL(url, window.location.href).href
+  }catch(error){
+    return url
+  }
+}
+
+function setCurrentViewerAsset(asset){
+  window.currentViewerAsset = asset || null
+  window.currentViewerIsIdle = Boolean(asset && asset.type === "idle")
+  syncStudioLaunchButton()
+}
+
+function clearSceneContents(){
+  while(scene.children.length > 0){
+    scene.remove(scene.children[0])
+  }
+}
+
+function clearViewerOverlayArtifacts(){
+  const svgViewer = document.getElementById("svgViewer")
+  if(svgViewer){
+    svgViewer.style.display = "none"
+  }
+
+  const fakeWrap = document.getElementById("fake3dWrap")
+  if(fakeWrap){
+    fakeWrap.remove()
+  }
+
+  if(window.fakeInterval){
+    clearInterval(window.fakeInterval)
+    window.fakeInterval = null
+  }
+
+  const viewerDownload = document.getElementById("viewerDownload")
+  if(viewerDownload){
+    viewerDownload.classList.add("hidden")
+  }
+
+  const aiCore = document.querySelector(".ai-core")
+  if(aiCore){
+    aiCore.style.display = "none"
+  }
+}
+
+function fitModelToViewer(model){
+  const box = new THREE.Box3().setFromObject(model)
+  const center = box.getCenter(new THREE.Vector3())
+  model.position.x -= center.x
+  model.position.z -= center.z
+
+  const minY = box.min.y
+  model.position.y -= minY
+
+  const size = box.getSize(new THREE.Vector3()).length()
+  const scale = size > 0 ? 2 / size : 1
+  model.scale.setScalar(scale)
+
+  camera.position.set(0, 0, 3)
+  controls.update()
+}
+
+function applyIdleViewerLook(model){
+  model.traverse((child) => {
+    if(!child.isMesh){
+      return
+    }
+
+    child.material = new THREE.MeshPhysicalMaterial({
+      color: 0xa9c4ea,
+      emissive: 0x26476f,
+      emissiveIntensity: 0.42,
+      metalness: 0.22,
+      roughness: 0.18,
+      transmission: 0.12,
+      transparent: true,
+      opacity: 0.94,
+      clearcoat: 0.72,
+      clearcoatRoughness: 0.18
+    })
+  })
+}
+
+function restoreIdleViewer(){
+  if(window.currentViewerAsset && window.currentViewerAsset.type !== "idle"){
+    return
+  }
+
+  const idleUrl = getIdleViewerModelUrl()
+  const requestId = ++window.viewerIdleRequestId
+
+  clearViewerOverlayArtifacts()
+  clearSceneContents()
+  addDefaultLights()
+  window.currentModel = null
+
+  idleModelLoader.load(idleUrl, (gltf) => {
+    if(requestId !== window.viewerIdleRequestId){
+      return
+    }
+
+    clearSceneContents()
+    addDefaultLights()
+
+    const model = gltf.scene
+    window.currentModel = model
+
+    fitModelToViewer(model)
+    model.position.y -= 0.12
+    applyIdleViewerLook(model)
+    scene.add(model)
+
+    setCurrentViewerAsset({
+      type: "idle",
+      url: resolveAssetUrl(idleUrl),
+      filename: "idle-viewer.glb"
+    })
+  }, undefined, (error) => {
+    console.error("Idle GLB load error:", error)
+    window.currentViewerIsIdle = false
+  })
 }
 
 function resetViewerShell(){
@@ -219,6 +353,7 @@ function closeToyStudio(){
 
 resetViewerShell()
 addDefaultLights()
+restoreIdleViewer()
 
 function loadModel(url){
   loadGLB(url, "model.glb")
@@ -226,6 +361,9 @@ function loadModel(url){
 
 function animate(){
   requestAnimationFrame(animate)
+  if(window.currentViewerIsIdle && window.currentModel){
+    window.currentModel.rotation.y += 0.0052
+  }
   renderer.render(scene, camera)
 }
 
@@ -248,18 +386,10 @@ function loadSTL(url, filename="model.stl"){
   const loader = new THREE.STLLoader()
 
   loader.load(url, (geometry) => {
-    const svgViewer = document.getElementById("svgViewer")
-    if(svgViewer) svgViewer.style.display = "none"
-
-    const fakeWrap = document.getElementById("fake3dWrap")
-    if(fakeWrap) fakeWrap.remove()
-
-    const aiCore = document.querySelector(".ai-core")
-    if(aiCore) aiCore.style.display = "none"
-
-    while(scene.children.length > 0){
-      scene.remove(scene.children[0])
-    }
+    window.viewerIdleRequestId += 1
+    window.currentViewerIsIdle = false
+    clearViewerOverlayArtifacts()
+    clearSceneContents()
 
     const material = new THREE.MeshStandardMaterial({
       color: 0x00d9ff,
@@ -301,38 +431,20 @@ function loadGLB(url, filename="model.glb"){
   loader.load(url, (gltf) => {
     console.log("GLB loaded:", url)
 
-    const svgViewer = document.getElementById("svgViewer")
-    if(svgViewer) svgViewer.style.display = "none"
-
-    const fakeWrap = document.getElementById("fake3dWrap")
-    if(fakeWrap) fakeWrap.remove()
-
-    while(scene.children.length > 0){
-      scene.remove(scene.children[0])
-    }
+    window.viewerIdleRequestId += 1
+    window.currentViewerIsIdle = false
+    clearViewerOverlayArtifacts()
+    clearSceneContents()
 
     addDefaultLights()
 
     const model = gltf.scene
     window.currentModel = model
 
-    const box = new THREE.Box3().setFromObject(model)
-    const center = box.getCenter(new THREE.Vector3())
-    model.position.x -= center.x
-    model.position.z -= center.z
-
-    const minY = box.min.y
-    model.position.y -= minY
-
-    const size = box.getSize(new THREE.Vector3()).length()
-    const scale = 2 / size
-    model.scale.setScalar(scale)
-
+    fitModelToViewer(model)
     scene.add(model)
     applyViewerModeToModel(window.currentViewerMode)
 
-    camera.position.set(0, 0, 3)
-    controls.update()
     if(typeof refreshToyStudioState === "function"){
       refreshToyStudioState()
     }
@@ -344,6 +456,7 @@ function loadGLB(url, filename="model.glb"){
     })
   }, undefined, (error) => {
     console.error("GLB load error:", error)
+    restoreIdleViewer()
   })
 }
 
@@ -376,9 +489,9 @@ function showViewerDownload(url, filename="file"){
 function loadFake3D(imageUrl){
   const viewer = document.getElementById("viewer")
 
-  while(scene.children.length > 0){
-    scene.remove(scene.children[0])
-  }
+  window.viewerIdleRequestId += 1
+  window.currentViewerIsIdle = false
+  clearSceneContents()
 
   addDefaultLights()
   window.currentModel = null

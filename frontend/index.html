@@ -4475,6 +4475,10 @@ while(scene.children.length > 0){
 scene.remove(scene.children[0])
 }
 addDefaultLights()
+setCurrentViewerAsset(null)
+if(typeof restoreIdleViewer === "function"){
+restoreIdleViewer()
+}
 
 status.innerHTML=""
 progressBar.style.width="0%"
