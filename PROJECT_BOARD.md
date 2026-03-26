@@ -763,6 +763,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - the STL CTA is now being tightened so it appears only for real loaded/generated models (GLB/STL), with a smaller `Direct to printer` note and a cleaner `Bambu Lab / Prusa .stl` button presentation under the `Wire / Print` controls
   - viewer mode now resets back to `Wire` on load and on each new asset so the STL CTA stays hidden until the user explicitly presses `Print`
   - the STL CTA now also uses an explicit user-action flag, so it only appears after the user has actively pressed `Print` in the current viewer session rather than from any carried viewer state
+  - viewer CTA gating has been tightened again so the STL CTA is now tied to the currently loaded asset and the actually active `Print` button state; the idle showroom model also stays visually clean in `Wire` instead of turning into dense mesh noise after a `Print -> Wire` toggle
+  - the idle rotating showroom GLB has been scaled up again so the empty-viewer hero model reads larger and more intentional inside the stage before any real user asset is loaded
 
 ## Chat Handoff 1
 

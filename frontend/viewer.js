@@ -45,6 +45,7 @@ window.currentViewerAsset = window.currentViewerAsset || null
 window.currentViewerIsIdle = window.currentViewerIsIdle || false
 window.viewerIdleRequestId = window.viewerIdleRequestId || 0
 window.viewerPrintCtaArmed = false
+window.viewerPrintCtaAssetKey = window.viewerPrintCtaAssetKey || null
 
 camera.position.z = 3
 
@@ -106,8 +107,20 @@ function resolveAssetUrl(url){
 }
 
 function setCurrentViewerAsset(asset){
+  const previousAssetKey = getViewerAssetKey(window.currentViewerAsset)
   window.currentViewerAsset = asset || null
   window.currentViewerIsIdle = Boolean(asset && asset.type === "idle")
+
+  const currentAssetKey = getViewerAssetKey(window.currentViewerAsset)
+  if(previousAssetKey !== currentAssetKey){
+    window.viewerPrintCtaArmed = false
+    window.viewerPrintCtaAssetKey = null
+    if(window.currentViewerMode === "print"){
+      window.currentViewerMode = "wireframe"
+    }
+    syncViewerModeButtons()
+  }
+
   syncStudioLaunchButton()
   syncViewerPrintCta()
 
@@ -217,6 +230,7 @@ function restoreIdleViewer(){
     window.currentModel = model
 
     fitModelToViewer(model)
+    model.scale.multiplyScalar(1.5)
     model.position.y -= 0.12
     scene.add(model)
 
@@ -245,6 +259,14 @@ function bindViewerModeControls(){
       setViewerMode(button.dataset.viewerMode)
     })
   })
+}
+
+function getViewerAssetKey(asset){
+  if(!asset){
+    return ""
+  }
+
+  return `${asset.type || "asset"}::${asset.url || ""}::${asset.filename || ""}`
 }
 
 function syncViewerModeButtons(){
@@ -295,6 +317,14 @@ function buildModeMaterial(sourceMaterial, mode){
   }
 
   if(mode === "wireframe"){
+    // Keep the idle showroom model clean instead of turning it into dense wire noise.
+    if(window.currentViewerAsset?.type === "idle"){
+      const idleMaterial = sourceMaterial.clone()
+      idleMaterial.transparent = true
+      idleMaterial.opacity = 0.96
+      return idleMaterial
+    }
+
     const wireMaterial = sourceMaterial.clone()
     wireMaterial.wireframe = true
     wireMaterial.transparent = true
@@ -329,6 +359,9 @@ function applyViewerModeToModel(mode){
 function setViewerMode(mode){
   window.currentViewerMode = mode
   window.viewerPrintCtaArmed = mode === "print"
+  window.viewerPrintCtaAssetKey = mode === "print"
+    ? getViewerAssetKey(window.currentViewerAsset)
+    : null
   syncViewerModeButtons()
   syncViewerPrintCta()
 
@@ -363,13 +396,20 @@ function attachViewerDownload(button, url, filename){
 function syncViewerPrintCta(){
   const wrap = document.getElementById("viewerPrintCta")
   const button = document.getElementById("viewerPrintDownload")
+  const printButton = viewerContainer.querySelector('[data-viewer-mode="print"]')
 
   if(!wrap || !button){
     return
   }
 
   const asset = window.currentViewerAsset
-  const show = window.viewerPrintCtaArmed && window.currentViewerMode === "print" && Boolean(asset) && (
+  const currentAssetKey = getViewerAssetKey(asset)
+  const printButtonActive = Boolean(printButton && printButton.classList.contains("active"))
+  const show = window.viewerPrintCtaArmed &&
+    printButtonActive &&
+    window.currentViewerMode === "print" &&
+    currentAssetKey === window.viewerPrintCtaAssetKey &&
+    Boolean(asset) && (
     asset.type === "glb" || asset.type === "stl"
   )
 
