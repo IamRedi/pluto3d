@@ -732,6 +732,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - login shell has now been tightened to sit closer to the auth card itself, with the remaining login-specific blue surface styling moved onto the same graphite/green token direction
   - login modal width is now controlled by a single `--login-modal-width` token so the auth surface can be widened or tightened later without hunting multiple layout rules
   - a few tiny login micro-adjustments are still parked for later visual refinement, but the current width/centering/theme direction is now acceptable as the working baseline
+  - the opening product rail/test-ad style surface has now been removed from the workspace, and customer-facing copy across Workspace, Plans, Gallery, Shop, Privacy, Terms, and Support has been cleaned to reduce test/demo/future-state language
 
 ## Chat Handoff 1
 

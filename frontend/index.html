@@ -1398,120 +1398,6 @@ scrollbar-width: none;        /* Firefox */
 display:none;   /* Chrome, Safari */
 }
 
-.product-rail{
-display:flex;
-flex-direction:column;
-gap:16px;
-padding:0 0 14px;
-margin:0 0 28px;
-}
-
-.product-rail.hidden{
-display:none;
-}
-
-.product-topbar{
-display:flex;
-align-items:flex-start;
-justify-content:space-between;
-gap:16px;
-padding:16px 18px 18px;
-border-radius:24px;
-background:var(--bg-panel-strong);
-border:1px solid var(--line-soft);
-box-shadow:0 18px 40px rgba(2,6,23,0.22);
-}
-
-.product-topbar-main{
-display:flex;
-align-items:flex-start;
-justify-content:space-between;
-gap:16px;
-flex:1;
-}
-
-.product-brand{
-display:flex;
-flex-direction:column;
-gap:7px;
-}
-
-.product-kicker{
-font-size:10px;
-letter-spacing:0.18em;
-text-transform:uppercase;
-color:var(--cyan);
-font-weight:700;
-}
-
-.product-name{
-font-family:Orbitron;
-font-size:22px;
-letter-spacing:0.08em;
-text-transform:uppercase;
-}
-
-.product-lead{
-max-width:560px;
-font-size:13px;
-line-height:1.65;
-color:var(--text-soft);
-}
-
-.product-badges{
-display:flex;
-align-items:center;
-gap:8px;
-flex-wrap:wrap;
-justify-content:flex-end;
-}
-
-.product-close{
-width:40px;
-min-width:40px;
-height:40px;
-padding:0;
-margin-top:0;
-border-radius:999px;
-font-size:18px;
-line-height:1;
-}
-
-.badge{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-padding:8px 11px;
-border-radius:999px;
-font-size:10px;
-font-weight:700;
-letter-spacing:0.11em;
-text-transform:uppercase;
-border:1px solid var(--line-soft);
-background:rgba(255,255,255,0.04);
-color:var(--text-main);
-}
-
-.badge-beta{
-background:rgba(88,184,115,0.14);
-color:#a9e2b5;
-}
-
-.badge-free{
-background:rgba(255,255,255,0.06);
-}
-
-.badge-premium{
-background:rgba(166, 182, 133, 0.14);
-color:#d9e7b1;
-}
-
-.product-cards{
-display:grid;
-grid-template-columns:repeat(3, minmax(0, 1fr));
-gap:14px;
-}
-
 .product-banner{
 display:flex;
 align-items:flex-start;
@@ -1523,6 +1409,17 @@ border-radius:18px;
 border:1px solid var(--line-soft);
 background:rgba(255,255,255,0.03);
 box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.product-close{
+width:40px;
+min-width:40px;
+height:40px;
+padding:0;
+margin-top:0;
+border-radius:999px;
+font-size:18px;
+line-height:1;
 }
 
 .product-banner.hidden{
@@ -1559,38 +1456,6 @@ text-transform:uppercase;
 .product-banner-text{
 font-size:13px;
 line-height:1.55;
-color:var(--text-soft);
-}
-
-.product-card{
-padding:18px 18px 20px;
-border-radius:22px;
-background:
-linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025)),
-radial-gradient(circle at top right, rgba(88,184,115,0.1), transparent 34%);
-border:1px solid var(--line-soft);
-box-shadow:
-inset 0 1px 0 rgba(255,255,255,0.04),
-0 16px 34px rgba(2,6,23,0.12);
-}
-
-.product-card-label{
-font-size:10px;
-letter-spacing:0.16em;
-text-transform:uppercase;
-color:var(--text-soft);
-margin-bottom:10px;
-}
-
-.product-card-title{
-font-size:17px;
-font-weight:700;
-margin-bottom:8px;
-}
-
-.product-card-copy{
-font-size:13px;
-line-height:1.7;
 color:var(--text-soft);
 }
 
@@ -2290,15 +2155,6 @@ height:280px;
 .viewer-title{
 font-size:14px;
 }
-.product-topbar{
-padding:14px 14px 16px;
-}
-.product-name{
-font-size:20px;
-}
-.product-cards{
-gap:12px;
-}
 .toolpanel{
 max-width:none;
 padding:0;
@@ -2932,48 +2788,12 @@ to{background-position:1000px 1000px;}
 
 <div class="panel">
 
-<div class="product-rail" id="productRail">
-  <div class="product-topbar">
-    <div class="product-topbar-main">
-      <div class="product-brand">
-        <div class="product-kicker">Creative Production Workspace</div>
-        <div id="productStudioName" class="product-name">Pluto3D Studio</div>
-        <div class="product-lead">Build image, SVG, toy, and print-ready 3D outputs inside one focused workspace with cleaner production rhythm.</div>
-      </div>
-      <div class="product-badges">
-        <span class="badge badge-beta">Studio Ready</span>
-        <span class="badge badge-free">SVG + Print</span>
-        <span class="badge badge-premium">Premium Path</span>
-      </div>
-    </div>
-    <button type="button" class="product-close" onclick="dismissProductRail()">×</button>
+<div id="productBillingBanner" class="product-banner hidden">
+  <div class="product-banner-copy">
+    <div id="productBillingBannerTitle" class="product-banner-title"></div>
+    <div id="productBillingBannerText" class="product-banner-text"></div>
   </div>
-
-  <div id="productBillingBanner" class="product-banner hidden">
-    <div class="product-banner-copy">
-      <div id="productBillingBannerTitle" class="product-banner-title"></div>
-      <div id="productBillingBannerText" class="product-banner-text"></div>
-    </div>
-    <button type="button" class="product-close" onclick="dismissBillingBanner()">×</button>
-  </div>
-
-  <div class="product-cards">
-    <div class="product-card">
-      <div class="product-card-label">How It Works</div>
-      <div class="product-card-title">Generate, edit, print</div>
-      <div class="product-card-copy">Use the workspace to create assets, style toy models, and move toward print-ready export.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-card-label">Platform Layer</div>
-      <div class="product-card-title">Accounts, plans, and billing are connected</div>
-      <div class="product-card-copy">The studio now runs with live auth, backend-owned premium resolution, and a production-ready billing path.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-card-label">Commercial Layer</div>
-      <div class="product-card-title">Built for subscriptions and future add-ons</div>
-      <div class="product-card-copy">The product is now structured for premium plans, billing management, and future creator-focused packs or printable bundles.</div>
-    </div>
-  </div>
+  <button type="button" class="product-close" onclick="dismissBillingBanner()">×</button>
 </div>
 
 <!-- 3D -->
@@ -2981,7 +2801,7 @@ to{background-position:1000px 1000px;}
 <div id="panel-3d" class="toolpanel">
 
 <div class="section-title">3D Generator</div>
-<div class="section-intro">Upload a reference image, start with a test model, or move into the premium Meshy path when you want full 3D output.</div>
+<div class="section-intro">Upload a reference image and move from quick 3D results into the premium Meshy path when you want full production output.</div>
 
 <div class="dropzone" id="drop3d">
 
@@ -2995,7 +2815,7 @@ style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10p
 </div>
 
 <button id="generateFreeBtn">
-Generate Test
+Generate 3D
 </button>
 
 <button class="btn-premium" data-premium-feature="premium-3d-generation" onclick="runPremiumAction('premium-3d-generation', generate3D)">
@@ -3161,7 +2981,7 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 
 <br><br>
 
-<button id="generateToyTestBtn" onclick="generateToyTest()">Generate Test Toy</button>
+<button id="generateToyTestBtn" onclick="generateToyTest()">Generate Toy</button>
 <button id="generateToyProBtn" class="btn-premium" data-premium-feature="premium-toy-generation" onclick="runPremiumAction('premium-toy-generation', generateToyPro)">Generate Toy PRO</button>
 
 <div class="status" id="toyStatus"></div>
@@ -3187,7 +3007,7 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <div class="panel-footer">
   <div class="panel-footer-copy">
     <div class="panel-footer-title">Pluto3D Studio</div>
-    <div id="panelFooterTagline" class="panel-footer-meta">AI-assisted creation for clean 2D to 3D workflows.</div>
+    <div id="panelFooterTagline" class="panel-footer-meta">Polished image, SVG, toy, and print-ready 3D workflows in one studio.</div>
     <div id="panelFooterSupport" class="panel-footer-meta">Email Support: support@pluto3d.app</div>
   </div>
   <div class="panel-footer-links">
@@ -3207,7 +3027,7 @@ Download
 <button id="studioLaunch" class="studio-launch hidden" onclick="openToyStudio()">
 Open Studio
 </button>
-<div class="viewer-title">AI Viewer</div>
+<div class="viewer-title">Studio Viewer</div>
 
 
 <img id="svgViewer"
@@ -3458,7 +3278,7 @@ try{
     return "Launch Host Pending"
   }
 
-  return configuredHost === currentHost ? "Viewing Launch Host" : "Viewing Preview Host"
+  return configuredHost === currentHost ? "Primary Domain" : "Preview Domain"
 }catch(error){
   return "Launch Host Pending"
 }
@@ -3494,11 +3314,6 @@ if(platformBrandSubtitle){
 const sidebarBrandName = document.getElementById("sidebarBrandName")
 if(sidebarBrandName){
   sidebarBrandName.textContent = getAppName()
-}
-
-const productStudioName = document.getElementById("productStudioName")
-if(productStudioName){
-  productStudioName.textContent = getStudioName()
 }
 
 const panelFooterTagline = document.getElementById("panelFooterTagline") || document.querySelector(".panel-footer > div:first-child")
@@ -3683,7 +3498,7 @@ const testModel = looksLikeCar
 
 resetViewerShell()
 
-status.innerHTML = "Creating print-ready 3D test model..."
+status.innerHTML = "Preparing your 3D result..."
 progressBar.style.width = "35%"
 
 try{
@@ -3693,15 +3508,15 @@ loadSTL(stlUrl, "free-test-print.stl")
 showViewerDownload(stlUrl, "free-test-print.stl")
 incrementUsage("free3dGeneration")
 progressBar.style.width = "100%"
-status.innerHTML = "Print-ready STL generated from test model."
+status.innerHTML = "3D result is ready."
 }catch(err){
-console.error("Free 3D test generation failed:", err)
+console.error("3D generation failed:", err)
 progressBar.style.width = "0%"
-status.innerHTML = "Free 3D test generation failed."
+status.innerHTML = "3D generation failed."
 
 const msg = err.message && err.message.includes("Failed to fetch")
 ? "Backend is not running on http://127.0.0.1:8000. Start FastAPI server first."
-: (err.message || "Free 3D test generation failed")
+: (err.message || "3D generation failed")
 
 alert(msg)
 }
@@ -3735,30 +3550,12 @@ applyTheme(nextTheme)
 localStorage.setItem("plutoTheme", nextTheme)
 }
 
-function dismissProductRail(){
-const rail = document.getElementById("productRail")
-if(rail){
-rail.classList.add("hidden")
-}
-localStorage.setItem("plutoProductRailDismissed", "1")
-}
-
 function applySvgThemeStyle(){
 const svgViewer = document.getElementById("svgViewer")
 if(!svgViewer) return
 
 const theme = document.body.getAttribute("data-theme") || "dark"
 svgViewer.style.filter = theme === "light" ? "none" : "invert(1) brightness(2)"
-}
-
-function initializeProductRail(){
-const rail = document.getElementById("productRail")
-if(!rail){
-return
-}
-
-const dismissed = localStorage.getItem("plutoProductRailDismissed") === "1"
-rail.classList.toggle("hidden", dismissed)
 }
 
 function initializeTheme(){
@@ -3774,28 +3571,28 @@ cards: [
   {
     label: "Current State",
     title: "Studio tools are live",
-    copy: "AI image generation, SVG conversion, toy generation, Toy Studio controls, and Print Fix are all available in the current studio flow."
+    copy: "AI image generation, SVG conversion, toy creation, Toy Studio controls, and Print Fix are all available in the current studio flow."
   },
   {
     label: "Next Step",
     title: "Keep building toward launch",
-    copy: "The next product layers are sharper account history, more polished commercial surfaces, and final live-payment verification."
+    copy: "The next product layers are sharper account history, cleaner customer-facing surfaces, and final live-payment verification."
   }
 ]
 },
 gallery: {
 title: "Gallery",
-subtitle: "Gallery is where Pluto3D can present saved outputs, showcase assets, and future account-linked creation history.",
+subtitle: "Gallery brings together saved outputs, polished examples, and account-linked creation history.",
 template: "gallery"
 },
 plans: {
 title: "Plans",
-subtitle: "The plans surface defines how Pluto3D will work for guests, logged-in free users, and premium subscribers.",
+subtitle: "Plans explains the access difference between guest, free account, and premium workspace use.",
 template: "plans"
 },
 shop: {
 title: "Shop",
-subtitle: "The shop is positioned as the commercial layer for packs, presets, printable kits, and branded toy styles.",
+subtitle: "Shop presents packs, presets, printable kits, and future creator assets inside the same product language.",
 template: "shop"
 },
 profile: {
@@ -3810,17 +3607,17 @@ template: "login"
 },
 privacy: {
 title: "Privacy",
-subtitle: `Privacy will explain how uploads, prompts, generated assets, and account data are handled inside ${getStudioName()}.`,
+subtitle: `Privacy explains how uploads, prompts, generated assets, and account data are handled inside ${getStudioName()}.`,
 cards: [
   {
     label: "Uploads",
     title: "Working files",
-    copy: "This page will explain how images, temporary models, and generated outputs are stored, processed, and removed."
+    copy: "This page explains how images, temporary models, and generated outputs are stored, processed, and removed."
   },
   {
     label: "Accounts",
     title: "User data",
-    copy: "This page will document what profile information is stored and how plan, billing, and history data are used."
+    copy: "This page documents what profile information is stored and how plan, billing, and history data are used."
   },
   {
     label: "Transparency",
@@ -3837,12 +3634,12 @@ cards: [
   {
     label: "Use",
     title: "Platform usage rules",
-    copy: "This section will define fair use, generation limits, prohibited content, and safe handling of uploaded assets."
+    copy: "This section defines fair use, generation limits, prohibited content, and safe handling of uploaded assets."
   },
   {
     label: "Billing",
     title: "Subscriber terms",
-    copy: "Once Stripe is connected, this page will explain subscriptions, renewals, and future refund or cancellation logic."
+    copy: "This page explains subscriptions, renewals, and cancellation handling for billing-managed accounts."
   }
 ]
 },
@@ -3853,12 +3650,12 @@ cards: [
   {
     label: "Direct Help",
     title: "Fast support path",
-    copy: `Use this contact path for feedback, bug reporting, account help, and rollout questions. ${getSupportContactLine()}`
+    copy: `Use this contact path for feedback, bug reporting, account help, and billing questions. ${getSupportContactLine()}`
   },
   {
     label: "Coverage",
     title: "Customer support layer",
-    copy: `Support can cover FAQ, contact flow, account help, billing help, and product guidance for non-expert users. ${getSupportContactLine()}`
+    copy: `Support covers FAQ, contact flow, account help, billing help, and product guidance for non-expert users. ${getSupportContactLine()}`
   }
 ]
 }
@@ -3931,10 +3728,10 @@ if(isPremium && subscriptionStatus === "active"){
 if(isPremium && planSource === "tester_email"){
   return {
     title: "Premium access is active",
-    copy: "This account is premium through the operator fallback path. It is useful for rollout verification before full Stripe ownership is required.",
+    copy: "This account is currently marked as premium and has access to the full premium workspace.",
     actionLabel: null,
     actionHandler: "",
-    supportLabel: "Operator premium path"
+    supportLabel: "Premium access linked"
   }
 }
 
@@ -3949,7 +3746,7 @@ if(isPremium && backendPlan === "premium"){
 }
 
 return {
-  title: "Premium upgrade path is prepared",
+  title: "Premium upgrade is available",
   copy: "This account is currently on the free path. Premium can be activated through Stripe checkout, then managed from the billing portal once a customer link exists.",
   actionLabel: authState.loggedIn ? "Upgrade To Premium" : "Sign In To Upgrade",
   actionHandler: authState.loggedIn ? "startPremiumCheckout()" : "startPremiumCheckout()",
@@ -3998,7 +3795,7 @@ return `
         <div class="surface-plan-price">Free <span>no login</span></div>
         <ul class="surface-plan-list">
           <li>See the workspace</li>
-          <li>Try toy test mode</li>
+          <li>Try toy creation</li>
           <li>Basic SVG tools</li>
           <li>Simple first-touch experience</li>
         </ul>
@@ -4011,18 +3808,18 @@ return `
           <li>More usage room</li>
           <li>Toy Studio access</li>
           <li>Print Fix workflow</li>
-          <li>Sponsor/ad state during generation</li>
+          <li>Cleaner account continuity</li>
         </ul>
       </div>
       <div class="surface-plan-card featured">
         <div class="surface-plan-tier">Premium</div>
         <div class="surface-plan-title">Subscriber</div>
-        <div class="surface-plan-price">${billingRuntime?.priceLabel || "$19 / month target"}</div>
+        <div class="surface-plan-price">${billingRuntime?.priceLabel || "Premium pricing"}</div>
         <ul class="surface-plan-list">
           <li>Premium 3D generation</li>
-          <li>No ads during generation</li>
           <li>Better limits and faster flow</li>
-          <li>Future creator-grade tools</li>
+          <li>Cleaner billing management</li>
+          <li>Higher-output production path</li>
         </ul>
         <div class="surface-actions">
           ${primaryPlanActionHandler ? `<button type="button" onclick="${primaryPlanActionHandler}">${primaryPlanActionLabel}</button>` : `<button type="button" disabled>${primaryPlanActionLabel}</button>`}
@@ -4031,7 +3828,7 @@ return `
         <div class="surface-chip-row">
           <span class="surface-chip primary">${subscriptionStatus}</span>
           <span class="surface-chip">${authState.mode === "premium" ? "Premium Active" : "Ready To Upgrade"}</span>
-          <span class="surface-chip">${canManageBilling ? "Billing Portal Ready" : "Portal After Subscription"}</span>
+          <span class="surface-chip">${canManageBilling ? "Billing Portal" : "Portal After Upgrade"}</span>
           ${renewalDate ? `<span class="surface-chip">Renews ${renewalDate}</span>` : ""}
         </div>
       </div>
@@ -4045,7 +3842,7 @@ return `
       <li>AI image limit: ${limits.aiImage === null ? "Unlimited" : limits.aiImage}</li>
       <li>SVG limit: ${limits.svgGeneration === null ? "Unlimited" : limits.svgGeneration}</li>
       <li>Toy generation limit: ${limits.toyGeneration === null ? "Unlimited" : limits.toyGeneration}</li>
-      <li>3D test generation limit: ${limits.free3dGeneration === null ? "Unlimited" : limits.free3dGeneration}</li>
+      <li>3D generation limit: ${limits.free3dGeneration === null ? "Unlimited" : limits.free3dGeneration}</li>
     </ul>
   </div>
   <div class="platform-surface-card">
@@ -4054,7 +3851,7 @@ return `
     <div class="platform-surface-card-copy">Upgrade actions are designed to stay inside the product flow, with billing management available as soon as a customer subscription exists.</div>
     <div class="surface-chip-row">
       <span class="surface-chip primary">${currentPlan}</span>
-      <span class="surface-chip premium">${billingRuntime?.priceLabel || "Premium Pricing Ready"}</span>
+      <span class="surface-chip premium">${billingRuntime?.priceLabel || "Premium pricing"}</span>
     </div>
   </div>
 `
@@ -4065,9 +3862,9 @@ return `
   <div class="gallery-grid wide">
     <div class="surface-stack">
       <div class="platform-surface-card">
-        <div class="platform-surface-card-label">Showcase Wall</div>
-        <div class="platform-surface-card-title">Featured creations and printable results</div>
-        <div class="platform-surface-card-copy">This is where Pluto3D can showcase the best toy edits, printable STL results, premium examples, and saved highlights.</div>
+        <div class="platform-surface-card-label">Featured Work</div>
+        <div class="platform-surface-card-title">A cleaner library of saved and printable results</div>
+        <div class="platform-surface-card-copy">Gallery brings together styled toy outputs, printable files, vectors, and source imagery inside one polished account surface.</div>
         <div class="gallery-wall" style="margin-top:16px;">
           <div class="gallery-tile">
             <div>
@@ -4082,7 +3879,7 @@ return `
           <div class="gallery-tile">
             <div>
               <div class="gallery-tile-title">F1 Print Model</div>
-              <div class="gallery-tile-copy">A clean viewer-ready test model pushed through the print-fix pipeline.</div>
+              <div class="gallery-tile-copy">A clean viewer-ready model pushed through the print-fix pipeline.</div>
             </div>
             <div class="gallery-tile-meta">
               <span>Print Fix</span>
@@ -4114,14 +3911,14 @@ return `
     </div>
     <div class="surface-stack">
       <div class="platform-surface-card">
-        <div class="platform-surface-card-label">Recent Jobs</div>
-        <div class="platform-surface-card-title">Recent activity preview</div>
-        <div class="platform-surface-card-copy">This surface is designed to become the real history view for saved generations, exports, and print-ready assets.</div>
+        <div class="platform-surface-card-label">Recent Activity</div>
+        <div class="platform-surface-card-title">Recent exports and workspace progress</div>
+        <div class="platform-surface-card-copy">Recent activity keeps saved generations, exports, and printable assets readable inside a customer-facing workspace.</div>
         <div class="history-list" style="margin-top:14px;">
           <div class="history-row">
             <div class="history-row-main">
               <div class="history-row-title">Robot GLB</div>
-              <div class="history-row-copy">Toy test generation with studio styling path.</div>
+              <div class="history-row-copy">Toy creation with the current studio styling path.</div>
             </div>
             <div class="history-row-type">3D</div>
           </div>
@@ -4142,9 +3939,9 @@ return `
         </div>
       </div>
       <div class="platform-surface-card">
-        <div class="platform-surface-card-label">Asset Direction</div>
-        <div class="platform-surface-card-title">From showcase to real asset library</div>
-        <div class="platform-surface-card-copy">The product direction is to support saved outputs, simple filters, and one-click return paths back into the workspace.</div>
+        <div class="platform-surface-card-label">Library Direction</div>
+        <div class="platform-surface-card-title">Built for saved outputs and quick return paths</div>
+        <div class="platform-surface-card-copy">The gallery direction is a simple asset library with filters, saved outputs, and one-click return paths back into the workspace.</div>
       </div>
     </div>
   </div>
@@ -4160,9 +3957,9 @@ const billingRuntime = typeof getBillingRuntime === "function"
 return `
   <div class="surface-grid">
     <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Shop Vision</div>
+      <div class="platform-surface-card-label">Catalog</div>
       <div class="platform-surface-card-title">Presets, packs, and printable kits</div>
-      <div class="platform-surface-card-copy">The shop is positioned to sell curated toy style packs, printable collectible kits, and branded creator bundles.</div>
+      <div class="platform-surface-card-copy">Shop is the clean commercial layer for curated toy styles, printable kits, and creator-ready asset packs.</div>
       <div class="surface-chip-row">
         <span class="surface-chip">Preset Packs</span>
         <span class="surface-chip">Printable Kits</span>
@@ -4170,20 +3967,20 @@ return `
       </div>
     </div>
     <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Revenue Layer</div>
-      <div class="platform-surface-card-title">Monetize beyond subscriptions</div>
-      <div class="platform-surface-card-copy">This gives Pluto3D a second revenue path through asset packs, collaborations, sponsors, and creator-oriented digital products.</div>
+      <div class="platform-surface-card-label">Premium Access</div>
+      <div class="platform-surface-card-title">Unlock premium and future paid packs</div>
+      <div class="platform-surface-card-copy">Premium stays the main unlock path today, while the same surface can later extend into curated paid packs and creator-focused add-ons.</div>
       <div class="surface-actions">
         <button type="button" onclick="startPremiumCheckout()">${authState.loggedIn ? "Unlock Premium" : "Sign In To Unlock"}</button>
       </div>
       <div class="surface-chip-row">
         <span class="surface-chip">${billingRuntime?.premiumPlanName || "Pluto3D Premium"}</span>
-        <span class="surface-chip premium">${billingRuntime?.priceLabel || "$19 / month target"}</span>
+        <span class="surface-chip premium">${billingRuntime?.priceLabel || "Premium pricing"}</span>
       </div>
     </div>
     <div class="platform-surface-card wide">
-      <div class="platform-surface-card-label">Suggested First Catalog</div>
-      <div class="platform-surface-card-title">Starter ideas for a commercial catalog</div>
+      <div class="platform-surface-card-label">Starter Catalog</div>
+      <div class="platform-surface-card-title">Curated ideas for the first paid collection</div>
       <ul class="platform-surface-list">
         <li>Chibi toy preset pack</li>
         <li>Vehicle styling preset pack</li>
@@ -4356,7 +4153,7 @@ return `
   <div class="platform-surface-card profile-usage-card">
     <div class="platform-surface-card-label">Usage</div>
     <div class="platform-surface-card-title">Activity snapshot</div>
-    <div class="platform-surface-card-copy">A compact view of the current staged usage counters across the main creation flows.</div>
+    <div class="platform-surface-card-copy">A compact view of the current usage counters across the main creation flows.</div>
     <div class="surface-stat-grid" style="margin-top:14px;">
       <div class="surface-stat">
         <div class="surface-stat-value">${usage.aiImage}</div>
@@ -4387,7 +4184,7 @@ return `
   <div class="platform-surface-card profile-support-card">
     <div class="platform-surface-card-label">Support</div>
     <div class="platform-surface-card-title">Need help with account or billing?</div>
-    <div class="platform-surface-card-copy">Support is positioned to stay clean and human: account questions, upgrade help, and rollout issues all route through the same contact path.</div>
+    <div class="platform-surface-card-copy">Support stays clean and human: account questions, upgrade help, and billing issues all route through the same contact path.</div>
     <div class="surface-chip-row">
       <span class="surface-chip">${getSupportLabel()}</span>
     </div>
@@ -4442,7 +4239,7 @@ const labels = {
   aiImage: "AI image generation",
   svgGeneration: "SVG generation",
   toyGeneration: "Toy generation",
-  free3dGeneration: "3D test generation"
+  free3dGeneration: "3D generation"
 }
 
 return labels[featureKey] || featureKey
@@ -4457,7 +4254,7 @@ if(body){
       <div class="platform-surface-card-label">Usage Limit Reached</div>
       <div class="platform-surface-card-title">${getUsageLabel(featureKey)} is currently limited for your account tier</div>
       <div class="platform-surface-card-copy">
-        Your current plan is <strong>${getAuthPreviewState().planLabel}</strong>. Usage limits still use the staged rollout counters, while premium locks already follow the backend account plan.
+        Your current plan is <strong>${getAuthPreviewState().planLabel}</strong>. Usage limits apply to the current account tier, while premium locks follow the backend account plan.
       </div>
     </div>
   `)
@@ -4602,7 +4399,6 @@ progressBar.style.width="0%"
 
 applyPublicAppConfig()
 initializeTheme()
-initializeProductRail()
 syncAuthPreviewUI()
 syncBillingReturnBanner()
 
