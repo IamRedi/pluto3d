@@ -759,6 +759,8 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - real `print-fix` is now intentionally paused for the current social-circle/public testing round so repeated STL repair attempts cannot take down the main backend; the button keeps a short preparation feel and then serves a stable placeholder STL download until version `.1` revisits the proper queue/worker solution
   - `3D test` preview no longer routes the viewer through the temporary STL/print-fix path; it now loads the same GLB-style test asset path used by `Toy test`, so preview quality stays consistent across both surfaces
   - the empty-viewer `f1car` fallback is now being shifted back toward real GLB presentation instead of a full material override, using dedicated idle-only lights so the car stays visible without diverging too far from the cleaner `Toy` viewer look
+  - print-mode viewer UX is being extended with a dedicated STL download CTA: when `Print` mode is active, a plain-text printer note and a second large STL-focused button appear near the top-right controls so printer-targeted export feels explicit without replacing the main GLB download CTA
+  - the STL CTA is now being tightened so it appears only for real loaded/generated models (GLB/STL), with a smaller `Direct to printer` note and a cleaner `Bambu Lab / Prusa .stl` button presentation under the `Wire / Print` controls
 
 ## Chat Handoff 1
 

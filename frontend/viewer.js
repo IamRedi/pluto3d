@@ -60,6 +60,10 @@ Download
     <button class="viewer-mode-btn" data-viewer-mode="print">Print</button>
   </div>
 </div>
+<div id="viewerPrintCta" class="viewer-print-cta hidden">
+  <div id="viewerPrintNote" class="viewer-print-note">Direct to printer</div>
+  <button id="viewerPrintDownload" class="viewer-print-download" type="button">Bambu Lab / Prusa .stl</button>
+</div>
 <img
   id="svgViewer"
   style="
@@ -104,6 +108,7 @@ function setCurrentViewerAsset(asset){
   window.currentViewerAsset = asset || null
   window.currentViewerIsIdle = Boolean(asset && asset.type === "idle")
   syncStudioLaunchButton()
+  syncViewerPrintCta()
 
   const printStatus = document.getElementById("printStatus")
 
@@ -189,6 +194,7 @@ function restoreIdleViewer(){
     return
   }
 
+  window.currentViewerMode = "studio"
   const idleUrl = getIdleViewerModelUrl()
   const requestId = ++window.viewerIdleRequestId
 
@@ -322,10 +328,74 @@ function applyViewerModeToModel(mode){
 function setViewerMode(mode){
   window.currentViewerMode = mode
   syncViewerModeButtons()
+  syncViewerPrintCta()
 
   if(window.currentModel){
     applyViewerModeToModel(mode)
   }
+}
+
+function attachViewerDownload(button, url, filename){
+  button.onclick = async () => {
+    const res = await fetch(url)
+    const blob = await res.blob()
+
+    let type = blob.type
+    if(filename.endsWith(".svg")){
+      type = "image/svg+xml"
+    }else if(filename.endsWith(".stl")){
+      type = "model/stl"
+    }
+
+    const fixedBlob = new Blob([blob], { type })
+    const link = document.createElement("a")
+    link.href = URL.createObjectURL(fixedBlob)
+    link.download = filename
+
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+  }
+}
+
+function syncViewerPrintCta(){
+  const wrap = document.getElementById("viewerPrintCta")
+  const button = document.getElementById("viewerPrintDownload")
+
+  if(!wrap || !button){
+    return
+  }
+
+  const asset = window.currentViewerAsset
+  const show = window.currentViewerMode === "print" && Boolean(asset) && (
+    asset.type === "glb" || asset.type === "stl"
+  )
+
+  wrap.classList.toggle("hidden", !show)
+
+  if(!show){
+    button.onclick = null
+    return
+  }
+
+  let downloadUrl = ""
+  let filename = ""
+
+  if(asset.type === "stl"){
+    downloadUrl = asset.url
+    filename = asset.filename || "print-ready.stl"
+  }else if(typeof getPrintFixPlaceholderUrl === "function"){
+    downloadUrl = getPrintFixPlaceholderUrl()
+    filename = "print-ready-preview.stl"
+  }
+
+  if(!downloadUrl){
+    wrap.classList.add("hidden")
+    button.onclick = null
+    return
+  }
+
+  attachViewerDownload(button, downloadUrl, filename)
 }
 
 function syncStudioLaunchButton(){
@@ -402,6 +472,9 @@ function loadSTL(url, filename="model.stl"){
   const loader = new THREE.STLLoader()
 
   loader.load(url, (geometry) => {
+    window.currentViewerMode = "studio"
+    syncViewerModeButtons()
+    syncViewerPrintCta()
     window.viewerIdleRequestId += 1
     window.currentViewerIsIdle = false
     clearViewerOverlayArtifacts({ hideDownload: false })
@@ -447,6 +520,9 @@ function loadGLB(url, filename="model.glb"){
   loader.load(url, (gltf) => {
     console.log("GLB loaded:", url)
 
+    window.currentViewerMode = "studio"
+    syncViewerModeButtons()
+    syncViewerPrintCta()
     window.viewerIdleRequestId += 1
     window.currentViewerIsIdle = false
     clearViewerOverlayArtifacts({ hideDownload: false })
