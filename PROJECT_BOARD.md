@@ -749,6 +749,7 @@ Whenever a task is completed, move the board forward instead of keeping old temp
   - production `3D` free generation is also showing a separate backend issue in Railway HTTP logs: `POST /api/print-fix` is returning `502`, so that path needs backend-side investigation and should not be confused with the viewer-only regressions
   - localhost testing now bypasses guest/free usage limits, premium locks, and sponsor wait states so the full frontend can be exercised safely on `127.0.0.1` / `localhost` before validating production behavior
   - the idle `f1car` placeholder is being kept intentionally separate from real generated models and tuned with a lighter double-sided hologram material so it reads as a featured ambient preview rather than a dark silhouette
+  - Railway `print-fix` investigation found a concrete backend bug: the repair pipeline was calling outdated `trimesh` methods (`remove_degenerate_faces`, `remove_duplicate_faces`, `simplify_quadratic_decimation`) that do not exist in the pinned version, so the mesh repair layer is being updated to use the compatible `nondegenerate_faces`, `unique_faces`, and `simplify_quadric_decimation` path instead
   - localhost testing is now being opened up deliberately: guest/free usage limits and premium locks are bypassed only on `127.0.0.1` / `localhost`, and sponsor preview waits are disabled there so full workspace testing can happen cleanly before checking production again
 
 ## Chat Handoff 1
