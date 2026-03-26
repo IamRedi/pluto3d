@@ -221,56 +221,41 @@ These are not all needed immediately, but this is the expected future shape.
 
 ## Current Active Tasks
 
-1. Keep Toy Studio small, stable, and useful
-2. Improve styling presets and controls
-3. Prepare the app structure for auth and plans
-4. Add serious product sections like pricing, footer, and legal pages
-5. Keep live auth surfaces clean once Supabase is active and hide preview-only controls
-6. Use backend-owned plan resolution as the base for future premium gating
-7. Build a plug-and-play deployment foundation for buyer installs
+1. Keep production stable during the friend-test beta round
+2. Collect UX issues without destabilizing auth, billing, or backend runtime
+3. Keep client-facing surfaces premium, minimal, and non-technical
+4. Leave heavy backend work paused unless it directly protects stability
+5. Keep documentation and handoff notes current after every meaningful step
+6. Preserve plug-and-play deployment value for future buyer installs
+7. Build the `.1` backlog from real testing feedback instead of speculation
 
 ## Working Board
 
 ### Now
 
-- keep SVG stable with only:
-  - `Detail`
-  - `Clean Background`
-- keep Toy Studio compact and visually clean
-- keep platform surfaces serious but lightweight
-- position 3D clearly as:
-  - `Generate Test`
-  - `Generate 3D PRO`
-- position Toy clearly as:
-  - `Generate Test Toy`
-  - `Generate Toy PRO`
-- avoid heavy backend dependencies unless they clearly improve quality
+- keep live production visually polished and stable for friend testing
+- keep the current graphite/green premium UI direction across the whole app
+- keep `3D`, `Toy`, `SVG`, and `AI` easy to test on localhost without production limits
+- keep `print-fix` paused in public testing mode so backend memory spikes do not take down prod
+- log beta feedback and push risky fixes into `.1` unless they are clearly required now
 
 ### Next
 
-- polish Toy Studio presets so they feel more useful
-- improve Toy Studio reset behavior
-- add clearer Toy Studio feedback/status messaging
-- expand Toy Studio into part-aware editing lite
-- test sponsor/ad loading preview in all major flows
-- prepare real auth runtime scaffold before live keys arrive
-- wire the first live Supabase session into Login and Profile
-- add backend auth and plan service scaffold
-- sync frontend live session with backend account route
-- reduce preview-only auth controls once live auth is stable
-- remove preview-heavy wording from Login/Profile where live auth already exists
-- add a temporary backend premium assignment path before Stripe goes live
-- keep 3D and Toy product language aligned with:
-  - `Test`
-  - `PRO`
-- keep env example files ready for auth and billing keys
-- use a frontend auth config file instead of frontend env injection
+- run the friend-test round and collect real production feedback
+- verify deploy behavior between `Vercel` frontend and `Railway` backend when something looks stale
+- clean remaining micro-issues in `Login`, `Profile`, and viewer mode/CTA behavior
+- decide after feedback whether the next safe focus is:
+  - lightweight UI refinement
+  - real `Generate 3D PRO` smoke test
+  - billing smoke test
+- keep notes on what belongs to `.1` instead of patching everything immediately
 
 ### Later
 
-- Stripe subscriptions
-- real plan validation in FastAPI
-- gallery/history backed by real user data
+- real gallery/history backed by user data
+- shop/catalog population
+- deeper toy-editing improvements
+- post-beta brand/content refinement
 
 ### Parked
 
@@ -280,6 +265,7 @@ These are not all needed immediately, but this is the expected future shape.
   - real concurrent `print-fix` queue / worker path
   - memory sizing strategy for Railway or alternate compute host
   - broader multi-user load handling beyond `print-fix`
+  - decision on whether STL export stays placeholder-backed or returns to true repair in prod
 
 ## Latest Product Decisions
 
@@ -301,23 +287,24 @@ These are not all needed immediately, but this is the expected future shape.
 
 The best next task is:
 
-- `Toy Studio preset polish`
+- `Friend-test triage from production feedback`
 
 Why:
 
 - it improves the product’s core editing value
-- it is visible immediately in the main viewer
-- it does not require new infrastructure
-- it is safer than jumping to real auth integration too early
+- stability and issue triage matter more than new feature work right now
+- this protects the product from unnecessary churn during the beta round
+- it helps separate urgent beta issues from `.1` backlog ideas
 
 Suggested scope for that task:
 
-- make presets feel more distinct
-- improve labels so they are easier to understand
-- make reset behavior more reliable
-- give Toy Studio lightweight status feedback for preset/apply/reset actions
-- add a first part-target selector for head/body/all edits
-- optionally add one extra simple control like `Tilt` or `Cute`
+- collect feedback from friends using the live site
+- classify issues into:
+  - production blocker
+  - polish issue
+  - `.1` backlog
+- keep only the smallest safe fixes in the current beta branch
+- avoid reopening heavy backend experiments unless production stability requires it
 
 ## Deferred / Difficult Tasks
 
@@ -450,11 +437,11 @@ The product is considered ready for friend testing when the items below are stab
 
 This is the recommended order for the next work period.
 
-1. Stabilize Toy Studio controls and presets
-2. Keep SVG simple and reliable
-3. Keep platform surfaces serious and presentable
-4. Prepare auth integration in a controlled way
-5. Avoid heavy features until beta feedback proves they are worth it
+1. Let friends test the live product and gather real issues
+2. Keep production stable and avoid risky backend changes
+3. Fix only high-signal polish bugs during the beta round
+4. Keep `print-fix` paused and memory-safe until `.1`
+5. Turn repeated feedback into a clean post-beta roadmap
 
 ## Task Split
 
@@ -483,29 +470,29 @@ This is the recommended order for the next work period.
 
 Choose one of these when continuing:
 
-1. `Toy Studio polish`
-   - better preset logic
-   - better reset behavior
-   - better edit labels
-2. `Sponsor flow testing`
-   - AI
-   - SVG
-   - Toy
-   - Free 3D
-3. `Supabase setup checklist`
-   - completed and documented
-4. `Auth integration`
-   - Supabase project
-   - frontend auth client
-   - backend plan checks
-   - Stripe hookup
+1. `Friend-test issue triage`
+   - production blockers
+   - confusing UX
+   - cache/deploy confusion
+2. `3D PRO smoke test`
+   - Meshy path
+   - result polling
+   - download/result quality
+3. `Billing smoke test`
+   - Stripe checkout
+   - activation sync
+   - portal behavior
+4. `.1 backlog shaping`
+   - print-fix architecture
+   - memory/concurrency strategy
+   - real STL export return path
 
 ## Next Recommended Tasks
 
-1. Add Stripe webhook handling and persistent subscription state
-2. Define the first Supabase-backed billing/subscription data model
-3. Test sponsor/ad preview in all main flows against real free vs premium state
-4. Return to Toy Studio polish after billing path is structurally safe
+1. Triaging friend-test feedback from live production
+2. Real `Generate 3D PRO` smoke test with current Meshy-backed flow
+3. Stripe live smoke test with a deliberate real payment
+4. Version `.1` planning for backend memory/concurrency work
 
 ## Decisions Log
 
@@ -811,3 +798,136 @@ Updated after the 2026-03-24 session:
   - keep frontend install setup simple and config-driven
   - connect webhook-driven premium activation
   - then validate Stripe checkout and portal end-to-end
+
+## Chat Handoff 2 - 2026-03-26 Production Friend-Test Beta
+
+Use this section first when a new chat resumes the project.
+
+### Project Truth
+
+- Pluto3D Studio is now live in production and visually polished enough for real friend testing.
+- Frontend stack: Vanilla JS.
+- Backend stack: FastAPI.
+- Auth: Supabase auth is live.
+- Google login: live.
+- Billing: Stripe live config is in place.
+- Main domain: `https://www.pluto-3d.com`
+- Fallback frontend: `https://pluto3d.vercel.app`
+- Live backend: `https://pluto3d-production.up.railway.app`
+
+### Primary Reference Order
+
+If anything is unclear, check these first in this order:
+
+1. `PROJECT_BOARD.md`
+2. `AUTH_IMPLEMENTATION_PLAN.md`
+3. `SUPABASE_SETUP_CHECKLIST.md`
+4. `PRODUCTION_ACTIVATION_RUNBOOK.md`
+5. `SELF_HOST_QUICKSTART.md`
+6. `INFRASTRUCTURE_INVENTORY.md`
+7. `PLATFORM_ACCOUNTS_OVERVIEW.md`
+8. `PLUG_AND_PLAY_DEPLOY_CHECKLIST.md`
+9. `STRIPE_LIVE_SWITCH_CHECKLIST.md`
+
+### How We Work In This Project
+
+- Speak with the user in Albanian.
+- Keep code and code comments in English.
+- When the user must do something, give exact instructions only:
+  - whether terminal is needed
+  - which folder to use
+  - whether `venv` is needed
+  - the exact command if there is one
+- Prefer small safe changes, test, then refine.
+- Keep `PROJECT_BOARD.md` updated after important decisions, blockers, parked work, and meaningful changes.
+- Do not make risky destructive changes casually.
+- Preserve the project DNA: premium, clean, serious, and client-facing rather than technical-dashboard looking.
+
+### Current Product Shape
+
+- `Workspace`, `Gallery`, `Plans`, and `Shop` have gone through a major UI cleanup pass.
+- `Login` and `Profile` are much cleaner and more premium than before, though a few micro-polish items remain for later.
+- The main viewer now keeps a deep black stage in both themes.
+- The overall theme is now a Windows-like graphite shell with softer green accents.
+- The sidebar orb now reads as `Pluto` with a softer grey-blue pulse.
+- The top brand keeps only the wordmark and subtitle, without the square icon.
+- `Gallery` is now split into latest history and featured best work.
+- `Shop` is intentionally simplified into one clean placeholder surface for now.
+
+### Viewer / 3D State
+
+- Empty viewer state now uses a rotating idle GLB hero model (`f1car.glb`) instead of a blank stage.
+- The idle model has dedicated idle-only lighting and a larger scale so the stage still feels premium before a user loads anything.
+- Free `3D test` preview now uses the same GLB-style path as `Toy test`, which fixed the quality mismatch that previously made `3D` previews look worse.
+- The dedicated STL CTA near `Wire / Print` exists, but its final behavior is not fully finished yet:
+  - current state is acceptable for beta
+  - exact show/hide logic can be refined later without urgency
+- The idle model no longer turns into ugly dense wire noise when switching `Print -> Wire`.
+
+### Toy / Print State
+
+- `Toy Studio` remains intentionally simple after a rollback of a heavier redesign.
+- `Toy Studio` launches only from the `Toy` panel and only when a toy model is loaded.
+- Real `print-fix` backend repair work is intentionally paused for the current beta round.
+- Current public-testing behavior:
+  - user still gets a believable `Fix To Print` flow
+  - the system returns a stable placeholder STL for download
+  - this protects production from Railway memory crashes during friend testing
+
+### Local Testing Mode
+
+- Localhost (`127.0.0.1` / `localhost`) is intentionally more open than production.
+- Guest/free limits are bypassed there.
+- Premium locks are bypassed there.
+- Sponsor/ad wait states are bypassed there.
+- This is only for safe full-flow testing locally and does not change live production behavior.
+
+### Production Notes
+
+- Frontend deploys go through `Vercel`, not `Railway`.
+- Backend deploys go through `Railway`.
+- If a frontend change looks missing on `pluto-3d.com`, check `Vercel` first before assuming backend or code problems.
+- Railway memory pressure was real around `print-fix`; that is why true repair is paused for now.
+
+### Intentional Pauses / Parked Decisions
+
+- `print-fix` real repair pipeline is paused for public testing stability.
+- Heavy backend scaling and concurrency work is parked for version `.1`.
+- YOLO / heavy SVG auto-focus work remains parked.
+- The STL printer CTA still needs one more refinement pass later, but is not a blocker for this beta round.
+
+### What Is Still Open
+
+- Friend-test feedback collection from real users
+- real `Generate 3D PRO` smoke test with Meshy
+- real Stripe live smoke test
+- login/profile micro-polish
+- final viewer CTA refinement
+- `.1` planning for:
+  - Railway memory sizing or alternate compute strategy
+  - proper queued/background print repair
+  - broader multi-user concurrency strategy
+
+### Latest Relevant Commits
+
+- `075dbef` Tighten viewer print gating and enlarge idle model
+- `2593e58` Gate STL CTA on explicit print action
+- `8fe0b9a` Reset viewer mode before showing STL CTA
+- `66d6e73` Refine print mode download CTA
+- `9f3aa9f` Align free 3D preview with toy viewer
+- `fec8e08` Pause print fix for public testing
+- `4009ab5` Reduce print fix memory pressure
+- `977b3be` Fix trimesh compatibility in print repair
+
+### Recommended Resume Logic For The Next Chat
+
+1. Read this board first, especially this handoff section and the latest work log notes.
+2. Confirm whether the next goal is:
+   - beta bug triage
+   - UI micro-polish
+   - Meshy smoke test
+   - Stripe smoke test
+   - `.1` planning
+3. Avoid reopening heavy backend work unless production stability requires it.
+4. Keep using `PROJECT_BOARD.md` as the primary memory instead of relying on chat history.
+
