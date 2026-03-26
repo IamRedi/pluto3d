@@ -891,15 +891,26 @@ If anything is unclear, check these first in this order:
 - The main viewer now keeps a deep black stage in both themes.
 - The overall theme is now a Windows-like graphite shell with softer green accents.
 - The sidebar orb now reads as `Pluto` with a softer grey-blue pulse.
+- the sidebar orb now also restores a small personality microinteraction:
+  - hover shows a short greeting
+  - click returns a short follow-up reply
+  - the effect stays decorative and does not interfere with navigation or product logic
 - The top brand keeps only the wordmark and subtitle, without the square icon.
 - `Gallery` is now split into latest history and featured best work.
 - `Shop` is intentionally simplified into one clean placeholder surface for now.
+- frontend `v1.1` polish now follows a block-based workflow tracked in `FRONTEND_V11_BLOCKS.md` so copy, theme, hierarchy, icon, and mobile passes stay separated.
+- first `Frontend Copy Cleanup` pass has now cleaned the most obvious future-state / placeholder wording from `Gallery`, `Shop`, and `Profile` without changing layout or product logic.
+- first `Theme Refinement` pass has now centralized card/header/chip styling a bit further so the UI feels less flat and the light theme stays closer to the main graphite/green direction.
 
 ### Viewer / 3D State
 
 - Empty viewer state now uses a rotating idle GLB hero model (`f1car.glb`) instead of a blank stage.
 - The idle model has dedicated idle-only lighting and a larger scale so the stage still feels premium before a user loads anything.
 - Free `3D test` preview now uses the same GLB-style path as `Toy test`, which fixed the quality mismatch that previously made `3D` previews look worse.
+- The Meshy generation path is now hardened a bit further in `v1.1`:
+  - backend `uploads` / `outputs` use backend-root absolute paths instead of fragile relative paths
+  - Meshy polling now returns clearer terminal failure states instead of only hanging on success-only logic
+  - frontend polling now stops cleanly on transport or Meshy task failures and only loads the model when a final URL exists
 - The dedicated STL CTA near `Wire / Print` exists, but its final behavior is not fully finished yet:
   - current state is acceptable for beta
   - exact show/hide logic can be refined later without urgency

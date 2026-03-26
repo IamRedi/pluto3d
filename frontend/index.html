@@ -45,6 +45,20 @@ box-sizing:border-box;
   --surface-soft:rgba(255,255,255,0.04);
   --surface-card:rgba(255,255,255,0.03);
   --surface-hover:rgba(255,255,255,0.05);
+  --surface-card-bg:linear-gradient(180deg, rgba(29, 32, 29, 0.9), rgba(19, 22, 19, 0.82));
+  --surface-card-border:rgba(116, 138, 118, 0.18);
+  --surface-card-shadow:inset 0 1px 0 rgba(255,255,255,0.05), 0 18px 40px rgba(2, 6, 23, 0.18);
+  --surface-chip-bg:rgba(255,255,255,0.045);
+  --surface-chip-border:rgba(116, 138, 118, 0.18);
+  --surface-chip-primary-bg:rgba(88,184,115,0.14);
+  --surface-chip-primary-text:#b9e8c4;
+  --surface-chip-premium-bg:rgba(160, 193, 118, 0.15);
+  --surface-chip-premium-text:#e2f0d7;
+  --header-bg:rgba(18, 20, 18, 0.86);
+  --header-border:rgba(116, 138, 118, 0.16);
+  --header-shadow:0 12px 34px rgba(2,6,23,0.18);
+  --nav-pill-active-bg:rgba(88,184,115,0.12);
+  --nav-pill-active-border:rgba(143,214,160,0.28);
   --control-bg:linear-gradient(180deg, rgba(27, 30, 27, 0.96), rgba(17, 20, 17, 0.74));
   --control-border:rgba(116, 138, 118, 0.26);
   --control-text:#d8e3d8;
@@ -179,6 +193,20 @@ body[data-theme="light"]{
   --surface-soft:rgba(255,255,255,0.72);
   --surface-card:rgba(255,255,255,0.64);
   --surface-hover:rgba(88,184,115,0.08);
+  --surface-card-bg:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(241, 246, 241, 0.82));
+  --surface-card-border:rgba(74, 118, 83, 0.12);
+  --surface-card-shadow:inset 0 1px 0 rgba(255,255,255,0.86), 0 18px 38px rgba(148,163,184,0.12);
+  --surface-chip-bg:rgba(255,255,255,0.8);
+  --surface-chip-border:rgba(74, 118, 83, 0.12);
+  --surface-chip-primary-bg:rgba(88,184,115,0.12);
+  --surface-chip-primary-text:#275835;
+  --surface-chip-premium-bg:rgba(173, 195, 111, 0.17);
+  --surface-chip-premium-text:#35542f;
+  --header-bg:rgba(249, 251, 249, 0.9);
+  --header-border:rgba(74, 118, 83, 0.1);
+  --header-shadow:0 14px 30px rgba(148,163,184,0.1);
+  --nav-pill-active-bg:rgba(88,184,115,0.12);
+  --nav-pill-active-border:rgba(74, 140, 90, 0.24);
   --control-bg:linear-gradient(180deg, rgba(247, 250, 247, 0.98), rgba(232, 239, 233, 0.94));
   --control-border:rgba(74, 118, 83, 0.18);
   --control-text:#17361d;
@@ -304,14 +332,10 @@ align-items:center;
 justify-content:space-between;
 gap:18px;
 padding:10px 22px;
-background:rgba(21, 23, 21, 0.82);
+background:var(--header-bg);
 backdrop-filter:blur(18px);
-border-bottom:1px solid var(--line-soft);
-box-shadow:0 10px 30px rgba(2,6,23,0.14);
-}
-
-body[data-theme="light"] .platform-header{
-background:rgba(248, 250, 248, 0.88);
+border-bottom:1px solid var(--header-border);
+box-shadow:var(--header-shadow);
 }
 
 .platform-brand{
@@ -385,8 +409,8 @@ color:var(--text-main);
 }
 
 .platform-link.active{
-border-color:rgba(143,214,160,0.28);
-background:rgba(88,184,115,0.12);
+border-color:var(--nav-pill-active-border);
+background:var(--nav-pill-active-bg);
 color:var(--cyan);
 }
 
@@ -655,9 +679,9 @@ grid-column:span 1;
 .platform-surface-card{
 padding:18px 18px 20px;
 border-radius:22px;
-background:rgba(255,255,255,0.03);
-border:1px solid var(--line-soft);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+background:var(--surface-card-bg);
+border:1px solid var(--surface-card-border);
+box-shadow:var(--surface-card-shadow);
 }
 
 .platform-surface-card.wide{
@@ -716,8 +740,8 @@ align-items:center;
 justify-content:center;
 padding:8px 12px;
 border-radius:999px;
-border:1px solid var(--line-soft);
-background:rgba(255,255,255,0.04);
+border:1px solid var(--surface-chip-border);
+background:var(--surface-chip-bg);
 font-size:11px;
 font-weight:600;
 letter-spacing:0.08em;
@@ -726,13 +750,13 @@ color:var(--text-main);
 }
 
 .surface-chip.primary{
-background:rgba(88,184,115,0.12);
-color:var(--cyan);
+background:var(--surface-chip-primary-bg);
+color:var(--surface-chip-primary-text);
 }
 
 .surface-chip.premium{
-background:rgba(126,160,108,0.14);
-color:#d9ebca;
+background:var(--surface-chip-premium-bg);
+color:var(--surface-chip-premium-text);
 }
 
 .surface-plan-grid{
@@ -744,11 +768,12 @@ gap:14px;
 .surface-plan-card{
 padding:18px;
 border-radius:22px;
-border:1px solid var(--line-soft);
-background:rgba(255,255,255,0.03);
+border:1px solid var(--surface-card-border);
+background:var(--surface-card-bg);
 display:flex;
 flex-direction:column;
 gap:12px;
+box-shadow:var(--surface-card-shadow);
 }
 
 .surface-plan-card.featured{
@@ -757,7 +782,7 @@ background:linear-gradient(180deg, rgba(24,34,25,0.92), rgba(20,24,20,0.82));
 }
 
 body[data-theme="light"] .surface-plan-card.featured{
-background:linear-gradient(180deg, rgba(234,247,255,0.98), rgba(241,235,255,0.96));
+background:linear-gradient(180deg, rgba(236, 247, 238, 0.98), rgba(229, 241, 231, 0.96));
 }
 
 .surface-plan-tier{
@@ -1452,12 +1477,13 @@ margin-top:auto;
 margin-bottom:10px;
 padding:0;
 border-radius:999px;
-border:1px solid rgba(116, 138, 118, 0.28);
-background:linear-gradient(180deg, rgba(27, 30, 27, 0.96), rgba(17, 20, 17, 0.74));
-color:#dbe5db;
+border:1px solid var(--button-border);
+background:var(--button-bg);
+color:var(--button-text);
 font-size:18px;
 line-height:1;
 cursor:pointer;
+box-shadow:var(--button-shadow);
 transition:0.2s;
 display:flex;
 align-items:center;
@@ -1466,8 +1492,8 @@ justify-content:center;
 
 .theme-toggle:hover{
 transform:translateY(-2px);
-border-color:rgba(111, 196, 129, 0.64);
-box-shadow:0 12px 30px rgba(33, 72, 40, 0.16);
+border-color:var(--button-hover-border);
+box-shadow:var(--button-hover-shadow);
 }
 
 .theme-toggle-icon{
@@ -1868,6 +1894,10 @@ border-color:var(--button-hover-border);
 box-shadow:var(--button-hover-shadow);
 }
 
+button:active{
+transform:translateY(0);
+}
+
 body[data-theme="light"] button{
 background:var(--button-bg);
 border:1px solid var(--button-border);
@@ -1914,6 +1944,10 @@ color:var(--button-text);
 
 .btn-premium:hover{
 box-shadow:var(--button-premium-hover-shadow);
+}
+
+.btn-premium:active{
+transform:translateY(0);
 }
 
 /* preview */
@@ -2048,6 +2082,15 @@ box-shadow:0 0 80px rgba(88,184,115,0.36);
 }
 .logo-orb{
 transition:transform 0.15s ease;
+cursor:pointer;
+}
+
+.logo-orb:focus-visible{
+outline:none;
+box-shadow:
+0 0 30px rgba(181, 202, 234, 0.58),
+0 0 60px rgba(121, 154, 203, 0.42),
+0 0 90px rgba(89, 112, 151, 0.24);
 }
 .logo-orb-container{
 position:relative;
@@ -2073,6 +2116,7 @@ pointer-events:none;
 white-space:nowrap;
 
 box-shadow:0 0 10px rgba(88,184,115,0.28);
+z-index:4;
 }
 
 .orb-greeting.show{
@@ -2910,9 +2954,9 @@ to{background-position:1000px 1000px;}
 
 <div class="logo-orb-container">
 
-  <div class="logo-orb" id="aiOrb"></div>
+  <div class="logo-orb" id="aiOrb" role="button" tabindex="0" aria-label="Pluto orb greeting"></div>
 
-  <div class="orb-greeting" id="orbGreeting">
+  <div class="orb-greeting" id="orbGreeting" aria-live="polite">
     Hello
   </div>
 
@@ -3391,6 +3435,129 @@ function getBrandSubtitle(){
 return getPublicAppConfig().brandSubtitle || "Creative Print Studio"
 }
 
+function initializeOrbGreeting(){
+const orb = document.getElementById("aiOrb")
+const greeting = document.getElementById("orbGreeting")
+const orbSound = document.getElementById("orbSound")
+
+if(!orb || !greeting){
+  return
+}
+
+const hoverMessage = "Hello, ready?"
+const replyMessage = "I'm well. How can I help?"
+let hideTimer = null
+let pinnedReply = false
+
+const clearHideTimer = () => {
+  if(hideTimer){
+    clearTimeout(hideTimer)
+    hideTimer = null
+  }
+}
+
+const playOrbSound = () => {
+  if(!orbSound){
+    return
+  }
+
+  try{
+    orbSound.currentTime = 0
+    orbSound.volume = 0.16
+    orbSound.play().catch(() => {})
+  }catch(error){
+    return
+  }
+}
+
+const shakeOrb = () => {
+  orb.classList.remove("shake")
+  void orb.offsetWidth
+  orb.classList.add("shake")
+  window.setTimeout(() => {
+    orb.classList.remove("shake")
+  }, 420)
+}
+
+const showGreeting = (message, options = {}) => {
+  const pin = options.pin === true
+  clearHideTimer()
+  pinnedReply = pin
+  greeting.textContent = message
+  greeting.classList.add("show")
+  orb.classList.add("active")
+}
+
+const hideGreeting = () => {
+  if(pinnedReply){
+    return
+  }
+
+  greeting.classList.remove("show")
+  orb.classList.remove("active")
+}
+
+const scheduleHide = (delay = 140) => {
+  clearHideTimer()
+
+  if(pinnedReply){
+    return
+  }
+
+  hideTimer = window.setTimeout(() => {
+    hideGreeting()
+  }, delay)
+}
+
+const showHoverGreeting = () => {
+  if(pinnedReply){
+    return
+  }
+
+  showGreeting(hoverMessage)
+  shakeOrb()
+}
+
+  const dismissReplyGreeting = () => {
+    pinnedReply = false
+    hideGreeting()
+  }
+
+  const showReplyGreeting = () => {
+    showGreeting(replyMessage, { pin:true })
+    playOrbSound()
+    shakeOrb()
+    clearHideTimer()
+    hideTimer = window.setTimeout(() => {
+      dismissReplyGreeting()
+    }, 3000)
+  }
+
+orb.addEventListener("mouseenter", showHoverGreeting)
+orb.addEventListener("mouseleave", () => scheduleHide())
+orb.addEventListener("focus", showHoverGreeting)
+orb.addEventListener("blur", () => scheduleHide())
+orb.addEventListener("click", showReplyGreeting)
+  orb.addEventListener("keydown", (event) => {
+  if(event.key === "Enter" || event.key === " "){
+    event.preventDefault()
+    showReplyGreeting()
+  }
+  })
+
+  document.addEventListener("click", (event) => {
+    if(!pinnedReply){
+      return
+    }
+
+    if(orb.contains(event.target) || greeting.contains(event.target)){
+      return
+    }
+
+    dismissReplyGreeting()
+  })
+}
+
 function getSupportEmail(){
 return (getPublicAppConfig().supportEmail || "").trim()
 }
@@ -3585,7 +3752,7 @@ checkStatus(data.task_id)
 
 }
 
-async function checkStatus(id){
+async function checkStatusLegacy(id){
 
 const interval=setInterval(async()=>{
 
@@ -3611,6 +3778,72 @@ console.log("FINAL URL:", modelUrl)
 loadGLB(modelUrl)
 
 // ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ DOWNLOAD BUTTON
+showViewerDownload(modelUrl, "model.glb")
+
+}
+
+},4000)
+
+}
+
+async function checkStatus(id){
+
+const interval=setInterval(async()=>{
+
+let res
+let data
+
+try{
+res = await fetch(API_BASE + "/api/job/" + id)
+data = await res.json()
+}catch(error){
+clearInterval(interval)
+status.innerHTML = "3D status check failed"
+progressBar.style.width = "0%"
+alert("3D generation status could not be refreshed. Please try again.")
+return
+}
+
+if(!res.ok){
+clearInterval(interval)
+status.innerHTML = "3D generation failed"
+progressBar.style.width = "0%"
+alert(data.detail || data.error || "3D generation could not be completed")
+return
+}
+
+const taskStatus = String(data.status || "PENDING").toUpperCase()
+const taskProgress = Number(data.progress ?? 0)
+const failureStates = ["FAILED","CANCELED","CANCELLED","EXPIRED","ERROR"]
+
+status.innerHTML = "AI Processing " + taskProgress + "%"
+progressBar.style.width = taskProgress + "%"
+
+if(failureStates.includes(taskStatus)){
+clearInterval(interval)
+status.innerHTML = data.error || "3D generation failed"
+progressBar.style.width = "0%"
+alert(data.error || "3D generation failed before the model was ready")
+return
+}
+
+if(taskStatus === "SUCCEEDED"){
+
+clearInterval(interval)
+
+status.innerHTML = "Model Ready"
+progressBar.style.width = "100%"
+
+const rawModelUrl = data.model_url || ""
+
+if(!rawModelUrl){
+alert("3D generation finished without a model URL")
+return
+}
+
+const modelUrl = rawModelUrl.startsWith("http") ? rawModelUrl : API_BASE + rawModelUrl
+
+loadGLB(modelUrl)
 showViewerDownload(modelUrl, "model.glb")
 
 }
@@ -3749,12 +3982,12 @@ template: "plans"
 },
 shop: {
 title: "Shop",
-subtitle: "Shop presents packs, presets, printable kits, and future creator assets inside the same product language.",
+subtitle: "Shop presents curated packs, printable kits, and premium releases inside the same product language.",
 template: "shop"
 },
 profile: {
 title: "Profile",
-subtitle: "Profile brings together account details, plan state, usage, billing, and future generation history.",
+subtitle: "Profile brings together account details, plan state, usage, billing, and account activity.",
 template: "profile"
 },
 login: {
@@ -4034,13 +4267,13 @@ return `
   <div class="surface-stack wide">
     <div class="platform-surface-card">
       <div class="platform-surface-card-label">Recent Work</div>
-      <div class="platform-surface-card-title">Latest history from the studio</div>
+      <div class="platform-surface-card-title">Latest work from the studio</div>
       <div class="platform-surface-card-copy">A clean running row of the newest outputs so the gallery feels like a real creative history instead of a debug log.</div>
       <div class="history-list" style="margin-top:14px;">
         <div class="history-row">
           <div class="history-row-main">
             <div class="history-row-title">Robot.glb</div>
-            <div class="history-row-copy">Latest toy-ready model kept as the current 3D history anchor.</div>
+            <div class="history-row-copy">A polished character model kept near the top of the recent 3D work list.</div>
           </div>
           <div class="history-row-type">Latest 3D</div>
         </div>
@@ -4063,7 +4296,7 @@ return `
     <div class="platform-surface-card">
       <div class="platform-surface-card-label">Best Work</div>
       <div class="platform-surface-card-title">Highlighted pieces worth keeping visible</div>
-      <div class="platform-surface-card-copy">This lower section can grow into a curated showcase. For now it keeps the two strongest test models visible as the first featured pieces.</div>
+      <div class="platform-surface-card-copy">A focused showcase of the strongest pieces currently carrying the Pluto3D visual direction.</div>
       <div class="gallery-wall" style="margin-top:16px;">
         <div class="gallery-tile">
           <div>
@@ -4095,9 +4328,9 @@ function renderShopSurface(){
 return `
   <div class="platform-surface-card wide">
     <div class="platform-surface-card-label">Shop Gallery</div>
-    <div class="platform-surface-card-title">A single clean area reserved for the future catalog</div>
-    <div class="platform-surface-card-copy">This surface stays intentionally simple for now. Later it can fill with curated packs, printable collections, featured drops, and premium shop items in the same gallery language.</div>
-    <div class="surface-inline-note">For the moment, Shop is just one clean placeholder field instead of a half-filled catalog.</div>
+    <div class="platform-surface-card-title">Curated Pluto3D releases</div>
+    <div class="platform-surface-card-copy">The shop surface stays intentionally focused so curated packs, printable kits, and premium releases can arrive inside a cleaner product frame.</div>
+    <div class="surface-inline-note">This area is being kept minimal on purpose instead of filling it with weak catalog filler.</div>
   </div>
 `
 }
@@ -4201,7 +4434,7 @@ const lifecycle = getBillingLifecycleDetails({
 const accountTitle = authState.loggedIn ? currentStatus : "Guest Account"
 const accountCopy = liveAuthReady
   ? "Signed in and ready to continue across the workspace with your current plan and billing state."
-  : "Sign in to keep your account, plan, and future history together."
+  : "Sign in to keep your account, plan, and workspace activity together."
 const planLabel = String(backendPlan || "guest")
   .replace(/_/g, " ")
   .replace(/\b\w/g, (char) => char.toUpperCase())
@@ -4542,6 +4775,7 @@ syncStudioLaunchButton()
 
 applyPublicAppConfig()
 initializeTheme()
+initializeOrbGreeting()
 syncAuthPreviewUI()
 syncBillingReturnBanner()
 
