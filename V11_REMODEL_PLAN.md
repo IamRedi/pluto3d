@@ -318,6 +318,9 @@ before:
       - add `Generate STL` for `Flat` relief only
       - keep `Arched` in preview mode until the flat mesh/export path proves stable
       - reuse the current viewer download surface instead of creating a second export/download UI
+    - current polish follow-up on the same checkpoint:
+      - expose simple `Size` and `Detail` presets before attempting broader geometry features
+      - tighten CTA state so unsupported `Arched STL` is communicated in the panel before click-time
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired

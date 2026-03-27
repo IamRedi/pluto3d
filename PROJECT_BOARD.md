@@ -1136,3 +1136,7 @@ If anything is unclear, check these first in this order:
       - it builds a browser-side height-field mesh from the active image source and sends the result into the main viewer
       - this first pass intentionally skips `Arched STL` so geometry/export risk stays bounded
       - no new dependency was added for this step; it reuses the existing `three.js` + `STLExporter` stack
+    - polish pass on the same export slice:
+      - add explicit `Output Size` and `Mesh Detail` controls for flat STL export
+      - keep the STL CTA disabled when no source is active or when `Arched` is selected
+      - make the panel note describe the active export state instead of leaving `Relief` in a generic future-tense message

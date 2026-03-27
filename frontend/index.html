@@ -2360,6 +2360,13 @@ letter-spacing:0.04em;
 text-transform:uppercase;
 }
 
+.generator-cta:disabled{
+opacity:0.56;
+cursor:not-allowed;
+filter:saturate(0.68);
+box-shadow:none;
+}
+
 .generator-shell .btn-premium.locked::after{
 top:7px;
 right:10px;
@@ -3655,9 +3662,24 @@ to{background-position:1000px 1000px;}
         <option value="light-deep">Light Areas Deeper</option>
       </select>
 
+      <label for="reliefSize">Output Size</label>
+      <select id="reliefSize">
+        <option value="small">Small (~90 mm)</option>
+        <option value="medium" selected>Medium (~120 mm)</option>
+        <option value="large">Large (~150 mm)</option>
+      </select>
+
+      <label for="reliefMeshQuality">Mesh Detail</label>
+      <select id="reliefMeshQuality">
+        <option value="draft">Draft</option>
+        <option value="normal" selected>Normal</option>
+        <option value="fine">Fine</option>
+      </select>
+
       <button class="generator-cta" type="button" onclick="previewRelief()">Preview Relief</button>
-      <button class="generator-cta" type="button" onclick="generateReliefStl()">Generate STL</button>
+      <button id="generateReliefStlBtn" class="generator-cta" type="button" onclick="generateReliefStl()">Generate STL</button>
       <div id="reliefStatus" class="status"></div>
+      <div class="generator-limit-note" id="reliefExportMeta">Flat STL uses the active source with medium size and normal mesh detail.</div>
       <div class="generator-output-note" id="reliefUsageNote">Local prep preview only for now. Full lithophane mesh/export comes next.</div>
     </div>
   </div>
@@ -5975,8 +5997,20 @@ handleSvgFiles(svgInput.files)
 document.getElementById("reliefDepth")?.addEventListener("change", triggerReliefAutoPreview)
 document.getElementById("reliefThickness")?.addEventListener("change", triggerReliefAutoPreview)
 document.getElementById("reliefBorder")?.addEventListener("change", triggerReliefAutoPreview)
-document.getElementById("reliefSurface")?.addEventListener("change", triggerReliefAutoPreview)
+document.getElementById("reliefSurface")?.addEventListener("change", () => {
+triggerReliefAutoPreview()
+renderReliefExportState()
+renderReliefUsageNote()
+})
 document.getElementById("reliefDirection")?.addEventListener("change", triggerReliefAutoPreview)
+document.getElementById("reliefSize")?.addEventListener("change", () => {
+renderReliefExportState()
+renderReliefUsageNote()
+})
+document.getElementById("reliefMeshQuality")?.addEventListener("change", () => {
+renderReliefExportState()
+renderReliefUsageNote()
+})
 
 let reliefAutoPreviewTimer = null
 
@@ -6006,7 +6040,46 @@ if(!note){
 }
 
 const authState = getAuthPreviewState()
-note.textContent = `Current plan: ${authState.planLabel}. Lithophane prep stays local for now. First STL pass supports Flat surface only.`
+const surfaceMode = document.getElementById("reliefSurface")?.value || "flat"
+const sizeLabel = document.getElementById("reliefSize")?.selectedOptions?.[0]?.textContent || "Medium (~120 mm)"
+const qualityLabel = document.getElementById("reliefMeshQuality")?.selectedOptions?.[0]?.textContent || "Normal"
+
+if(surfaceMode === "arched"){
+  note.textContent = `Current plan: ${authState.planLabel}. Arched stays in preview for now. Flat STL is the active export path.`
+  return
+}
+
+note.textContent = `Current plan: ${authState.planLabel}. Flat STL stays browser-side with ${sizeLabel.toLowerCase()} and ${qualityLabel.toLowerCase()} mesh detail.`
+}
+
+function renderReliefExportState(){
+const button = document.getElementById("generateReliefStlBtn")
+const meta = document.getElementById("reliefExportMeta")
+const surfaceMode = document.getElementById("reliefSurface")?.value || "flat"
+const sizeLabel = document.getElementById("reliefSize")?.selectedOptions?.[0]?.textContent || "Medium (~120 mm)"
+const qualityLabel = document.getElementById("reliefMeshQuality")?.selectedOptions?.[0]?.textContent || "Normal"
+const hasSource = Boolean(window.reliefActiveSource?.url)
+
+if(button){
+  button.disabled = !hasSource || surfaceMode !== "flat"
+  button.textContent = surfaceMode === "flat" ? "Generate STL" : "STL Flat Only"
+}
+
+if(!meta){
+  return
+}
+
+if(!hasSource){
+  meta.textContent = "Generate or upload one source image first to enable STL export."
+  return
+}
+
+if(surfaceMode !== "flat"){
+  meta.textContent = "Arched stays preview-only for now. Switch back to Flat to export STL."
+  return
+}
+
+meta.textContent = `Flat STL uses the active source with ${sizeLabel.toLowerCase()} and ${qualityLabel.toLowerCase()} mesh detail.`
 }
 
 function renderReliefSourcePreview(){
@@ -6065,6 +6138,7 @@ window.reliefActiveSource = {
 renderReliefSourceMeta()
 renderReliefSourcePreview()
 renderReliefThumbStrip()
+renderReliefExportState()
 }
 
 function renderReliefThumbStrip(){
@@ -6423,9 +6497,54 @@ const profileMap = {
 return profileMap[thicknessMode] || profileMap.normal
 }
 
-function buildReliefHeightField(image, depthMode, directionMode, thicknessMode, borderMode){
+function getReliefSizeProfile(sizeMode){
+const profileMap = {
+  small: {
+    widthMm: 90,
+    maxHeightMm: 120
+  },
+  medium: {
+    widthMm: 120,
+    maxHeightMm: 160
+  },
+  large: {
+    widthMm: 150,
+    maxHeightMm: 200
+  }
+}
+
+return profileMap[sizeMode] || profileMap.medium
+}
+
+function getReliefQualityProfile(qualityMode){
+const profileMap = {
+  draft: {
+    minColumns: 84,
+    targetColumns: 110,
+    maxColumns: 132
+  },
+  normal: {
+    minColumns: 96,
+    targetColumns: 140,
+    maxColumns: 180
+  },
+  fine: {
+    minColumns: 120,
+    targetColumns: 176,
+    maxColumns: 220
+  }
+}
+
+return profileMap[qualityMode] || profileMap.normal
+}
+
+function buildReliefHeightField(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode){
 const aspectRatio = image.height / Math.max(1, image.width)
-const sampleColumns = Math.max(96, Math.min(180, image.width))
+const qualityProfile = getReliefQualityProfile(qualityMode)
+const sampleColumns = Math.max(
+  qualityProfile.minColumns,
+  Math.min(qualityProfile.maxColumns, Math.min(qualityProfile.targetColumns, image.width))
+)
 const sampleRows = Math.max(96, Math.round(sampleColumns * aspectRatio))
 const sampleCanvas = document.createElement("canvas")
 sampleCanvas.width = sampleColumns + 1
@@ -6439,9 +6558,10 @@ const thicknessProfile = getReliefThicknessProfile(thicknessMode)
 const borderCells = borderMode === "none"
   ? 0
   : Math.max(3, Math.round(Math.min(sampleColumns, sampleRows) * 0.045))
-let widthMm = 120
+const sizeProfile = getReliefSizeProfile(sizeMode)
+let widthMm = sizeProfile.widthMm
 let heightMm = widthMm * aspectRatio
-const maxHeightMm = 160
+const maxHeightMm = sizeProfile.maxHeightMm
 
 if(heightMm > maxHeightMm){
   const scale = maxHeightMm / heightMm
@@ -6639,8 +6759,8 @@ tabGeometry.dispose()
 return mergedGeometry
 }
 
-function buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode){
-const heightField = buildReliefHeightField(image, depthMode, directionMode, thicknessMode, borderMode)
+function buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode){
+const heightField = buildReliefHeightField(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode)
 const geometry = buildFlatReliefGeometry(heightField)
 const reliefMesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
   color: 0xe6dfcf,
@@ -6783,6 +6903,8 @@ const depthMode = document.getElementById("reliefDepth").value
 const thicknessMode = document.getElementById("reliefThickness").value
 const borderMode = document.getElementById("reliefBorder").value
 const directionMode = document.getElementById("reliefDirection").value
+const sizeMode = document.getElementById("reliefSize").value
+const qualityMode = document.getElementById("reliefMeshQuality").value
 
 if(status){
   status.innerHTML = "Building flat lithophane STL..."
@@ -6791,8 +6913,8 @@ if(status){
 try{
   const blob = await getReliefSourceBlob(sourceState)
   const image = await loadReliefImageFromBlob(blob)
-  const stlUrl = buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode)
-  showGeneratedReliefStl(stlUrl, `relief-flat-${borderMode}-${depthMode}.stl`)
+  const stlUrl = buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode)
+  showGeneratedReliefStl(stlUrl, `relief-flat-${sizeMode}-${qualityMode}-${borderMode}-${depthMode}.stl`)
 
   if(status){
     status.innerHTML = "Flat lithophane STL is ready in the main viewer."
@@ -6809,6 +6931,7 @@ try{
 renderReliefThumbStrip()
 renderReliefSourceMeta()
 renderReliefSourcePreview()
+renderReliefExportState()
 renderReliefUsageNote()
 
 const dropRelief = document.getElementById("dropRelief")

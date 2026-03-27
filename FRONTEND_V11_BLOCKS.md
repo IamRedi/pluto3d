@@ -131,6 +131,10 @@ This file still matters, but from this point onward it should support the remode
   - viewer behavior for `Relief` now mirrors `SVG` by hiding 3D-only print/export controls while previewing a relief result
   - first browser-side `STL` export is now active for `Flat` relief only
   - `Arched` remains preview-only for now and does not claim export support yet
+  - `Relief` export polish now includes:
+    - `Output Size` presets (`Small` / `Medium` / `Large`)
+    - `Mesh Detail` presets (`Draft` / `Normal` / `Fine`)
+    - a clearer disabled-state/export note when the user is on `Arched` or has no active source
   - no new frontend/backend dependency was introduced in this prep step, keeping deploy and licensing risk flat for now
 - done when:
   - `Relief` works as a real panel instead of a note in the plan
