@@ -142,6 +142,9 @@ This file still matters, but from this point onward it should support the remode
     - final functional polish before the broader aesthetic/UI pass:
       - border changes now immediately resync export state
       - STL CTA wording now follows the active `Flat` / `Arched` path
+  - shared copy cleanup started on `3D`, `SVG`, and `Relief`:
+    - remove plan/internal-sounding note text from the tool panels
+    - keep only short functional labels that help with UI layout and later design work
   - no new frontend/backend dependency was introduced in this prep step, keeping deploy and licensing risk flat for now
 - done when:
   - `Relief` works as a real panel instead of a note in the plan

@@ -3383,14 +3383,14 @@ to{background-position:1000px 1000px;}
 <div id="panel-3d" class="toolpanel">
 
 <div class="section-title">3D Generator</div>
-<div class="section-intro">Generate image, preview source, then move into 3D.</div>
+<div class="section-intro">Prepare one source, then generate 3D.</div>
 
 <div class="generator-shell">
   <div class="generator-card">
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">Concept Image</div>
-        <div class="generator-card-copy">Write a short concept prompt and send the result into the same source frame used by upload and 3D conversion.</div>
+        <div class="generator-card-copy">Generate a source image here.</div>
       </div>
       <div class="generator-chip">Image</div>
     </div>
@@ -3402,7 +3402,7 @@ to{background-position:1000px 1000px;}
       <div class="generator-toggle-row">
         <div class="generator-toggle-copy">
           <div class="generator-toggle-title">Toy Assist</div>
-          <div class="generator-toggle-note">Choose the next collectible for the next print.</div>
+          <div class="generator-toggle-note">Collectible prompt help.</div>
         </div>
         <label class="generator-switch" aria-label="Toy assist toggle">
           <input id="generatorToyAssist" type="checkbox">
@@ -3419,7 +3419,7 @@ to{background-position:1000px 1000px;}
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">Source Preview</div>
-        <div class="generator-card-copy">Uploads and generated images share one active source frame for the next 3D action.</div>
+        <div class="generator-card-copy">Upload or choose the active source.</div>
       </div>
       <div class="generator-chip">Preview</div>
     </div>
@@ -3436,7 +3436,7 @@ to{background-position:1000px 1000px;}
     </div>
 
     <div class="generator-stack">
-      <div class="generator-limit-note">Up to 5 recent generated concept images stay here temporarily until refresh or replacement.</div>
+      <div class="generator-limit-note">5 recent sources</div>
       <div class="generator-thumbnail-strip" id="generatorThumbStrip">
         <div class="generator-thumb">Recent image 1</div>
         <div class="generator-thumb">Recent image 2</div>
@@ -3451,7 +3451,7 @@ to{background-position:1000px 1000px;}
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">3D Output</div>
-        <div class="generator-card-copy">Fast test generation will use owned models, while premium real 3D keeps the paid production path.</div>
+        <div class="generator-card-copy">Choose test or real 3D.</div>
       </div>
       <div class="generator-chip">3D</div>
     </div>
@@ -3481,14 +3481,14 @@ to{background-position:1000px 1000px;}
 <div id="panel-svg" class="toolpanel hidden">
 
 <div class="section-title">SVG Generator</div>
-<div class="section-intro">Write a prompt or upload a photo, keep the best source in view, then generate one clean SVG that opens in the main viewer with direct download.</div>
+<div class="section-intro">Prepare one source, then generate SVG.</div>
 
 <div class="generator-shell">
   <div class="generator-card">
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">Concept Image</div>
-        <div class="generator-card-copy">Generate source images directly inside the SVG flow before converting the selected image into vector output.</div>
+        <div class="generator-card-copy">Generate a source image here.</div>
       </div>
       <div class="generator-chip">Image</div>
     </div>
@@ -3505,7 +3505,7 @@ to{background-position:1000px 1000px;}
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">Source Preview</div>
-        <div class="generator-card-copy">Prompt images and uploaded photos stay inside the SVG panel, and the selected source feeds the vector step directly.</div>
+        <div class="generator-card-copy">Upload or choose the active source.</div>
       </div>
       <div class="generator-chip">Preview</div>
     </div>
@@ -3519,9 +3519,9 @@ to{background-position:1000px 1000px;}
     <div class="generator-stack">
       <div class="generator-meta-row">
         <div class="generator-meta-chip" id="svgSourceType">No Source</div>
-        <div class="generator-meta-copy" id="svgSourceMeta">Generate a concept image or upload a source photo for SVG.</div>
+        <div class="generator-meta-copy" id="svgSourceMeta">Generate or upload a source image.</div>
       </div>
-      <div class="generator-limit-note">Up to 5 recent SVG source images stay here temporarily until refresh or replacement.</div>
+      <div class="generator-limit-note">5 recent sources</div>
       <div class="generator-thumbnail-strip" id="svgThumbStrip">
         <div class="generator-thumb">Recent image 1</div>
         <div class="generator-thumb">Recent image 2</div>
@@ -3536,7 +3536,7 @@ to{background-position:1000px 1000px;}
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">SVG Output</div>
-        <div class="generator-card-copy">Refine the cleanup, generate the vector, then open it in the main viewer with direct SVG download for laser-ready work.</div>
+        <div class="generator-card-copy">Set the cleanup and generate SVG.</div>
       </div>
       <div class="generator-chip">SVG</div>
     </div>
@@ -3558,7 +3558,7 @@ to{background-position:1000px 1000px;}
 
       <button class="generator-cta" type="button" onclick="generateSVG()">Generate SVG</button>
       <div id="svgStatus" class="status"></div>
-      <div class="generator-output-note" id="svgUsageNote">Guest 1 SVG try. Logged-in free 5. Premium unlimited.</div>
+      <div class="generator-output-note" id="svgUsageNote">SVG opens in the main viewer.</div>
     </div>
   </div>
 </div>
@@ -3568,14 +3568,14 @@ to{background-position:1000px 1000px;}
 <div id="panel-relief" class="toolpanel hidden">
 
 <div class="section-title">Photo Relief</div>
-<div class="section-intro">Prepare one source image, shape a grayscale relief preview, then keep the first lithophane-style path inside the main viewer.</div>
+<div class="section-intro">Prepare one source, preview relief, then export STL.</div>
 
 <div class="generator-shell">
   <div class="generator-card">
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">Concept Image</div>
-        <div class="generator-card-copy">Generate a relief source image directly in this section before moving into local relief preview.</div>
+        <div class="generator-card-copy">Generate a source image here.</div>
       </div>
       <div class="generator-chip">Image</div>
     </div>
@@ -3592,7 +3592,7 @@ to{background-position:1000px 1000px;}
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">Source Preview</div>
-        <div class="generator-card-copy">Upload a portrait or generated concept and keep a short recent-source strip for the relief pass.</div>
+        <div class="generator-card-copy">Upload or choose the active source.</div>
       </div>
       <div class="generator-chip">Preview</div>
     </div>
@@ -3606,9 +3606,9 @@ to{background-position:1000px 1000px;}
     <div class="generator-stack">
       <div class="generator-meta-row">
         <div class="generator-meta-chip" id="reliefSourceType">No Source</div>
-        <div class="generator-meta-copy" id="reliefSourceMeta">Generate a concept image or upload a portrait photo for relief preview.</div>
+        <div class="generator-meta-copy" id="reliefSourceMeta">Generate or upload a source image.</div>
       </div>
-      <div class="generator-limit-note">Up to 5 recent relief source images stay here temporarily until refresh or replacement.</div>
+      <div class="generator-limit-note">5 recent sources</div>
       <div class="generator-thumbnail-strip" id="reliefThumbStrip">
         <div class="generator-thumb">Recent image 1</div>
         <div class="generator-thumb">Recent image 2</div>
@@ -3623,7 +3623,7 @@ to{background-position:1000px 1000px;}
     <div class="generator-card-header">
       <div>
         <div class="generator-card-title">Relief Preview</div>
-        <div class="generator-card-copy">Build a safe local grayscale relief preview now; true lithophane mesh/export wiring will follow after this panel settles.</div>
+        <div class="generator-card-copy">Preview the relief, then export STL.</div>
       </div>
       <div class="generator-chip">Relief</div>
     </div>
@@ -3679,8 +3679,8 @@ to{background-position:1000px 1000px;}
       <button class="generator-cta" type="button" onclick="previewRelief()">Preview Relief</button>
       <button id="generateReliefStlBtn" class="generator-cta" type="button" onclick="generateReliefStl()">Generate STL</button>
       <div id="reliefStatus" class="status"></div>
-      <div class="generator-limit-note" id="reliefExportMeta">Flat STL uses the active source with medium size and normal mesh detail.</div>
-      <div class="generator-output-note" id="reliefUsageNote">Local prep preview only for now. Full lithophane mesh/export comes next.</div>
+      <div class="generator-limit-note" id="reliefExportMeta">Flat STL uses the active source.</div>
+      <div class="generator-output-note" id="reliefUsageNote">Relief opens in the main viewer.</div>
     </div>
   </div>
 </div>
@@ -5584,7 +5584,7 @@ if(!typeChip || !meta){
 
 if(!source?.url){
   typeChip.textContent = "No Source"
-  meta.textContent = "Generate a concept image or upload a source photo for SVG."
+  meta.textContent = "Generate or upload a source image."
   return
 }
 
@@ -5598,8 +5598,7 @@ if(!note){
   return
 }
 
-const authState = getAuthPreviewState()
-note.textContent = `Current plan: ${authState.planLabel}. Product tiers: Guest 1, Free 5, Premium unlimited.`
+note.textContent = "SVG opens in the main viewer."
 }
 
 function renderSvgSourcePreview(){
@@ -6029,7 +6028,7 @@ if(!typeChip || !meta){
 
 if(!source?.url){
   typeChip.textContent = "No Source"
-  meta.textContent = "Generate a concept image or upload a portrait photo for relief preview."
+  meta.textContent = "Generate or upload a source image."
   return
 }
 
@@ -6043,23 +6042,20 @@ if(!note){
   return
 }
 
-const authState = getAuthPreviewState()
 const surfaceMode = document.getElementById("reliefSurface")?.value || "flat"
 const borderMode = document.getElementById("reliefBorder")?.value || "frame"
-const sizeLabel = document.getElementById("reliefSize")?.selectedOptions?.[0]?.textContent || "Medium (~120 mm)"
-const qualityLabel = document.getElementById("reliefMeshQuality")?.selectedOptions?.[0]?.textContent || "Normal"
 
 if(surfaceMode === "arched"){
   if(borderMode === "print-tab"){
-    note.textContent = `Current plan: ${authState.planLabel}. Arched STL is available, but Print Tab stays Flat-only for now.`
+    note.textContent = "Print Tab works with Flat only."
     return
   }
 
-  note.textContent = `Current plan: ${authState.planLabel}. Arched STL stays browser-side with ${sizeLabel.toLowerCase()} and ${qualityLabel.toLowerCase()} mesh detail.`
+  note.textContent = "Arched STL opens in the main viewer."
   return
 }
 
-note.textContent = `Current plan: ${authState.planLabel}. Flat STL stays browser-side with ${sizeLabel.toLowerCase()} and ${qualityLabel.toLowerCase()} mesh detail.`
+note.textContent = "Flat STL opens in the main viewer."
 }
 
 function renderReliefExportState(){
@@ -6086,21 +6082,21 @@ if(!meta){
 }
 
 if(!hasSource){
-  meta.textContent = "Generate or upload one source image first to enable STL export."
+  meta.textContent = "Generate or upload a source image."
   return
 }
 
 if(surfaceMode === "arched" && borderMode === "print-tab"){
-  meta.textContent = "Arched STL works with None or Frame. Print Tab remains Flat-only for now."
+  meta.textContent = "Arched STL works with None or Frame."
   return
 }
 
 if(surfaceMode === "arched"){
-  meta.textContent = `Arched STL uses the active source with ${sizeLabel.toLowerCase()}, ${qualityLabel.toLowerCase()} mesh detail, and ${borderMode.toLowerCase()} border.`
+  meta.textContent = `Arched STL • ${sizeLabel.toLowerCase()} • ${qualityLabel.toLowerCase()} • ${borderMode.toLowerCase()} border`
   return
 }
 
-meta.textContent = `Flat STL uses the active source with ${sizeLabel.toLowerCase()}, ${qualityLabel.toLowerCase()} mesh detail, and ${borderMode.toLowerCase()} border.`
+meta.textContent = `Flat STL • ${sizeLabel.toLowerCase()} • ${qualityLabel.toLowerCase()} • ${borderMode.toLowerCase()} border`
 }
 
 function renderReliefSourcePreview(){
