@@ -19,6 +19,7 @@ renderer.setPixelRatio(window.devicePixelRatio || 1)
 renderer.outputEncoding = THREE.sRGBEncoding
 renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.toneMappingExposure = 1.15
+renderer.physicallyCorrectLights = true
 renderer.setSize(
   viewerContainer.clientWidth,
   viewerContainer.clientHeight
@@ -34,6 +35,10 @@ directionalLight.position.set(2, 3, 4)
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.65)
 const hemisphereLight = new THREE.HemisphereLight(0x7dd3fc, 0x12061f, 0.85)
+const rimLight = new THREE.DirectionalLight(0xf4d6a1, 0.8)
+rimLight.position.set(-3.4, 2.1, -2.1)
+const bounceLight = new THREE.DirectionalLight(0x9ab39d, 0.42)
+bounceLight.position.set(0.6, -1.2, 2.4)
 const idleKeyLight = new THREE.DirectionalLight(0xf4f9ff, 1.85)
 idleKeyLight.position.set(-2.6, 2.8, 4.2)
 const idleFillLight = new THREE.DirectionalLight(0xaed6ff, 1.05)
@@ -50,16 +55,46 @@ window.viewerPrintCtaAssetKey = window.viewerPrintCtaAssetKey || null
 camera.position.z = 3
 
 const controls = new THREE.OrbitControls(camera, renderer.domElement)
+controls.enableDamping = true
+controls.dampingFactor = 0.06
+controls.enablePan = false
+controls.minDistance = 1.8
+controls.maxDistance = 6.4
 
 const VIEWER_SHELL = `
 <button id="viewerDownload" class="viewer-download hidden">
 Download
 </button>
-<div class="viewer-title">3D Viewer</div>
-<div class="viewer-toolbar">
-  <div class="viewer-modes">
-    <button class="viewer-mode-btn" data-viewer-mode="wireframe">Wire</button>
-    <button class="viewer-mode-btn" data-viewer-mode="print">Print</button>
+<div class="viewer-topbar">
+  <div class="viewer-title-block">
+    <div class="viewer-kicker">Pluto3D Studio</div>
+    <div class="viewer-title">3D Viewer</div>
+  </div>
+  <div class="viewer-toolbar-shell">
+    <div class="viewer-toolbar-meta">
+      <div class="viewer-toolbar-label">Surface</div>
+      <div id="viewerSurfaceValue" class="viewer-toolbar-value">3D Controls</div>
+    </div>
+    <div class="viewer-toolbar">
+      <div class="viewer-modes">
+        <button class="viewer-mode-btn" data-viewer-mode="wireframe">Wire</button>
+        <button class="viewer-mode-btn" data-viewer-mode="print">Print</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="viewerStatusStrip" class="viewer-status-strip">
+  <div class="viewer-status-group">
+    <div class="viewer-status-label">Asset</div>
+    <div id="viewerStatusAsset" class="viewer-status-value">Idle showroom</div>
+  </div>
+  <div class="viewer-status-group">
+    <div class="viewer-status-label">Mode</div>
+    <div id="viewerStatusMode" class="viewer-status-value">Wire</div>
+  </div>
+  <div class="viewer-status-group">
+    <div class="viewer-status-label">Output</div>
+    <div id="viewerStatusOutput" class="viewer-status-value">Viewer ready</div>
   </div>
 </div>
 <div id="viewerPrintCta" class="viewer-print-cta hidden">
@@ -87,6 +122,8 @@ function addDefaultLights(){
   scene.add(ambientLight)
   scene.add(hemisphereLight)
   scene.add(directionalLight)
+  scene.add(rimLight)
+  scene.add(bounceLight)
 }
 
 function addIdleViewerLights(){
@@ -187,21 +224,40 @@ function clearViewerOverlayArtifacts(options = {}){
   }
 }
 
-function fitModelToViewer(model){
+function setViewerHeroCamera(targetY = 0.32, distance = 2.9){
+  camera.position.set(0, targetY + 0.52, distance)
+  controls.target.set(0, targetY, 0)
+  controls.update()
+}
+
+function centerModelOnViewerStage(model, liftRatio = 0.34, minLift = 0.2, maxLift = 0.62){
   const box = new THREE.Box3().setFromObject(model)
   const center = box.getCenter(new THREE.Vector3())
+
   model.position.x -= center.x
   model.position.z -= center.z
 
-  const minY = box.min.y
-  model.position.y -= minY
+  const centeredBox = new THREE.Box3().setFromObject(model)
+  model.position.y -= centeredBox.min.y
 
-  const size = box.getSize(new THREE.Vector3()).length()
-  const scale = size > 0 ? 2 / size : 1
+  const groundedBox = new THREE.Box3().setFromObject(model)
+  const groundedHeight = groundedBox.getSize(new THREE.Vector3()).y
+  const targetY = Math.max(minLift, Math.min(maxLift, groundedHeight * liftRatio))
+
+  model.position.y += targetY
+  return targetY
+}
+
+function fitModelToViewer(model){
+  model.position.set(0, 0, 0)
+  const box = new THREE.Box3().setFromObject(model)
+  const dimensions = box.getSize(new THREE.Vector3())
+  const maxDimension = Math.max(dimensions.x, dimensions.y, dimensions.z)
+  const scale = maxDimension > 0 ? 1.95 / maxDimension : 1
   model.scale.setScalar(scale)
 
-  camera.position.set(0, 0, 3)
-  controls.update()
+  const targetY = centerModelOnViewerStage(model, 0.34, 0.2, 0.62)
+  setViewerHeroCamera(targetY, 2.96)
 }
 
 function restoreIdleViewer(){
@@ -231,8 +287,9 @@ function restoreIdleViewer(){
     window.currentModel = model
 
     fitModelToViewer(model)
-    model.scale.multiplyScalar(1.5)
-    model.position.y -= 0.12
+    model.scale.multiplyScalar(1.42)
+    const idleTargetY = centerModelOnViewerStage(model, 0.32, 0.22, 0.62)
+    setViewerHeroCamera(idleTargetY, 3.04)
     scene.add(model)
 
     setCurrentViewerAsset({
@@ -271,6 +328,144 @@ function getViewerAssetKey(asset){
   return `${asset.type || "asset"}::${asset.url || ""}::${asset.filename || ""}`
 }
 
+function getViewerTitleLabel(currentSurface, asset){
+  if(currentSurface === "svg" || asset?.type === "svg"){
+    return "SVG Viewer"
+  }
+
+  if(currentSurface === "relief" || asset?.type === "relief-preview"){
+    return "Relief Viewer"
+  }
+
+  if(asset?.type === "stl"){
+    return "STL Viewer"
+  }
+
+  if(asset?.type === "image"){
+    return "Image Viewer"
+  }
+
+  return "3D Viewer"
+}
+
+function getViewerSurfaceValue(currentSurface, asset){
+  if(currentSurface === "svg" || asset?.type === "svg"){
+    return "SVG Preview"
+  }
+
+  if(currentSurface === "relief" || asset?.type === "relief-preview"){
+    return "Relief Prep"
+  }
+
+  if(asset?.type === "stl"){
+    return "Print Asset"
+  }
+
+  if(asset?.type === "image"){
+    return "2D Source"
+  }
+
+  return "3D Controls"
+}
+
+function getViewerAssetLabel(asset){
+  if(!asset || asset.type === "idle"){
+    return "Idle showroom"
+  }
+
+  if(asset.filename){
+    return asset.filename
+  }
+
+  if(asset.type === "glb"){
+    return "GLB model"
+  }
+
+  if(asset.type === "stl"){
+    return "STL export"
+  }
+
+  if(asset.type === "svg"){
+    return "SVG preview"
+  }
+
+  if(asset.type === "relief-preview"){
+    return "Relief preview"
+  }
+
+  if(asset.type === "image"){
+    return "Concept image"
+  }
+
+  return "Viewer asset"
+}
+
+function getViewerOutputLabel(currentSurface, asset){
+  if(!asset || asset.type === "idle"){
+    return "Viewer ready"
+  }
+
+  if(currentSurface === "svg" || asset.type === "svg"){
+    return "Vector output"
+  }
+
+  if(currentSurface === "relief" || asset.type === "relief-preview"){
+    return "Print preview"
+  }
+
+  if(asset.type === "glb"){
+    return "3D model live"
+  }
+
+  if(asset.type === "stl"){
+    return "STL ready"
+  }
+
+  if(asset.type === "image"){
+    return "Source ready"
+  }
+
+  return "Viewer ready"
+}
+
+function getViewerModeLabel(mode, asset){
+  if(!asset || asset.type === "idle"){
+    return "Showroom"
+  }
+
+  return mode === "print" ? "Print" : "Wire"
+}
+
+function syncViewerStatusStrip(){
+  const assetValue = document.getElementById("viewerStatusAsset")
+  const modeValue = document.getElementById("viewerStatusMode")
+  const outputValue = document.getElementById("viewerStatusOutput")
+  const title = viewerContainer.querySelector(".viewer-title")
+  const surfaceValue = document.getElementById("viewerSurfaceValue")
+  const currentSurface = window.currentWorkspacePanel || "3d"
+  const asset = window.currentViewerAsset || null
+
+  if(title){
+    title.textContent = getViewerTitleLabel(currentSurface, asset)
+  }
+
+  if(surfaceValue){
+    surfaceValue.textContent = getViewerSurfaceValue(currentSurface, asset)
+  }
+
+  if(assetValue){
+    assetValue.textContent = getViewerAssetLabel(asset)
+  }
+
+  if(modeValue){
+    modeValue.textContent = getViewerModeLabel(window.currentViewerMode, asset)
+  }
+
+  if(outputValue){
+    outputValue.textContent = getViewerOutputLabel(currentSurface, asset)
+  }
+}
+
 function syncViewerModeButtons(){
   viewerContainer.querySelectorAll("[data-viewer-mode]").forEach((button) => {
     const isActive = button.dataset.viewerMode === window.currentViewerMode
@@ -279,7 +474,9 @@ function syncViewerModeButtons(){
 }
 
 function syncViewerSurfaceChrome(){
+  const topbar = viewerContainer.querySelector(".viewer-topbar")
   const toolbar = viewerContainer.querySelector(".viewer-toolbar")
+  const toolbarShell = viewerContainer.querySelector(".viewer-toolbar-shell")
   const wrap = document.getElementById("viewerPrintCta")
   const currentSurface = window.currentWorkspacePanel || "3d"
   const assetType = window.currentViewerAsset?.type || ""
@@ -288,8 +485,16 @@ function syncViewerSurfaceChrome(){
     assetType === "svg" ||
     assetType === "relief-preview"
 
+  if(topbar){
+    topbar.style.display = ""
+  }
+
   if(toolbar){
     toolbar.style.display = hide3dControls ? "none" : ""
+  }
+
+  if(toolbarShell){
+    toolbarShell.style.display = hide3dControls ? "none" : ""
   }
 
   if(hide3dControls){
@@ -305,6 +510,8 @@ function syncViewerSurfaceChrome(){
       wrap.style.display = ""
     }
   }
+
+  syncViewerStatusStrip()
 }
 
 function getCurrentMeshList(){
@@ -356,17 +563,27 @@ function buildModeMaterial(sourceMaterial, mode){
       return idleMaterial
     }
 
-    const wireMaterial = sourceMaterial.clone()
+    const wireMaterial = new THREE.MeshStandardMaterial({
+      color: 0xf0eadc,
+      metalness: 0.08,
+      roughness: 0.42,
+      wireframe: true
+    })
+    wireMaterial.skinning = Boolean(sourceMaterial.skinning)
+    wireMaterial.morphTargets = Boolean(sourceMaterial.morphTargets)
+    wireMaterial.morphNormals = Boolean(sourceMaterial.morphNormals)
     wireMaterial.wireframe = true
     wireMaterial.transparent = true
-    wireMaterial.opacity = 0.92
+    wireMaterial.opacity = 0.9
     return wireMaterial
   }
 
-  const printMaterial = new THREE.MeshPhongMaterial({
-    color: 0xe7decf,
-    specular: 0x1e1810,
-    shininess: 7,
+  const printMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0xeee6d8,
+    metalness: 0.03,
+    roughness: 0.76,
+    clearcoat: 0.14,
+    clearcoatRoughness: 0.64,
     side: THREE.DoubleSide
   })
   printMaterial.flatShading = false
@@ -403,6 +620,7 @@ function setViewerMode(mode){
     ? getViewerAssetKey(window.currentViewerAsset)
     : null
   syncViewerModeButtons()
+  syncViewerStatusStrip()
   syncViewerPrintCta()
 
   if(window.currentModel){
@@ -543,6 +761,7 @@ function loadModel(url){
 
 function animate(){
   requestAnimationFrame(animate)
+  controls.update()
   if(window.currentViewerIsIdle && window.currentModel){
     window.currentModel.rotation.y += 0.0052
   }
@@ -568,9 +787,9 @@ function loadSTL(url, filename="model.stl", options = {}){
   const {
     viewerMode = "wireframe",
     assetType = "stl",
-    color = 0x00d9ff,
-    metalness = 0.22,
-    roughness = 0.5
+    color = 0xeee6d8,
+    metalness = 0.04,
+    roughness = 0.7
   } = options
   const loader = new THREE.STLLoader()
 
@@ -604,8 +823,8 @@ function loadSTL(url, filename="model.stl", options = {}){
     const scale = 2 / size
 
     mesh.scale.setScalar(scale)
-    camera.position.set(0, 0, 3)
-    controls.update()
+    const targetY = centerModelOnViewerStage(mesh, 0.26, 0.18, 0.5)
+    setViewerHeroCamera(targetY, 3.12)
     if(typeof refreshToyStudioState === "function"){
       refreshToyStudioState()
     }
