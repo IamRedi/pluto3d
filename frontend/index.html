@@ -5996,7 +5996,11 @@ handleSvgFiles(svgInput.files)
 
 document.getElementById("reliefDepth")?.addEventListener("change", triggerReliefAutoPreview)
 document.getElementById("reliefThickness")?.addEventListener("change", triggerReliefAutoPreview)
-document.getElementById("reliefBorder")?.addEventListener("change", triggerReliefAutoPreview)
+document.getElementById("reliefBorder")?.addEventListener("change", () => {
+triggerReliefAutoPreview()
+renderReliefExportState()
+renderReliefUsageNote()
+})
 document.getElementById("reliefSurface")?.addEventListener("change", () => {
 triggerReliefAutoPreview()
 renderReliefExportState()
@@ -6070,7 +6074,11 @@ const exportSupported = surfaceMode === "flat" || (surfaceMode === "arched" && b
 
 if(button){
   button.disabled = !hasSource || !exportSupported
-  button.textContent = exportSupported ? "Generate STL" : "Print Tab Flat Only"
+  if(!exportSupported){
+    button.textContent = "Print Tab Flat Only"
+  }else{
+    button.textContent = surfaceMode === "arched" ? "Generate Arched STL" : "Generate Flat STL"
+  }
 }
 
 if(!meta){
@@ -6088,11 +6096,11 @@ if(surfaceMode === "arched" && borderMode === "print-tab"){
 }
 
 if(surfaceMode === "arched"){
-  meta.textContent = `Arched STL uses the active source with ${sizeLabel.toLowerCase()} and ${qualityLabel.toLowerCase()} mesh detail.`
+  meta.textContent = `Arched STL uses the active source with ${sizeLabel.toLowerCase()}, ${qualityLabel.toLowerCase()} mesh detail, and ${borderMode.toLowerCase()} border.`
   return
 }
 
-meta.textContent = `Flat STL uses the active source with ${sizeLabel.toLowerCase()} and ${qualityLabel.toLowerCase()} mesh detail.`
+meta.textContent = `Flat STL uses the active source with ${sizeLabel.toLowerCase()}, ${qualityLabel.toLowerCase()} mesh detail, and ${borderMode.toLowerCase()} border.`
 }
 
 function renderReliefSourcePreview(){

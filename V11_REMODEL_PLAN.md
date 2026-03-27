@@ -325,6 +325,9 @@ before:
       - improve the flat STL mesh itself before expanding scope:
         - reduce noise/spikes from raw photo luminance
         - make frame/border transitions less abrupt for cleaner print behavior
+      - finish the section with functional-state cleanup before the wider design pass:
+        - keep CTA copy/state in sync with `Border` and `Surface`
+        - treat the next pass on this section as mostly visual unless a print issue appears
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired

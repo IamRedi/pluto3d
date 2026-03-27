@@ -1144,3 +1144,6 @@ If anything is unclear, check these first in this order:
       - start mesh cleanup directly in the browser path:
         - smooth noisy interior height changes
         - keep border/frame zones stronger while softening the transition into the main image area
+      - final functional stabilization before the later UI/esthetic pass:
+        - sync border changes into export-state messaging immediately
+        - make the CTA label reflect whether the user is generating `Flat` or `Arched` STL

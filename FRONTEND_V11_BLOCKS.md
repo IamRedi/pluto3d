@@ -139,6 +139,9 @@ This file still matters, but from this point onward it should support the remode
     - a first mesh-quality cleanup pass:
       - interior height smoothing to reduce noisy STL spikes from photo grain
       - softer frame transition near the thick border zone so edge walls print cleaner
+    - final functional polish before the broader aesthetic/UI pass:
+      - border changes now immediately resync export state
+      - STL CTA wording now follows the active `Flat` / `Arched` path
   - no new frontend/backend dependency was introduced in this prep step, keeping deploy and licensing risk flat for now
 - done when:
   - `Relief` works as a real panel instead of a note in the plan
