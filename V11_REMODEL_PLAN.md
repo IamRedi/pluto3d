@@ -332,6 +332,10 @@ before:
       - shorten `3D`, `SVG`, and `Relief` copy to the minimum useful UI language
       - remove internal plan/status phrasing that makes the panels feel less product-ready
       - remove placeholder empty-state text where it is not needed for the flow
+    - current handoff state:
+      - the next chat should continue from a stable local/test checkpoint
+      - primary next focus is the broader UI pass across these sections, especially buttons and visual structure
+      - production adaptation remains deferred until after the design/system pass settles
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired

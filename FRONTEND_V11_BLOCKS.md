@@ -147,6 +147,9 @@ This file still matters, but from this point onward it should support the remode
     - keep only short functional labels that help with UI layout and later design work
     - remove empty-state placeholder text from source strips and meta rows so the panels sit cleaner before the styling pass
   - no new frontend/backend dependency was introduced in this prep step, keeping deploy and licensing risk flat for now
+  - current checkpoint:
+    - `3D`, `SVG`, and `Relief` are now stable enough for a dedicated UI/design pass
+    - next chat should treat this block as product-polish/UI work, not a new backend/export architecture pass
 - done when:
   - `Relief` works as a real panel instead of a note in the plan
   - a user can prepare a source and preview a first relief-style result locally

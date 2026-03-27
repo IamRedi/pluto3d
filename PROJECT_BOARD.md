@@ -1151,3 +1151,6 @@ If anything is unclear, check these first in this order:
       - strip longer explanatory copy that does not help the user take an action
       - keep the panels visually cleaner before the dedicated button/layout styling pass
       - remove placeholder source/meta text so empty states do not fill the panel with unnecessary words
+    - handoff checkpoint:
+      - active local logic for `3D`, `SVG`, and `Relief` should now be treated as stable enough for the next UI-focused chat
+      - do not switch into production adaptation yet; the next main pass is visual hierarchy, buttons, spacing, and overall interface polish
