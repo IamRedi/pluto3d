@@ -1131,3 +1131,8 @@ If anything is unclear, check these first in this order:
       - keep live panel feedback lightweight as image/preview work; build the real mesh only when the user explicitly asks for export
       - do not copy code from `LithoMaker` into Pluto3D because its repo is `GPL-3.0`
       - `OpenJSCAD` looks commercially friendlier (`MIT`) but is still a broader CAD stack than we need for this v1.1 step
+    - first real export pass is now in progress:
+      - `Generate STL` now exists inside `Relief` for the `Flat` surface path
+      - it builds a browser-side height-field mesh from the active image source and sends the result into the main viewer
+      - this first pass intentionally skips `Arched STL` so geometry/export risk stays bounded
+      - no new dependency was added for this step; it reuses the existing `three.js` + `STLExporter` stack

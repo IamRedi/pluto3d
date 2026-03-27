@@ -116,8 +116,8 @@ This file still matters, but from this point onward it should support the remode
   - add a local grayscale relief preview path in the main viewer
   - keep `Wire`, `Print`, and printer-export controls hidden while the viewer is showing relief preview
 - out of scope:
-  - true lithophane mesh generation
-  - STL export from relief
+  - arched lithophane mesh generation
+  - production-ready STL export across all relief modes
   - backend depth-map or height-field APIs
 - progress:
   - `Relief` now exists as its own panel with prompt, upload/source preview, and 5 recent source thumbnails
@@ -129,7 +129,8 @@ This file still matters, but from this point onward it should support the remode
     - `Surface` (`Flat` / `Arched`)
     - `Direction`
   - viewer behavior for `Relief` now mirrors `SVG` by hiding 3D-only print/export controls while previewing a relief result
-  - current output remains `PNG` preview only; no fake lithophane `STL` promise is exposed yet
+  - first browser-side `STL` export is now active for `Flat` relief only
+  - `Arched` remains preview-only for now and does not claim export support yet
   - no new frontend/backend dependency was introduced in this prep step, keeping deploy and licensing risk flat for now
 - done when:
   - `Relief` works as a real panel instead of a note in the plan

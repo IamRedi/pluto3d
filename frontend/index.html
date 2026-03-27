@@ -3656,6 +3656,7 @@ to{background-position:1000px 1000px;}
       </select>
 
       <button class="generator-cta" type="button" onclick="previewRelief()">Preview Relief</button>
+      <button class="generator-cta" type="button" onclick="generateReliefStl()">Generate STL</button>
       <div id="reliefStatus" class="status"></div>
       <div class="generator-output-note" id="reliefUsageNote">Local prep preview only for now. Full lithophane mesh/export comes next.</div>
     </div>
@@ -5379,6 +5380,7 @@ window.svgRecentImages = window.svgRecentImages || []
 window.svgActiveSource = window.svgActiveSource || null
 window.reliefRecentImages = window.reliefRecentImages || []
 window.reliefActiveSource = window.reliefActiveSource || null
+window.reliefGeneratedStlUrl = window.reliefGeneratedStlUrl || null
 
 function getGeneratorHiddenToyPrompt(){
 return " full toy object, complete collectible toy, isolated studio render, centered product composition, premium toy silhouette"
@@ -6004,7 +6006,7 @@ if(!note){
 }
 
 const authState = getAuthPreviewState()
-note.textContent = `Current plan: ${authState.planLabel}. Lithophane prep stays local for now. Mesh/export comes in the next phase.`
+note.textContent = `Current plan: ${authState.planLabel}. Lithophane prep stays local for now. First STL pass supports Flat surface only.`
 }
 
 function renderReliefSourcePreview(){
@@ -6385,6 +6387,291 @@ if(borderMode === "print-tab"){
 return canvas.toDataURL("image/png")
 }
 
+function getReliefToneSample(luminance, depthMode, directionMode){
+const contrastMap = {
+  soft: 0.82,
+  normal: 1,
+  strong: 1.18
+}
+const contrast = contrastMap[depthMode] || 1
+let tone = ((luminance - 128) * contrast) + 128
+tone = Math.max(0, Math.min(255, tone))
+
+if(directionMode === "light-deep"){
+  return tone / 255
+}
+
+return (255 - tone) / 255
+}
+
+function getReliefThicknessProfile(thicknessMode){
+const profileMap = {
+  thin: {
+    min: 0.9,
+    max: 2.4
+  },
+  normal: {
+    min: 1.2,
+    max: 3.2
+  },
+  thick: {
+    min: 1.6,
+    max: 4.4
+  }
+}
+
+return profileMap[thicknessMode] || profileMap.normal
+}
+
+function buildReliefHeightField(image, depthMode, directionMode, thicknessMode, borderMode){
+const aspectRatio = image.height / Math.max(1, image.width)
+const sampleColumns = Math.max(96, Math.min(180, image.width))
+const sampleRows = Math.max(96, Math.round(sampleColumns * aspectRatio))
+const sampleCanvas = document.createElement("canvas")
+sampleCanvas.width = sampleColumns + 1
+sampleCanvas.height = sampleRows + 1
+
+const sampleContext = sampleCanvas.getContext("2d", { willReadFrequently:true })
+sampleContext.drawImage(image, 0, 0, sampleCanvas.width, sampleCanvas.height)
+
+const sampleData = sampleContext.getImageData(0, 0, sampleCanvas.width, sampleCanvas.height).data
+const thicknessProfile = getReliefThicknessProfile(thicknessMode)
+const borderCells = borderMode === "none"
+  ? 0
+  : Math.max(3, Math.round(Math.min(sampleColumns, sampleRows) * 0.045))
+let widthMm = 120
+let heightMm = widthMm * aspectRatio
+const maxHeightMm = 160
+
+if(heightMm > maxHeightMm){
+  const scale = maxHeightMm / heightMm
+  widthMm *= scale
+  heightMm = maxHeightMm
+}
+
+widthMm = Number(widthMm.toFixed(2))
+heightMm = Number(heightMm.toFixed(2))
+const heights = new Float32Array((sampleColumns + 1) * (sampleRows + 1))
+
+for(let y = 0; y <= sampleRows; y += 1){
+  for(let x = 0; x <= sampleColumns; x += 1){
+    const pixelIndex = ((y * (sampleColumns + 1)) + x) * 4
+    const luminance = (sampleData[pixelIndex] * 0.299) +
+      (sampleData[pixelIndex + 1] * 0.587) +
+      (sampleData[pixelIndex + 2] * 0.114)
+
+    const depthRatio = getReliefToneSample(luminance, depthMode, directionMode)
+    let thickness = thicknessProfile.min + (depthRatio * (thicknessProfile.max - thicknessProfile.min))
+
+    if(borderCells > 0 && (
+      x <= borderCells ||
+      y <= borderCells ||
+      x >= sampleColumns - borderCells ||
+      y >= sampleRows - borderCells
+    )){
+      thickness = thicknessProfile.max
+    }
+
+    heights[(y * (sampleColumns + 1)) + x] = thickness
+  }
+}
+
+return {
+  columns: sampleColumns,
+  rows: sampleRows,
+  widthMm,
+  heightMm,
+  minThickness: thicknessProfile.min,
+  maxThickness: thicknessProfile.max,
+  borderMode,
+  heights
+}
+}
+
+function mergeIndexedBufferGeometries(geometries){
+const positions = []
+const indices = []
+let vertexOffset = 0
+
+geometries.forEach((geometry) => {
+  const positionAttribute = geometry.getAttribute("position")
+  const geometryIndex = geometry.getIndex()
+
+  for(let vertex = 0; vertex < positionAttribute.count; vertex += 1){
+    positions.push(
+      positionAttribute.getX(vertex),
+      positionAttribute.getY(vertex),
+      positionAttribute.getZ(vertex)
+    )
+  }
+
+  if(geometryIndex){
+    for(let index = 0; index < geometryIndex.count; index += 1){
+      indices.push(geometryIndex.getX(index) + vertexOffset)
+    }
+  }else{
+    for(let index = 0; index < positionAttribute.count; index += 1){
+      indices.push(index + vertexOffset)
+    }
+  }
+
+  vertexOffset += positionAttribute.count
+})
+
+const merged = new THREE.BufferGeometry()
+merged.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
+merged.setIndex(indices)
+merged.computeVertexNormals()
+
+return merged
+}
+
+function buildFlatReliefGeometry(heightField){
+const {
+  columns,
+  rows,
+  widthMm,
+  heightMm,
+  minThickness,
+  borderMode,
+  heights
+} = heightField
+const vertexColumns = columns + 1
+const vertexRows = rows + 1
+const frontVertexCount = vertexColumns * vertexRows
+const positions = []
+const indices = []
+
+const frontIndex = (x, y) => (y * vertexColumns) + x
+const backIndex = (x, y) => frontVertexCount + frontIndex(x, y)
+
+for(let y = 0; y <= rows; y += 1){
+  for(let x = 0; x <= columns; x += 1){
+    const px = ((x / columns) - 0.5) * widthMm
+    const py = (0.5 - (y / rows)) * heightMm
+    positions.push(px, py, heights[frontIndex(x, y)])
+  }
+}
+
+for(let y = 0; y <= rows; y += 1){
+  for(let x = 0; x <= columns; x += 1){
+    const px = ((x / columns) - 0.5) * widthMm
+    const py = (0.5 - (y / rows)) * heightMm
+    positions.push(px, py, 0)
+  }
+}
+
+for(let y = 0; y < rows; y += 1){
+  for(let x = 0; x < columns; x += 1){
+    const a = frontIndex(x, y)
+    const b = frontIndex(x + 1, y)
+    const c = frontIndex(x, y + 1)
+    const d = frontIndex(x + 1, y + 1)
+
+    indices.push(a, c, b)
+    indices.push(b, c, d)
+  }
+}
+
+for(let y = 0; y < rows; y += 1){
+  for(let x = 0; x < columns; x += 1){
+    const a = backIndex(x, y)
+    const b = backIndex(x + 1, y)
+    const c = backIndex(x, y + 1)
+    const d = backIndex(x + 1, y + 1)
+
+    indices.push(a, b, c)
+    indices.push(b, d, c)
+  }
+}
+
+for(let x = 0; x < columns; x += 1){
+  const topA = frontIndex(x, 0)
+  const topB = frontIndex(x + 1, 0)
+  const topC = backIndex(x + 1, 0)
+  const topD = backIndex(x, 0)
+  indices.push(topA, topB, topD)
+  indices.push(topB, topC, topD)
+
+  const bottomA = frontIndex(x + 1, rows)
+  const bottomB = frontIndex(x, rows)
+  const bottomC = backIndex(x, rows)
+  const bottomD = backIndex(x + 1, rows)
+  indices.push(bottomA, bottomB, bottomD)
+  indices.push(bottomB, bottomC, bottomD)
+}
+
+for(let y = 0; y < rows; y += 1){
+  const leftA = frontIndex(0, y)
+  const leftB = backIndex(0, y)
+  const leftC = backIndex(0, y + 1)
+  const leftD = frontIndex(0, y + 1)
+  indices.push(leftA, leftB, leftD)
+  indices.push(leftB, leftC, leftD)
+
+  const rightA = frontIndex(columns, y)
+  const rightB = frontIndex(columns, y + 1)
+  const rightC = backIndex(columns, y + 1)
+  const rightD = backIndex(columns, y)
+  indices.push(rightA, rightB, rightD)
+  indices.push(rightB, rightC, rightD)
+}
+
+const reliefGeometry = new THREE.BufferGeometry()
+reliefGeometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
+reliefGeometry.setIndex(indices)
+reliefGeometry.computeVertexNormals()
+
+if(borderMode !== "print-tab"){
+  return reliefGeometry
+}
+
+const tabWidth = widthMm * 0.68
+const tabHeight = Math.max(10, heightMm * 0.12)
+const tabDepth = Math.max(minThickness, minThickness * 1.2)
+const tabGeometry = new THREE.BoxGeometry(tabWidth, tabHeight, tabDepth)
+tabGeometry.translate(0, ((-heightMm / 2) - (tabHeight / 2) + 3), tabDepth / 2)
+
+const mergedGeometry = mergeIndexedBufferGeometries([reliefGeometry, tabGeometry])
+reliefGeometry.dispose()
+tabGeometry.dispose()
+
+return mergedGeometry
+}
+
+function buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode){
+const heightField = buildReliefHeightField(image, depthMode, directionMode, thicknessMode, borderMode)
+const geometry = buildFlatReliefGeometry(heightField)
+const reliefMesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
+  color: 0xe6dfcf,
+  metalness: 0.08,
+  roughness: 0.88
+}))
+reliefMesh.updateMatrixWorld(true)
+
+const exporter = new THREE.STLExporter()
+const exported = exporter.parse(reliefMesh, { binary:true })
+const data = exported instanceof DataView ? exported.buffer : exported
+const blob = new Blob([data], { type:"model/stl" })
+
+geometry.dispose()
+reliefMesh.material.dispose()
+
+return URL.createObjectURL(blob)
+}
+
+function showGeneratedReliefStl(stlUrl, filename){
+if(window.reliefGeneratedStlUrl && window.reliefGeneratedStlUrl !== stlUrl){
+  URL.revokeObjectURL(window.reliefGeneratedStlUrl)
+}
+
+window.reliefGeneratedStlUrl = stlUrl
+showViewerDownload(stlUrl, filename)
+loadSTL(stlUrl, filename, {
+  viewerMode: "print"
+})
+}
+
 function showGeneratedReliefPreview(previewUrl, filename){
 const svgViewer = document.getElementById("svgViewer")
 const printWrap = document.getElementById("viewerPrintCta")
@@ -6471,6 +6758,52 @@ reliefAutoPreviewTimer = setTimeout(async () => {
     console.error("Relief auto-preview failed", error)
   }
 }, 240)
+}
+
+async function generateReliefStl(){
+const status = document.getElementById("reliefStatus")
+const sourceState = getReliefSourceState()
+
+if(sourceState.kind === "empty"){
+  alert("Generate or upload a relief source first")
+  return
+}
+
+const surfaceMode = document.getElementById("reliefSurface").value
+
+if(surfaceMode !== "flat"){
+  if(status){
+    status.innerHTML = "First STL pass supports Flat surface only."
+  }
+  alert("Flat surface only for the first STL pass.")
+  return
+}
+
+const depthMode = document.getElementById("reliefDepth").value
+const thicknessMode = document.getElementById("reliefThickness").value
+const borderMode = document.getElementById("reliefBorder").value
+const directionMode = document.getElementById("reliefDirection").value
+
+if(status){
+  status.innerHTML = "Building flat lithophane STL..."
+}
+
+try{
+  const blob = await getReliefSourceBlob(sourceState)
+  const image = await loadReliefImageFromBlob(blob)
+  const stlUrl = buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode)
+  showGeneratedReliefStl(stlUrl, `relief-flat-${borderMode}-${depthMode}.stl`)
+
+  if(status){
+    status.innerHTML = "Flat lithophane STL is ready in the main viewer."
+  }
+}catch(error){
+  console.error("Relief STL generation failed", error)
+  if(status){
+    status.innerHTML = error.message || "Relief STL generation failed."
+  }
+  alert(error.message || "Relief STL generation failed")
+}
 }
 
 renderReliefThumbStrip()

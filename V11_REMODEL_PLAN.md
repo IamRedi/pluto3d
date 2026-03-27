@@ -314,6 +314,10 @@ before:
       - this keeps the stack aligned with the current browser-side `GLB -> STL` philosophy already active in `v1.1`
       - avoid pulling in a larger CAD framework unless the simple in-house path fails on manifold/export quality
       - avoid borrowing implementation code from `GPL-3.0` lithophane projects even if their UX or parameter ideas are useful as reference
+    - first export checkpoint now starts with the smallest safe slice:
+      - add `Generate STL` for `Flat` relief only
+      - keep `Arched` in preview mode until the flat mesh/export path proves stable
+      - reuse the current viewer download surface instead of creating a second export/download UI
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired

@@ -59,6 +59,7 @@ The current `v1.1` direction is:
 - no heavy backend `print-fix` in the active public path
 - first `Relief` preview pass should stay frontend-local and avoid new dependencies until the real lithophane/export path is defined
 - the first `Relief` prep layer now adds only local UI/preview controls (`Thickness`, `Border`, `Surface`) and still avoids new mesh/export libraries
+- the first real `Relief` export slice should stay limited to `Flat -> STL` in-browser before `Arched` or more advanced print presets are attempted
 
 For the later real `Relief` export step:
 

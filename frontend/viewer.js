@@ -564,11 +564,18 @@ window.addEventListener("resize", () => {
   renderer.setSize(width, height)
 })
 
-function loadSTL(url, filename="model.stl"){
+function loadSTL(url, filename="model.stl", options = {}){
+  const {
+    viewerMode = "wireframe",
+    assetType = "stl",
+    color = 0x00d9ff,
+    metalness = 0.22,
+    roughness = 0.5
+  } = options
   const loader = new THREE.STLLoader()
 
   loader.load(url, (geometry) => {
-    window.currentViewerMode = "wireframe"
+    window.currentViewerMode = viewerMode
     window.viewerPrintCtaArmed = false
     syncViewerModeButtons()
     syncViewerPrintCta()
@@ -578,9 +585,9 @@ function loadSTL(url, filename="model.stl"){
     clearSceneContents()
 
     const material = new THREE.MeshStandardMaterial({
-      color: 0x00d9ff,
-      metalness: 0.22,
-      roughness: 0.5
+      color,
+      metalness,
+      roughness
     })
 
     const mesh = new THREE.Mesh(geometry, material)
@@ -604,7 +611,7 @@ function loadSTL(url, filename="model.stl"){
     }
 
     setCurrentViewerAsset({
-      type:"stl",
+      type:assetType,
       url:resolveAssetUrl(url),
       filename
     })
@@ -662,6 +669,8 @@ function showViewerDownload(url, filename="file"){
     let type = blob.type
     if(filename.endsWith(".svg")){
       type = "image/svg+xml"
+    }else if(filename.endsWith(".stl")){
+      type = "model/stl"
     }
 
     const fixedBlob = new Blob([blob], { type })
