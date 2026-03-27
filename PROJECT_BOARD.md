@@ -1134,7 +1134,8 @@ If anything is unclear, check these first in this order:
     - first real export pass is now in progress:
       - `Generate STL` now exists inside `Relief` for the `Flat` surface path
       - it builds a browser-side height-field mesh from the active image source and sends the result into the main viewer
-      - this first pass intentionally skips `Arched STL` so geometry/export risk stays bounded
+      - `Arched STL` is now enabled as the next bounded step, but only for `None` and `Frame`
+      - `Print Tab` stays `Flat`-only until the curved path proves stable
       - no new dependency was added for this step; it reuses the existing `three.js` + `STLExporter` stack
     - polish pass on the same export slice:
       - add explicit `Output Size` and `Mesh Detail` controls for flat STL export

@@ -316,7 +316,8 @@ before:
       - avoid borrowing implementation code from `GPL-3.0` lithophane projects even if their UX or parameter ideas are useful as reference
     - first export checkpoint now starts with the smallest safe slice:
       - add `Generate STL` for `Flat` relief only
-      - keep `Arched` in preview mode until the flat mesh/export path proves stable
+      - after flat stabilizes, enable `Arched STL` as a separate bounded geometry pass
+      - keep `Print Tab` flat-only until curved export quality is proven
       - reuse the current viewer download surface instead of creating a second export/download UI
     - current polish follow-up on the same checkpoint:
       - expose simple `Size` and `Detail` presets before attempting broader geometry features

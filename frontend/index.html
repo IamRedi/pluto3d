@@ -6041,11 +6041,17 @@ if(!note){
 
 const authState = getAuthPreviewState()
 const surfaceMode = document.getElementById("reliefSurface")?.value || "flat"
+const borderMode = document.getElementById("reliefBorder")?.value || "frame"
 const sizeLabel = document.getElementById("reliefSize")?.selectedOptions?.[0]?.textContent || "Medium (~120 mm)"
 const qualityLabel = document.getElementById("reliefMeshQuality")?.selectedOptions?.[0]?.textContent || "Normal"
 
 if(surfaceMode === "arched"){
-  note.textContent = `Current plan: ${authState.planLabel}. Arched stays in preview for now. Flat STL is the active export path.`
+  if(borderMode === "print-tab"){
+    note.textContent = `Current plan: ${authState.planLabel}. Arched STL is available, but Print Tab stays Flat-only for now.`
+    return
+  }
+
+  note.textContent = `Current plan: ${authState.planLabel}. Arched STL stays browser-side with ${sizeLabel.toLowerCase()} and ${qualityLabel.toLowerCase()} mesh detail.`
   return
 }
 
@@ -6056,13 +6062,15 @@ function renderReliefExportState(){
 const button = document.getElementById("generateReliefStlBtn")
 const meta = document.getElementById("reliefExportMeta")
 const surfaceMode = document.getElementById("reliefSurface")?.value || "flat"
+const borderMode = document.getElementById("reliefBorder")?.value || "frame"
 const sizeLabel = document.getElementById("reliefSize")?.selectedOptions?.[0]?.textContent || "Medium (~120 mm)"
 const qualityLabel = document.getElementById("reliefMeshQuality")?.selectedOptions?.[0]?.textContent || "Normal"
 const hasSource = Boolean(window.reliefActiveSource?.url)
+const exportSupported = surfaceMode === "flat" || (surfaceMode === "arched" && borderMode !== "print-tab")
 
 if(button){
-  button.disabled = !hasSource || surfaceMode !== "flat"
-  button.textContent = surfaceMode === "flat" ? "Generate STL" : "STL Flat Only"
+  button.disabled = !hasSource || !exportSupported
+  button.textContent = exportSupported ? "Generate STL" : "Print Tab Flat Only"
 }
 
 if(!meta){
@@ -6074,8 +6082,13 @@ if(!hasSource){
   return
 }
 
-if(surfaceMode !== "flat"){
-  meta.textContent = "Arched stays preview-only for now. Switch back to Flat to export STL."
+if(surfaceMode === "arched" && borderMode === "print-tab"){
+  meta.textContent = "Arched STL works with None or Frame. Print Tab remains Flat-only for now."
+  return
+}
+
+if(surfaceMode === "arched"){
+  meta.textContent = `Arched STL uses the active source with ${sizeLabel.toLowerCase()} and ${qualityLabel.toLowerCase()} mesh detail.`
   return
 }
 
@@ -6853,9 +6866,133 @@ tabGeometry.dispose()
 return mergedGeometry
 }
 
-function buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode){
+function getReliefArchProfile(sizeMode){
+const profileMap = {
+  small: {
+    arcDegrees: 126
+  },
+  medium: {
+    arcDegrees: 138
+  },
+  large: {
+    arcDegrees: 150
+  }
+}
+
+return profileMap[sizeMode] || profileMap.medium
+}
+
+function buildArchedReliefGeometry(heightField, sizeMode){
+const {
+  columns,
+  rows,
+  widthMm,
+  heightMm,
+  borderMode,
+  heights
+} = heightField
+const vertexColumns = columns + 1
+const vertexRows = rows + 1
+const frontVertexCount = vertexColumns * vertexRows
+const positions = []
+const indices = []
+const archProfile = getReliefArchProfile(sizeMode)
+const arcRadians = THREE.MathUtils.degToRad(archProfile.arcDegrees)
+const baseRadius = widthMm / arcRadians
+
+const frontIndex = (x, y) => (y * vertexColumns) + x
+const backIndex = (x, y) => frontVertexCount + frontIndex(x, y)
+
+function pushArchedVertex(x, y, radius){
+  const ratioX = columns === 0 ? 0.5 : x / columns
+  const angle = ((ratioX - 0.5) * arcRadians)
+  const px = Math.sin(angle) * radius
+  const py = (0.5 - (y / rows)) * heightMm
+  const pz = (Math.cos(angle) * radius) - baseRadius
+  positions.push(px, py, pz)
+}
+
+for(let y = 0; y <= rows; y += 1){
+  for(let x = 0; x <= columns; x += 1){
+    pushArchedVertex(x, y, baseRadius + heights[frontIndex(x, y)])
+  }
+}
+
+for(let y = 0; y <= rows; y += 1){
+  for(let x = 0; x <= columns; x += 1){
+    pushArchedVertex(x, y, baseRadius)
+  }
+}
+
+for(let y = 0; y < rows; y += 1){
+  for(let x = 0; x < columns; x += 1){
+    const a = frontIndex(x, y)
+    const b = frontIndex(x + 1, y)
+    const c = frontIndex(x, y + 1)
+    const d = frontIndex(x + 1, y + 1)
+
+    indices.push(a, c, b)
+    indices.push(b, c, d)
+  }
+}
+
+for(let y = 0; y < rows; y += 1){
+  for(let x = 0; x < columns; x += 1){
+    const a = backIndex(x, y)
+    const b = backIndex(x + 1, y)
+    const c = backIndex(x, y + 1)
+    const d = backIndex(x + 1, y + 1)
+
+    indices.push(a, b, c)
+    indices.push(b, d, c)
+  }
+}
+
+for(let x = 0; x < columns; x += 1){
+  const topA = frontIndex(x, 0)
+  const topB = frontIndex(x + 1, 0)
+  const topC = backIndex(x + 1, 0)
+  const topD = backIndex(x, 0)
+  indices.push(topA, topB, topD)
+  indices.push(topB, topC, topD)
+
+  const bottomA = frontIndex(x + 1, rows)
+  const bottomB = frontIndex(x, rows)
+  const bottomC = backIndex(x, rows)
+  const bottomD = backIndex(x + 1, rows)
+  indices.push(bottomA, bottomB, bottomD)
+  indices.push(bottomB, bottomC, bottomD)
+}
+
+for(let y = 0; y < rows; y += 1){
+  const leftA = frontIndex(0, y)
+  const leftB = backIndex(0, y)
+  const leftC = backIndex(0, y + 1)
+  const leftD = frontIndex(0, y + 1)
+  indices.push(leftA, leftB, leftD)
+  indices.push(leftB, leftC, leftD)
+
+  const rightA = frontIndex(columns, y)
+  const rightB = frontIndex(columns, y + 1)
+  const rightC = backIndex(columns, y + 1)
+  const rightD = backIndex(columns, y)
+  indices.push(rightA, rightB, rightD)
+  indices.push(rightB, rightC, rightD)
+}
+
+const reliefGeometry = new THREE.BufferGeometry()
+reliefGeometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3))
+reliefGeometry.setIndex(indices)
+reliefGeometry.computeVertexNormals()
+
+return reliefGeometry
+}
+
+function buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode, surfaceMode){
 const heightField = buildReliefHeightField(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode)
-const geometry = buildFlatReliefGeometry(heightField)
+const geometry = surfaceMode === "arched"
+  ? buildArchedReliefGeometry(heightField, sizeMode)
+  : buildFlatReliefGeometry(heightField)
 const reliefMesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({
   color: 0xe6dfcf,
   metalness: 0.08,
@@ -6985,11 +7122,11 @@ if(sourceState.kind === "empty"){
 
 const surfaceMode = document.getElementById("reliefSurface").value
 
-if(surfaceMode !== "flat"){
+if(surfaceMode === "arched" && document.getElementById("reliefBorder").value === "print-tab"){
   if(status){
-    status.innerHTML = "First STL pass supports Flat surface only."
+    status.innerHTML = "Arched STL supports None or Frame border only."
   }
-  alert("Flat surface only for the first STL pass.")
+  alert("Arched STL supports None or Frame border only.")
   return
 }
 
@@ -7007,11 +7144,11 @@ if(status){
 try{
   const blob = await getReliefSourceBlob(sourceState)
   const image = await loadReliefImageFromBlob(blob)
-  const stlUrl = buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode)
-  showGeneratedReliefStl(stlUrl, `relief-flat-${sizeMode}-${qualityMode}-${borderMode}-${depthMode}.stl`)
+  const stlUrl = buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode, surfaceMode)
+  showGeneratedReliefStl(stlUrl, `relief-${surfaceMode}-${sizeMode}-${qualityMode}-${borderMode}-${depthMode}.stl`)
 
   if(status){
-    status.innerHTML = "Flat lithophane STL is ready in the main viewer."
+    status.innerHTML = `${surfaceMode === "arched" ? "Arched" : "Flat"} lithophane STL is ready in the main viewer.`
   }
 }catch(error){
   console.error("Relief STL generation failed", error)

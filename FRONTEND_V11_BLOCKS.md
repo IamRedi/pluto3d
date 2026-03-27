@@ -130,7 +130,8 @@ This file still matters, but from this point onward it should support the remode
     - `Direction`
   - viewer behavior for `Relief` now mirrors `SVG` by hiding 3D-only print/export controls while previewing a relief result
   - first browser-side `STL` export is now active for `Flat` relief only
-  - `Arched` remains preview-only for now and does not claim export support yet
+  - first browser-side `Arched STL` export is now also active for `None` and `Frame`
+  - `Print Tab` remains `Flat`-only for now so the curved export path stays bounded
   - `Relief` export polish now includes:
     - `Output Size` presets (`Small` / `Medium` / `Large`)
     - `Mesh Detail` presets (`Draft` / `Normal` / `Fine`)
