@@ -83,6 +83,9 @@ Update it after every meaningful change.
   - the title block, toolbar shell, status strip, and print cluster now share a tighter premium shell treatment instead of reading like separate floating boxes
   - mode buttons and viewer metadata chips now use slightly cleaner spacing and hierarchy for a more finished studio-control look
   - this pass stays cosmetic-only and is intended to close the current viewer premium task without reopening working flows
+- the `SVG` and `Relief` source preview bug is now fixed:
+  - their dropzones now use the same positioned preview container rules as `3D`
+  - blurred preview layers no longer escape the source card and spill across the panel background
 - owned test-model registry is active and includes:
   - Pluto Robot
   - F1 Car

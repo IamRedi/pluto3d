@@ -13,6 +13,11 @@ Historical entries below were migrated from the previous board, workflow, and ha
 - Refined viewer mode-button spacing and metadata chip hierarchy for a more finished studio-control presentation.
 - Kept the pass cosmetic-only so the current viewer premium task can close without reopening generation, export, or mode logic.
 
+### SVG and Relief source preview bugfix
+
+- Fixed the `SVG` and `Relief` source dropzones so their preview blur layers now stay contained inside the card instead of spilling across the wider panel.
+- Matched their positioned preview-container behavior to the already-correct `3D` source dropzone.
+
 ## 2026-03-27
 
 ### Documentation system reset
