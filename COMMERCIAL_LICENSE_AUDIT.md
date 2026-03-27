@@ -76,6 +76,20 @@ Practical result:
 
 ## Conditional: Commercially Usable, But With Important Terms
 
+### Browser-side lithophane research direction
+
+Current best-fit candidates reviewed for the future `Relief` export path:
+
+- keep using Pluto3D's existing `three.js` + `STLExporter` path
+- `OpenJSCAD`: MIT, so commercially friendlier than copyleft options
+- `LithoMaker`: useful as a product/parameter reference, but its repo is `GPL-3.0`
+
+Practical result:
+
+- safest product direction is still an in-house browser-side implementation built on the already-approved `three.js` stack
+- `OpenJSCAD` is not blocked by license, but it should be treated as an optional heavier fallback, not the first dependency choice
+- `LithoMaker` should not be copied into Pluto3D code because `GPL-3.0` is a commercial/distribution risk for this product path
+
 ### Meshy
 
 Meshy itself is not the blocker if used correctly, but rights depend on plan and source material:

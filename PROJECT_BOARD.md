@@ -1122,3 +1122,12 @@ If anything is unclear, check these first in this order:
       - the main viewer output is still intentionally `PNG` preview only
       - `Arched` is currently a visual prep simulation, not a final printable mesh guarantee
       - no new library has been added yet, so dependency/license/business risk remains unchanged at this checkpoint
+    - research checkpoint for the real export path:
+      - recommended direction is still browser-side mesh generation, not a new backend service
+      - the current Pluto3D stack already has `three.js` plus `STLExporter`, so the simplest next step is:
+        - subdivided `PlaneGeometry` / `BufferGeometry` for flat lithophane
+        - optional cylindrical wrapping or `CylinderGeometry`-based path for arched lithophane
+        - reuse existing browser STL export instead of introducing a separate export pipeline
+      - keep live panel feedback lightweight as image/preview work; build the real mesh only when the user explicitly asks for export
+      - do not copy code from `LithoMaker` into Pluto3D because its repo is `GPL-3.0`
+      - `OpenJSCAD` looks commercially friendlier (`MIT`) but is still a broader CAD stack than we need for this v1.1 step

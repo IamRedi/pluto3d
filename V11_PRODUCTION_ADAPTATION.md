@@ -65,6 +65,14 @@ For the later real `Relief` export step:
 - review browser-side mesh generation weight before adding any geometry helper library
 - review commercial/license terms before introducing height-map, mesh, or CAD export dependencies
 - verify that any future lithophane/STL path stays compatible with the planned Railway/Vercel deployment shape
+- current recommended route is:
+  - use the already-loaded `three.js` stack for the first real lithophane mesh pass
+  - generate geometry locally in-browser from the active image source
+  - export with the existing `STLExporter` path instead of adding a second export service
+- defer heavier alternatives unless proven necessary:
+  - backend `trimesh` generation adds more deployment surface and pulls this feature away from the current `v1.1` browser-first export direction
+  - `OpenJSCAD` is MIT, but it is still a larger modeling stack than this first relief export pass appears to need
+- do not copy from `GPL-3.0` lithophane generators into product code; keep Pluto3D implementation in-house even if external tools inform parameter defaults
 
 Before production:
 

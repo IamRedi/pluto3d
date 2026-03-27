@@ -303,6 +303,17 @@ before:
       - add honest local controls for `Depth`, `Thickness`, `Border`, `Surface`, and `Direction`
       - let the user shape the intended relief/lithophane look before any real geometry pipeline is wired
       - keep download behavior as preview `PNG` until a real browser-side or backend mesh path is chosen and verified
+    - research checkpoint for the next implementation pass:
+      - best-fit path for Pluto3D `v1.1` is a custom browser-side lithophane mesh built on the libraries already in use
+      - recommended geometry direction:
+        - `PlaneGeometry` with dense segments for flat relief
+        - direct `BufferGeometry` vertex displacement from image luminance
+        - `computeVertexNormals()` for readable shading
+        - optional curved pass via cylindrical remap / `CylinderGeometry`
+        - export through the existing `STLExporter`
+      - this keeps the stack aligned with the current browser-side `GLB -> STL` philosophy already active in `v1.1`
+      - avoid pulling in a larger CAD framework unless the simple in-house path fails on manifold/export quality
+      - avoid borrowing implementation code from `GPL-3.0` lithophane projects even if their UX or parameter ideas are useful as reference
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired
