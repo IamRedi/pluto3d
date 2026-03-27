@@ -1864,6 +1864,100 @@ inset 0 1px 0 rgba(255,255,255,0.05),
 0 20px 45px rgba(2,6,23,0.2);
 }
 
+#drop3d{
+position:relative;
+overflow:hidden;
+isolation:isolate;
+--generator-preview-bg:none;
+transition:border-color 0.34s ease, box-shadow 0.34s ease;
+}
+
+#drop3d::before{
+content:"";
+position:absolute;
+inset:12px;
+border-radius:18px;
+background-image:var(--generator-preview-bg);
+background-size:cover;
+background-position:center;
+filter:blur(28px) saturate(0.9);
+transform:scale(1.08);
+opacity:0;
+transition:opacity 0.38s ease;
+pointer-events:none;
+z-index:0;
+}
+
+#drop3d::after{
+content:"";
+position:absolute;
+inset:12px;
+border-radius:18px;
+background:
+radial-gradient(circle at 50% 16%, rgba(126, 206, 145, 0.16), transparent 46%),
+linear-gradient(180deg, rgba(10,14,11,0.1), rgba(10,14,11,0.24));
+border:1px solid rgba(255,255,255,0.06);
+opacity:0;
+transition:opacity 0.38s ease;
+pointer-events:none;
+z-index:1;
+}
+
+#drop3d.preview-active{
+border-color:rgba(126, 206, 145, 0.18);
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.05),
+0 24px 54px rgba(2,6,23,0.24),
+0 0 0 1px rgba(126, 206, 145, 0.05);
+}
+
+#drop3d.preview-active::before,
+#drop3d.preview-active::after{
+opacity:1;
+}
+
+#dropText3d{
+position:relative;
+z-index:2;
+transition:opacity 0.28s ease, transform 0.28s ease;
+}
+
+#drop3d.preview-active #dropText3d{
+opacity:0;
+transform:translateY(6px);
+}
+
+#dropPreview3d{
+position:relative;
+z-index:2;
+display:block;
+width:min(74%, 420px) !important;
+height:176px !important;
+margin:0 auto;
+object-fit:contain;
+border-radius:18px !important;
+padding:8px;
+border:1px solid rgba(255,255,255,0.08);
+background:
+linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+box-shadow:
+0 18px 42px rgba(2,6,23,0.3),
+0 0 0 1px rgba(255,255,255,0.04);
+opacity:0;
+transform:translateY(10px) scale(0.985);
+filter:saturate(0.94) contrast(1.03);
+transition:
+opacity 0.34s ease,
+transform 0.34s ease,
+filter 0.34s ease;
+}
+
+#dropPreview3d.is-visible{
+opacity:1;
+transform:translateY(0) scale(1);
+filter:saturate(1) contrast(1.04);
+}
+
 /* buttons */
 
 button{
@@ -1998,6 +2092,261 @@ margin-top:12px;
 font-size:13px;
 line-height:1.6;
 color:var(--status-text);
+}
+
+.generator-shell{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.generator-card{
+background:var(--surface-card-bg);
+border:1px solid var(--surface-card-border);
+border-radius:20px;
+padding:14px;
+box-shadow:var(--surface-card-shadow);
+}
+
+.generator-card-header{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:10px;
+margin-bottom:10px;
+}
+
+.generator-card-title{
+font-size:14px;
+font-weight:600;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-strong);
+}
+
+.generator-card-copy{
+margin-top:4px;
+font-size:12px;
+line-height:1.6;
+color:var(--text-muted);
+max-width:520px;
+display:none;
+}
+
+.generator-chip{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-height:30px;
+padding:0 10px;
+border-radius:999px;
+background:var(--chip-bg);
+border:1px solid var(--chip-border);
+color:var(--chip-text);
+font-size:10px;
+font-weight:600;
+letter-spacing:0.12em;
+text-transform:uppercase;
+display:none;
+}
+
+.generator-stack{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.generator-toggle-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+padding:7px 10px;
+border-radius:14px;
+background:rgba(255,255,255,0.015);
+border:1px solid rgba(255,255,255,0.05);
+}
+
+body[data-theme="light"] .generator-toggle-row{
+background:rgba(255,255,255,0.74);
+border:1px solid rgba(24,33,25,0.08);
+}
+
+.generator-toggle-copy{
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+gap:2px;
+min-width:0;
+}
+
+.generator-toggle-title{
+font-size:10px;
+font-weight:600;
+letter-spacing:0.14em;
+text-transform:uppercase;
+color:var(--text-strong);
+}
+
+.generator-toggle-note{
+display:block;
+font-size:11px;
+line-height:1.35;
+color:var(--text-muted);
+max-width:320px;
+}
+
+.generator-switch{
+position:relative;
+display:inline-flex;
+width:40px;
+height:22px;
+flex-shrink:0;
+margin-left:auto;
+}
+
+.generator-switch input{
+opacity:0;
+width:0;
+height:0;
+}
+
+.generator-switch-track{
+position:absolute;
+inset:0;
+border-radius:999px;
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.12);
+transition:0.22s ease;
+}
+
+body[data-theme="light"] .generator-switch-track{
+background:rgba(31,53,36,0.08);
+border:1px solid rgba(31,53,36,0.14);
+}
+
+.generator-switch-track::after{
+content:"";
+position:absolute;
+top:2px;
+left:2px;
+width:16px;
+height:16px;
+border-radius:50%;
+background:#f4f7f3;
+box-shadow:0 6px 16px rgba(0,0,0,0.24);
+transition:0.22s ease;
+}
+
+.generator-switch input:checked + .generator-switch-track{
+background:rgba(88,184,115,0.34);
+border-color:rgba(126, 206, 145, 0.55);
+}
+
+.generator-switch input:checked + .generator-switch-track::after{
+transform:translateX(18px);
+background:#eff8f0;
+}
+
+.generator-action-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.generator-thumbnail-strip{
+display:grid;
+grid-template-columns:repeat(5, minmax(0, 1fr));
+gap:7px;
+}
+
+.generator-thumb{
+min-height:48px;
+border-radius:12px;
+border:1px dashed rgba(255,255,255,0.12);
+background:rgba(255,255,255,0.02);
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:6px 5px;
+font-size:9px;
+line-height:1.4;
+color:var(--text-muted);
+cursor:pointer;
+transition:0.18s ease;
+overflow:hidden;
+position:relative;
+}
+
+body[data-theme="light"] .generator-thumb{
+background:rgba(255,255,255,0.68);
+border:1px dashed rgba(31,53,36,0.16);
+}
+
+.generator-thumb:hover{
+border-color:rgba(126, 206, 145, 0.42);
+transform:translateY(-1px);
+}
+
+.generator-thumb.active{
+border-style:solid;
+border-color:rgba(126, 206, 145, 0.48);
+background:rgba(88,184,115,0.1);
+}
+
+.generator-thumb img{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.generator-thumb span{
+position:relative;
+z-index:1;
+padding:0 4px;
+text-shadow:0 1px 6px rgba(0,0,0,0.5);
+}
+
+.generator-limit-note{
+font-size:11px;
+line-height:1.55;
+color:var(--text-muted);
+display:none;
+}
+
+.generator-prompt{
+min-height:56px;
+max-height:56px;
+resize:none;
+font-size:13px;
+line-height:1.45;
+padding:11px 12px;
+border-radius:14px;
+}
+
+#drop3d{
+padding:16px 14px;
+min-height:auto;
+}
+
+.generator-cta{
+margin-top:0;
+padding:11px 14px;
+border-radius:14px;
+font-size:13px;
+font-weight:600;
+letter-spacing:0.04em;
+text-transform:uppercase;
+}
+
+.generator-shell .btn-premium.locked::after{
+top:7px;
+right:10px;
+padding:3px 7px;
+font-size:9px;
 }
 
 label{
@@ -2326,6 +2675,16 @@ gap:12px;
 }
 .panel-footer-links{
 gap:10px;
+}
+.generator-card{
+padding:16px;
+border-radius:22px;
+}
+.generator-action-grid{
+grid-template-columns:1fr;
+}
+.generator-thumbnail-strip{
+grid-template-columns:repeat(2, minmax(0, 1fr));
 }
 
 /* svg responsive */
@@ -2966,13 +3325,13 @@ to{background-position:1000px 1000px;}
 
 </div>
 
-<div class="sidebtn active" data-panel-trigger="3d" onclick="openPanel('3d')">3D</div>
+<div class="sidebtn active" data-panel-trigger="3d" onclick="openPanel('3d')">3D Gen</div>
 
 <div class="sidebtn" data-panel-trigger="svg" onclick="openPanel('svg')">SVG</div>
 
-<div class="sidebtn" data-panel-trigger="ai" onclick="openPanel('ai')">AI</div>
+<div class="sidebtn hidden" data-panel-trigger="ai" onclick="openPanel('ai')">AI</div>
 
-<div class="sidebtn" data-panel-trigger="toy" onclick="openPanel('toy')">Toy</div>
+<div class="sidebtn hidden" data-panel-trigger="toy" onclick="openPanel('toy')">Toy</div>
 
 <button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
 <span id="themeToggleIcon" class="theme-toggle-icon" aria-hidden="true"></span>
@@ -2997,37 +3356,99 @@ to{background-position:1000px 1000px;}
 <div id="panel-3d" class="toolpanel">
 
 <div class="section-title">3D Generator</div>
-<div class="section-intro">Upload a reference image and move from quick 3D results into the premium Meshy path when you want full production output.</div>
+<div class="section-intro">Generate image, preview source, then move into 3D.</div>
 
-<div class="dropzone" id="drop3d">
+<div class="generator-shell">
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">Concept Image</div>
+        <div class="generator-card-copy">Write a short concept prompt and send the result into the same source frame used by upload and 3D conversion.</div>
+      </div>
+      <div class="generator-chip">Image</div>
+    </div>
 
-<p id="dropText3d">Drag photo here or click to upload</p>
+    <div class="generator-stack">
+      <label for="generatorPrompt">Prompt</label>
+      <textarea id="generatorPrompt" class="generator-prompt" placeholder="Rounded robot toy with clean collectible silhouette."></textarea>
 
-<img id="dropPreview3d" 
-style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
+      <div class="generator-toggle-row">
+        <div class="generator-toggle-copy">
+          <div class="generator-toggle-title">Toy Assist</div>
+          <div class="generator-toggle-note">Choose the next collectible for the next print.</div>
+        </div>
+        <label class="generator-switch" aria-label="Toy assist toggle">
+          <input id="generatorToyAssist" type="checkbox">
+          <span class="generator-switch-track"></span>
+        </label>
+      </div>
 
-<input type="file" id="fileInput" multiple style="display:none">
+      <button id="generateConceptImageBtn" class="generator-cta" type="button" onclick="generateConceptImage()">Generate Image</button>
+      <div id="generatorImageStatus" class="status"></div>
+    </div>
+  </div>
 
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">Source Preview</div>
+        <div class="generator-card-copy">Uploads and generated images share one active source frame for the next 3D action.</div>
+      </div>
+      <div class="generator-chip">Preview</div>
+    </div>
+
+    <div class="dropzone" id="drop3d">
+
+    <p id="dropText3d">Drop source image or click to upload</p>
+
+    <img id="dropPreview3d" 
+    style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
+
+    <input type="file" id="fileInput" multiple style="display:none">
+
+    </div>
+
+    <div class="generator-stack">
+      <div class="generator-limit-note">Up to 5 recent generated concept images stay here temporarily until refresh or replacement.</div>
+      <div class="generator-thumbnail-strip" id="generatorThumbStrip">
+        <div class="generator-thumb">Recent image 1</div>
+        <div class="generator-thumb">Recent image 2</div>
+        <div class="generator-thumb">Recent image 3</div>
+        <div class="generator-thumb">Recent image 4</div>
+        <div class="generator-thumb">Recent image 5</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">3D Output</div>
+        <div class="generator-card-copy">Fast test generation will use owned models, while premium real 3D keeps the paid production path.</div>
+      </div>
+      <div class="generator-chip">3D</div>
+    </div>
+
+    <div class="generator-action-grid">
+      <button id="generateFreeBtn" class="generator-cta">
+      Test 3D
+      </button>
+
+      <button class="btn-premium generator-cta" data-premium-feature="premium-3d-generation" onclick="runPremiumAction('premium-3d-generation', generateReal3D)">
+      Real 3D
+      </button>
+    </div>
+
+    <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="status" id="status"></div>
+    <a id="downloadBtn" class="download-btn" style="display:none;" download>
+    Download GLB Model
+    </a>
+  </div>
 </div>
-
-<button id="generateFreeBtn">
-Generate 3D
-</button>
-
-<button class="btn-premium" data-premium-feature="premium-3d-generation" onclick="runPremiumAction('premium-3d-generation', generate3D)">
-Generate 3D PRO
-</button>
-
-
-
-<div class="progress">
-<div class="progress-bar" id="progressBar"></div>
-</div>
-
-<div class="status" id="status"></div>
-<a id="downloadBtn" class="download-btn" style="display:none;" download>
-Download 3D Model
-</a>
 </div>
 
 <div id="panel-svg" class="toolpanel hidden">
@@ -3201,7 +3622,7 @@ style="width:100%;height:80px;border-radius:10px;padding:10px;"></textarea>
 <div class="panel-footer">
   <div class="panel-footer-copy">
     <div class="panel-footer-title">Pluto3D Studio</div>
-    <div id="panelFooterTagline" class="panel-footer-meta">Polished image, SVG, toy, and print-ready 3D workflows in one studio.</div>
+    <div id="panelFooterTagline" class="panel-footer-meta">Polished concept image, SVG, and print-ready 3D workflows in one studio.</div>
     <div id="panelFooterSupport" class="panel-footer-meta">Email Support: support@pluto3d.app</div>
   </div>
   <div class="panel-footer-links">
@@ -3400,6 +3821,7 @@ filter:none;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/STLLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/exporters/STLExporter.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 <script src="app-config.js"></script>
 <script src="runtime-config.js"></script>
@@ -3639,7 +4061,7 @@ if(sidebarBrandName){
 
 const panelFooterTagline = document.getElementById("panelFooterTagline") || document.querySelector(".panel-footer > div:first-child")
 if(panelFooterTagline){
-  panelFooterTagline.textContent = `${getStudioName()} is built for polished image, SVG, toy, and print-ready 3D workflows.`
+  panelFooterTagline.textContent = `${getStudioName()} is built for polished concept image, SVG, and print-ready 3D workflows.`
 }
 
 const panelFooterSupport = document.getElementById("panelFooterSupport")
@@ -3861,44 +4283,55 @@ return
 
 const fileInput = document.querySelector("#fileInput")
 const file = fileInput.files[0]
+const activeImage = window.generatorActiveImage
 const status = document.getElementById("status")
 const progressBar = document.getElementById("progressBar")
 
-if(!file){
-alert("Upload image first")
+if(!file && !activeImage){
+alert("Upload or generate an image first")
 return
 }
 
-const prompt = (document.getElementById("prompt")?.value || "").toLowerCase()
-const fileName = (file.name || "").toLowerCase()
-const looksLikeCar = (
-prompt.includes("car") ||
-prompt.includes("vehicle") ||
-prompt.includes("race") ||
-fileName.includes("car") ||
-fileName.includes("vehicle") ||
-fileName.includes("race")
-)
-
-const testModel = looksLikeCar
-? window.PLUTO_TEST_MODELS.car
-: window.PLUTO_TEST_MODELS.default
+const prompt = (document.getElementById("generatorPrompt")?.value || "").trim()
+const testModel = typeof window.resolveOwnedTestModel === "function"
+  ? window.resolveOwnedTestModel({
+      prompt,
+      activeImage
+    })
+  : window.PLUTO_TEST_MODELS.default
 
 resetViewerShell()
 
-status.innerHTML = "Preparing your 3D result..."
-progressBar.style.width = "35%"
+status.innerHTML = "Selecting the best owned test model..."
+progressBar.style.width = "18%"
 
 try{
 if(!testModel?.url){
 throw new Error("Test model is not available.")
 }
 
+if(testModel.previewUrl && typeof setSharedGeneratorPreview === "function"){
+  setSharedGeneratorPreview(testModel.previewUrl, {
+    label: testModel.previewLabel || testModel.label,
+    filename: `${testModel.id}-source.png`
+  })
+}
+
+await new Promise((resolve) => setTimeout(resolve, 900))
+status.innerHTML = `Preparing ${testModel.label}...`
+progressBar.style.width = "42%"
+
+await new Promise((resolve) => setTimeout(resolve, 1300))
+status.innerHTML = "Building your 3D preview..."
+progressBar.style.width = "68%"
+
+await new Promise((resolve) => setTimeout(resolve, 1600))
+
 loadGLB(testModel.url, testModel.filename || "free-test.glb")
 showViewerDownload(testModel.url, testModel.filename || "free-test.glb")
 incrementUsage("free3dGeneration")
 progressBar.style.width = "100%"
-status.innerHTML = "3D result is ready."
+status.innerHTML = `${testModel.label} is ready.`
 }catch(err){
 console.error("3D generation failed:", err)
 progressBar.style.width = "0%"
@@ -4730,6 +5163,10 @@ syncPlatformLinks("workspace")
 }
 
 function openPanel(name){
+if(name === "ai" || name === "toy"){
+name = "3d"
+}
+
 window.currentWorkspacePanel = name
 
 document.querySelectorAll("[data-panel-trigger]")
@@ -4773,11 +5210,173 @@ syncStudioLaunchButton()
 
 }
 
+window.generatorRecentImages = window.generatorRecentImages || []
+window.generatorActiveImage = window.generatorActiveImage || null
+window.generatorUploadPromise = window.generatorUploadPromise || null
+
+function getGeneratorHiddenToyPrompt(){
+return " full toy object, complete collectible toy, isolated studio render, centered product composition, premium toy silhouette"
+}
+
+function setSharedGeneratorPreview(imageUrl, options = {}){
+const drop = document.getElementById("drop3d")
+const img = document.getElementById("dropPreview3d")
+const text = document.getElementById("dropText3d")
+
+if(!drop || !img || !text || !imageUrl){
+  return
+}
+
+const revealPreview = ()=>{
+  drop.classList.add("preview-active")
+  img.classList.add("is-visible")
+}
+
+drop.style.setProperty("--generator-preview-bg", `url("${imageUrl}")`)
+img.classList.remove("is-visible")
+img.style.display = "block"
+text.style.display = "none"
+
+if(img.src !== imageUrl){
+  img.onload = ()=>{
+    img.onload = null
+    requestAnimationFrame(revealPreview)
+  }
+  img.src = imageUrl
+}else{
+  requestAnimationFrame(revealPreview)
+}
+
+window.generatorActiveImage = {
+  url: imageUrl,
+  label: options.label || window.generatorActiveImage?.label || "Concept image",
+  filename: options.filename || window.generatorActiveImage?.filename || "concept-image.png",
+  sourceType: options.sourceType || window.generatorActiveImage?.sourceType || "generated",
+  uploadedJobId: options.uploadedJobId ?? window.generatorActiveImage?.uploadedJobId ?? null
+}
+}
+
+function renderGeneratorThumbStrip(){
+const strip = document.getElementById("generatorThumbStrip")
+if(!strip){
+  return
+}
+
+if(!window.generatorRecentImages.length){
+  strip.innerHTML = `
+    <div class="generator-thumb"><span>Recent image 1</span></div>
+    <div class="generator-thumb"><span>Recent image 2</span></div>
+    <div class="generator-thumb"><span>Recent image 3</span></div>
+    <div class="generator-thumb"><span>Recent image 4</span></div>
+    <div class="generator-thumb"><span>Recent image 5</span></div>
+  `
+  return
+}
+
+strip.innerHTML = window.generatorRecentImages.map((entry, index) => `
+  <button type="button" class="generator-thumb${window.generatorActiveImage?.url === entry.url ? " active" : ""}" onclick="restoreGeneratorThumb(${index})">
+    <img src="${entry.url}" alt="${entry.label}">
+    <span>${entry.label}</span>
+  </button>
+`).join("")
+}
+
+function restoreGeneratorThumb(index){
+const entry = window.generatorRecentImages[index]
+if(!entry){
+  return
+}
+
+setSharedGeneratorPreview(entry.url, entry)
+renderGeneratorThumbStrip()
+}
+
+function pushGeneratorRecentImage(entry){
+window.generatorRecentImages = [entry, ...window.generatorRecentImages.filter((item) => item.url !== entry.url)].slice(0, 5)
+renderGeneratorThumbStrip()
+}
+
+async function generateConceptImage(){
+const status = document.getElementById("generatorImageStatus")
+const promptField = document.getElementById("generatorPrompt")
+const toyAssist = document.getElementById("generatorToyAssist")
+const rawPrompt = (promptField?.value || "").trim()
+
+if(!canUseFeature("aiImage")){
+  openUsageLimitPrompt("aiImage")
+  return
+}
+
+if(!rawPrompt){
+  alert("Write a prompt first")
+  return
+}
+
+const finalPrompt = toyAssist?.checked
+  ? `${rawPrompt}${getGeneratorHiddenToyPrompt()}`
+  : rawPrompt
+
+const form = new FormData()
+form.append("prompt", finalPrompt)
+form.append("style", toyAssist?.checked ? "toy" : "realistic")
+
+if(status){
+  status.innerHTML = "Generating concept image..."
+}
+
+try{
+  const res = await fetch(API_BASE + "/api/ai-photo", {
+    method:"POST",
+    body:form
+  })
+
+  if(!res.ok){
+    const txt = await res.text()
+    console.log(txt)
+    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+  }
+
+  const data = await res.json()
+
+  if(data.error){
+    throw new Error(data.error)
+  }
+
+  if(!data.image_url){
+    throw new Error("AI returned empty image")
+  }
+
+  const entry = {
+    url: data.image_url,
+    label: toyAssist?.checked ? "Toy concept" : "Concept image",
+    filename: "concept-image.png",
+    sourceType: "generated",
+    uploadedJobId: null
+  }
+
+  setSharedGeneratorPreview(entry.url, entry)
+  pushGeneratorRecentImage(entry)
+  incrementUsage("aiImage")
+
+  if(status){
+    status.innerHTML = "Concept image ready. It is now active in the shared source preview."
+  }
+}catch(err){
+  console.log(err)
+  console.error("Concept image request crashed", err)
+  if(status){
+    status.innerHTML = err.message || "Concept image generation failed."
+  }
+  alert(err.message || "Concept image generation failed.")
+}
+}
+
 applyPublicAppConfig()
 initializeTheme()
 initializeOrbGreeting()
 syncAuthPreviewUI()
 syncBillingReturnBanner()
+renderGeneratorThumbStrip()
 
 document.getElementById("svgDetail")?.addEventListener("change", triggerSvgAutoRegenerate)
 document.getElementById("svgCleanBackground")?.addEventListener("change", triggerSvgAutoRegenerate)
@@ -5170,6 +5769,98 @@ checkStatus(data.task_id)
 
 }
 
+async function generateReal3D(){
+
+const fileInput = document.getElementById("fileInput")
+const file = fileInput?.files?.[0] || null
+const activeImage = window.generatorActiveImage
+
+if(!file && !activeImage){
+
+alert("Upload or generate an image first")
+return
+
+}
+
+if(window.generatorUploadPromise){
+try{
+await window.generatorUploadPromise
+}catch(error){
+console.error("Upload sync failed before premium 3D:", error)
+alert(error.message || "Image upload failed before premium 3D could start.")
+return
+}
+}
+
+const activeUploadJobId = activeImage?.sourceType === "upload"
+? (activeImage.uploadedJobId || currentJobId)
+: null
+
+const useUploadFlow = Boolean(activeUploadJobId)
+const useImageFlow = Boolean(activeImage?.url && activeImage.sourceType !== "upload")
+
+if(!useUploadFlow && !useImageFlow){
+
+alert("The active source is not ready yet. Try again in a moment.")
+return
+
+}
+
+let res
+
+if(useUploadFlow){
+
+status.innerHTML = "Sending uploaded source to Meshy..."
+progressBar.style.width = "4%"
+
+res = await fetch(API_BASE+"/api/generate",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+job_id: activeUploadJobId
+})
+
+})
+
+}else{
+
+status.innerHTML = "Sending active source image to Meshy..."
+progressBar.style.width = "4%"
+
+res = await fetch(API_BASE+"/api/image-to-3d-pro",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+image_url: activeImage.url
+})
+
+})
+
+}
+
+const data = await res.json()
+
+if(!res.ok || !data.task_id){
+alert(data.detail || data.error || "3D generation could not be started")
+return
+}
+
+status.innerHTML = "Sending to Meshy..."
+progressBar.style.width = "6%"
+checkStatus(data.task_id)
+
+}
+
 async function downloadAI(){
 
 const img = document.getElementById("svgViewer")
@@ -5233,21 +5924,26 @@ if(file){
 
 const url = URL.createObjectURL(file)
 
-// preview brenda dropzone
-const img = document.getElementById("dropPreview3d")
-const text = document.getElementById("dropText3d")
-
-img.src = url
-img.style.display = "block"
-text.style.display = "none"
+setSharedGeneratorPreview(url, {
+label: "Uploaded source",
+filename: file.name || "uploaded-photo.png",
+sourceType: "upload",
+uploadedJobId: null
+})
 
 }
 
 autoUpload(files)
+  .catch((error)=>{
+  console.error("Upload failed:", error)
+  status.innerHTML = "Upload failed"
+  alert(error.message || "Upload failed")
+  })
 
 }
 
 async function autoUpload(files){
+window.generatorUploadPromise = (async()=>{
 
 currentJobId = crypto.randomUUID()
 
@@ -5257,14 +5953,34 @@ let form=new FormData()
 form.append("file",file)
 form.append("job_id",currentJobId)
 
-await fetch(API_BASE+"/api/upload",{
+const res = await fetch(API_BASE+"/api/upload",{
 method:"POST",
 body:form
 })
 
+if(!res.ok){
+const raw = await res.text()
+throw new Error(raw || "Upload failed")
+}
+
+}
+
+if(window.generatorActiveImage?.sourceType === "upload"){
+window.generatorActiveImage = {
+...window.generatorActiveImage,
+uploadedJobId: currentJobId
+}
 }
 
 status.innerHTML="Uploaded and ready"
+
+})()
+
+try{
+await window.generatorUploadPromise
+}finally{
+window.generatorUploadPromise = null
+}
 
 }
 /* ---------------- SVG DROPZONE ---------------- */

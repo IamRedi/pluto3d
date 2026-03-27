@@ -1,7 +1,7 @@
 function getToyPromptCategory(prompt){
   const query = prompt.toLowerCase()
 
-  if(query.includes("car") || query.includes("race") || query.includes("vehicle")){
+  if(query.includes("f1") || query.includes("car") || query.includes("race") || query.includes("vehicle")){
     return "car"
   }
 
@@ -15,6 +15,26 @@ function getToyPromptCategory(prompt){
   }
 
   return "robot"
+}
+
+function resolveToyAssetUrl(assetUrl){
+  if(!assetUrl){
+    return ""
+  }
+
+  if(assetUrl.startsWith("http")){
+    return assetUrl
+  }
+
+  if(assetUrl.startsWith("/frontend/")){
+    return new URL(assetUrl, window.location.origin).href
+  }
+
+  if(assetUrl.startsWith("models/")){
+    return new URL(assetUrl, window.location.href).href
+  }
+
+  return window.PLUTO_API_BASE + assetUrl
 }
 
 async function generateToyTest(){
@@ -35,7 +55,7 @@ async function generateToyTest(){
     loadGLB(testModels.car.url, testModels.car.filename)
     showViewerDownload(testModels.car.url, testModels.car.filename)
     window.incrementUsage("toyGeneration")
-    status.innerHTML = "Test car toy loaded. Open Studio to style it, then use Fix To Print."
+    status.innerHTML = "Test F1 toy loaded. Use Scale / Rotate, then Print and download STL."
     return
   }
 
@@ -47,7 +67,7 @@ async function generateToyTest(){
   loadGLB(testModels.default.url, testModels.default.filename)
   showViewerDownload(testModels.default.url, testModels.default.filename)
   window.incrementUsage("toyGeneration")
-  status.innerHTML = "Test toy loaded. Open Studio to style it, then use Fix To Print."
+  status.innerHTML = "Test toy loaded. Use Scale / Rotate, then Print and download STL."
 }
 
 async function generateToyPro(){
@@ -85,21 +105,17 @@ async function generateToyPro(){
     }
 
     if(data.glb_url){
-      const glbUrl = data.glb_url.startsWith("http")
-        ? data.glb_url
-        : window.PLUTO_API_BASE + data.glb_url
+      const glbUrl = resolveToyAssetUrl(data.glb_url)
 
       loadGLB(glbUrl, "toy-pro.glb")
       showViewerDownload(glbUrl, "toy-pro.glb")
       window.incrementUsage("toyGeneration")
-      status.innerHTML = "Toy PRO ready. Open Studio to style it, then use Fix To Print."
+      status.innerHTML = "Toy PRO ready. Use Scale / Rotate, then Print and download STL."
       return
     }
 
     if(data.stl_url){
-      const stlUrl = data.stl_url.startsWith("http")
-        ? data.stl_url
-        : window.PLUTO_API_BASE + data.stl_url
+      const stlUrl = resolveToyAssetUrl(data.stl_url)
 
       loadSTL(stlUrl, "toy-pro.stl")
       showViewerDownload(stlUrl, "toy-pro.stl")

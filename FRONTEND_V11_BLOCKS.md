@@ -25,6 +25,17 @@ Each block should define:
 
 ## Current Sequence
 
+## Remodel Pivot
+
+As of `2026-03-27`, `v1.1` is no longer only a frontend polish sequence.
+The product is pivoting toward a broader remodel centered on a new unified `3D Generator` flow.
+
+Primary remodel notes now live in:
+
+- `V11_REMODEL_PLAN.md`
+
+This file still matters, but from this point onward it should support the remodel instead of assuming only small polish passes.
+
 ### Block 1: Frontend Copy Cleanup
 
 - status: `active`
@@ -99,3 +110,15 @@ Each block should define:
 
 - if a task starts affecting more than one block, stop and split it
 - copy cleanup should happen before hierarchy and mobile polish so later passes are not wasted on weak content
+- the new `v1.1` remodel may replace or retire some earlier queued polish blocks if the unified `3D Generator` flow supersedes them
+- compactness is now a standing UI rule for the remodel:
+  - keep controls smaller and cleaner when possible
+  - avoid unnecessary vertical growth
+  - avoid adding scroll unless the content truly requires it
+- vertical mobile suitability should be treated as an important remodel concern even before the dedicated mobile pass begins
+- current remodel runtime notes:
+  - the `3D Generator` shared source preview should stay the single source of truth for upload and prompt-generated concept images
+  - new flow wiring should prefer hiding old surfaces gradually instead of deleting them before the replacement path is stable
+  - sidebar cleanup can remove old entry points early as long as compatibility code remains available underneath
+  - compact button sizing and shorter labels are valid remodel changes when they reduce scroll and visual weight without hurting clarity
+  - owned preview PNG plus GLB pairs should be wired in the registry before the test-library expansion starts growing

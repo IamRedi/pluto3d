@@ -14,7 +14,7 @@ function setCurrentViewerAsset(asset){
   }
 
   if(asset.type === "glb"){
-    printStatus.innerHTML = "GLB model ready. Click Fix for Print to create STL."
+    printStatus.innerHTML = "GLB model ready. Use Print, then Bambu Lab / Prusa to export STL in the browser."
     return
   }
 
@@ -42,6 +42,47 @@ function getPrintFixPlaceholderUrl(){
   return resolveAssetUrl(
     window.PLUTO_APP_CONFIG?.printFixPlaceholderStlUrl || "models/print-ready-preview.stl"
   )
+}
+
+function getCurrentPrintFilename(){
+  const asset = window.currentViewerAsset
+  const baseFilename = asset?.filename || "print-ready.glb"
+  return baseFilename.replace(/\.(glb|gltf|stl)$/i, "") + ".stl"
+}
+
+function downloadBlobUrl(url, filename){
+  const link = document.createElement("a")
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+}
+
+function exportCurrentModelToStlUrl(){
+  if(!window.currentModel){
+    throw new Error("Load a model first")
+  }
+
+  const exportRoot = window.currentModel.clone(true)
+  exportRoot.updateMatrixWorld(true)
+
+  const exporter = new THREE.STLExporter()
+  const exported = exporter.parse(exportRoot, { binary: true })
+  const data = exported instanceof DataView ? exported.buffer : exported
+  const blob = new Blob([data], { type: "model/stl" })
+
+  return URL.createObjectURL(blob)
+}
+
+function downloadCurrentModelAsStl(){
+  const stlUrl = exportCurrentModelToStlUrl()
+  const filename = getCurrentPrintFilename()
+  downloadBlobUrl(stlUrl, filename)
+  window.setTimeout(() => {
+    URL.revokeObjectURL(stlUrl)
+  }, 2000)
+  return { stlUrl, filename }
 }
 
 function wait(ms){
@@ -95,36 +136,19 @@ async function fixCurrentModelForPrint(){
     return
   }
 
-  if(isPrintFixPaused()){
-    printStatus.innerHTML = "Preparing print-ready STL preview..."
-    await wait(900)
-
-    const stlUrl = getPrintFixPlaceholderUrl()
-    loadSTL(stlUrl, "print-ready-preview.stl")
-    showViewerDownload(stlUrl, "print-ready-preview.stl")
-    printStatus.innerHTML = "Print fix is paused during public testing. A ready STL preview is available for download."
-    return
-  }
-
-  printStatus.innerHTML = "Uploading model to print fixer..."
-
   try{
-    const stlUrl = await createPrintReadyStl(
-      currentViewerAsset.url,
-      currentViewerAsset.filename || "model.glb"
-    )
-
-    loadSTL(stlUrl, "print-ready.stl")
-    showViewerDownload(stlUrl, "print-ready.stl")
-    printStatus.innerHTML = "Print fix complete. STL is ready."
-
+    if(typeof setViewerMode === "function"){
+      setViewerMode("print")
+    }
+    await wait(220)
+    printStatus.innerHTML = "Direct STL export is ready. Use Bambu Lab / Prusa on the right."
   }catch(err){
-    console.error("Print fix error:", err)
-    printStatus.innerHTML = "Print fix failed."
+    console.error("Print preparation error:", err)
+    printStatus.innerHTML = "STL export setup failed."
 
     const msg = err.message && err.message.includes("Failed to fetch")
       ? "Backend is not running on http://127.0.0.1:8000. Start FastAPI server first."
-      : (err.message || "Print fix failed")
+      : (err.message || "STL export setup failed")
 
     alert(msg)
   }

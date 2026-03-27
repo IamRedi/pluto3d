@@ -934,6 +934,17 @@ If anything is unclear, check these first in this order:
 - Sponsor/ad wait states are bypassed there.
 - This is only for safe full-flow testing locally and does not change live production behavior.
 
+### Current Working Environment For `v1.1`
+
+- Active implementation branch: `develop`
+- Current stage: local `v1.1` build/test iteration before any `v1.1` production deploy
+- Frontend local test URL: `http://127.0.0.1:5500/frontend/`
+- Backend local test URL: `http://127.0.0.1:8000`
+- Backend local runtime should use `backend` `venv`
+- Git work and commits for ongoing `v1.1` changes should happen locally on `develop`
+- Local code changes, local servers, and local commits do not modify the frozen live `v1` on Vercel/Railway by themselves
+- Production `v1` remains untouched unless there is an explicit push/deploy/hotfix workflow
+
 ### Production Notes
 
 - Frontend deploys go through `Vercel`, not `Railway`.
@@ -955,6 +966,15 @@ If anything is unclear, check these first in this order:
 - real Stripe live smoke test
 - login/profile micro-polish
 - final viewer CTA refinement
+- commercial licensing cleanup before sale:
+  - add provenance notes for owned local models
+  - replace unclear Transparent Textures background
+- `v1.1` remodel pivot:
+  - unify `3D`, `Toy`, and `AI` thinking into one `3D Generator`
+  - build prompt-image generation + recent thumbnail strip
+  - build owned test-model registry with paired preview images
+  - reconnect premium real 3D generation to the active preview image
+  - later add `Lithophane`
 - `.1` planning for:
   - Railway memory sizing or alternate compute strategy
   - proper queued/background print repair
@@ -982,4 +1002,77 @@ If anything is unclear, check these first in this order:
    - `.1` planning
 3. Avoid reopening heavy backend work unless production stability requires it.
 4. Keep using `PROJECT_BOARD.md` as the primary memory instead of relying on chat history.
+
+### Commercial Licensing Audit Snapshot
+
+- Audit file added: `COMMERCIAL_LICENSE_AUDIT.md`
+- Core app libraries are mostly permissive and low-risk for sale.
+- Cleanup already applied:
+  - `Horse.glb` removed from frontend gallery
+  - `ultralytics` / `yolov8n` removed from the active repo path
+  - toy fallback sample assets replaced with owned local assets
+- Latest toy asset mapping update:
+  - `robot` now uses owned `pluto-robot.glb`
+  - `car` / `f1` now use owned `f1car.glb`
+  - legacy `frontend/models/Robot.glb` removed from active usage
+  - localhost frontend now forces local backend `127.0.0.1:8000` instead of reusing the public production API base
+  - local toy assets now use a cache-busting version query so replaced GLB files do not keep showing stale browser copies
+  - toy/print flow is being simplified for `v1.1` stability:
+    - heavy Toy Studio shaping is removed from the active path
+    - `Bambu Lab / Prusa .stl` now exports STL directly in the browser from the current GLB instead of depending on backend `print-fix`
+    - `Fix To Print` is now only a lightweight preparation step for direct browser-side STL export
+    - `Print` preview is being kept as a simple clay-style view rather than a backend-dependent print pipeline preview
+- Remaining commercial cleanup is mostly asset provenance and sample replacement:
+  - local owned-asset provenance notes
+  - unclear commercial clearance for current Transparent Textures background
+
+### v1.1 Remodel Pivot
+
+- `v1.1` is now being reframed as a larger product remodel, not only a polish pass.
+- New reference file:
+  - `V11_REMODEL_PLAN.md`
+- Current remodel direction:
+  - move toward one cleaner `3D Generator` section
+  - fold toy behavior into the main generation path instead of keeping it as a separate surface
+  - use prompt-image generation and owned test models inside one unified workflow
+  - keep real premium 3D generation connected to the currently selected preview image
+  - keep the customer path simple, premium, and low-friction
+  - keep the remodeled UI compact, low-scroll, and suitable for a later vertical-mobile optimization pass
+  - keep business-limit ideas documented even before implementation so the remodel and pricing logic can stay aligned later
+- Stage 1 now started:
+  - main `3D` panel is being reshaped into the future `3D Generator` skeleton
+  - prompt-image, shared preview, and output blocks are now represented in the core panel structure
+  - old `AI` and `Toy` panels remain temporarily for compatibility until the new path is wired
+  - compact prompt/toggle/card direction is now part of the remodel rules instead of a later polish-only note
+  - compact pass 2 now reduces visible planning/helper copy so the panel reads closer to the intended real product shape
+  - `Generate Test in 3D` now accepts either an uploaded image or the active generated concept image in the shared preview frame
+  - Stage 3 registry work has started:
+    - owned test models now resolve through a structured keyword-based registry
+    - the simple `car/default` branch is being replaced by explicit model metadata
+    - preview-image pairing is prepared in the registry structure and can be filled as owned source images are added
+  - Stage 4 shared-source wiring is now in progress:
+    - upload preview and prompt-generated concept preview now feed the same active `Source Preview` state
+    - `Generate Real 3D` now follows the active shared source preview instead of forcing the older separated path
+    - upload-to-Meshy and image-url-to-Meshy are now selected from the active source type rather than from separate panels
+  - active workspace cleanup pass:
+    - old `AI` and `Toy` entries are now hidden from the main sidebar so the remodel reads as one cleaner path
+    - compatibility panels still remain in code as fallback surfaces while the new `3D Generator` path is being completed
+    - footer/support copy is being aligned with the remodeled product path instead of the older multi-surface wording
+  - compact UI pass 3:
+    - prompt, toggle, thumbnail strip, and CTA sizing in `3D Generator` are being tightened so the panel reads more like a compact premium studio
+    - button labels are being shortened where that improves rhythm without hiding meaning
+    - paired source-photo plus owned-GLB mapping is expected as the next content step once owned asset pairs are prepared
+    - `Source Preview` is also being polished away from a plain upload look toward a softer studio-style framed image treatment with gentler transitions
+    - a light premium glass/frame treatment is also being added so the preview feels more curated and less like a raw upload box
+  - owned test-pair wiring started:
+    - active test registry now begins connecting owned preview PNG files to the matching owned GLB test assets
+    - `OWNED_MODEL_ASSETS.md` now records the declared provenance of the active owned test library
+    - the current staging folder for preview pairs can be normalized later without losing the registry direction already in progress
+  - test-registry prompt refinement:
+    - generic `car` should resolve to the owned car model, while `f1` and `sport car` should resolve to the owned F1 model
+    - `bike` is now part of the owned test library
+    - `Skenderbeg` should resolve for `toy`, `hero`, and `warrior` style prompts and is intentionally weighted higher in random fallback
+  - pre-production asset-delivery note:
+    - the owned test-model library is growing in file size, so final `v1.1` production adaptation must verify whether local static delivery is acceptable
+    - if Railway/Vercel or the final deployment shape does not handle the asset weight comfortably, move heavy owned model assets to a cleaner delivery path such as object storage or CDN before release
 

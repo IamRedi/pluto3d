@@ -55,7 +55,7 @@ const VIEWER_SHELL = `
 <button id="viewerDownload" class="viewer-download hidden">
 Download
 </button>
-<div class="viewer-title">AI Viewer</div>
+<div class="viewer-title">3D Viewer</div>
 <div class="viewer-toolbar">
   <div class="viewer-modes">
     <button class="viewer-mode-btn" data-viewer-mode="wireframe">Wire</button>
@@ -63,8 +63,8 @@ Download
   </div>
 </div>
 <div id="viewerPrintCta" class="viewer-print-cta hidden">
-  <div id="viewerPrintNote" class="viewer-print-note">Direct to printer</div>
-  <button id="viewerPrintDownload" class="viewer-print-download" type="button">Bambu Lab / Prusa .stl</button>
+  <div id="viewerPrintNote" class="viewer-print-note">Printer STL export</div>
+  <button id="viewerPrintDownload" class="viewer-print-download" type="button">Bambu Lab / Prusa STL</button>
 </div>
 <img
   id="svgViewer"
@@ -332,11 +332,20 @@ function buildModeMaterial(sourceMaterial, mode){
     return wireMaterial
   }
 
-  const printMaterial = new THREE.MeshStandardMaterial({
-    color: 0xff8a3d,
-    metalness: 0.08,
-    roughness: 0.72
+  const printMaterial = new THREE.MeshPhongMaterial({
+    color: 0xe7decf,
+    specular: 0x1e1810,
+    shininess: 7,
+    side: THREE.DoubleSide
   })
+  printMaterial.flatShading = false
+  printMaterial.vertexColors = false
+  printMaterial.skinning = Boolean(sourceMaterial.skinning)
+  printMaterial.morphTargets = Boolean(sourceMaterial.morphTargets)
+  printMaterial.morphNormals = Boolean(sourceMaterial.morphNormals)
+  printMaterial.transparent = false
+  printMaterial.opacity = 1
+  printMaterial.needsUpdate = true
 
   return printMaterial
 }
@@ -426,9 +435,23 @@ function syncViewerPrintCta(){
   if(asset.type === "stl"){
     downloadUrl = asset.url
     filename = asset.filename || "print-ready.stl"
-  }else if(typeof getPrintFixPlaceholderUrl === "function"){
-    downloadUrl = getPrintFixPlaceholderUrl()
-    filename = "print-ready-preview.stl"
+  }else if(asset.type === "glb" && typeof downloadCurrentModelAsStl === "function"){
+    button.onclick = () => {
+      const printStatus = document.getElementById("printStatus")
+      try{
+        downloadCurrentModelAsStl()
+        if(printStatus){
+          printStatus.innerHTML = "STL exported directly from the current GLB model."
+        }
+      }catch(error){
+        console.error("Browser STL export failed:", error)
+        if(printStatus){
+          printStatus.innerHTML = "STL export failed."
+        }
+        alert(error.message || "STL export failed")
+      }
+    }
+    return
   }
 
   if(!downloadUrl){
@@ -446,14 +469,7 @@ function syncStudioLaunchButton(){
   if(!launchButton){
     return
   }
-
-  const activePanel = window.currentWorkspacePanel || "3d"
-  const shouldShow = activePanel === "toy" && Boolean(window.currentViewerAsset) && (
-    window.currentViewerAsset.type === "glb" ||
-    window.currentViewerAsset.type === "stl"
-  )
-
-  launchButton.classList.toggle("hidden", !shouldShow)
+  launchButton.classList.add("hidden")
 }
 
 function openToyStudio(){
