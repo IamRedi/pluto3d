@@ -281,9 +281,12 @@ function syncViewerModeButtons(){
 function syncViewerSurfaceChrome(){
   const toolbar = viewerContainer.querySelector(".viewer-toolbar")
   const wrap = document.getElementById("viewerPrintCta")
-  const isSvgSurface = (window.currentWorkspacePanel || "3d") === "svg"
-  const isSvgAsset = window.currentViewerAsset?.type === "svg"
-  const hide3dControls = isSvgSurface || isSvgAsset
+  const currentSurface = window.currentWorkspacePanel || "3d"
+  const assetType = window.currentViewerAsset?.type || ""
+  const hide3dControls = currentSurface === "svg" ||
+    currentSurface === "relief" ||
+    assetType === "svg" ||
+    assetType === "relief-preview"
 
   if(toolbar){
     toolbar.style.display = hide3dControls ? "none" : ""
@@ -440,7 +443,11 @@ function syncViewerPrintCta(){
   }
 
   const asset = window.currentViewerAsset
-  const hideForSvg = (window.currentWorkspacePanel || "3d") === "svg" || asset?.type === "svg"
+  const currentSurface = window.currentWorkspacePanel || "3d"
+  const hideForSvg = currentSurface === "svg" ||
+    currentSurface === "relief" ||
+    asset?.type === "svg" ||
+    asset?.type === "relief-preview"
   const currentAssetKey = getViewerAssetKey(asset)
   const printButtonActive = Boolean(printButton && printButton.classList.contains("active"))
   const show = !hideForSvg &&

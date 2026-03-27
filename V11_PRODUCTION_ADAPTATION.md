@@ -57,6 +57,7 @@ The current `v1.1` direction is:
 
 - browser-side STL export
 - no heavy backend `print-fix` in the active public path
+- first `Relief` preview pass should stay frontend-local and avoid new dependencies until the real lithophane/export path is defined
 
 Before production:
 

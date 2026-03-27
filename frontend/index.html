@@ -1872,7 +1872,9 @@ isolation:isolate;
 transition:border-color 0.34s ease, box-shadow 0.34s ease;
 }
 
-#drop3d::before{
+#drop3d::before,
+#dropSVG::before,
+#dropRelief::before{
 content:"";
 position:absolute;
 inset:12px;
@@ -1888,7 +1890,9 @@ pointer-events:none;
 z-index:0;
 }
 
-#drop3d::after{
+#drop3d::after,
+#dropSVG::after,
+#dropRelief::after{
 content:"";
 position:absolute;
 inset:12px;
@@ -1903,7 +1907,9 @@ pointer-events:none;
 z-index:1;
 }
 
-#drop3d.preview-active{
+#drop3d.preview-active,
+#dropSVG.preview-active,
+#dropRelief.preview-active{
 border-color:rgba(126, 206, 145, 0.18);
 box-shadow:
 inset 0 1px 0 rgba(255,255,255,0.05),
@@ -1912,22 +1918,32 @@ inset 0 1px 0 rgba(255,255,255,0.05),
 }
 
 #drop3d.preview-active::before,
-#drop3d.preview-active::after{
+#drop3d.preview-active::after,
+#dropSVG.preview-active::before,
+#dropSVG.preview-active::after,
+#dropRelief.preview-active::before,
+#dropRelief.preview-active::after{
 opacity:1;
 }
 
-#dropText3d{
+#dropText3d,
+#dropTextSVG,
+#dropTextRelief{
 position:relative;
 z-index:2;
 transition:opacity 0.28s ease, transform 0.28s ease;
 }
 
-#drop3d.preview-active #dropText3d{
+#drop3d.preview-active #dropText3d,
+#dropSVG.preview-active #dropTextSVG,
+#dropRelief.preview-active #dropTextRelief{
 opacity:0;
 transform:translateY(6px);
 }
 
-#dropPreview3d{
+#dropPreview3d,
+#dropPreviewSVG,
+#dropPreviewRelief{
 position:relative;
 z-index:2;
 display:block;
@@ -1952,7 +1968,9 @@ transform 0.34s ease,
 filter 0.34s ease;
 }
 
-#dropPreview3d.is-visible{
+#dropPreview3d.is-visible,
+#dropPreviewSVG.is-visible,
+#dropPreviewRelief.is-visible{
 opacity:1;
 transform:translateY(0) scale(1);
 filter:saturate(1) contrast(1.04);
@@ -3329,6 +3347,8 @@ to{background-position:1000px 1000px;}
 
 <div class="sidebtn" data-panel-trigger="svg" onclick="openPanel('svg')">SVG</div>
 
+<div class="sidebtn" data-panel-trigger="relief" onclick="openPanel('relief')">Relief</div>
+
 <div class="sidebtn hidden" data-panel-trigger="ai" onclick="openPanel('ai')">AI</div>
 
 <div class="sidebtn hidden" data-panel-trigger="toy" onclick="openPanel('toy')">Toy</div>
@@ -3532,6 +3552,92 @@ to{background-position:1000px 1000px;}
       <button class="generator-cta" type="button" onclick="generateSVG()">Generate SVG</button>
       <div id="svgStatus" class="status"></div>
       <div class="generator-output-note" id="svgUsageNote">Guest 1 SVG try. Logged-in free 5. Premium unlimited.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div id="panel-relief" class="toolpanel hidden">
+
+<div class="section-title">Photo Relief</div>
+<div class="section-intro">Prepare one source image, shape a grayscale relief preview, then keep the first lithophane-style path inside the main viewer.</div>
+
+<div class="generator-shell">
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">Concept Image</div>
+        <div class="generator-card-copy">Generate a relief source image directly in this section before moving into local relief preview.</div>
+      </div>
+      <div class="generator-chip">Image</div>
+    </div>
+
+    <div class="generator-stack">
+      <label for="reliefPrompt">Prompt</label>
+      <textarea id="reliefPrompt" class="generator-prompt" placeholder="Portrait photo with clean lighting and strong facial separation for lithophane relief."></textarea>
+      <button id="generateReliefImageBtn" class="generator-cta" type="button" onclick="generateReliefConceptImage()">Generate Image</button>
+      <div id="reliefImageStatus" class="status"></div>
+    </div>
+  </div>
+
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">Source Preview</div>
+        <div class="generator-card-copy">Upload a portrait or generated concept and keep a short recent-source strip for the relief pass.</div>
+      </div>
+      <div class="generator-chip">Preview</div>
+    </div>
+
+    <div class="dropzone" id="dropRelief">
+      <p id="dropTextRelief">Drop source image or click to upload</p>
+      <img id="dropPreviewRelief" style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
+      <input type="file" id="reliefInput" style="display:none">
+    </div>
+
+    <div class="generator-stack">
+      <div class="generator-meta-row">
+        <div class="generator-meta-chip" id="reliefSourceType">No Source</div>
+        <div class="generator-meta-copy" id="reliefSourceMeta">Generate a concept image or upload a portrait photo for relief preview.</div>
+      </div>
+      <div class="generator-limit-note">Up to 5 recent relief source images stay here temporarily until refresh or replacement.</div>
+      <div class="generator-thumbnail-strip" id="reliefThumbStrip">
+        <div class="generator-thumb">Recent image 1</div>
+        <div class="generator-thumb">Recent image 2</div>
+        <div class="generator-thumb">Recent image 3</div>
+        <div class="generator-thumb">Recent image 4</div>
+        <div class="generator-thumb">Recent image 5</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">Relief Preview</div>
+        <div class="generator-card-copy">Build a safe local grayscale relief preview now; true lithophane mesh/export wiring will follow after this panel settles.</div>
+      </div>
+      <div class="generator-chip">Relief</div>
+    </div>
+
+    <div class="generator-stack">
+      <label for="reliefDepth">Depth</label>
+      <select id="reliefDepth">
+        <option value="soft">Soft</option>
+        <option value="normal" selected>Normal</option>
+        <option value="strong">Strong</option>
+      </select>
+
+      <label for="reliefDirection">Direction</label>
+      <select id="reliefDirection">
+        <option value="dark-deep" selected>Dark Areas Deeper</option>
+        <option value="light-deep">Light Areas Deeper</option>
+      </select>
+
+      <button class="generator-cta" type="button" onclick="previewRelief()">Preview Relief</button>
+      <div id="reliefStatus" class="status"></div>
+      <div class="generator-output-note" id="reliefUsageNote">Local preview only for now. Full lithophane mesh/export comes next.</div>
     </div>
   </div>
 </div>
@@ -5251,6 +5357,8 @@ window.generatorActiveImage = window.generatorActiveImage || null
 window.generatorUploadPromise = window.generatorUploadPromise || null
 window.svgRecentImages = window.svgRecentImages || []
 window.svgActiveSource = window.svgActiveSource || null
+window.reliefRecentImages = window.reliefRecentImages || []
+window.reliefActiveSource = window.reliefActiveSource || null
 
 function getGeneratorHiddenToyPrompt(){
 return " full toy object, complete collectible toy, isolated studio render, centered product composition, premium toy silhouette"
@@ -5840,8 +5948,450 @@ handleSvgFiles(e.dataTransfer.files)
 
 svgInput?.addEventListener("change",()=>{
 handleSvgFiles(svgInput.files)
-})/* ---------------- AI PHOTO ---------------- */
+})
 
+document.getElementById("reliefDepth")?.addEventListener("change", triggerReliefAutoPreview)
+document.getElementById("reliefDirection")?.addEventListener("change", triggerReliefAutoPreview)
+
+let reliefAutoPreviewTimer = null
+
+function renderReliefSourceMeta(){
+const typeChip = document.getElementById("reliefSourceType")
+const meta = document.getElementById("reliefSourceMeta")
+const source = window.reliefActiveSource
+
+if(!typeChip || !meta){
+  return
+}
+
+if(!source?.url){
+  typeChip.textContent = "No Source"
+  meta.textContent = "Generate a concept image or upload a portrait photo for relief preview."
+  return
+}
+
+typeChip.textContent = source.sourceType === "upload" ? "Upload" : "Prompt Source"
+meta.textContent = source.label || source.filename || "Relief source ready"
+}
+
+function renderReliefUsageNote(){
+const note = document.getElementById("reliefUsageNote")
+if(!note){
+  return
+}
+
+const authState = getAuthPreviewState()
+note.textContent = `Current plan: ${authState.planLabel}. Relief preview is local for now. Full lithophane mesh/export comes next.`
+}
+
+function renderReliefSourcePreview(){
+const drop = document.getElementById("dropRelief")
+const img = document.getElementById("dropPreviewRelief")
+const text = document.getElementById("dropTextRelief")
+const source = window.reliefActiveSource
+
+if(!drop || !img || !text){
+  return
+}
+
+if(!source?.url){
+  img.removeAttribute("src")
+  img.classList.remove("is-visible")
+  img.style.display = "none"
+  text.style.display = "block"
+  drop.style.removeProperty("--generator-preview-bg")
+  return
+}
+
+const revealPreview = ()=>{
+  drop.classList.add("preview-active")
+  img.classList.add("is-visible")
+}
+
+drop.style.setProperty("--generator-preview-bg", `url("${source.url}")`)
+img.classList.remove("is-visible")
+img.style.display = "block"
+text.style.display = "none"
+
+if(img.src !== source.url){
+  img.onload = ()=>{
+    img.onload = null
+    requestAnimationFrame(revealPreview)
+  }
+  img.src = source.url
+}else{
+  requestAnimationFrame(revealPreview)
+}
+}
+
+function setReliefSourcePreview(imageUrl, options = {}){
+if(!imageUrl){
+  return
+}
+
+window.reliefActiveSource = {
+  url: imageUrl,
+  label: options.label || window.reliefActiveSource?.label || "Relief source",
+  filename: options.filename || window.reliefActiveSource?.filename || "relief-source.png",
+  sourceType: options.sourceType || window.reliefActiveSource?.sourceType || "generated",
+  file: options.file || null
+}
+
+renderReliefSourceMeta()
+renderReliefSourcePreview()
+renderReliefThumbStrip()
+}
+
+function renderReliefThumbStrip(){
+const strip = document.getElementById("reliefThumbStrip")
+if(!strip){
+  return
+}
+
+if(!window.reliefRecentImages.length){
+  strip.innerHTML = `
+    <div class="generator-thumb"><span>Recent image 1</span></div>
+    <div class="generator-thumb"><span>Recent image 2</span></div>
+    <div class="generator-thumb"><span>Recent image 3</span></div>
+    <div class="generator-thumb"><span>Recent image 4</span></div>
+    <div class="generator-thumb"><span>Recent image 5</span></div>
+  `
+  return
+}
+
+strip.innerHTML = window.reliefRecentImages.map((entry, index) => `
+  <button type="button" class="generator-thumb${window.reliefActiveSource?.url === entry.url ? " active" : ""}" onclick="restoreReliefThumb(${index})">
+    <img src="${entry.url}" alt="${entry.label}">
+    <span>${entry.label}</span>
+  </button>
+`).join("")
+}
+
+function restoreReliefThumb(index){
+const entry = window.reliefRecentImages[index]
+if(!entry){
+  return
+}
+
+setReliefSourcePreview(entry.url, entry)
+const status = document.getElementById("reliefImageStatus")
+if(status){
+  status.innerHTML = "Relief source restored from recent images."
+}
+}
+
+function pushReliefRecentImage(entry){
+window.reliefRecentImages = [entry, ...window.reliefRecentImages.filter((item) => item.url !== entry.url)].slice(0, 5)
+renderReliefThumbStrip()
+}
+
+function getReliefSourceState(){
+if(window.reliefActiveSource?.url){
+  return {
+    kind: "active",
+    activeSource: window.reliefActiveSource
+  }
+}
+
+return {
+  kind: "empty"
+}
+}
+
+function handleReliefFiles(files){
+const file = files?.[0]
+if(!file){
+  return
+}
+
+const url = URL.createObjectURL(file)
+const entry = {
+  url,
+  label: "Uploaded relief source",
+  filename: file.name || "relief-upload.png",
+  sourceType: "upload",
+  file
+}
+
+setReliefSourcePreview(entry.url, entry)
+pushReliefRecentImage(entry)
+
+const status = document.getElementById("reliefImageStatus")
+if(status){
+  status.innerHTML = "Uploaded source is ready for relief preview."
+}
+}
+
+async function generateReliefConceptImage(){
+const status = document.getElementById("reliefImageStatus")
+const promptField = document.getElementById("reliefPrompt")
+const rawPrompt = (promptField?.value || "").trim()
+
+if(!canUseFeature("aiImage")){
+  openUsageLimitPrompt("aiImage")
+  return
+}
+
+if(!rawPrompt){
+  alert("Write a prompt first")
+  return
+}
+
+const form = new FormData()
+form.append("prompt", rawPrompt)
+form.append("style", "realistic")
+
+if(status){
+  status.innerHTML = "Generating relief source image..."
+}
+
+try{
+  const res = await fetch(API_BASE + "/api/ai-photo", {
+    method:"POST",
+    body:form
+  })
+
+  if(!res.ok){
+    const txt = await res.text()
+    console.log(txt)
+    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+  }
+
+  const data = await res.json()
+
+  if(data.error){
+    throw new Error(data.error)
+  }
+
+  if(!data.image_url){
+    throw new Error("AI returned empty image")
+  }
+
+  const entry = {
+    url: data.image_url,
+    label: "Relief concept",
+    filename: "relief-concept.png",
+    sourceType: "generated",
+    file: null
+  }
+
+  setReliefSourcePreview(entry.url, entry)
+  pushReliefRecentImage(entry)
+  incrementUsage("aiImage")
+
+  if(status){
+    status.innerHTML = "Relief source image is ready."
+  }
+}catch(err){
+  console.log(err)
+  console.error("Relief concept image request crashed", err)
+  if(status){
+    status.innerHTML = err.message || "Relief source generation failed."
+  }
+  alert(err.message || "Relief source generation failed.")
+}
+}
+
+async function getReliefSourceBlob(sourceState){
+if(sourceState.kind !== "active"){
+  throw new Error("Generate or upload a relief source first.")
+}
+
+if(sourceState.activeSource.file){
+  return sourceState.activeSource.file
+}
+
+const response = await fetch(sourceState.activeSource.url)
+if(!response.ok){
+  throw new Error("The selected relief source could not be loaded.")
+}
+
+return response.blob()
+}
+
+async function loadReliefImageFromBlob(blob){
+const objectUrl = URL.createObjectURL(blob)
+const image = new Image()
+
+try{
+  await new Promise((resolve, reject) => {
+    image.onload = ()=> resolve()
+    image.onerror = ()=> reject(new Error("Relief source image could not be decoded."))
+    image.src = objectUrl
+  })
+  return image
+}finally{
+  URL.revokeObjectURL(objectUrl)
+}
+}
+
+function buildReliefPreviewDataUrl(image, depthMode, directionMode){
+const maxWidth = 960
+const scale = image.width > maxWidth ? maxWidth / image.width : 1
+const width = Math.max(1, Math.round(image.width * scale))
+const height = Math.max(1, Math.round(image.height * scale))
+const frame = 28
+const canvas = document.createElement("canvas")
+canvas.width = width + frame * 2
+canvas.height = height + frame * 2
+
+const ctx = canvas.getContext("2d", { willReadFrequently:true })
+ctx.fillStyle = "#101612"
+ctx.fillRect(0, 0, canvas.width, canvas.height)
+ctx.fillStyle = "#e6dfcf"
+ctx.fillRect(frame, frame, width, height)
+ctx.drawImage(image, frame, frame, width, height)
+
+const imageData = ctx.getImageData(frame, frame, width, height)
+const pixels = imageData.data
+const contrastMap = {
+  soft: 0.82,
+  normal: 1,
+  strong: 1.22
+}
+const contrast = contrastMap[depthMode] || 1
+const invert = directionMode === "light-deep"
+
+for(let index = 0; index < pixels.length; index += 4){
+  const luminance = (pixels[index] * 0.299) + (pixels[index + 1] * 0.587) + (pixels[index + 2] * 0.114)
+  let tone = ((luminance - 128) * contrast) + 128
+  tone = Math.max(0, Math.min(255, tone))
+  if(invert){
+    tone = 255 - tone
+  }
+
+  const warm = Math.max(0, Math.min(255, tone * 0.92 + 18))
+  const cool = Math.max(0, Math.min(255, tone * 0.84 + 24))
+
+  pixels[index] = warm
+  pixels[index + 1] = warm
+  pixels[index + 2] = cool
+  pixels[index + 3] = 255
+}
+
+ctx.putImageData(imageData, frame, frame)
+ctx.strokeStyle = "rgba(255,255,255,0.12)"
+ctx.lineWidth = 2
+ctx.strokeRect(frame, frame, width, height)
+
+return canvas.toDataURL("image/png")
+}
+
+function showGeneratedReliefPreview(previewUrl, filename){
+const svgViewer = document.getElementById("svgViewer")
+const printWrap = document.getElementById("viewerPrintCta")
+
+if(!svgViewer){
+  return
+}
+
+svgViewer.src = previewUrl
+showViewerDownload(previewUrl, filename)
+setCurrentViewerAsset({
+  type:"relief-preview",
+  url:previewUrl,
+  filename
+})
+
+while(scene.children.length > 0){
+  scene.remove(scene.children[0])
+}
+
+addDefaultLights()
+svgViewer.style.display = "block"
+svgViewer.style.filter = "none"
+window.viewerPrintCtaArmed = false
+window.viewerPrintCtaAssetKey = null
+if(printWrap){
+  printWrap.classList.add("hidden")
+  printWrap.style.display = "none"
+}
+}
+
+async function previewRelief(options = {}){
+const silent = options.silent === true
+const status = document.getElementById("reliefStatus")
+const sourceState = getReliefSourceState()
+
+if(sourceState.kind === "empty"){
+  if(!silent){
+    alert("Generate or upload a relief source first")
+  }
+  return
+}
+
+const depthMode = document.getElementById("reliefDepth").value
+const directionMode = document.getElementById("reliefDirection").value
+
+if(status){
+  status.innerHTML = "Building local relief preview..."
+}
+
+try{
+  const blob = await getReliefSourceBlob(sourceState)
+  const image = await loadReliefImageFromBlob(blob)
+  const previewUrl = buildReliefPreviewDataUrl(image, depthMode, directionMode)
+  showGeneratedReliefPreview(previewUrl, `relief-preview-${depthMode}.png`)
+
+  if(status){
+    status.innerHTML = "Relief preview is ready in the main viewer."
+  }
+}catch(error){
+  console.error("Relief preview failed", error)
+  if(status){
+    status.innerHTML = error.message || "Relief preview failed."
+  }
+  if(!silent){
+    alert(error.message || "Relief preview failed")
+  }
+}
+}
+
+function triggerReliefAutoPreview(){
+clearTimeout(reliefAutoPreviewTimer)
+reliefAutoPreviewTimer = setTimeout(async () => {
+  const sourceState = getReliefSourceState()
+
+  try{
+    if(sourceState.kind !== "empty"){
+      await previewRelief({ silent:true })
+    }
+  }catch(error){
+    console.error("Relief auto-preview failed", error)
+  }
+}, 240)
+}
+
+renderReliefThumbStrip()
+renderReliefSourceMeta()
+renderReliefSourcePreview()
+renderReliefUsageNote()
+
+const dropRelief = document.getElementById("dropRelief")
+const reliefInput = document.getElementById("reliefInput")
+
+dropRelief?.addEventListener("click",()=>{
+reliefInput?.click()
+})
+
+dropRelief?.addEventListener("dragover",(e)=>{
+e.preventDefault()
+dropRelief.style.borderColor="#58b873"
+})
+
+dropRelief?.addEventListener("dragleave",()=>{
+dropRelief.style.borderColor="#4c8f5f"
+})
+
+dropRelief?.addEventListener("drop",(e)=>{
+e.preventDefault()
+handleReliefFiles(e.dataTransfer.files)
+})
+
+reliefInput?.addEventListener("change",()=>{
+handleReliefFiles(reliefInput.files)
+})
+/* ---------------- AI PHOTO ---------------- */
 async function generateAIPhoto(){
 
 if(!canUseFeature("aiImage")){

@@ -295,6 +295,10 @@ before:
     - 3D-only viewer controls should not appear while the workspace focus is `SVG`
     - SVG contrast should stay readable against the viewer shell regardless of light/dark theme toggle
     - older overlapping frontend `SVG` handlers should be cleaned out so one self-contained panel path remains active
+  - `Relief` is the next active section after `SVG`:
+    - first pass should establish panel structure and local source flow before any true lithophane export promise is made
+    - the safest immediate output is a local main-viewer relief preview, not a fake mesh/export path
+    - avoid introducing new dependency/license/deploy risk in the first relief step
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired

@@ -1109,3 +1109,11 @@ If anything is unclear, check these first in this order:
       - keep `Wire`, `Print`, and printer export controls out of the viewer while `SVG` is the active surface
       - keep SVG line contrast readable against the dark viewer shell in both theme modes
       - keep only one active `SVG` source/convert path in the frontend instead of preserving older overlapping handlers
+  - `Relief` section foundation has started:
+    - first pass should mirror the safe `SVG` approach:
+      - prompt
+      - upload/source preview
+      - 5 recent source thumbnails
+      - one honest local relief preview path
+    - do not imply true lithophane STL/export until that path is genuinely wired
+    - keep deploy/licensing risk low by avoiding new dependencies for the first relief pass

@@ -102,6 +102,28 @@ This file still matters, but from this point onward it should support the remode
   - first pass completed on `Gallery`, `Shop`, and `Profile` copy
   - remaining frontend `preview/test` references are now mostly technical names, CSS hooks, local placeholders, or internal asset labels rather than customer-facing product copy
 
+### Block 0B: Relief Foundation
+
+- status: `active`
+- goal: start the photo-to-relief / lithophane section with a safe self-contained panel before any true mesh/export backend is wired
+- surfaces:
+  - `Relief` panel
+  - local source preparation
+  - main viewer preview behavior
+- in scope:
+  - add a dedicated `Relief` panel beside `3D` and `SVG`
+  - keep prompt generation, upload, and 5 recent source thumbnails inside the panel
+  - add a local grayscale relief preview path in the main viewer
+  - keep `Wire`, `Print`, and printer-export controls hidden while the viewer is showing relief preview
+- out of scope:
+  - true lithophane mesh generation
+  - STL export from relief
+  - backend depth-map or height-field APIs
+- done when:
+  - `Relief` works as a real panel instead of a note in the plan
+  - a user can prepare a source and preview a first relief-style result locally
+  - the UI does not imply that lithophane export is already production-ready
+
 ### Block 2: Theme Refinement Pass
 
 - status: `active`
