@@ -19,13 +19,13 @@ const AUTH_PREVIEW_DEFAULT = {
 const USAGE_LIMITS = {
   guest: {
     aiImage: 2,
-    svgGeneration: 3,
+    svgGeneration: 1,
     toyGeneration: 3,
     free3dGeneration: 1
   },
   free: {
     aiImage: 8,
-    svgGeneration: 12,
+    svgGeneration: 5,
     toyGeneration: 10,
     free3dGeneration: 4
   },

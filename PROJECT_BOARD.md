@@ -1075,4 +1075,37 @@ If anything is unclear, check these first in this order:
   - pre-production asset-delivery note:
     - the owned test-model library is growing in file size, so final `v1.1` production adaptation must verify whether local static delivery is acceptable
     - if Railway/Vercel or the final deployment shape does not handle the asset weight comfortably, move heavy owned model assets to a cleaner delivery path such as object storage or CDN before release
-
+  - production adaptation note added:
+    - `V11_PRODUCTION_ADAPTATION.md` now tracks the final pre-production checks for heavy owned assets, delivery strategy, browser STL export, Meshy smoke tests, and release readiness
+  - section close-out pass started:
+    - `3D Generator` is being tightened toward a feature-complete state with clearer active-source messaging and cleaner output guidance
+    - after this pass, the section should mainly need polish and final user-action planning rather than more structural changes
+  - `3D Generator` section status:
+    - treat this section as functionally closed for now on `v1.1`
+    - remaining work here should be polish, final user-action planning, and late production adaptation checks
+    - next main build focus should move to `SVG`
+    - after `SVG`, continue with the photo-to-relief / lithophane direction
+  - `SVG` section reset started:
+    - `SVG` should now be remodeled as its own full panel instead of feeling like only a side action from `3D Generator`
+    - the intended `SVG` panel structure is now:
+      - prompt
+      - source preview / upload
+      - 5 recent source thumbnails
+      - one `Generate SVG` CTA
+    - unsupported `Mode` variants should not stay visible in the UI until the backend actually supports them
+    - the active SVG control set remains intentionally small:
+      - `Detail`
+      - `Clean Background`
+    - target SVG usage tiers are now:
+      - guest `1`
+      - logged-in free `5`
+      - premium `unlimited`
+    - the `SVG` panel direction is now more explicit:
+      - prompt and upload both stay inside the `SVG` panel itself
+      - recent source history should hold up to 5 local SVG source picks, including uploads
+      - the generated SVG should resolve into the main viewer with direct download behavior
+    - viewer behavior for `SVG` is now also being tightened:
+      - remove duplicate in-panel SVG download UI
+      - keep `Wire`, `Print`, and printer export controls out of the viewer while `SVG` is the active surface
+      - keep SVG line contrast readable against the dark viewer shell in both theme modes
+      - keep only one active `SVG` source/convert path in the frontend instead of preserving older overlapping handlers

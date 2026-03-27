@@ -122,6 +122,7 @@ function setCurrentViewerAsset(asset){
   }
 
   syncStudioLaunchButton()
+  syncViewerSurfaceChrome()
   syncViewerPrintCta()
 
   const printStatus = document.getElementById("printStatus")
@@ -131,21 +132,21 @@ function setCurrentViewerAsset(asset){
   }
 
   if(!asset || asset.type === "idle"){
-    printStatus.innerHTML = "Load a GLB model to enable print fix."
+    printStatus.innerHTML = "Load a GLB model to enable Print mode."
     return
   }
 
   if(asset.type === "glb"){
-    printStatus.innerHTML = "GLB model ready. Click Fix for Print to create STL."
+    printStatus.innerHTML = "GLB model ready. Open Print mode, then export STL for the printer."
     return
   }
 
   if(asset.type === "stl"){
-    printStatus.innerHTML = "Print-ready STL loaded. You can download it now."
+    printStatus.innerHTML = "STL export is ready to download."
     return
   }
 
-  printStatus.innerHTML = "Print fix works only with GLB models."
+  printStatus.innerHTML = "Printer STL export works only with GLB models."
 }
 
 function clearSceneContents(){
@@ -251,6 +252,7 @@ function resetViewerShell(){
   bindViewerModeControls()
   syncViewerModeButtons()
   syncStudioLaunchButton()
+  syncViewerSurfaceChrome()
 }
 
 function bindViewerModeControls(){
@@ -274,6 +276,32 @@ function syncViewerModeButtons(){
     const isActive = button.dataset.viewerMode === window.currentViewerMode
     button.classList.toggle("active", isActive)
   })
+}
+
+function syncViewerSurfaceChrome(){
+  const toolbar = viewerContainer.querySelector(".viewer-toolbar")
+  const wrap = document.getElementById("viewerPrintCta")
+  const isSvgSurface = (window.currentWorkspacePanel || "3d") === "svg"
+  const isSvgAsset = window.currentViewerAsset?.type === "svg"
+  const hide3dControls = isSvgSurface || isSvgAsset
+
+  if(toolbar){
+    toolbar.style.display = hide3dControls ? "none" : ""
+  }
+
+  if(hide3dControls){
+    window.viewerPrintCtaArmed = false
+    window.viewerPrintCtaAssetKey = null
+  }
+
+  if(wrap){
+    if(hide3dControls){
+      wrap.classList.add("hidden")
+      wrap.style.display = "none"
+    }else{
+      wrap.style.display = ""
+    }
+  }
 }
 
 function getCurrentMeshList(){
@@ -412,9 +440,11 @@ function syncViewerPrintCta(){
   }
 
   const asset = window.currentViewerAsset
+  const hideForSvg = (window.currentWorkspacePanel || "3d") === "svg" || asset?.type === "svg"
   const currentAssetKey = getViewerAssetKey(asset)
   const printButtonActive = Boolean(printButton && printButton.classList.contains("active"))
-  const show = window.viewerPrintCtaArmed &&
+  const show = !hideForSvg &&
+    window.viewerPrintCtaArmed &&
     printButtonActive &&
     window.currentViewerMode === "print" &&
     currentAssetKey === window.viewerPrintCtaAssetKey &&
@@ -423,6 +453,7 @@ function syncViewerPrintCta(){
   )
 
   wrap.classList.toggle("hidden", !show)
+  wrap.style.display = show ? "" : "none"
 
   if(!show){
     button.onclick = null

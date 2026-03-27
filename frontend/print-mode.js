@@ -9,21 +9,21 @@ function setCurrentViewerAsset(asset){
   if(!printStatus) return
 
   if(!asset){
-    printStatus.innerHTML = "Load a GLB model to enable print fix."
+    printStatus.innerHTML = "Load a GLB model to enable Print mode."
     return
   }
 
   if(asset.type === "glb"){
-    printStatus.innerHTML = "GLB model ready. Use Print, then Bambu Lab / Prusa to export STL in the browser."
+    printStatus.innerHTML = "GLB model ready. Use Print, then export STL in the browser."
     return
   }
 
   if(asset.type === "stl"){
-    printStatus.innerHTML = "Print-ready STL loaded. You can download it now."
+    printStatus.innerHTML = "STL export is ready to download."
     return
   }
 
-  printStatus.innerHTML = "Print fix works only with GLB models."
+  printStatus.innerHTML = "Printer STL export works only with GLB models."
 }
 
 function resolveAssetUrl(url){

@@ -3454,57 +3454,87 @@ to{background-position:1000px 1000px;}
 <div id="panel-svg" class="toolpanel hidden">
 
 <div class="section-title">SVG Generator</div>
-<div class="section-intro">Turn images into cleaner vector outputs with a lighter control set that keeps the workflow fast and readable.</div>
+<div class="section-intro">Write a prompt or upload a photo, keep the best source in view, then generate one clean SVG that opens in the main viewer with direct download.</div>
 
-<div class="dropzone" id="dropSVG">
+<div class="generator-shell">
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">Concept Image</div>
+        <div class="generator-card-copy">Generate source images directly inside the SVG flow before converting the selected image into vector output.</div>
+      </div>
+      <div class="generator-chip">Image</div>
+    </div>
 
-<p id="dropTextSVG">Drag photo here or click to upload</p>
+    <div class="generator-stack">
+      <label for="svgPrompt">Prompt</label>
+      <textarea id="svgPrompt" class="generator-prompt" placeholder="Clean laser-cut line art of a racing helmet viewed from the side."></textarea>
+      <button id="generateSvgImageBtn" class="generator-cta" type="button" onclick="generateSvgConceptImage()">Generate Image</button>
+      <div id="svgImageStatus" class="status"></div>
+    </div>
+  </div>
 
-<img id="dropPreviewSVG"
-style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">Source Preview</div>
+        <div class="generator-card-copy">Prompt images and uploaded photos stay inside the SVG panel, and the selected source feeds the vector step directly.</div>
+      </div>
+      <div class="generator-chip">Preview</div>
+    </div>
 
-<input type="file" id="svgInput" style="display:none">
+    <div class="dropzone" id="dropSVG">
+      <p id="dropTextSVG">Drop source image or click to upload</p>
+      <img id="dropPreviewSVG" style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
+      <input type="file" id="svgInput" style="display:none">
+    </div>
 
+    <div class="generator-stack">
+      <div class="generator-meta-row">
+        <div class="generator-meta-chip" id="svgSourceType">No Source</div>
+        <div class="generator-meta-copy" id="svgSourceMeta">Generate a concept image or upload a source photo for SVG.</div>
+      </div>
+      <div class="generator-limit-note">Up to 5 recent SVG source images stay here temporarily until refresh or replacement.</div>
+      <div class="generator-thumbnail-strip" id="svgThumbStrip">
+        <div class="generator-thumb">Recent image 1</div>
+        <div class="generator-thumb">Recent image 2</div>
+        <div class="generator-thumb">Recent image 3</div>
+        <div class="generator-thumb">Recent image 4</div>
+        <div class="generator-thumb">Recent image 5</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="generator-card">
+    <div class="generator-card-header">
+      <div>
+        <div class="generator-card-title">SVG Output</div>
+        <div class="generator-card-copy">Refine the cleanup, generate the vector, then open it in the main viewer with direct SVG download for laser-ready work.</div>
+      </div>
+      <div class="generator-chip">SVG</div>
+    </div>
+
+    <div class="generator-stack">
+      <label for="svgDetail">Detail</label>
+      <select id="svgDetail">
+        <option value="less">Less Detail</option>
+        <option value="normal" selected>Normal</option>
+        <option value="more">More Detail</option>
+      </select>
+
+      <label for="svgCleanBackground">Background</label>
+      <select id="svgCleanBackground">
+        <option value="off" selected>Off</option>
+        <option value="soft">Soft Clean</option>
+        <option value="strong">Strong Clean</option>
+      </select>
+
+      <button class="generator-cta" type="button" onclick="generateSVG()">Generate SVG</button>
+      <div id="svgStatus" class="status"></div>
+      <div class="generator-output-note" id="svgUsageNote">Guest 1 SVG try. Logged-in free 5. Premium unlimited.</div>
+    </div>
+  </div>
 </div>
-
-<br><br>
-
-<label>Mode</label>
-<select id="svgMode">
-<option value="outline">Outline</option>
-<option value="engrave">Engrave</option>
-<option value="stencil">Stencil</option>
-</select>
-
-<br><br>
-
-<label>Detail</label>
-<select id="svgDetail">
-<option value="less">Less Detail</option>
-<option value="normal" selected>Normal</option>
-<option value="more">More Detail</option>
-</select>
-
-<br><br>
-
-<label>Background</label>
-<select id="svgCleanBackground">
-<option value="off" selected>Off</option>
-<option value="soft">Soft Clean</option>
-<option value="strong">Strong Clean</option>
-</select>
-
-<br><br>
-
-<button onclick="generateSVG()">Generate SVG</button>
-
-<br><br>
-
-<div id="svgPreview"></div>
-
-<a id="downloadSVG" style="display:none;" download>
-<button style="margin-top:10px;">Download SVG </button>
-</a>
 
 </div>
 
@@ -4377,8 +4407,10 @@ function applySvgThemeStyle(){
 const svgViewer = document.getElementById("svgViewer")
 if(!svgViewer) return
 
-const theme = document.body.getAttribute("data-theme") || "dark"
-svgViewer.style.filter = theme === "light" ? "none" : "invert(1) brightness(2)"
+const currentAsset = window.currentViewerAsset || null
+svgViewer.style.filter = currentAsset?.type === "svg"
+  ? "invert(1) brightness(2)"
+  : "none"
 }
 
 function initializeTheme(){
@@ -5208,11 +5240,17 @@ if(typeof syncStudioLaunchButton === "function"){
 syncStudioLaunchButton()
 }
 
+if(typeof syncViewerSurfaceChrome === "function"){
+syncViewerSurfaceChrome()
+}
+
 }
 
 window.generatorRecentImages = window.generatorRecentImages || []
 window.generatorActiveImage = window.generatorActiveImage || null
 window.generatorUploadPromise = window.generatorUploadPromise || null
+window.svgRecentImages = window.svgRecentImages || []
+window.svgActiveSource = window.svgActiveSource || null
 
 function getGeneratorHiddenToyPrompt(){
 return " full toy object, complete collectible toy, isolated studio render, centered product composition, premium toy silhouette"
@@ -5383,26 +5421,246 @@ document.getElementById("svgCleanBackground")?.addEventListener("change", trigge
 
 let svgAutoRegenerateTimer = null
 
-async function generateSVG(options = {}){
-const skipUsageCheck = options.skipUsageCheck === true
-const skipUsageIncrement = options.skipUsageIncrement === true
+function renderSvgSourceMeta(){
+const typeChip = document.getElementById("svgSourceType")
+const meta = document.getElementById("svgSourceMeta")
+const source = window.svgActiveSource
 
-if(!skipUsageCheck && !canUseFeature("svgGeneration")){
-openUsageLimitPrompt("svgGeneration")
-return
+if(!typeChip || !meta){
+  return
 }
 
-const file = document.getElementById("svgInput").files[0]
-const detail = document.getElementById("svgDetail").value
-const cleanBackground = document.getElementById("svgCleanBackground").value
+if(!source?.url){
+  typeChip.textContent = "No Source"
+  meta.textContent = "Generate a concept image or upload a source photo for SVG."
+  return
+}
 
+typeChip.textContent = source.sourceType === "upload" ? "Upload" : "Prompt Source"
+meta.textContent = source.label || source.filename || "SVG source ready"
+}
+
+function renderSvgUsageNote(){
+const note = document.getElementById("svgUsageNote")
+if(!note){
+  return
+}
+
+const authState = getAuthPreviewState()
+note.textContent = `Current plan: ${authState.planLabel}. Product tiers: Guest 1, Free 5, Premium unlimited.`
+}
+
+function renderSvgSourcePreview(){
+const drop = document.getElementById("dropSVG")
+const img = document.getElementById("dropPreviewSVG")
+const text = document.getElementById("dropTextSVG")
+const source = window.svgActiveSource
+
+if(!drop || !img || !text){
+  return
+}
+
+if(!source?.url){
+  img.removeAttribute("src")
+  img.classList.remove("is-visible")
+  img.style.display = "none"
+  text.style.display = "block"
+  drop.style.removeProperty("--generator-preview-bg")
+  return
+}
+
+const revealPreview = ()=>{
+  drop.classList.add("preview-active")
+  img.classList.add("is-visible")
+}
+
+drop.style.setProperty("--generator-preview-bg", `url("${source.url}")`)
+img.classList.remove("is-visible")
+img.style.display = "block"
+text.style.display = "none"
+
+if(img.src !== source.url){
+  img.onload = ()=>{
+    img.onload = null
+    requestAnimationFrame(revealPreview)
+  }
+  img.src = source.url
+}else{
+  requestAnimationFrame(revealPreview)
+}
+}
+
+function setSvgSourcePreview(imageUrl, options = {}){
+if(!imageUrl){
+  return
+}
+
+window.svgActiveSource = {
+  url: imageUrl,
+  label: options.label || window.svgActiveSource?.label || "SVG source",
+  filename: options.filename || window.svgActiveSource?.filename || "svg-source.png",
+  sourceType: options.sourceType || window.svgActiveSource?.sourceType || "generated",
+  file: options.file || null
+}
+
+renderSvgSourceMeta()
+renderSvgSourcePreview()
+renderSvgThumbStrip()
+}
+
+function renderSvgThumbStrip(){
+const strip = document.getElementById("svgThumbStrip")
+if(!strip){
+  return
+}
+
+if(!window.svgRecentImages.length){
+  strip.innerHTML = `
+    <div class="generator-thumb"><span>Recent image 1</span></div>
+    <div class="generator-thumb"><span>Recent image 2</span></div>
+    <div class="generator-thumb"><span>Recent image 3</span></div>
+    <div class="generator-thumb"><span>Recent image 4</span></div>
+    <div class="generator-thumb"><span>Recent image 5</span></div>
+  `
+  return
+}
+
+strip.innerHTML = window.svgRecentImages.map((entry, index) => `
+  <button type="button" class="generator-thumb${window.svgActiveSource?.url === entry.url ? " active" : ""}" onclick="restoreSvgThumb(${index})">
+    <img src="${entry.url}" alt="${entry.label}">
+    <span>${entry.label}</span>
+  </button>
+`).join("")
+}
+
+function restoreSvgThumb(index){
+const entry = window.svgRecentImages[index]
+if(!entry){
+  return
+}
+
+setSvgSourcePreview(entry.url, entry)
+const status = document.getElementById("svgImageStatus")
+if(status){
+  status.innerHTML = "SVG source restored from recent images."
+}
+}
+
+function pushSvgRecentImage(entry){
+window.svgRecentImages = [entry, ...window.svgRecentImages.filter((item) => item.url !== entry.url)].slice(0, 5)
+renderSvgThumbStrip()
+}
+
+function getSvgSourceState(){
+if(window.svgActiveSource?.url){
+  return {
+    kind: "active",
+    activeSource: window.svgActiveSource
+  }
+}
+
+return {
+  kind: "empty"
+}
+}
+
+function handleSvgFiles(files){
+const file = files?.[0]
 if(!file){
-alert("Upload image first")
-return
+  return
+}
+
+const url = URL.createObjectURL(file)
+const entry = {
+  url,
+  label: "Uploaded SVG source",
+  filename: file.name || "svg-upload.png",
+  sourceType: "upload",
+  file
+}
+
+setSvgSourcePreview(entry.url, entry)
+pushSvgRecentImage(entry)
+
+const status = document.getElementById("svgImageStatus")
+if(status){
+  status.innerHTML = "Uploaded source is ready for SVG conversion."
+}
+}
+
+async function generateSvgConceptImage(){
+const status = document.getElementById("svgImageStatus")
+const promptField = document.getElementById("svgPrompt")
+const rawPrompt = (promptField?.value || "").trim()
+
+if(!canUseFeature("aiImage")){
+  openUsageLimitPrompt("aiImage")
+  return
+}
+
+if(!rawPrompt){
+  alert("Write a prompt first")
+  return
 }
 
 const form = new FormData()
-form.append("file",file)
+form.append("prompt", rawPrompt)
+form.append("style", "realistic")
+
+if(status){
+  status.innerHTML = "Generating SVG source image..."
+}
+
+try{
+  const res = await fetch(API_BASE + "/api/ai-photo", {
+    method:"POST",
+    body:form
+  })
+
+  if(!res.ok){
+    const txt = await res.text()
+    console.log(txt)
+    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+  }
+
+  const data = await res.json()
+
+  if(data.error){
+    throw new Error(data.error)
+  }
+
+  if(!data.image_url){
+    throw new Error("AI returned empty image")
+  }
+
+  const entry = {
+    url: data.image_url,
+    label: "SVG concept",
+    filename: "svg-concept.png",
+    sourceType: "generated",
+    file: null
+  }
+
+  setSvgSourcePreview(entry.url, entry)
+  pushSvgRecentImage(entry)
+  incrementUsage("aiImage")
+
+  if(status){
+    status.innerHTML = "SVG source image is ready."
+  }
+}catch(err){
+  console.log(err)
+  console.error("SVG concept image request crashed", err)
+  if(status){
+    status.innerHTML = err.message || "SVG source generation failed."
+  }
+  alert(err.message || "SVG source generation failed.")
+}
+}
+
+async function requestSvgFromBlob(blob, filename, detail, cleanBackground){
+const form = new FormData()
+form.append("file", blob, filename || "image.png")
 form.append("detail", detail)
 form.append("clean_background", cleanBackground)
 
@@ -5414,179 +5672,175 @@ body:form
 const data = await res.json()
 
 if(data.error){
-alert(data.error)
-return
+throw new Error(data.error)
 }
 
 if(!data.svg_url){
-alert("SVG generation failed")
+throw new Error("SVG generation failed")
+}
+
+return data
+}
+
+async function requestSvgFromSourceState(sourceState, detail, cleanBackground){
+if(sourceState.kind !== "active"){
+  throw new Error("Generate or upload an SVG source first.")
+}
+
+if(sourceState.activeSource.file){
+  return requestSvgFromBlob(
+    sourceState.activeSource.file,
+    sourceState.activeSource.filename || "svg-upload.png",
+    detail,
+    cleanBackground
+  )
+}
+
+const response = await fetch(sourceState.activeSource.url)
+if(!response.ok){
+  throw new Error("The selected SVG source could not be loaded.")
+}
+
+const blob = await response.blob()
+return requestSvgFromBlob(
+  blob,
+  sourceState.activeSource.filename || "svg-source.png",
+  detail,
+  cleanBackground
+)
+}
+
+function showGeneratedSvg(svgUrl, filename){
+const svgViewer = document.getElementById("svgViewer")
+const printWrap = document.getElementById("viewerPrintCta")
+
+if(!svgViewer){
 return
 }
 
-const svgUrl = API_BASE + data.svg_url
-if(!skipUsageIncrement){
-incrementUsage("svgGeneration")
-}
-
-/* SHOW SVG */
-
-const svgViewer = document.getElementById("svgViewer")
-
 svgViewer.src = svgUrl
-showViewerDownload(svgUrl, "vector.svg")
+showViewerDownload(svgUrl, filename)
 setCurrentViewerAsset({
   type:"svg",
   url:svgUrl,
-  filename:"vector.svg"
+  filename
 })
-// pastro 3D para SVG
+
 while(scene.children.length > 0){
 scene.remove(scene.children[0])
 }
+
 addDefaultLights()
 svgViewer.style.display = "block"
-// vetÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«m pÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«r SVG ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ efekt white/neon
 applySvgThemeStyle()
-
-
-const download = document.getElementById("downloadSVG")
-download.href = svgUrl
-download.download = `vector-${detail}.svg`
-download.style.display = "inline-block"
-
+window.viewerPrintCtaArmed = false
+window.viewerPrintCtaAssetKey = null
+if(printWrap){
+  printWrap.classList.add("hidden")
+  printWrap.style.display = "none"
+}
 }
 
-
-
-async function convertToSVG(options = {}){
+async function generateSVG(options = {}){
 const skipUsageCheck = options.skipUsageCheck === true
 const skipUsageIncrement = options.skipUsageIncrement === true
-
-const viewer = document.getElementById("svgViewer")
-const detail = document.getElementById("svgDetail").value
-const cleanBackground = document.getElementById("svgCleanBackground").value
+const silent = options.silent === true
+const status = document.getElementById("svgStatus")
 
 if(!skipUsageCheck && !canUseFeature("svgGeneration")){
 openUsageLimitPrompt("svgGeneration")
 return
 }
 
-if(!viewer.src){
-alert("Generate or upload image first")
+const detail = document.getElementById("svgDetail").value
+const cleanBackground = document.getElementById("svgCleanBackground").value
+const sourceState = getSvgSourceState()
+
+if(sourceState.kind === "empty"){
+if(!silent){
+alert("Generate or upload an SVG source first")
+}
 return
 }
 
-// nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«se ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«shtÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â« blob ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ upload
-if(viewer.src.startsWith("blob:")){
-
-const response = await fetch(viewer.src)
-const blob = await response.blob()
-
-const form = new FormData()
-form.append("file", blob, "image.png")
-form.append("detail", detail)
-form.append("clean_background", cleanBackground)
-
-const uploadRes = await fetch(API_BASE + "/api/svg",{
-method:"POST",
-body:form
-})
-
-const data = await uploadRes.json()
-
-if(!data.svg_url){
-alert("SVG failed")
-return
+if(status){
+  status.innerHTML = "Generating SVG..."
 }
 
+try{
+const data = await requestSvgFromSourceState(sourceState, detail, cleanBackground)
 const svgUrl = API_BASE + data.svg_url
+
 if(!skipUsageIncrement){
 incrementUsage("svgGeneration")
 }
 
-viewer.src = svgUrl
-viewer.style.display="block"
-viewer.style.filter = "invert(1) brightness(2)"
-setCurrentViewerAsset({
-  type:"svg",
-  url:svgUrl,
-  filename:`converted-${detail}.svg`
-})
+showGeneratedSvg(svgUrl, `vector-${detail}.svg`)
 
-showViewerDownload(svgUrl, `converted-${detail}.svg`)
-const svgDownload = document.getElementById("downloadSVG")
-svgDownload.href = svgUrl
-svgDownload.download = `converted-${detail}.svg`
-svgDownload.style.display = "inline-block"
-
-
-return
+if(status){
+  status.innerHTML = "SVG is ready in the main viewer."
+}
+}catch(error){
+console.error("SVG generation failed", error)
+if(status){
+  status.innerHTML = error.message || "SVG generation failed."
+}
+if(!silent){
+alert(error.message || "SVG generation failed")
+}
+}
 }
 
-// normal case
-const res = await fetch(API_BASE+"/api/svg-from-image",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-image_url: viewer.src.split("?")[0],
- detail,
- clean_background: cleanBackground
+async function convertToSVG(options = {}){
+return generateSVG({
+...options
 })
-})
-
-const data = await res.json()
-
-if(!data.svg_url){
-alert("SVG conversion failed")
-return
-}
-
-const svgUrl = API_BASE + data.svg_url
-if(!skipUsageIncrement){
-incrementUsage("svgGeneration")
-}
-
-viewer.src = svgUrl
-viewer.style.display="block"
-viewer.style.filter = "invert(1) brightness(2)"
-setCurrentViewerAsset({
-  type:"svg",
-  url:svgUrl,
-  filename:`converted-${detail}.svg`
-})
-
-// ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ FIX DOWNLOAD
-showViewerDownload(svgUrl, `converted-${detail}.svg`)
-const svgDownload = document.getElementById("downloadSVG")
-svgDownload.href = svgUrl
-svgDownload.download = `converted-${detail}.svg`
-svgDownload.style.display = "inline-block"
-
 }
 
 function triggerSvgAutoRegenerate(){
 clearTimeout(svgAutoRegenerateTimer)
 svgAutoRegenerateTimer = setTimeout(async () => {
-  const localSvgFile = document.getElementById("svgInput")?.files?.[0]
-  const viewer = document.getElementById("svgViewer")
+  const sourceState = getSvgSourceState()
 
   try{
-    if(localSvgFile){
-      await generateSVG({ skipUsageCheck:true, skipUsageIncrement:true })
-      return
-    }
-
-    if(viewer?.src){
-      await convertToSVG({ skipUsageCheck:true, skipUsageIncrement:true })
+    if(sourceState.kind !== "empty"){
+      await generateSVG({ skipUsageCheck:true, skipUsageIncrement:true, silent:true })
     }
   }catch(error){
     console.error("SVG auto-regenerate failed", error)
   }
 }, 240)
 }
-/* ---------------- AI PHOTO ---------------- */
+
+renderSvgThumbStrip()
+renderSvgSourceMeta()
+renderSvgSourcePreview()
+renderSvgUsageNote()
+
+const dropSVG = document.getElementById("dropSVG")
+const svgInput = document.getElementById("svgInput")
+
+dropSVG?.addEventListener("click",()=>{
+svgInput?.click()
+})
+
+dropSVG?.addEventListener("dragover",(e)=>{
+e.preventDefault()
+dropSVG.style.borderColor="#58b873"
+})
+
+dropSVG?.addEventListener("dragleave",()=>{
+dropSVG.style.borderColor="#4c8f5f"
+})
+
+dropSVG?.addEventListener("drop",(e)=>{
+e.preventDefault()
+handleSvgFiles(e.dataTransfer.files)
+})
+
+svgInput?.addEventListener("change",()=>{
+handleSvgFiles(svgInput.files)
+})/* ---------------- AI PHOTO ---------------- */
 
 async function generateAIPhoto(){
 
@@ -5983,51 +6237,6 @@ window.generatorUploadPromise = null
 }
 
 }
-/* ---------------- SVG DROPZONE ---------------- */
-
-const dropSVG = document.getElementById("dropSVG")
-const svgInput = document.getElementById("svgInput")
-
-dropSVG.addEventListener("click",()=>{
-svgInput.click()
-})
-
-dropSVG.addEventListener("dragover",(e)=>{
-e.preventDefault()
-dropSVG.style.borderColor="#58b873"
-})
-
-dropSVG.addEventListener("dragleave",()=>{
-dropSVG.style.borderColor="#4c8f5f"
-})
-
-dropSVG.addEventListener("drop",(e)=>{
-e.preventDefault()
-
-svgInput.files = e.dataTransfer.files
-handleSVG(svgInput.files[0])
-})
-
-svgInput.addEventListener("change",()=>{
-handleSVG(svgInput.files[0])
-})
-
-function handleSVG(file){
-
-if(!file) return
-
-const url = URL.createObjectURL(file)
-
-// preview brenda dropzone
-const img = document.getElementById("dropPreviewSVG")
-const text = document.getElementById("dropTextSVG")
-
-img.src = url
-img.style.display = "block"
-text.style.display = "none"
-
-}
-
 document.querySelector("#generateFreeBtn")
   .addEventListener("click", generateFree3D)
 </script>
@@ -6035,4 +6244,3 @@ document.querySelector("#generateFreeBtn")
 <audio id="orbSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 </body>
 </html>
-

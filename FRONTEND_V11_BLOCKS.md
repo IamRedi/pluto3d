@@ -36,6 +36,45 @@ Primary remodel notes now live in:
 
 This file still matters, but from this point onward it should support the remodel instead of assuming only small polish passes.
 
+### Block 0: SVG Source Reset
+
+- status: `active`
+- goal: align `SVG` with the shared active-source workflow so it feels like the next clean section after `3D Generator`
+- surfaces:
+  - `SVG` panel
+  - shared source handoff from `3D Generator`
+  - SVG controls
+- in scope:
+  - remodel `SVG` into its own full panel instead of treating it only as a follow-up action from `3D Generator`
+  - give `SVG` its own:
+    - prompt
+    - source preview
+    - upload path
+    - 5-image temporary thumbnail strip
+    - single `Generate SVG` CTA
+  - remove misleading controls that are not backed by the current SVG backend
+  - keep the active SVG control set limited to `Detail` and `Clean Background`
+  - set SVG usage tiers to:
+    - guest `1`
+    - logged-in free `5`
+    - premium `unlimited`
+- out of scope:
+  - new backend computer-vision work
+  - lithophane / relief implementation
+  - advanced SVG style presets that do not exist in the backend yet
+- done when:
+  - `SVG` clearly explains which source it is using
+  - the panel reads as one clean self-contained path from source prep to SVG output
+  - the panel no longer suggests unsupported conversion modes or a separate test/pro split
+- progress:
+  - `SVG` now has its own prompt, source preview/upload, thumbnail strip, and single `Generate SVG` CTA
+  - uploaded SVG sources now also enter the local 5-item recent-source strip instead of only prompt-generated images
+  - the main viewer is now the clearly described destination for the generated SVG and direct download action
+  - the extra inline `Download SVG` button inside the panel has been removed so download lives only in the main viewer
+  - 3D-only viewer controls should stay hidden while the active workspace surface is `SVG`
+  - SVG preview contrast is now being treated as viewer-background-first, so vector lines stay visible in both dark and light theme
+  - legacy `SVG` dropzone/convert code paths are being removed so the panel follows one active local-source flow instead of multiple overlapping handlers
+
 ### Block 1: Frontend Copy Cleanup
 
 - status: `active`

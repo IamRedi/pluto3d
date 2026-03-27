@@ -263,9 +263,38 @@ before:
   - `bike` and `Skenderbeg` are being added to the active owned test library
   - random fallback should favor `Skenderbeg` more often than the other owned test models
   - production adaptation must still review the growing asset weight before `v1.1` goes live
+- `2026-03-27`: production adaptation tracking started:
+  - `V11_PRODUCTION_ADAPTATION.md` now keeps the final deploy-readiness concerns separate from the remodel notes
+- `2026-03-27`: section close-out pass started:
+  - `3D Generator` is being tightened so the active source and output path are readable without depending on legacy surfaces
+  - the goal is to leave this section mostly in polish territory before moving the main focus to the next section
+- `2026-03-27`: section handoff state:
+  - `3D Generator` should now be treated as the current finished core section for `v1.1`
+  - next primary section should be `SVG`
+  - after `SVG`, continue into the photo-to-relief / lithophane path
+- `2026-03-27`: SVG section reset started:
+  - `SVG` is being remodeled into its own complete panel instead of depending on the `3D Generator` panel for source preparation
+  - the intended `SVG` panel now includes:
+    - prompt
+    - source preview / upload
+    - 5 recent source thumbnails
+    - one `Generate SVG` CTA
+  - unsupported UI options such as `Mode` should stay out of the active panel until the backend has a real implementation for them
+  - current SVG usage direction:
+    - guest `1`
+    - logged-in free `5`
+    - premium `unlimited`
 - current status:
   - new concept-image block exists visually
   - shared preview framing is now represented in the main panel
+  - `SVG` is now being pushed toward a true self-contained panel flow:
+    - prompt generation and uploads both live inside the panel
+    - the temporary 5-slot source history now needs to represent real local source selection, not only generated images
+    - the main viewer is the intended final output surface for SVG preview and download
+    - duplicate panel-level download controls should stay out once the viewer download is in place
+    - 3D-only viewer controls should not appear while the workspace focus is `SVG`
+    - SVG contrast should stay readable against the viewer shell regardless of light/dark theme toggle
+    - older overlapping frontend `SVG` handlers should be cleaned out so one self-contained panel path remains active
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired
