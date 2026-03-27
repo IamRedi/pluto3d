@@ -6521,21 +6521,98 @@ const profileMap = {
   draft: {
     minColumns: 84,
     targetColumns: 110,
-    maxColumns: 132
+    maxColumns: 132,
+    smoothingPasses: 2,
+    frameBlendCells: 4
   },
   normal: {
     minColumns: 96,
     targetColumns: 140,
-    maxColumns: 180
+    maxColumns: 180,
+    smoothingPasses: 1,
+    frameBlendCells: 5
   },
   fine: {
     minColumns: 120,
     targetColumns: 176,
-    maxColumns: 220
+    maxColumns: 220,
+    smoothingPasses: 1,
+    frameBlendCells: 6
   }
 }
 
 return profileMap[qualityMode] || profileMap.normal
+}
+
+function smoothReliefHeights(heights, columns, rows, lockedBorderCells, passes){
+if(passes <= 0){
+  return heights
+}
+
+const stride = columns + 1
+let source = heights
+
+for(let pass = 0; pass < passes; pass += 1){
+  const next = new Float32Array(source)
+
+  for(let y = 1; y < rows; y += 1){
+    for(let x = 1; x < columns; x += 1){
+      if(
+        x <= lockedBorderCells ||
+        y <= lockedBorderCells ||
+        x >= columns - lockedBorderCells ||
+        y >= rows - lockedBorderCells
+      ){
+        continue
+      }
+
+      const centerIndex = (y * stride) + x
+      const center = source[centerIndex]
+      const north = source[((y - 1) * stride) + x]
+      const south = source[((y + 1) * stride) + x]
+      const west = source[(y * stride) + (x - 1)]
+      const east = source[(y * stride) + (x + 1)]
+      const northWest = source[((y - 1) * stride) + (x - 1)]
+      const northEast = source[((y - 1) * stride) + (x + 1)]
+      const southWest = source[((y + 1) * stride) + (x - 1)]
+      const southEast = source[((y + 1) * stride) + (x + 1)]
+
+      next[centerIndex] = (
+        (center * 4) +
+        (north + south + west + east) * 2 +
+        (northWest + northEast + southWest + southEast)
+      ) / 16
+    }
+  }
+
+  source = next
+}
+
+return source
+}
+
+function reinforceReliefFrame(heights, columns, rows, borderCells, blendCells, frameThickness){
+if(borderCells <= 0 || blendCells <= 0){
+  return heights
+}
+
+const stride = columns + 1
+const next = new Float32Array(heights)
+
+for(let y = 0; y <= rows; y += 1){
+  for(let x = 0; x <= columns; x += 1){
+    const ringDistance = Math.min(x, y, columns - x, rows - y) - borderCells
+    if(ringDistance < 0 || ringDistance > blendCells){
+      continue
+    }
+
+    const blend = 1 - (ringDistance / (blendCells + 1))
+    const index = (y * stride) + x
+    next[index] = Math.max(next[index], heights[index] + ((frameThickness - heights[index]) * blend * 0.82))
+  }
+}
+
+return next
 }
 
 function buildReliefHeightField(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode){
@@ -6571,7 +6648,7 @@ if(heightMm > maxHeightMm){
 
 widthMm = Number(widthMm.toFixed(2))
 heightMm = Number(heightMm.toFixed(2))
-const heights = new Float32Array((sampleColumns + 1) * (sampleRows + 1))
+let heights = new Float32Array((sampleColumns + 1) * (sampleRows + 1))
 
 for(let y = 0; y <= sampleRows; y += 1){
   for(let x = 0; x <= sampleColumns; x += 1){
@@ -6595,6 +6672,23 @@ for(let y = 0; y <= sampleRows; y += 1){
     heights[(y * (sampleColumns + 1)) + x] = thickness
   }
 }
+
+heights = smoothReliefHeights(
+  heights,
+  sampleColumns,
+  sampleRows,
+  borderCells,
+  qualityProfile.smoothingPasses || 0
+)
+
+heights = reinforceReliefFrame(
+  heights,
+  sampleColumns,
+  sampleRows,
+  borderCells,
+  qualityProfile.frameBlendCells || 0,
+  thicknessProfile.max
+)
 
 return {
   columns: sampleColumns,

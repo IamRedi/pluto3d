@@ -1140,3 +1140,6 @@ If anything is unclear, check these first in this order:
       - add explicit `Output Size` and `Mesh Detail` controls for flat STL export
       - keep the STL CTA disabled when no source is active or when `Arched` is selected
       - make the panel note describe the active export state instead of leaving `Relief` in a generic future-tense message
+      - start mesh cleanup directly in the browser path:
+        - smooth noisy interior height changes
+        - keep border/frame zones stronger while softening the transition into the main image area

@@ -321,6 +321,9 @@ before:
     - current polish follow-up on the same checkpoint:
       - expose simple `Size` and `Detail` presets before attempting broader geometry features
       - tighten CTA state so unsupported `Arched STL` is communicated in the panel before click-time
+      - improve the flat STL mesh itself before expanding scope:
+        - reduce noise/spikes from raw photo luminance
+        - make frame/border transitions less abrupt for cleaner print behavior
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired
