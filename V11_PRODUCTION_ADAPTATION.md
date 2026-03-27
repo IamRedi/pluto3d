@@ -58,6 +58,13 @@ The current `v1.1` direction is:
 - browser-side STL export
 - no heavy backend `print-fix` in the active public path
 - first `Relief` preview pass should stay frontend-local and avoid new dependencies until the real lithophane/export path is defined
+- the first `Relief` prep layer now adds only local UI/preview controls (`Thickness`, `Border`, `Surface`) and still avoids new mesh/export libraries
+
+For the later real `Relief` export step:
+
+- review browser-side mesh generation weight before adding any geometry helper library
+- review commercial/license terms before introducing height-map, mesh, or CAD export dependencies
+- verify that any future lithophane/STL path stays compatible with the planned Railway/Vercel deployment shape
 
 Before production:
 

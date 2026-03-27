@@ -3629,6 +3629,26 @@ to{background-position:1000px 1000px;}
         <option value="strong">Strong</option>
       </select>
 
+      <label for="reliefThickness">Thickness</label>
+      <select id="reliefThickness">
+        <option value="thin">Thin</option>
+        <option value="normal" selected>Normal</option>
+        <option value="thick">Thick</option>
+      </select>
+
+      <label for="reliefBorder">Border</label>
+      <select id="reliefBorder">
+        <option value="none">None</option>
+        <option value="frame" selected>Frame</option>
+        <option value="print-tab">Print Tab</option>
+      </select>
+
+      <label for="reliefSurface">Surface</label>
+      <select id="reliefSurface">
+        <option value="flat" selected>Flat</option>
+        <option value="arched">Arched</option>
+      </select>
+
       <label for="reliefDirection">Direction</label>
       <select id="reliefDirection">
         <option value="dark-deep" selected>Dark Areas Deeper</option>
@@ -3637,7 +3657,7 @@ to{background-position:1000px 1000px;}
 
       <button class="generator-cta" type="button" onclick="previewRelief()">Preview Relief</button>
       <div id="reliefStatus" class="status"></div>
-      <div class="generator-output-note" id="reliefUsageNote">Local preview only for now. Full lithophane mesh/export comes next.</div>
+      <div class="generator-output-note" id="reliefUsageNote">Local prep preview only for now. Full lithophane mesh/export comes next.</div>
     </div>
   </div>
 </div>
@@ -5951,6 +5971,9 @@ handleSvgFiles(svgInput.files)
 })
 
 document.getElementById("reliefDepth")?.addEventListener("change", triggerReliefAutoPreview)
+document.getElementById("reliefThickness")?.addEventListener("change", triggerReliefAutoPreview)
+document.getElementById("reliefBorder")?.addEventListener("change", triggerReliefAutoPreview)
+document.getElementById("reliefSurface")?.addEventListener("change", triggerReliefAutoPreview)
 document.getElementById("reliefDirection")?.addEventListener("change", triggerReliefAutoPreview)
 
 let reliefAutoPreviewTimer = null
@@ -5981,7 +6004,7 @@ if(!note){
 }
 
 const authState = getAuthPreviewState()
-note.textContent = `Current plan: ${authState.planLabel}. Relief preview is local for now. Full lithophane mesh/export comes next.`
+note.textContent = `Current plan: ${authState.planLabel}. Lithophane prep stays local for now. Mesh/export comes in the next phase.`
 }
 
 function renderReliefSourcePreview(){
@@ -6225,24 +6248,53 @@ try{
 }
 }
 
-function buildReliefPreviewDataUrl(image, depthMode, directionMode){
+function buildReliefPreviewDataUrl(image, depthMode, directionMode, thicknessMode, borderMode, surfaceMode){
 const maxWidth = 960
 const scale = image.width > maxWidth ? maxWidth / image.width : 1
 const width = Math.max(1, Math.round(image.width * scale))
 const height = Math.max(1, Math.round(image.height * scale))
-const frame = 28
+const frameMap = {
+  none: 12,
+  frame: 28,
+  "print-tab": 30
+}
+const thicknessMap = {
+  thin: 1.08,
+  normal: 1,
+  thick: 0.9
+}
+const frame = frameMap[borderMode] || 20
+const thicknessTone = thicknessMap[thicknessMode] || 1
+const baseHeight = borderMode === "print-tab" ? Math.max(28, Math.round(height * 0.14)) : 0
+const outerShadow = thicknessMode === "thick" ? "rgba(0,0,0,0.32)" : "rgba(0,0,0,0.22)"
+const panelFill = thicknessMode === "thick"
+  ? "#ddd5c4"
+  : thicknessMode === "thin"
+    ? "#f0eadc"
+    : "#e6dfcf"
 const canvas = document.createElement("canvas")
 canvas.width = width + frame * 2
-canvas.height = height + frame * 2
+canvas.height = height + frame * 2 + baseHeight
 
 const ctx = canvas.getContext("2d", { willReadFrequently:true })
 ctx.fillStyle = "#101612"
 ctx.fillRect(0, 0, canvas.width, canvas.height)
-ctx.fillStyle = "#e6dfcf"
+ctx.shadowColor = outerShadow
+ctx.shadowBlur = thicknessMode === "thick" ? 42 : 28
+ctx.shadowOffsetY = 18
+ctx.fillStyle = panelFill
 ctx.fillRect(frame, frame, width, height)
-ctx.drawImage(image, frame, frame, width, height)
+ctx.shadowColor = "transparent"
 
-const imageData = ctx.getImageData(frame, frame, width, height)
+const plateCanvas = document.createElement("canvas")
+plateCanvas.width = width
+plateCanvas.height = height
+const plateCtx = plateCanvas.getContext("2d", { willReadFrequently:true })
+plateCtx.fillStyle = panelFill
+plateCtx.fillRect(0, 0, width, height)
+plateCtx.drawImage(image, 0, 0, width, height)
+
+const imageData = plateCtx.getImageData(0, 0, width, height)
 const pixels = imageData.data
 const contrastMap = {
   soft: 0.82,
@@ -6255,6 +6307,7 @@ const invert = directionMode === "light-deep"
 for(let index = 0; index < pixels.length; index += 4){
   const luminance = (pixels[index] * 0.299) + (pixels[index + 1] * 0.587) + (pixels[index + 2] * 0.114)
   let tone = ((luminance - 128) * contrast) + 128
+  tone *= thicknessTone
   tone = Math.max(0, Math.min(255, tone))
   if(invert){
     tone = 255 - tone
@@ -6269,10 +6322,65 @@ for(let index = 0; index < pixels.length; index += 4){
   pixels[index + 3] = 255
 }
 
-ctx.putImageData(imageData, frame, frame)
+plateCtx.putImageData(imageData, 0, 0)
+
+if(surfaceMode === "arched"){
+  const archedCanvas = document.createElement("canvas")
+  archedCanvas.width = width
+  archedCanvas.height = height
+  const archedCtx = archedCanvas.getContext("2d")
+  const segmentCount = Math.max(24, width)
+
+  for(let segment = 0; segment < segmentCount; segment += 1){
+    const sourceX = (segment / segmentCount) * width
+    const nextSourceX = ((segment + 1) / segmentCount) * width
+    const ratio = segmentCount === 1 ? 0 : segment / (segmentCount - 1)
+    const nextRatio = segmentCount === 1 ? 1 : (segment + 1) / (segmentCount - 1)
+    const arc = Math.sin((ratio - 0.5) * Math.PI)
+    const nextArc = Math.sin((nextRatio - 0.5) * Math.PI)
+    const destX = ((arc + 1) * 0.5) * width
+    const nextDestX = ((nextArc + 1) * 0.5) * width
+    const destWidth = Math.max(1, nextDestX - destX)
+
+    archedCtx.drawImage(
+      plateCanvas,
+      sourceX,
+      0,
+      Math.max(1, nextSourceX - sourceX),
+      height,
+      destX,
+      0,
+      destWidth,
+      height
+    )
+  }
+
+  ctx.drawImage(archedCanvas, frame, frame, width, height)
+}else{
+  ctx.drawImage(plateCanvas, frame, frame, width, height)
+}
+
 ctx.strokeStyle = "rgba(255,255,255,0.12)"
 ctx.lineWidth = 2
 ctx.strokeRect(frame, frame, width, height)
+
+if(borderMode === "frame" || borderMode === "print-tab"){
+  ctx.strokeStyle = "rgba(255,255,255,0.22)"
+  ctx.lineWidth = Math.max(4, Math.round(frame * 0.16))
+  ctx.strokeRect(frame * 0.48, frame * 0.48, canvas.width - frame * 0.96, height + frame * 1.04)
+}
+
+if(borderMode === "print-tab"){
+  const tabY = frame + height + 10
+  const tabHeight = Math.max(18, baseHeight - 16)
+  const tabWidth = Math.round(width * 0.72)
+  const tabX = Math.round((canvas.width - tabWidth) / 2)
+  ctx.fillStyle = thicknessMode === "thick" ? "#d3cab8" : "#e3dac9"
+  ctx.fillRect(tabX, tabY, tabWidth, tabHeight)
+  ctx.strokeStyle = "rgba(255,255,255,0.18)"
+  ctx.lineWidth = 2
+  ctx.strokeRect(tabX, tabY, tabWidth, tabHeight)
+}
 
 return canvas.toDataURL("image/png")
 }
@@ -6321,6 +6429,9 @@ if(sourceState.kind === "empty"){
 }
 
 const depthMode = document.getElementById("reliefDepth").value
+const thicknessMode = document.getElementById("reliefThickness").value
+const borderMode = document.getElementById("reliefBorder").value
+const surfaceMode = document.getElementById("reliefSurface").value
 const directionMode = document.getElementById("reliefDirection").value
 
 if(status){
@@ -6330,11 +6441,11 @@ if(status){
 try{
   const blob = await getReliefSourceBlob(sourceState)
   const image = await loadReliefImageFromBlob(blob)
-  const previewUrl = buildReliefPreviewDataUrl(image, depthMode, directionMode)
-  showGeneratedReliefPreview(previewUrl, `relief-preview-${depthMode}.png`)
+  const previewUrl = buildReliefPreviewDataUrl(image, depthMode, directionMode, thicknessMode, borderMode, surfaceMode)
+  showGeneratedReliefPreview(previewUrl, `relief-${surfaceMode}-${borderMode}-${depthMode}.png`)
 
   if(status){
-    status.innerHTML = "Relief preview is ready in the main viewer."
+    status.innerHTML = "Lithophane prep preview is ready in the main viewer."
   }
 }catch(error){
   console.error("Relief preview failed", error)

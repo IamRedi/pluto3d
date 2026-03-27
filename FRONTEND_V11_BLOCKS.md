@@ -119,6 +119,18 @@ This file still matters, but from this point onward it should support the remode
   - true lithophane mesh generation
   - STL export from relief
   - backend depth-map or height-field APIs
+- progress:
+  - `Relief` now exists as its own panel with prompt, upload/source preview, and 5 recent source thumbnails
+  - the main viewer can now show a local relief/lithophane-prep preview instead of only a raw source image
+  - the first prep-control pass is now active:
+    - `Depth`
+    - `Thickness`
+    - `Border`
+    - `Surface` (`Flat` / `Arched`)
+    - `Direction`
+  - viewer behavior for `Relief` now mirrors `SVG` by hiding 3D-only print/export controls while previewing a relief result
+  - current output remains `PNG` preview only; no fake lithophane `STL` promise is exposed yet
+  - no new frontend/backend dependency was introduced in this prep step, keeping deploy and licensing risk flat for now
 - done when:
   - `Relief` works as a real panel instead of a note in the plan
   - a user can prepare a source and preview a first relief-style result locally

@@ -299,6 +299,10 @@ before:
     - first pass should establish panel structure and local source flow before any true lithophane export promise is made
     - the safest immediate output is a local main-viewer relief preview, not a fake mesh/export path
     - avoid introducing new dependency/license/deploy risk in the first relief step
+    - current active pass is now `lithophane prep` rather than export:
+      - add honest local controls for `Depth`, `Thickness`, `Border`, `Surface`, and `Direction`
+      - let the user shape the intended relief/lithophane look before any real geometry pipeline is wired
+      - keep download behavior as preview `PNG` until a real browser-side or backend mesh path is chosen and verified
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired

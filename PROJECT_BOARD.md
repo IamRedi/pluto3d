@@ -1117,3 +1117,8 @@ If anything is unclear, check these first in this order:
       - one honest local relief preview path
     - do not imply true lithophane STL/export until that path is genuinely wired
     - keep deploy/licensing risk low by avoiding new dependencies for the first relief pass
+    - second pass is now the first `lithophane prep` layer inside the panel:
+      - `Depth`, `Thickness`, `Border`, `Surface`, and `Direction` are now local prep controls
+      - the main viewer output is still intentionally `PNG` preview only
+      - `Arched` is currently a visual prep simulation, not a final printable mesh guarantee
+      - no new library has been added yet, so dependency/license/business risk remains unchanged at this checkpoint
