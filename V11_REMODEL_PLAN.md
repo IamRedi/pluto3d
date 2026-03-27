@@ -331,6 +331,7 @@ before:
     - shared tool-panel cleanup can now proceed before the design pass:
       - shorten `3D`, `SVG`, and `Relief` copy to the minimum useful UI language
       - remove internal plan/status phrasing that makes the panels feel less product-ready
+      - remove placeholder empty-state text where it is not needed for the flow
   - 3D output section now reflects the future split between test and premium real 3D
   - premium real 3D now follows the active shared source preview instead of requiring a separate old-panel path
   - old `AI` and `Toy` panels are still present as compatibility surfaces until the new path is wired

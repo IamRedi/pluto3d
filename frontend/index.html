@@ -3417,10 +3417,10 @@ to{background-position:1000px 1000px;}
   <div class="generator-card">
     <div class="generator-card-header">
       <div>
-        <div class="generator-card-title">Source Preview</div>
+        <div class="generator-card-title">Source</div>
         <div class="generator-card-copy">Upload or choose the active source.</div>
       </div>
-      <div class="generator-chip">Preview</div>
+      <div class="generator-chip">Source</div>
     </div>
 
     <div class="dropzone" id="drop3d">
@@ -3435,13 +3435,7 @@ to{background-position:1000px 1000px;}
     </div>
 
     <div class="generator-stack">
-      <div class="generator-limit-note">5 recent sources</div>
       <div class="generator-thumbnail-strip" id="generatorThumbStrip">
-        <div class="generator-thumb">Recent image 1</div>
-        <div class="generator-thumb">Recent image 2</div>
-        <div class="generator-thumb">Recent image 3</div>
-        <div class="generator-thumb">Recent image 4</div>
-        <div class="generator-thumb">Recent image 5</div>
       </div>
     </div>
   </div>
@@ -3502,10 +3496,10 @@ to{background-position:1000px 1000px;}
   <div class="generator-card">
     <div class="generator-card-header">
       <div>
-        <div class="generator-card-title">Source Preview</div>
+        <div class="generator-card-title">Source</div>
         <div class="generator-card-copy">Upload or choose the active source.</div>
       </div>
-      <div class="generator-chip">Preview</div>
+      <div class="generator-chip">Source</div>
     </div>
 
     <div class="dropzone" id="dropSVG">
@@ -3515,17 +3509,7 @@ to{background-position:1000px 1000px;}
     </div>
 
     <div class="generator-stack">
-      <div class="generator-meta-row">
-        <div class="generator-meta-chip" id="svgSourceType">No Source</div>
-        <div class="generator-meta-copy" id="svgSourceMeta">Generate or upload a source image.</div>
-      </div>
-      <div class="generator-limit-note">5 recent sources</div>
       <div class="generator-thumbnail-strip" id="svgThumbStrip">
-        <div class="generator-thumb">Recent image 1</div>
-        <div class="generator-thumb">Recent image 2</div>
-        <div class="generator-thumb">Recent image 3</div>
-        <div class="generator-thumb">Recent image 4</div>
-        <div class="generator-thumb">Recent image 5</div>
       </div>
     </div>
   </div>
@@ -3556,7 +3540,6 @@ to{background-position:1000px 1000px;}
 
       <button class="generator-cta" type="button" onclick="generateSVG()">Generate SVG</button>
       <div id="svgStatus" class="status"></div>
-      <div class="generator-output-note" id="svgUsageNote">SVG opens in the main viewer.</div>
     </div>
   </div>
 </div>
@@ -3588,10 +3571,10 @@ to{background-position:1000px 1000px;}
   <div class="generator-card">
     <div class="generator-card-header">
       <div>
-        <div class="generator-card-title">Source Preview</div>
+        <div class="generator-card-title">Source</div>
         <div class="generator-card-copy">Upload or choose the active source.</div>
       </div>
-      <div class="generator-chip">Preview</div>
+      <div class="generator-chip">Source</div>
     </div>
 
     <div class="dropzone" id="dropRelief">
@@ -3601,17 +3584,7 @@ to{background-position:1000px 1000px;}
     </div>
 
     <div class="generator-stack">
-      <div class="generator-meta-row">
-        <div class="generator-meta-chip" id="reliefSourceType">No Source</div>
-        <div class="generator-meta-copy" id="reliefSourceMeta">Generate or upload a source image.</div>
-      </div>
-      <div class="generator-limit-note">5 recent sources</div>
       <div class="generator-thumbnail-strip" id="reliefThumbStrip">
-        <div class="generator-thumb">Recent image 1</div>
-        <div class="generator-thumb">Recent image 2</div>
-        <div class="generator-thumb">Recent image 3</div>
-        <div class="generator-thumb">Recent image 4</div>
-        <div class="generator-thumb">Recent image 5</div>
       </div>
     </div>
   </div>
@@ -3619,7 +3592,7 @@ to{background-position:1000px 1000px;}
   <div class="generator-card">
     <div class="generator-card-header">
       <div>
-        <div class="generator-card-title">Relief Preview</div>
+        <div class="generator-card-title">Relief</div>
         <div class="generator-card-copy">Preview the relief, then export STL.</div>
       </div>
       <div class="generator-chip">Relief</div>
@@ -3677,7 +3650,6 @@ to{background-position:1000px 1000px;}
       <button id="generateReliefStlBtn" class="generator-cta" type="button" onclick="generateReliefStl()">Generate STL</button>
       <div id="reliefStatus" class="status"></div>
       <div class="generator-limit-note" id="reliefExportMeta">Flat STL uses the active source.</div>
-      <div class="generator-output-note" id="reliefUsageNote">Relief opens in the main viewer.</div>
     </div>
   </div>
 </div>
@@ -5450,13 +5422,7 @@ if(!strip){
 }
 
 if(!window.generatorRecentImages.length){
-  strip.innerHTML = `
-    <div class="generator-thumb"><span>Recent image 1</span></div>
-    <div class="generator-thumb"><span>Recent image 2</span></div>
-    <div class="generator-thumb"><span>Recent image 3</span></div>
-    <div class="generator-thumb"><span>Recent image 4</span></div>
-    <div class="generator-thumb"><span>Recent image 5</span></div>
-  `
+  strip.innerHTML = ""
   return
 }
 
@@ -5546,7 +5512,7 @@ try{
   incrementUsage("aiImage")
 
   if(status){
-    status.innerHTML = "Concept image ready. It is now active in the shared source preview."
+    status.innerHTML = "Image ready."
   }
 }catch(err){
   console.log(err)
@@ -5580,8 +5546,8 @@ if(!typeChip || !meta){
 }
 
 if(!source?.url){
-  typeChip.textContent = "No Source"
-  meta.textContent = "Generate or upload a source image."
+  typeChip.textContent = ""
+  meta.textContent = ""
   return
 }
 
@@ -5594,8 +5560,6 @@ const note = document.getElementById("svgUsageNote")
 if(!note){
   return
 }
-
-note.textContent = "SVG opens in the main viewer."
 }
 
 function renderSvgSourcePreview(){
@@ -5663,13 +5627,7 @@ if(!strip){
 }
 
 if(!window.svgRecentImages.length){
-  strip.innerHTML = `
-    <div class="generator-thumb"><span>Recent image 1</span></div>
-    <div class="generator-thumb"><span>Recent image 2</span></div>
-    <div class="generator-thumb"><span>Recent image 3</span></div>
-    <div class="generator-thumb"><span>Recent image 4</span></div>
-    <div class="generator-thumb"><span>Recent image 5</span></div>
-  `
+  strip.innerHTML = ""
   return
 }
 
@@ -6024,8 +5982,8 @@ if(!typeChip || !meta){
 }
 
 if(!source?.url){
-  typeChip.textContent = "No Source"
-  meta.textContent = "Generate or upload a source image."
+  typeChip.textContent = ""
+  meta.textContent = ""
   return
 }
 
@@ -6038,21 +5996,6 @@ const note = document.getElementById("reliefUsageNote")
 if(!note){
   return
 }
-
-const surfaceMode = document.getElementById("reliefSurface")?.value || "flat"
-const borderMode = document.getElementById("reliefBorder")?.value || "frame"
-
-if(surfaceMode === "arched"){
-  if(borderMode === "print-tab"){
-    note.textContent = "Print Tab works with Flat only."
-    return
-  }
-
-  note.textContent = "Arched STL opens in the main viewer."
-  return
-}
-
-note.textContent = "Flat STL opens in the main viewer."
 }
 
 function renderReliefExportState(){
@@ -6162,13 +6105,7 @@ if(!strip){
 }
 
 if(!window.reliefRecentImages.length){
-  strip.innerHTML = `
-    <div class="generator-thumb"><span>Recent image 1</span></div>
-    <div class="generator-thumb"><span>Recent image 2</span></div>
-    <div class="generator-thumb"><span>Recent image 3</span></div>
-    <div class="generator-thumb"><span>Recent image 4</span></div>
-    <div class="generator-thumb"><span>Recent image 5</span></div>
-  `
+  strip.innerHTML = ""
   return
 }
 

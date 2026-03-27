@@ -145,6 +145,7 @@ This file still matters, but from this point onward it should support the remode
   - shared copy cleanup started on `3D`, `SVG`, and `Relief`:
     - remove plan/internal-sounding note text from the tool panels
     - keep only short functional labels that help with UI layout and later design work
+    - remove empty-state placeholder text from source strips and meta rows so the panels sit cleaner before the styling pass
   - no new frontend/backend dependency was introduced in this prep step, keeping deploy and licensing risk flat for now
 - done when:
   - `Relief` works as a real panel instead of a note in the plan

@@ -1150,3 +1150,4 @@ If anything is unclear, check these first in this order:
     - pre-design cleanup is now active across `3D`, `SVG`, and `Relief`:
       - strip longer explanatory copy that does not help the user take an action
       - keep the panels visually cleaner before the dedicated button/layout styling pass
+      - remove placeholder source/meta text so empty states do not fill the panel with unnecessary words
