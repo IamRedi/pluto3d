@@ -1,6 +1,8 @@
 import os
-from fastapi import APIRouter, Form, UploadFile, File
+from fastapi import APIRouter, File, Form, Header, HTTPException, UploadFile
 import replicate
+
+from app.services.usage import consume_feature_usage, resolve_usage_subject
 
 router = APIRouter()
 
@@ -8,7 +10,9 @@ router = APIRouter()
 async def ai_photo(
     prompt: str = Form(""),
     style: str = Form(""),
-    image: UploadFile = File(None)
+    image: UploadFile = File(None),
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
 ):
 
     try:
@@ -32,6 +36,9 @@ async def ai_photo(
         if style:
             final_prompt = f"{prompt}, {style} style"
 
+        subject = resolve_usage_subject(authorization, x_pluto_guest_key)
+        usage = consume_feature_usage(subject=subject, feature_key="aiImage")
+
         output = client.run(
             "black-forest-labs/flux-schnell",
             input={
@@ -46,7 +53,10 @@ async def ai_photo(
             image_url = str(item)
             break
 
-        return {"image_url": image_url}
+        return {"image_url": image_url, "usage": usage}
+
+    except HTTPException:
+        raise
 
     except Exception as e:
         message = str(e)

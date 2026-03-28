@@ -1,9 +1,15 @@
 import os
+import re
+from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
 
 import requests
 from app.services.subscriptions import get_subscription_store_status
+
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
+FRONTEND_APP_CONFIG_PATH = REPO_ROOT / "frontend" / "app-config.js"
 
 
 def _build_completion_summary(items: list[dict], *, configured_key: str = "configured") -> dict:
@@ -15,6 +21,62 @@ def _build_completion_summary(items: list[dict], *, configured_key: str = "confi
         "total": total,
         "percent": percent,
     }
+
+
+def _load_frontend_app_config_text() -> str:
+    try:
+        return FRONTEND_APP_CONFIG_PATH.read_text(encoding="utf-8")
+    except OSError:
+        return ""
+
+
+def _extract_frontend_config_value(config_text: str, key_path: str) -> str:
+    if not config_text:
+        return ""
+
+    if "." not in key_path:
+        match = re.search(
+            rf"\b{re.escape(key_path)}\s*:\s*(?P<value>\"[^\"]*\"|'[^']*')",
+            config_text,
+        )
+        if not match:
+            return ""
+        return match.group("value").strip("\"'")
+
+    parent_key, child_key = key_path.split(".", 1)
+    parent_match = re.search(
+        rf"\b{re.escape(parent_key)}\s*:\s*\{{(?P<body>.*?)\n\s*\}}",
+        config_text,
+        re.DOTALL,
+    )
+    if not parent_match:
+        return ""
+
+    child_match = re.search(
+        rf"\b{re.escape(child_key)}\s*:\s*(?P<value>\"[^\"]*\"|'[^']*')",
+        parent_match.group("body"),
+    )
+    if not child_match:
+        return ""
+
+    return child_match.group("value").strip("\"'")
+
+
+def _with_frontend_public_config_state(items: list[dict]) -> list[dict]:
+    config_text = _load_frontend_app_config_text()
+    configured_items = []
+
+    for item in items:
+        value = _extract_frontend_config_value(config_text, item["key"])
+        configured_items.append(
+            {
+                **item,
+                "configured": bool(value),
+                "currentValue": value or None,
+            }
+        )
+
+    return configured_items
 
 
 def _resolve_switch_phase(
@@ -379,7 +441,7 @@ def get_billing_public_config() -> dict:
 def get_billing_activation_handoff() -> dict:
     activation_status = get_billing_activation_status()
     subscription_store = activation_status["subscriptionStore"]
-    frontend_public_config = [
+    frontend_public_config = _with_frontend_public_config_state([
         {
             "key": "appName",
             "location": "frontend/app-config.js",
@@ -422,7 +484,7 @@ def get_billing_activation_handoff() -> dict:
             "required": True,
             "description": "Supabase public auth key.",
         },
-    ]
+    ])
     backend_env = [
         {
             "key": "SUPABASE_URL",
@@ -505,9 +567,7 @@ def get_billing_activation_handoff() -> dict:
     ]
     backend_env_summary = _build_completion_summary(backend_env)
     schema_summary = _build_completion_summary(schema_checks)
-    frontend_summary = _build_completion_summary(
-        [{**item, "configured": False} for item in frontend_public_config]
-    )
+    frontend_summary = _build_completion_summary(frontend_public_config)
     switch_path = [
         {
             "key": "frontend_public_config",

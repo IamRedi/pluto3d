@@ -1,5 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
+
+from app.services.usage import consume_feature_usage, resolve_usage_subject
 
 router = APIRouter()
 TOY_ASSET_VERSION = "2026-03-27-toy-map-2"
@@ -12,8 +14,14 @@ class ToyRequest(BaseModel):
 
 
 @router.post("/generate-toy")
-async def generate_toy(req: ToyRequest):
+async def generate_toy(
+    req: ToyRequest,
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
     try:
+        subject = resolve_usage_subject(authorization, x_pluto_guest_key)
+        usage = consume_feature_usage(subject=subject, feature_key="toyGeneration")
         query = req.prompt.lower()
         local_pluto_robot = f"/frontend/models/pluto-robot.glb?v={TOY_ASSET_VERSION}"
         local_f1_car = f"/frontend/models/f1car.glb?v={TOY_ASSET_VERSION}"
@@ -33,8 +41,12 @@ async def generate_toy(req: ToyRequest):
 
         return {
             "stl_url": None,
-            "glb_url": model_url
+            "glb_url": model_url,
+            "usage": usage
         }
+
+    except HTTPException:
+        raise
 
     except Exception as e:
         return {

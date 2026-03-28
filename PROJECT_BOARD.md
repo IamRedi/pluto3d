@@ -3,6 +3,21 @@
 This file is the working memory for the project.
 Use it to keep product direction, active tasks, decisions, and next steps in one place.
 
+## Canonical Note
+
+This board is kept as a detailed historical and planning memory file.
+The active canonical workflow system is now:
+
+- `SYSTEM_MASTER.md`
+- `CURRENT_STATE.md`
+- `CHANGELOG.md`
+- `INSTALL_GUIDE.md`
+- `PROJECT_MAP.md`
+- `AI_RULES.md`
+
+Use this board for deeper historical context, detailed handoff notes, and older planning trails.
+Write new high-level state updates into the canonical docs first.
+
 ## Product Summary
 
 Pluto3D Studio is a web app for non-expert users that:

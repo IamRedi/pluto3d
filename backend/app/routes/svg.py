@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, Form
+from fastapi import APIRouter, File, Form, Header, UploadFile
 from pydantic import BaseModel
 import uuid
 import requests
@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Literal
 
 from app.services.blueprint_engine import generate_blueprint
+from app.services.usage import consume_feature_usage, resolve_usage_subject
 
 router = APIRouter()
 
@@ -22,7 +23,11 @@ async def create_svg(
     file: UploadFile = File(...),
     detail: SVGDetail = Form("normal"),
     clean_background: SVGBackground = Form("off"),
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
 ):
+    subject = resolve_usage_subject(authorization, x_pluto_guest_key)
+    usage = consume_feature_usage(subject=subject, feature_key="svgGeneration")
 
     file_id = str(uuid.uuid4())
     image_path = f"{UPLOAD_DIR}/{file_id}.jpg"
@@ -42,7 +47,8 @@ async def create_svg(
     return {
     "svg_url": f"/outputs/svg/{filename}",
     "detail": detail,
-    "clean_background": clean_background
+    "clean_background": clean_background,
+    "usage": usage
     }
 
 
@@ -55,7 +61,13 @@ class ImageURL(BaseModel):
 
 
 @router.post("/svg-from-image")
-async def svg_from_image(data: ImageURL):
+async def svg_from_image(
+    data: ImageURL,
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
+    subject = resolve_usage_subject(authorization, x_pluto_guest_key)
+    usage = consume_feature_usage(subject=subject, feature_key="svgGeneration")
 
     img_url = data.image_url
 
@@ -78,7 +90,8 @@ async def svg_from_image(data: ImageURL):
     return {
     "svg_url": f"/outputs/svg/{filename}",
     "detail": data.detail,
-    "clean_background": data.clean_background
+    "clean_background": data.clean_background,
+    "usage": usage
     }
 
 

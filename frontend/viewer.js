@@ -66,10 +66,6 @@ const VIEWER_SHELL = `
 Download
 </button>
 <div class="viewer-topbar">
-  <div class="viewer-title-block">
-    <div class="viewer-kicker">Pluto3D Studio</div>
-    <div class="viewer-title">3D Viewer</div>
-  </div>
   <div class="viewer-toolbar-shell">
     <div class="viewer-toolbar-meta">
       <div class="viewer-toolbar-label">Surface</div>
@@ -230,7 +226,19 @@ function setViewerHeroCamera(targetY = 0.32, distance = 2.9){
   controls.update()
 }
 
-function centerModelOnViewerStage(model, liftRatio = 0.34, minLift = 0.2, maxLift = 0.62){
+function isMobileViewerViewport(){
+  return window.matchMedia("(max-width: 900px)").matches
+}
+
+function getViewerStageDrop(modelHeight = 0){
+  if(isMobileViewerViewport()){
+    return Math.max(0.06, Math.min(0.14, modelHeight * 0.09))
+  }
+
+  return Math.max(0.2, Math.min(0.32, modelHeight * 0.16))
+}
+
+function centerModelOnViewerStage(model, liftRatio = 0.34, minLift = 0.2, maxLift = 0.62, focusRatio = null){
   const box = new THREE.Box3().setFromObject(model)
   const center = box.getCenter(new THREE.Vector3())
 
@@ -243,9 +251,18 @@ function centerModelOnViewerStage(model, liftRatio = 0.34, minLift = 0.2, maxLif
   const groundedBox = new THREE.Box3().setFromObject(model)
   const groundedHeight = groundedBox.getSize(new THREE.Vector3()).y
   const targetY = Math.max(minLift, Math.min(maxLift, groundedHeight * liftRatio))
+  const stageDrop = getViewerStageDrop(groundedHeight)
+  const baseY = targetY - stageDrop
+  const resolvedFocusRatio = focusRatio ?? (isMobileViewerViewport() ? 0.28 : 0.46)
+  const focusY = baseY + (groundedHeight * resolvedFocusRatio)
 
   model.position.y += targetY
-  return targetY
+  model.position.y -= stageDrop
+  return {
+    baseY,
+    focusY,
+    height: groundedHeight
+  }
 }
 
 function fitModelToViewer(model){
@@ -256,8 +273,8 @@ function fitModelToViewer(model){
   const scale = maxDimension > 0 ? 1.95 / maxDimension : 1
   model.scale.setScalar(scale)
 
-  const targetY = centerModelOnViewerStage(model, 0.34, 0.2, 0.62)
-  setViewerHeroCamera(targetY, 2.96)
+  const stageMetrics = centerModelOnViewerStage(model, 0.16, 0.06, 0.22, 0.48)
+  setViewerHeroCamera(stageMetrics.focusY, 3.02)
 }
 
 function restoreIdleViewer(){
@@ -288,8 +305,8 @@ function restoreIdleViewer(){
 
     fitModelToViewer(model)
     model.scale.multiplyScalar(1.42)
-    const idleTargetY = centerModelOnViewerStage(model, 0.32, 0.22, 0.62)
-    setViewerHeroCamera(idleTargetY, 3.04)
+    const idleStageMetrics = centerModelOnViewerStage(model, 0.32, 0.22, 0.62, 0.3)
+    setViewerHeroCamera(idleStageMetrics.focusY, 3.04)
     scene.add(model)
 
     setCurrentViewerAsset({
@@ -467,9 +484,13 @@ function syncViewerStatusStrip(){
 }
 
 function syncViewerModeButtons(){
+  const asset = window.currentViewerAsset || null
+  const showModeButtons = Boolean(asset && asset.type && asset.type !== "idle")
+
   viewerContainer.querySelectorAll("[data-viewer-mode]").forEach((button) => {
     const isActive = button.dataset.viewerMode === window.currentViewerMode
     button.classList.toggle("active", isActive)
+    button.style.display = showModeButtons ? "" : "none"
   })
 }
 
@@ -479,11 +500,14 @@ function syncViewerSurfaceChrome(){
   const toolbarShell = viewerContainer.querySelector(".viewer-toolbar-shell")
   const wrap = document.getElementById("viewerPrintCta")
   const currentSurface = window.currentWorkspacePanel || "3d"
+  const asset = window.currentViewerAsset || null
   const assetType = window.currentViewerAsset?.type || ""
+  const hasViewerAsset = Boolean(asset && asset.type && asset.type !== "idle")
   const hide3dControls = currentSurface === "svg" ||
     currentSurface === "relief" ||
     assetType === "svg" ||
-    assetType === "relief-preview"
+    assetType === "relief-preview" ||
+    !hasViewerAsset
 
   if(topbar){
     topbar.style.display = ""
@@ -823,8 +847,8 @@ function loadSTL(url, filename="model.stl", options = {}){
     const scale = 2 / size
 
     mesh.scale.setScalar(scale)
-    const targetY = centerModelOnViewerStage(mesh, 0.26, 0.18, 0.5)
-    setViewerHeroCamera(targetY, 3.12)
+    const stageMetrics = centerModelOnViewerStage(mesh, 0.18, 0.1, 0.3, 0.44)
+    setViewerHeroCamera(stageMetrics.focusY, 3.12)
     if(typeof refreshToyStudioState === "function"){
       refreshToyStudioState()
     }
@@ -876,7 +900,7 @@ function loadGLB(url, filename="model.glb"){
   })
 }
 
-function showViewerDownload(url, filename="file"){
+function legacyShowViewerDownload(url, filename="file"){
   const btn = document.getElementById("viewerDownload")
 
   btn.classList.remove("hidden")
@@ -901,6 +925,106 @@ function showViewerDownload(url, filename="file"){
     document.body.appendChild(link)
     link.click()
     link.remove()
+  }
+}
+
+function showViewerDownload(url, filename="file", options = {}){
+  const btn = document.getElementById("viewerDownload")
+  if(!btn){
+    return
+  }
+
+  const accessPolicyKey = options.accessPolicyKey || ""
+  const resolveAccess = () => {
+    if(typeof window.getViewerDownloadAccess === "function"){
+      return window.getViewerDownloadAccess(accessPolicyKey)
+    }
+
+    return {
+      visible: true,
+      allowed: true,
+      reason: ""
+    }
+  }
+
+  const applyAccessState = (access) => {
+    const shouldHide = !access.visible || (Boolean(accessPolicyKey) && !access.allowed)
+    btn.classList.toggle("hidden", shouldHide)
+    btn.disabled = !access.allowed
+    btn.setAttribute("aria-disabled", access.allowed ? "false" : "true")
+    btn.title = access.allowed ? "Download the current output." : (access.reason || "Download is not available.")
+    btn.innerText = "Download"
+    if(shouldHide){
+      btn.onclick = null
+    }
+  }
+
+  const initialAccess = resolveAccess()
+  applyAccessState(initialAccess)
+  if(!initialAccess.visible){
+    return
+  }
+
+  btn.onclick = async () => {
+    const access = resolveAccess()
+    if(!access.allowed){
+      applyAccessState(access)
+      if(access.reason){
+        alert(access.reason)
+      }
+      return
+    }
+
+    if(btn.dataset.downloading === "true"){
+      return
+    }
+
+    const originalLabel = btn.innerText
+    btn.dataset.downloading = "true"
+    btn.disabled = true
+    btn.innerText = "Downloading..."
+
+    try{
+      const res = await fetch(url)
+      if(!res.ok){
+        throw new Error("Download failed")
+      }
+
+      const blob = await res.blob()
+      const consumeAccess = typeof window.consumeViewerDownloadAccess === "function"
+        ? await Promise.resolve(window.consumeViewerDownloadAccess(accessPolicyKey))
+        : {
+            allowed: true,
+            reason: ""
+          }
+
+      if(!consumeAccess.allowed){
+        throw new Error(consumeAccess.reason || "Download is not available.")
+      }
+
+      let type = blob.type
+      if(filename.endsWith(".svg")){
+        type = "image/svg+xml"
+      }else if(filename.endsWith(".stl")){
+        type = "model/stl"
+      }
+
+      const fixedBlob = new Blob([blob], { type })
+      const link = document.createElement("a")
+      link.href = URL.createObjectURL(fixedBlob)
+      link.download = filename
+
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    }catch(error){
+      console.error("Viewer download failed:", error)
+      alert(error.message || "Download failed")
+    }finally{
+      btn.dataset.downloading = "false"
+      btn.innerText = originalLabel
+      applyAccessState(resolveAccess())
+    }
   }
 }
 

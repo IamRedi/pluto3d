@@ -16,24 +16,38 @@ const AUTH_PREVIEW_DEFAULT = {
   planLabel: "Guest"
 };
 
-const USAGE_LIMITS = {
+const USAGE_RULES = {
   guest: {
-    aiImage: 2,
-    svgGeneration: 1,
-    toyGeneration: 3,
-    free3dGeneration: 1
+    aiImage: { limit: 2, period: "day" },
+    svgGeneration: { limit: 1, period: "day" },
+    toyGeneration: { limit: 3, period: "day" },
+    free3dGeneration: { limit: 1, period: "day" },
+    reliefStlGeneration: { limit: 0, period: "week" },
+    real3dGeneration: { limit: 0, period: "month" }
   },
   free: {
-    aiImage: 8,
-    svgGeneration: 5,
-    toyGeneration: 10,
-    free3dGeneration: 4
+    aiImage: { limit: 10, period: "week" },
+    svgGeneration: { limit: null, period: null },
+    toyGeneration: { limit: 10, period: "week" },
+    free3dGeneration: { limit: 3, period: "week" },
+    reliefStlGeneration: { limit: 5, period: "week" },
+    real3dGeneration: { limit: 0, period: "month" }
   },
   premium: {
-    aiImage: null,
-    svgGeneration: null,
-    toyGeneration: null,
-    free3dGeneration: null
+    aiImage: { limit: 50, period: "month" },
+    svgGeneration: { limit: null, period: null },
+    toyGeneration: { limit: null, period: null },
+    free3dGeneration: { limit: null, period: null },
+    reliefStlGeneration: { limit: null, period: null },
+    real3dGeneration: { limit: 10, period: "month" }
+  }
+};
+
+const DOWNLOAD_POLICY_RULES = {
+  test3dModelDownload: {
+    guest: "hidden",
+    free: "credit",
+    premium: "allow"
   }
 };
 
@@ -116,13 +130,50 @@ function getUsagePreviewState(){
   try{
     const raw = localStorage.getItem(AUTH_USAGE_STORAGE_KEY);
     if(!raw){
-      return {};
+      return {
+        counters: {},
+        credits: {}
+      };
     }
 
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    if(parsed && typeof parsed === "object" && !Array.isArray(parsed)){
+      if(parsed.counters || parsed.credits){
+        return {
+          counters: parsed.counters || {},
+          credits: parsed.credits || {}
+        };
+      }
+
+      const migratedCounters = Object.entries(parsed).reduce((accumulator, [key, value]) => {
+        if(typeof value !== "number"){
+          return accumulator;
+        }
+
+        const rule = getUsageRule(key, { ignoreLocalTestMode: true });
+        accumulator[key] = {
+          count: Number(value) || 0,
+          windowKey: getUsageWindowKey(rule?.period)
+        };
+        return accumulator;
+      }, {});
+
+      return {
+        counters: migratedCounters,
+        credits: {}
+      };
+    }
+
+    return {
+      counters: {},
+      credits: {}
+    };
   }catch(error){
     console.warn("Failed to read usage preview state:", error);
-    return {};
+    return {
+      counters: {},
+      credits: {}
+    };
   }
 }
 
@@ -136,18 +187,124 @@ function getCurrentUsageBucket(){
   return authState.mode || "guest";
 }
 
-function getUsageLimit(featureKey){
-  if(IS_LOCAL_TEST_MODE){
-    return null;
+function getBackendUsageSummary(){
+  return (!IS_LOCAL_TEST_MODE && window.PLUTO_ACCOUNT_USAGE) ? window.PLUTO_ACCOUNT_USAGE : null;
+}
+
+function getUsageRule(featureKey, options = {}){
+  const backendUsage = (!options.ignoreLocalTestMode && getBackendUsageSummary()) || null;
+  if(backendUsage?.rules?.[featureKey]){
+    return {
+      limit: backendUsage.rules[featureKey].limit ?? null,
+      period: backendUsage.rules[featureKey].period ?? null
+    };
+  }
+
+  if(IS_LOCAL_TEST_MODE && !options.ignoreLocalTestMode){
+    return {
+      limit: null,
+      period: null
+    };
   }
 
   const mode = getCurrentUsageBucket();
-  return USAGE_LIMITS[mode]?.[featureKey] ?? null;
+  return USAGE_RULES[mode]?.[featureKey] ?? {
+    limit: null,
+    period: null
+  };
+}
+
+function getUsageWindowKey(period){
+  if(!period){
+    return "unlimited";
+  }
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  if(period === "day"){
+    return `${year}-${month}-${day}`;
+  }
+
+  if(period === "month"){
+    return `${year}-${month}`;
+  }
+
+  if(period === "week"){
+    const start = new Date(now);
+    const weekday = start.getDay();
+    const delta = weekday === 0 ? -6 : 1 - weekday;
+    start.setHours(0, 0, 0, 0);
+    start.setDate(start.getDate() + delta);
+
+    const weekYear = start.getFullYear();
+    const weekMonth = String(start.getMonth() + 1).padStart(2, "0");
+    const weekDay = String(start.getDate()).padStart(2, "0");
+    return `${weekYear}-${weekMonth}-${weekDay}`;
+  }
+
+  return "unlimited";
+}
+
+function getUsageEntryState(collectionKey, featureKey, options = {}){
+  const state = getUsagePreviewState();
+  const collection = state[collectionKey] || {};
+  const existingEntry = collection[featureKey];
+  const rule = getUsageRule(featureKey, { ignoreLocalTestMode: options.ignoreLocalTestMode === true });
+  const nextWindowKey = getUsageWindowKey(rule?.period);
+  const normalizedEntry = existingEntry && typeof existingEntry === "object"
+    ? {
+        count: Number(existingEntry.count) || 0,
+        windowKey: existingEntry.windowKey || nextWindowKey
+      }
+    : {
+        count: typeof existingEntry === "number" ? Number(existingEntry) || 0 : 0,
+        windowKey: nextWindowKey
+      };
+
+  if(rule?.period && normalizedEntry.windowKey !== nextWindowKey){
+    normalizedEntry.count = 0;
+    normalizedEntry.windowKey = nextWindowKey;
+    collection[featureKey] = normalizedEntry;
+    state[collectionKey] = collection;
+    saveUsagePreviewState(state);
+  }
+
+  return {
+    state,
+    collection,
+    entry: normalizedEntry
+  };
+}
+
+function getUsageLimit(featureKey){
+  return getUsageRule(featureKey).limit;
+}
+
+function getUsagePeriod(featureKey){
+  return getUsageRule(featureKey).period;
 }
 
 function getUsageCount(featureKey){
-  const state = getUsagePreviewState();
-  return state[featureKey] || 0;
+  const backendUsage = getBackendUsageSummary();
+  if(backendUsage?.rules?.[featureKey]){
+    return Number(backendUsage.rules[featureKey].used || 0);
+  }
+
+  const { entry } = getUsageEntryState("counters", featureKey);
+  return entry.count || 0;
+}
+
+function getUsageCreditCount(featureKey){
+  const backendUsage = getBackendUsageSummary();
+  if(backendUsage?.credits && Object.prototype.hasOwnProperty.call(backendUsage.credits, featureKey)){
+    return Number(backendUsage.credits[featureKey] || 0);
+  }
+
+  const { entry } = getUsageEntryState("credits", featureKey);
+  return entry.count || 0;
 }
 
 function getUsageSnapshot(){
@@ -155,22 +312,33 @@ function getUsageSnapshot(){
     aiImage: getUsageCount("aiImage"),
     svgGeneration: getUsageCount("svgGeneration"),
     toyGeneration: getUsageCount("toyGeneration"),
-    free3dGeneration: getUsageCount("free3dGeneration")
+    free3dGeneration: getUsageCount("free3dGeneration"),
+    reliefStlGeneration: getUsageCount("reliefStlGeneration"),
+    real3dGeneration: getUsageCount("real3dGeneration")
   };
 }
 
 function canUseFeature(featureKey){
-  const limit = getUsageLimit(featureKey);
+  const rule = getUsageRule(featureKey);
+  const limit = rule.limit;
   if(limit === null){
     return true;
+  }
+
+  if(limit <= 0){
+    return false;
   }
 
   return getUsageCount(featureKey) < limit;
 }
 
 function incrementUsage(featureKey){
-  const state = getUsagePreviewState();
-  state[featureKey] = (state[featureKey] || 0) + 1;
+  const { state, collection, entry } = getUsageEntryState("counters", featureKey);
+  collection[featureKey] = {
+    count: (entry.count || 0) + 1,
+    windowKey: entry.windowKey
+  };
+  state.counters = collection;
   saveUsagePreviewState(state);
 
   if(typeof syncAuthPreviewUI === "function"){
@@ -178,8 +346,148 @@ function incrementUsage(featureKey){
   }
 }
 
+function grantUsageCredit(featureKey, amount = 1){
+  const { state, collection, entry } = getUsageEntryState("credits", featureKey);
+  collection[featureKey] = {
+    count: Math.max(0, (entry.count || 0) + amount),
+    windowKey: entry.windowKey
+  };
+  state.credits = collection;
+  saveUsagePreviewState(state);
+}
+
+function consumeUsageCredit(featureKey, amount = 1){
+  if(IS_LOCAL_TEST_MODE){
+    return {
+      allowed: true,
+      remaining: null
+    };
+  }
+
+  const { state, collection, entry } = getUsageEntryState("credits", featureKey);
+  const available = entry.count || 0;
+  if(available < amount){
+    return {
+      allowed: false,
+      remaining: available
+    };
+  }
+
+  collection[featureKey] = {
+    count: Math.max(0, available - amount),
+    windowKey: entry.windowKey
+  };
+  state.credits = collection;
+  saveUsagePreviewState(state);
+
+  if(typeof syncAuthPreviewUI === "function"){
+    syncAuthPreviewUI();
+  }
+
+  return {
+    allowed: true,
+    remaining: collection[featureKey].count
+  };
+}
+
+function getViewerDownloadAccess(policyKey){
+  if(!policyKey || IS_LOCAL_TEST_MODE){
+    return {
+      visible: true,
+      allowed: true,
+      reason: ""
+    };
+  }
+
+  const mode = getCurrentUsageBucket();
+  const policy = DOWNLOAD_POLICY_RULES[policyKey]?.[mode] || "allow";
+
+  if(policy === "hidden"){
+    return {
+      visible: false,
+      allowed: false,
+      reason: "Sign in to download this test model."
+    };
+  }
+
+  if(policy === "credit"){
+    const credits = getUsageCreditCount("test3dDownloadCredit");
+    return {
+      visible: true,
+      allowed: credits > 0,
+      reason: credits > 0 ? "" : "Your test-model download credit has already been used."
+    };
+  }
+
+  return {
+    visible: true,
+    allowed: true,
+    reason: ""
+  };
+}
+
+function grantViewerDownloadAccess(policyKey, amount = 1){
+  if(IS_LOCAL_TEST_MODE || !policyKey || getBackendUsageSummary()){
+    return;
+  }
+
+  const mode = getCurrentUsageBucket();
+  if(policyKey === "test3dModelDownload" && mode === "free"){
+    grantUsageCredit("test3dDownloadCredit", amount);
+  }
+}
+
+async function consumeViewerDownloadAccess(policyKey){
+  const access = getViewerDownloadAccess(policyKey);
+  if(!access.visible || !access.allowed){
+    return access;
+  }
+
+  if(IS_LOCAL_TEST_MODE || !policyKey){
+    return access;
+  }
+
+  if(getBackendUsageSummary()){
+    if(policyKey === "test3dModelDownload" && typeof window.consumeBackendUsageCredit === "function"){
+      try{
+        const response = await window.consumeBackendUsageCredit("test3dDownloadCredit", { amount: 1 });
+        const remaining = Number(response?.usage?.credits?.test3dDownloadCredit ?? 0);
+        return {
+          visible: remaining > 0,
+          allowed: true,
+          reason: "",
+          remaining
+        };
+      }catch(error){
+        return {
+          visible: false,
+          allowed: false,
+          reason: error.message || "Your test-model download credit has already been used."
+        };
+      }
+    }
+
+    return access;
+  }
+
+  const mode = getCurrentUsageBucket();
+  if(policyKey === "test3dModelDownload" && mode === "free"){
+    const result = consumeUsageCredit("test3dDownloadCredit", 1);
+    return {
+      visible: result.allowed ? true : false,
+      allowed: result.allowed,
+      reason: result.allowed ? "" : "Your test-model download credit has already been used."
+    };
+  }
+
+  return access;
+}
+
 function resetUsagePreview(){
-  saveUsagePreviewState({});
+  saveUsagePreviewState({
+    counters: {},
+    credits: {}
+  });
 
   if(typeof syncAuthPreviewUI === "function"){
     syncAuthPreviewUI();
@@ -257,10 +565,15 @@ window.signInPreview = signInPreview;
 window.signOutPreview = signOutPreview;
 window.getUsagePreviewState = getUsagePreviewState;
 window.getUsageLimit = getUsageLimit;
+window.getUsagePeriod = getUsagePeriod;
+window.getUsageRule = getUsageRule;
 window.getUsageCount = getUsageCount;
 window.getUsageSnapshot = getUsageSnapshot;
 window.canUseFeature = canUseFeature;
 window.incrementUsage = incrementUsage;
+window.grantViewerDownloadAccess = grantViewerDownloadAccess;
+window.getViewerDownloadAccess = getViewerDownloadAccess;
+window.consumeViewerDownloadAccess = consumeViewerDownloadAccess;
 window.resetUsagePreview = resetUsagePreview;
 window.shouldShowSponsorPreview = shouldShowSponsorPreview;
 window.showSponsorPreview = showSponsorPreview;

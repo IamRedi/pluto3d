@@ -304,7 +304,7 @@ body[data-theme="light"]{
   --space-background:linear-gradient(180deg, #eff3ee 0%, #e6ece6 48%, #dde5de 100%);
   --sidebar-background:linear-gradient(180deg, rgba(243, 247, 242, 0.98), rgba(232, 238, 232, 0.96));
   --panel-background:linear-gradient(180deg, rgba(247, 250, 246, 0.99), rgba(237, 242, 237, 0.97));
-  --viewer-background:linear-gradient(180deg, rgba(14, 18, 16, 0.98), rgba(18, 23, 20, 0.99));
+  --viewer-background:linear-gradient(180deg, rgba(239, 244, 240, 0.99), rgba(228, 235, 229, 0.98));
 }
 
 body {
@@ -1252,6 +1252,319 @@ grid-template-columns:1.2fr 0.8fr;
 gap:16px;
 }
 
+.gallery-showcase-grid{
+display:grid;
+grid-template-columns:minmax(0, 1.3fr) minmax(260px, 0.7fr);
+gap:16px;
+align-items:stretch;
+}
+
+.gallery-hero-card{
+padding:22px 22px 24px;
+background:
+linear-gradient(180deg, rgba(18, 21, 18, 0.96), rgba(13, 16, 14, 0.9)),
+radial-gradient(circle at top right, rgba(151, 111, 43, 0.16), transparent 28%),
+radial-gradient(circle at bottom left, rgba(88,184,115,0.1), transparent 34%);
+}
+
+body[data-theme="light"] .gallery-hero-card{
+background:
+linear-gradient(180deg, rgba(249, 251, 249, 0.99), rgba(240, 244, 240, 0.97)),
+radial-gradient(circle at top right, rgba(188, 144, 56, 0.12), transparent 28%),
+radial-gradient(circle at bottom left, rgba(88,184,115,0.08), transparent 34%);
+}
+
+.gallery-stage-panel,
+.gallery-side-panel{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.gallery-stage-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:12px;
+}
+
+.gallery-stage-card{
+min-height:190px;
+padding:16px;
+border-radius:22px;
+border:1px solid rgba(151, 111, 43, 0.16);
+background:
+linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
+radial-gradient(circle at top, rgba(196, 161, 96, 0.16), transparent 34%),
+radial-gradient(circle at bottom left, rgba(88,184,115,0.12), transparent 36%);
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+body[data-theme="light"] .gallery-stage-card{
+background:
+linear-gradient(180deg, rgba(255,255,255,0.88), rgba(244, 247, 243, 0.78)),
+radial-gradient(circle at top, rgba(188, 144, 56, 0.12), transparent 34%),
+radial-gradient(circle at bottom left, rgba(88,184,115,0.08), transparent 36%);
+}
+
+.gallery-stage-card.featured{
+border-color:rgba(196, 161, 96, 0.24);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.07), 0 16px 28px rgba(0,0,0,0.14);
+}
+
+.gallery-stage-kicker{
+font-size:10px;
+font-weight:600;
+letter-spacing:0.14em;
+text-transform:uppercase;
+color:var(--bronze-soft);
+margin-bottom:10px;
+}
+
+.gallery-stage-title{
+font-size:18px;
+font-weight:700;
+line-height:1.2;
+margin-bottom:8px;
+}
+
+.gallery-stage-copy{
+font-size:13px;
+line-height:1.65;
+color:var(--text-soft);
+}
+
+.gallery-stage-meta{
+display:flex;
+justify-content:space-between;
+gap:10px;
+font-size:11px;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--text-soft);
+}
+
+.gallery-snapshot-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:12px;
+}
+
+.gallery-snapshot-item{
+padding:14px 15px;
+border-radius:18px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.gallery-snapshot-value{
+font-size:22px;
+font-weight:700;
+line-height:1.1;
+color:var(--text-main);
+margin-bottom:6px;
+}
+
+.gallery-snapshot-label{
+font-size:10px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+}
+
+.gallery-archive-list{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.gallery-archive-item{
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:12px;
+padding:14px 15px;
+border-radius:18px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+}
+
+.gallery-archive-main{
+display:flex;
+flex-direction:column;
+gap:5px;
+min-width:0;
+}
+
+.gallery-archive-title{
+font-size:15px;
+font-weight:700;
+line-height:1.25;
+}
+
+.gallery-archive-copy{
+font-size:12px;
+line-height:1.6;
+color:var(--text-soft);
+}
+
+.gallery-archive-type{
+flex-shrink:0;
+font-size:10px;
+font-weight:600;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--bronze-soft);
+}
+
+.gallery-curation-grid{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:14px;
+margin-top:16px;
+}
+
+.gallery-curation-card{
+padding:16px;
+border-radius:20px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.gallery-curation-label{
+font-size:10px;
+font-weight:600;
+letter-spacing:0.14em;
+text-transform:uppercase;
+color:var(--bronze-soft);
+}
+
+.gallery-curation-title{
+font-size:17px;
+font-weight:700;
+line-height:1.25;
+}
+
+.gallery-curation-copy{
+font-size:13px;
+line-height:1.65;
+color:var(--text-soft);
+}
+
+.profile-pill-row{
+margin-top:14px;
+}
+
+.profile-signal-grid{
+display:grid;
+grid-template-columns:repeat(3, minmax(0, 1fr));
+gap:12px;
+}
+
+.profile-signal-card{
+padding:16px 16px 17px;
+border-radius:18px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.profile-signal-label{
+font-size:11px;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--text-soft);
+margin-bottom:8px;
+}
+
+.profile-signal-value{
+font-size:20px;
+font-weight:700;
+line-height:1.2;
+color:var(--text-main);
+}
+
+.profile-signal-copy{
+margin-top:6px;
+font-size:12px;
+line-height:1.55;
+color:var(--text-soft);
+}
+
+.profile-billing-grid{
+display:grid;
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:12px;
+margin-top:14px;
+}
+
+.profile-billing-card{
+padding:15px 16px;
+border-radius:18px;
+border:1px solid var(--line-soft);
+background:rgba(255,255,255,0.03);
+}
+
+.profile-billing-label{
+font-size:10px;
+letter-spacing:0.14em;
+text-transform:uppercase;
+color:var(--text-soft);
+margin-bottom:8px;
+}
+
+.profile-billing-value{
+font-size:16px;
+font-weight:700;
+line-height:1.35;
+color:var(--text-main);
+}
+
+.profile-billing-copy{
+margin-top:6px;
+font-size:12px;
+line-height:1.55;
+color:var(--text-soft);
+}
+
+.profile-usage-total{
+padding:16px 16px 17px;
+border-radius:18px;
+border:1px solid rgba(196, 161, 96, 0.18);
+background:
+linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+radial-gradient(circle at top right, rgba(196, 161, 96, 0.16), transparent 34%);
+margin-top:14px;
+}
+
+.profile-usage-total-label{
+font-size:10px;
+letter-spacing:0.14em;
+text-transform:uppercase;
+color:var(--text-soft);
+margin-bottom:10px;
+}
+
+.profile-usage-total-value{
+font-size:30px;
+font-weight:700;
+line-height:1;
+color:var(--bronze-soft);
+margin-bottom:8px;
+}
+
+.profile-usage-total-copy{
+font-size:12px;
+line-height:1.55;
+color:var(--text-soft);
+}
+
 .gallery-wall{
 display:grid;
 grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -1455,6 +1768,27 @@ border-color:rgba(123, 150, 134, 0.28);
 color:#ffffff;
 box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05), 0 12px 22px rgba(0,0,0,0.24);
 
+}
+
+body[data-theme="light"] .sidebtn{
+background:
+linear-gradient(180deg, rgba(250, 252, 249, 0.99), rgba(235, 240, 235, 0.97));
+border-color:rgba(109, 132, 117, 0.16);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.94), inset 0 -10px 16px rgba(188, 196, 188, 0.24), 0 10px 18px rgba(84, 96, 87, 0.08);
+color:#304a37;
+}
+
+body[data-theme="light"] .sidebtn:hover{
+border-color:rgba(109, 132, 117, 0.24);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.98), inset 0 -12px 18px rgba(188, 196, 188, 0.26), 0 12px 20px rgba(84, 96, 87, 0.1);
+}
+
+body[data-theme="light"] .sidebtn.active{
+background:
+linear-gradient(180deg, rgba(224, 235, 226, 0.99), rgba(211, 223, 214, 0.97));
+border-color:rgba(109, 132, 117, 0.28);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.92), inset 0 -12px 18px rgba(168, 182, 171, 0.24), 0 12px 22px rgba(84, 96, 87, 0.1);
+color:#17361d;
 }
 
 .theme-toggle{
@@ -1689,7 +2023,14 @@ z-index:0;
 
 body[data-theme="light"] .viewer{
 border:1px solid var(--viewer-border);
-box-shadow:var(--viewer-shell-shadow);
+box-shadow:0 18px 30px rgba(84, 96, 87, 0.1), 0 28px 48px rgba(148,163,184,0.08);
+}
+
+body[data-theme="light"] .viewer::before{
+box-shadow:
+inset 0 1px 0 rgba(255,255,255,0.84),
+inset 0 -20px 32px rgba(182, 191, 184, 0.14),
+inset 0 0 0 1px rgba(188, 144, 56, 0.05);
 }
 .viewer::after{
 content:"";
@@ -1714,8 +2055,9 @@ right:20px;
 z-index:3;
 display:flex;
 align-items:flex-start;
-justify-content:space-between;
+justify-content:flex-end;
 gap:14px;
+max-width:calc(100% - 40px);
 pointer-events:none;
 }
 
@@ -1727,21 +2069,9 @@ pointer-events:auto;
 .viewer-title-block{
 display:flex;
 flex-direction:column;
-gap:4px;
-padding:11px 14px 11px;
-border-radius:20px;
-background:linear-gradient(180deg, rgba(19, 24, 20, 0.88), rgba(10, 12, 11, 0.76));
-border:1px solid rgba(164, 144, 101, 0.14);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -12px 18px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.1);
+gap:2px;
+padding:0;
 max-width:214px;
-}
-
-.viewer-kicker{
-font-size:10px;
-font-weight:600;
-letter-spacing:0.16em;
-text-transform:uppercase;
-color:rgba(206, 214, 208, 0.68);
 }
 
 .viewer-title{
@@ -1761,18 +2091,16 @@ display:flex;
 flex-direction:column;
 align-items:flex-end;
 gap:8px;
-padding:10px 12px 12px;
-border-radius:20px;
-background:linear-gradient(180deg, rgba(19, 24, 20, 0.9), rgba(10, 12, 11, 0.78));
-border:1px solid rgba(164, 144, 101, 0.14);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -12px 18px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.1);
+padding:0;
+max-width:min(220px, calc(100% - 40px));
 }
 
 .viewer-toolbar-meta{
 display:flex;
-align-items:center;
-justify-content:flex-end;
-gap:8px;
+flex-direction:column;
+align-items:flex-end;
+justify-content:flex-start;
+gap:2px;
 flex-wrap:wrap;
 }
 
@@ -1782,22 +2110,21 @@ font-weight:600;
 letter-spacing:0.14em;
 text-transform:uppercase;
 color:var(--text-soft);
+max-width:100%;
+text-align:right;
+overflow-wrap:anywhere;
 }
 
 .viewer-toolbar-value{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-min-height:25px;
-padding:0 11px;
-border-radius:999px;
-background:rgba(151, 111, 43, 0.14);
-border:1px solid rgba(195, 161, 99, 0.24);
-color:#d8bc8c;
-font-size:9px;
+display:block;
+color:var(--bronze-soft);
+font-size:11px;
 font-weight:700;
-letter-spacing:0.12em;
+letter-spacing:0.1em;
 text-transform:uppercase;
+max-width:100%;
+text-align:right;
+overflow-wrap:anywhere;
 }
 
 .viewer-status-strip{
@@ -1806,23 +2133,20 @@ left:20px;
 bottom:20px;
 z-index:3;
 display:flex;
+flex-direction:column;
 align-items:flex-start;
-gap:12px;
-flex-wrap:wrap;
-padding:11px 14px 12px;
-border-radius:20px;
-background:linear-gradient(180deg, rgba(19, 24, 20, 0.9), rgba(10, 12, 11, 0.78));
-border:1px solid rgba(164, 144, 101, 0.14);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -12px 18px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.1);
-max-width:min(408px, calc(100% - 210px));
+gap:10px;
+width:min(220px, calc(100% - 180px));
+max-width:220px;
 pointer-events:none;
 }
 
 .viewer-status-group{
 display:flex;
 flex-direction:column;
-gap:3px;
-min-width:94px;
+gap:2px;
+min-width:0;
+width:100%;
 }
 
 .viewer-status-label{
@@ -1838,13 +2162,9 @@ font-size:12px;
 font-weight:600;
 line-height:1.35;
 color:var(--text-main);
-}
-
-body[data-theme="light"] .viewer-title-block,
-body[data-theme="light"] .viewer-toolbar-shell,
-body[data-theme="light"] .viewer-status-strip{
-background:linear-gradient(180deg, rgba(251, 253, 250, 0.94), rgba(236, 241, 236, 0.88));
-border-color:rgba(171, 131, 49, 0.12);
+max-width:100%;
+overflow-wrap:anywhere;
+word-break:break-word;
 }
 
 .viewer > :not(.viewer-topbar):not(.viewer-status-strip):not(.viewer-download):not(.studio-launch):not(.viewer-print-cta){
@@ -2086,13 +2406,13 @@ transition:border-color 0.34s ease, box-shadow 0.34s ease;
 #dropRelief::before{
 content:"";
 position:absolute;
-inset:12px;
-border-radius:18px;
-background-image:var(--generator-preview-bg);
-background-size:cover;
-background-position:center;
-filter:blur(28px) saturate(0.9);
-transform:scale(1.08);
+inset:30px;
+border-radius:28px;
+background:
+radial-gradient(circle at 50% 24%, rgba(224, 204, 154, 0.18), transparent 34%),
+radial-gradient(circle at 50% 74%, rgba(88, 184, 115, 0.1), transparent 42%);
+filter:blur(26px);
+transform:scale(1);
 opacity:0;
 transition:opacity 0.38s ease;
 pointer-events:none;
@@ -2104,12 +2424,13 @@ z-index:0;
 #dropRelief::after{
 content:"";
 position:absolute;
-inset:12px;
-border-radius:18px;
+inset:18px;
+border-radius:24px;
 background:
-radial-gradient(circle at 50% 16%, rgba(126, 206, 145, 0.16), transparent 46%),
-linear-gradient(180deg, rgba(10,14,11,0.1), rgba(10,14,11,0.24));
-border:1px solid rgba(255,255,255,0.06);
+linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012)),
+radial-gradient(circle at 50% 0%, rgba(222, 193, 137, 0.08), transparent 42%);
+border:1px solid rgba(255,255,255,0.05);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
 opacity:0;
 transition:opacity 0.38s ease;
 pointer-events:none;
@@ -2156,21 +2477,20 @@ transform:translateY(6px);
 position:relative;
 z-index:2;
 display:block;
-width:min(74%, 420px) !important;
-height:176px !important;
+width:min(78%, 432px) !important;
+height:204px !important;
 margin:0 auto;
 object-fit:contain;
-border-radius:18px !important;
-padding:8px;
-border:1px solid rgba(255,255,255,0.08);
+border-radius:20px !important;
+padding:0;
+border:1px solid rgba(255,255,255,0.06);
 background:
-linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
 box-shadow:
-0 18px 42px rgba(2,6,23,0.3),
-0 0 0 1px rgba(255,255,255,0.04);
+0 16px 34px rgba(2,6,23,0.2);
 opacity:0;
 transform:translateY(10px) scale(0.985);
-filter:saturate(0.94) contrast(1.03);
+filter:saturate(0.98) contrast(1.02);
 transition:
 opacity 0.34s ease,
 transform 0.34s ease,
@@ -2182,7 +2502,7 @@ filter 0.34s ease;
 #dropPreviewRelief.is-visible{
 opacity:1;
 transform:translateY(0) scale(1);
-filter:saturate(1) contrast(1.04);
+filter:saturate(1.02) contrast(1.03);
 }
 
 /* buttons */
@@ -2460,6 +2780,13 @@ font-size:13px;
 gap:12px;
 }
 
+.generator-toggle-action-row{
+display:grid;
+grid-template-columns:minmax(0, 1fr) auto;
+gap:10px;
+align-items:stretch;
+}
+
 .generator-toggle-row{
 display:flex;
 align-items:center;
@@ -2559,10 +2886,32 @@ gap:10px;
 margin-top:2px;
 }
 
+.generator-source-layout{
+display:grid;
+grid-template-columns:minmax(0, 1fr) 68px;
+gap:12px;
+align-items:stretch;
+}
+
+.generator-source-layout:has(.generator-thumbnail-strip:empty){
+grid-template-columns:minmax(0, 1fr);
+}
+
 .generator-thumbnail-strip{
 display:grid;
 grid-template-columns:repeat(5, minmax(0, 1fr));
 gap:7px;
+}
+
+.generator-thumbnail-strip:empty{
+display:none;
+}
+
+.generator-source-layout .generator-thumbnail-strip{
+grid-template-columns:1fr;
+grid-auto-rows:52px;
+gap:10px;
+align-content:start;
 }
 
 .generator-thumb{
@@ -2615,6 +2964,28 @@ padding:0 4px;
 text-shadow:0 1px 6px rgba(0,0,0,0.5);
 }
 
+.generator-source-layout .generator-thumb{
+min-height:52px;
+padding:0;
+border-radius:14px;
+border-style:solid;
+border-color:rgba(255,255,255,0.05);
+background:
+linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 18px rgba(2,6,23,0.16);
+}
+
+.generator-source-layout .generator-thumb span{
+display:none;
+}
+
+.generator-source-layout .generator-thumb.active{
+border-color:rgba(196, 161, 96, 0.38);
+background:
+linear-gradient(180deg, rgba(196, 161, 96, 0.14), rgba(88,184,115,0.08));
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.05), 0 14px 24px rgba(2,6,23,0.2);
+}
+
 .generator-limit-note{
 font-size:11px;
 line-height:1.55;
@@ -2652,6 +3023,12 @@ color:var(--button-premium-text);
 background:var(--button-premium-bg);
 border-color:var(--button-premium-border);
 box-shadow:var(--button-premium-shadow);
+}
+
+.generator-toggle-action-row .generator-cta{
+min-width:188px;
+padding-inline:18px;
+align-self:stretch;
 }
 
 body[data-theme="light"] .generator-cta{
@@ -2910,7 +3287,7 @@ animation:shake 0.4s ease;
 100%{transform:translate(0,0);}
 }
 
-/* ===== MOBILE FINAL (Pluto PRO) ===== */
+/* ===== MOBILE WORKSPACE PASS ===== */
 
 @media (max-width: 900px){
 body{
@@ -2924,11 +3301,17 @@ min-height:100dvh;
 overflow:visible;
 }
 .platform-header{
-padding:12px 12px 10px;
-gap:10px;
 position:sticky;
 top:0;
 z-index:25;
+height:auto;
+min-height:unset;
+padding:12px 12px 10px;
+gap:10px;
+align-items:flex-start;
+}
+.platform-brand{
+width:100%;
 }
 .platform-brand-name{
 font-size:14px;
@@ -2937,18 +3320,43 @@ font-size:14px;
 font-size:10px;
 }
 .platform-actions{
+width:100%;
+order:2;
+display:grid;
+grid-template-columns:max-content max-content minmax(0, 1fr);
 align-items:center;
-justify-content:space-between;
+gap:8px;
 }
 .platform-plan-badge{
 height:30px;
-padding:0 10px;
-font-size:10px;
+min-width:0;
+max-width:118px;
+padding:0 9px;
+font-size:9px;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
 }
 .platform-pill{
 height:34px;
 padding:0 12px;
 font-size:11px;
+}
+.platform-nav{
+order:3;
+}
+#platformProfileLink{
+min-width:0;
+max-width:110px;
+padding:0 10px;
+font-size:10px;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+}
+#platformLoginLink{
+min-width:96px;
+justify-self:stretch;
 }
 .platform-link{
 height:34px;
@@ -2956,25 +3364,60 @@ padding:0 12px;
 font-size:11px;
 }
 .platform-surface{
-inset:68px 10px 10px 10px;
+inset:72px 10px 10px 10px;
 }
 .platform-surface-panel{
+max-height:calc(100dvh - 20px);
 border-radius:24px;
 }
 .platform-surface-header{
-padding:16px 16px 10px;
+padding:16px 16px 12px;
+gap:12px;
+align-items:flex-start;
 }
 .platform-surface-body{
 padding:14px;
-gap:14px;
+gap:12px;
 }
 .platform-surface-title{
 font-size:18px;
+}
+.platform-surface-subtitle{
+font-size:13px;
+line-height:1.55;
+max-width:none;
 }
 .platform-surface-close{
 min-width:40px;
 height:40px;
 padding:0 12px;
+}
+.platform-surface-card{
+padding:16px 16px 18px;
+border-radius:20px;
+}
+.platform-surface-card-title{
+font-size:17px;
+}
+.platform-surface-card-copy{
+font-size:13px;
+line-height:1.6;
+}
+.surface-chip-row{
+gap:8px;
+}
+.surface-chip{
+padding:7px 10px;
+font-size:10px;
+letter-spacing:0.07em;
+}
+.surface-actions{
+gap:8px;
+}
+.surface-actions button{
+width:100%;
+min-width:0;
+justify-content:center;
 }
 .studio-overlay{
 top:12px;
@@ -2989,16 +3432,17 @@ max-height:calc(100dvh - 24px);
 /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ FIX VIEWER SHFAQJE */
 .viewer{
 display:block !important;
-order:3;
+order:1;
 
 width:100% !important;
-height:280px !important;
+height:clamp(280px, 38vh, 360px) !important;
 
-min-height:200px;
+min-height:280px !important;
 flex-shrink:0;
 
 position:relative;
 z-index:1;
+border-radius:26px;
 }
 
 /* panel sipÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«r */
@@ -3019,7 +3463,10 @@ overflow:visible !important;
 display:flex !important;
 flex-direction:column !important;
 height:auto !important;
-min-height:100vh !important;
+max-height:none !important;
+min-height:0 !important;
+padding:12px 10px 0;
+gap:12px;
 grid-template-columns:none !important;   /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ KJO E VRIT GRID */
 }
 
@@ -3027,6 +3474,7 @@ grid-template-columns:none !important;   /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â
 .sidebar, .panel, .viewer{
 width:100% !important;
 height:auto !important;
+max-height:none !important;
 min-height:auto !important;
 }
 .sidebar{
@@ -3076,16 +3524,12 @@ gap:10px;
 }
 
 .viewer-title-block{
-padding:10px 12px 9px;
+padding:0;
 max-width:170px;
 }
 
-.viewer-kicker{
-font-size:8px;
-}
-
 .viewer-toolbar-shell{
-padding:8px 10px 10px;
+padding:0;
 }
 
 .viewer-toolbar-label{
@@ -3093,23 +3537,23 @@ font-size:8px;
 }
 
 .viewer-toolbar-value{
-min-height:22px;
-padding:0 8px;
+min-height:0;
+padding:0;
 font-size:9px;
 }
 
 .viewer-status-strip{
 left:14px;
-right:14px;
+right:auto;
 bottom:14px;
-max-width:none;
-gap:10px;
-padding:9px 11px 10px;
+max-width:152px;
+gap:8px;
+padding:0;
 }
 
 .viewer-status-group{
-min-width:74px;
-flex:1 1 90px;
+min-width:0;
+flex:0 0 auto;
 }
 
 .viewer-status-label{
@@ -3164,6 +3608,10 @@ border-radius:22px;
 .generator-action-grid{
 grid-template-columns:1fr;
 }
+.generator-toggle-action-row,
+.generator-source-layout{
+grid-template-columns:1fr;
+}
 .generator-option-grid{
 grid-template-columns:1fr;
 gap:10px;
@@ -3173,11 +3621,309 @@ gap:10px;
 .generator-cta-compact{
 width:100%;
 }
+.generator-toggle-action-row .generator-cta{
+min-width:0;
+}
 .generator-thumbnail-strip{
 grid-template-columns:repeat(2, minmax(0, 1fr));
 }
+.generator-source-layout .generator-thumbnail-strip{
+grid-template-columns:repeat(2, minmax(0, 1fr));
+grid-auto-rows:minmax(48px, auto);
+}
+.generator-source-layout .generator-thumb span{
+display:block;
+}
 
-/* svg responsive */
+/* Mobile shell refinements */
+.workspace{
+max-height:none !important;
+min-height:0 !important;
+padding:12px 10px 0;
+gap:12px;
+}
+
+.sidebar,
+.panel,
+.viewer{
+max-height:none !important;
+}
+
+.sidebar{
+order:3;
+position:sticky;
+bottom:0;
+z-index:12;
+justify-content:flex-start;
+padding:10px 10px calc(10px + env(safe-area-inset-bottom, 0px));
+overflow-x:auto;
+overflow-y:hidden;
+background:linear-gradient(180deg, rgba(19, 24, 20, 0.96), rgba(11, 14, 12, 0.98));
+border:1px solid var(--line-soft);
+border-radius:24px 24px 0 0;
+box-shadow:0 -18px 34px rgba(0,0,0,0.18);
+backdrop-filter:blur(18px);
+}
+
+.sidebtn{
+flex:0 0 92px;
+width:92px;
+height:56px;
+padding:0 10px;
+border-radius:18px;
+font-size:11px;
+}
+
+.theme-toggle{
+flex:0 0 56px;
+width:56px;
+height:56px;
+min-height:56px;
+margin:0 0 0 auto;
+}
+
+.panel{
+order:2;
+padding:16px 14px 108px;
+margin:0;
+overflow:visible;
+border:1px solid var(--line-soft);
+border-right:none;
+border-radius:26px;
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.035);
+}
+
+.viewer{
+order:1;
+border-radius:26px;
+position:sticky;
+top:108px;
+z-index:10;
+}
+
+.viewer::before{
+inset:12px 12px 16px 12px;
+border-radius:22px;
+}
+
+.viewer::after{
+bottom:24px;
+width:min(78%, 460px);
+height:96px;
+}
+
+.viewer-topbar{
+flex-direction:row;
+align-items:flex-start;
+justify-content:flex-end;
+gap:8px;
+}
+
+.viewer-title-block,
+.viewer-toolbar-shell{
+width:auto;
+}
+
+.viewer-title-block{
+max-width:146px;
+padding:0;
+}
+
+.viewer-toolbar-shell{
+max-width:max-content;
+align-items:flex-end;
+margin-left:auto;
+gap:6px;
+padding:0;
+}
+
+.viewer-toolbar,
+.viewer-toolbar-meta{
+justify-content:flex-end;
+gap:6px;
+}
+
+.viewer-modes{
+gap:6px;
+flex-wrap:nowrap;
+justify-content:flex-end;
+}
+
+.viewer-toolbar-label{
+font-size:7px;
+letter-spacing:0.12em;
+}
+
+.viewer-toolbar-value{
+min-height:0;
+padding:0;
+font-size:8px;
+letter-spacing:0.1em;
+}
+
+.viewer-mode-btn{
+flex:0 0 auto;
+min-width:64px;
+padding:6px 10px;
+font-size:8px;
+letter-spacing:0.08em;
+}
+
+.viewer-status-strip{
+gap:6px;
+width:min(148px, calc(100% - 132px));
+max-width:148px;
+}
+
+.viewer-status-group{
+min-width:0;
+flex:0 0 auto;
+gap:2px;
+}
+
+.viewer-status-label{
+font-size:7px;
+letter-spacing:0.12em;
+}
+
+.viewer-status-value{
+font-size:10px;
+line-height:1.25;
+}
+
+.viewer-print-cta{
+left:auto !important;
+right:14px !important;
+align-items:flex-end !important;
+max-width:calc(100% - 28px) !important;
+padding:0 !important;
+}
+
+.viewer-print-note{
+font-size:7px !important;
+letter-spacing:0.11em !important;
+text-align:right !important;
+}
+
+.viewer-print-download{
+padding:8px 12px !important;
+font-size:9px !important;
+letter-spacing:0.06em !important;
+}
+
+.gallery-hero-card,
+.profile-hero-card{
+padding:18px 18px 20px;
+}
+
+.profile-hero-top{
+gap:14px;
+}
+
+.profile-name{
+font-size:24px;
+}
+
+.profile-email{
+font-size:13px;
+line-height:1.5;
+}
+
+.profile-meta-list{
+width:100%;
+}
+
+.profile-meta-item{
+min-width:0;
+}
+
+.profile-signal-card,
+.profile-billing-card,
+.profile-usage-total,
+.gallery-stage-card,
+.gallery-archive-item,
+.gallery-snapshot-item,
+.gallery-curation-card{
+padding:14px 14px 15px;
+border-radius:18px;
+}
+
+.profile-usage-grid{
+grid-template-columns:repeat(2, minmax(0, 1fr));
+gap:10px;
+}
+
+.profile-usage-total-value{
+font-size:26px;
+}
+
+.gallery-stage-card{
+min-height:unset;
+gap:16px;
+}
+
+.gallery-stage-title{
+font-size:16px;
+}
+
+.gallery-stage-copy,
+.gallery-archive-copy,
+.gallery-curation-copy,
+.profile-signal-copy,
+.profile-billing-copy,
+.profile-usage-total-copy{
+font-size:12px;
+line-height:1.6;
+}
+
+.gallery-stage-meta{
+flex-wrap:wrap;
+}
+
+.gallery-snapshot-value{
+font-size:20px;
+}
+
+.gallery-archive-type{
+align-self:flex-start;
+}
+
+.viewer-download{
+bottom:14px !important;
+width:auto !important;
+max-width:calc(100% - 40px) !important;
+min-width:0 !important;
+padding:9px 14px !important;
+font-size:11px !important;
+letter-spacing:0.07em !important;
+}
+
+.viewer-print-cta{
+top:128px !important;
+left:14px !important;
+right:14px !important;
+align-items:stretch !important;
+gap:6px !important;
+padding:8px 10px 10px !important;
+}
+
+.viewer-print-note{
+text-align:left !important;
+max-width:none !important;
+font-size:8px !important;
+letter-spacing:0.12em !important;
+}
+
+.viewer-print-download{
+width:auto !important;
+max-width:100% !important;
+min-width:0 !important;
+padding:9px 14px !important;
+font-size:10px !important;
+letter-spacing:0.07em !important;
+}
+
+/* SVG responsive */
 #svgViewer{
 position:absolute;
 top:50%;
@@ -3196,6 +3942,167 @@ pointer-events:none;
 }
 }
 
+@media (max-width: 640px){
+.platform-header{
+padding:10px 10px 9px;
+}
+
+.platform-brand-subtitle{
+display:none;
+}
+
+.platform-nav{
+gap:6px;
+}
+
+.platform-actions{
+order:2;
+display:grid;
+grid-template-columns:max-content max-content minmax(0, 1fr);
+align-items:center;
+gap:6px;
+}
+
+.platform-plan-badge{
+max-width:104px;
+padding:0 8px;
+font-size:9px;
+}
+
+#platformProfileLink{
+max-width:92px;
+padding:0 9px;
+font-size:9px;
+}
+
+#platformLoginLink{
+min-width:88px;
+}
+
+.workspace{
+padding:10px 8px 0;
+gap:10px;
+}
+
+.viewer{
+height:clamp(264px, 34vh, 320px) !important;
+min-height:264px !important;
+border-radius:24px;
+top:96px;
+}
+
+.panel{
+padding:14px 12px 104px;
+border-radius:24px;
+}
+
+.sidebar{
+padding:8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+gap:8px;
+border-radius:22px 22px 0 0;
+}
+
+.sidebtn{
+flex-basis:84px;
+width:84px;
+height:52px;
+font-size:10px;
+letter-spacing:0.04em;
+}
+
+.theme-toggle{
+flex-basis:52px;
+width:52px;
+height:52px;
+min-height:52px;
+}
+
+.viewer-title-block,
+.viewer-toolbar-shell,
+.viewer-status-strip,
+.viewer-print-cta{
+border-radius:0 !important;
+}
+
+.viewer-topbar{
+gap:6px;
+}
+
+.viewer-title-block{
+max-width:124px;
+padding:0;
+}
+
+.viewer-toolbar-shell{
+padding:0;
+gap:5px;
+}
+
+.viewer-mode-btn{
+min-width:58px;
+padding:5px 8px;
+font-size:8px;
+letter-spacing:0.07em;
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.04), inset 0 -6px 10px rgba(0,0,0,0.22), 0 8px 14px rgba(0,0,0,0.16);
+}
+
+.viewer-toolbar-label{
+font-size:6px;
+}
+
+.viewer-toolbar-value{
+width:auto;
+min-height:0;
+padding:0;
+font-size:7px;
+}
+
+.viewer-status-strip{
+gap:6px;
+width:min(132px, calc(100% - 124px));
+max-width:132px;
+}
+
+.viewer-status-group{
+min-width:0;
+flex:0 0 auto;
+}
+
+.viewer-status-label{
+font-size:6px;
+}
+
+.viewer-status-value{
+font-size:9px;
+}
+
+.viewer-download{
+min-width:136px;
+padding:8px 12px;
+font-size:10px;
+}
+
+.viewer-print-cta{
+right:12px !important;
+padding:0 !important;
+}
+
+.viewer-print-note{
+font-size:6px !important;
+}
+
+.viewer-print-download{
+min-width:132px;
+padding:7px 11px !important;
+font-size:8px !important;
+}
+
+.profile-usage-grid,
+.gallery-snapshot-grid{
+grid-template-columns:1fr;
+}
+}
+
 .viewer-download{
 position:absolute;
 bottom:14px;
@@ -3203,8 +4110,9 @@ left:50%;
 transform:translateX(-50%);
 
 width:auto;
-min-width:170px;
-padding:10px 18px;
+min-width:150px;
+max-width:calc(100% - 40px);
+padding:9px 14px;
 
 border-radius:999px;
 cursor:pointer;
@@ -3214,8 +4122,8 @@ border:1px solid var(--button-premium-border);
 
 color:var(--button-premium-text);
 font-weight:650;
-font-size:14px;
-letter-spacing:0.06em;
+font-size:11px;
+letter-spacing:0.07em;
 text-transform:uppercase;
 
 box-shadow:var(--viewer-download-shadow);
@@ -3238,18 +4146,15 @@ z-index:3;
 display:flex;
 flex-direction:column;
 align-items:flex-end;
-gap:7px;
-padding:10px 12px 12px;
-border-radius:20px;
-background:linear-gradient(180deg, rgba(19, 24, 20, 0.9), rgba(10, 12, 11, 0.78));
-border:1px solid rgba(164, 144, 101, 0.14);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -12px 18px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.1);
+gap:6px;
+padding:0;
+max-width:min(200px, calc(100% - 40px));
 }
 
 .viewer-print-note{
-font-size:9px;
+font-size:8px;
 font-weight:600;
-letter-spacing:0.14em;
+letter-spacing:0.12em;
 text-transform:uppercase;
 color:rgba(238, 219, 176, 0.76);
 text-align:right;
@@ -3258,15 +4163,16 @@ line-height:1.35;
 }
 
 .viewer-print-download{
-min-width:196px;
-padding:10px 16px;
+min-width:156px;
+max-width:100%;
+padding:9px 14px;
 border-radius:999px;
 border:1px solid var(--button-premium-border);
 background:var(--viewer-download-bg);
 color:var(--button-premium-text);
 font-weight:650;
-font-size:11px;
-letter-spacing:0.08em;
+font-size:10px;
+letter-spacing:0.07em;
 cursor:pointer;
 box-shadow:var(--viewer-download-shadow);
 transition:0.25s ease;
@@ -3280,11 +4186,6 @@ box-shadow:var(--viewer-download-hover-shadow);
 
 body[data-theme="light"] .viewer-print-note{
 color:rgba(108, 74, 18, 0.68);
-}
-
-body[data-theme="light"] .viewer-print-cta{
-background:linear-gradient(180deg, rgba(251, 253, 250, 0.94), rgba(236, 241, 236, 0.88));
-border-color:rgba(171, 131, 49, 0.12);
 }
 
 .studio-overlay{
@@ -3754,9 +4655,19 @@ min-height:unset;
 .surface-feature-grid,
 .surface-stat-grid,
 .profile-summary-grid,
+.profile-signal-grid,
+.profile-billing-grid,
 .gallery-grid,
-.gallery-wall{
+.gallery-wall,
+.gallery-showcase-grid,
+.gallery-stage-grid,
+.gallery-snapshot-grid,
+.gallery-curation-grid{
 grid-template-columns:1fr;
+}
+
+.gallery-archive-item{
+flex-direction:column;
 }
 
 .panel-footer{
@@ -3892,18 +4803,20 @@ padding-bottom:18px;
     <div class="generator-stack">
       <textarea id="generatorPrompt" class="generator-prompt" placeholder="Rounded robot toy with clean collectible silhouette."></textarea>
 
-      <div class="generator-toggle-row">
-        <div class="generator-toggle-copy">
-          <div class="generator-toggle-title">Toy Assist</div>
-          <div class="generator-toggle-note">Collectible prompt help.</div>
+      <div class="generator-toggle-action-row">
+        <div class="generator-toggle-row">
+          <div class="generator-toggle-copy">
+            <div class="generator-toggle-title">Toy Assist</div>
+            <div class="generator-toggle-note">Collectible prompt help.</div>
+          </div>
+          <label class="generator-switch" aria-label="Toy assist toggle">
+            <input id="generatorToyAssist" type="checkbox">
+            <span class="generator-switch-track"></span>
+          </label>
         </div>
-        <label class="generator-switch" aria-label="Toy assist toggle">
-          <input id="generatorToyAssist" type="checkbox">
-          <span class="generator-switch-track"></span>
-        </label>
+        <button id="generateConceptImageBtn" class="generator-cta" type="button" onclick="generateConceptImage()">Generate Image</button>
       </div>
 
-      <button id="generateConceptImageBtn" class="generator-cta" type="button" onclick="generateConceptImage()">Generate Image</button>
       <div id="generatorImageStatus" class="status"></div>
     </div>
   </div>
@@ -3933,18 +4846,18 @@ padding-bottom:18px;
       </div>
     </div>
 
-    <div class="dropzone" id="drop3d">
+    <div class="generator-source-layout">
+      <div class="dropzone" id="drop3d">
 
-    <p id="dropText3d">Drop source image or click to upload</p>
+      <p id="dropText3d">Drop source image or click to upload</p>
 
-    <img id="dropPreview3d" 
-    style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
+      <img id="dropPreview3d" 
+      style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
 
-    <input type="file" id="fileInput" multiple style="display:none">
+      <input type="file" id="fileInput" multiple style="display:none">
 
-    </div>
+      </div>
 
-    <div class="generator-stack">
       <div class="generator-thumbnail-strip" id="generatorThumbStrip">
       </div>
     </div>
@@ -4663,6 +5576,50 @@ filter:none;
 
 const API_BASE = window.PLUTO_API_BASE
 
+function getApiRequestHeaders(additionalHeaders = {}){
+if(typeof window.getPlutoApiHeaders === "function"){
+  return window.getPlutoApiHeaders(additionalHeaders)
+}
+
+return additionalHeaders
+}
+
+function syncUsageFromServerPayload(data, fallbackFeatureKey = ""){
+if(data?.usage){
+  window.PLUTO_ACCOUNT_USAGE = data.usage
+  if(typeof syncAuthPreviewUI === "function"){
+    syncAuthPreviewUI()
+  }
+  return
+}
+
+if(typeof window.refreshAccountUsageState === "function" && !(window.isLocalTestMode?.() || false)){
+  window.refreshAccountUsageState()
+  return
+}
+
+if(fallbackFeatureKey){
+  incrementUsage(fallbackFeatureKey)
+}
+}
+
+async function consumeFeatureUsageOrFallback(featureKey, options = {}){
+if(typeof window.consumeBackendFeatureUsage === "function" && !(window.isLocalTestMode?.() || false)){
+  await window.consumeBackendFeatureUsage(featureKey, options)
+  return "backend"
+}
+
+incrementUsage(featureKey)
+
+Object.entries(options.grantCredits || {}).forEach(([creditKey, amount]) => {
+  if(creditKey === "test3dDownloadCredit"){
+    grantViewerDownloadAccess("test3dModelDownload", amount)
+  }
+})
+
+return "local"
+}
+
 function getPublicAppConfig(){
 return window.PLUTO_APP_CONFIG || {}
 }
@@ -4967,6 +5924,7 @@ form.append("job_id",currentJobId)
 
 await fetch(API_BASE+"/api/upload",{
 method:"POST",
+headers:getApiRequestHeaders(),
 body:form
 })
 
@@ -4984,9 +5942,9 @@ const res=await fetch(API_BASE+"/api/generate",{
 
 method:"POST",
 
-headers:{
+headers:getApiRequestHeaders({
 "Content-Type":"application/json"
-},
+}),
 
 body: JSON.stringify({
   job_id: currentJobId
@@ -4996,6 +5954,7 @@ body: JSON.stringify({
 
 const data=await res.json()
 
+syncUsageFromServerPayload(data)
 checkStatus(data.task_id)
 
 }
@@ -5151,11 +6110,18 @@ await new Promise((resolve) => setTimeout(resolve, 1300))
 status.innerHTML = "Building your 3D preview..."
 progressBar.style.width = "68%"
 
+await consumeFeatureUsageOrFallback("free3dGeneration", {
+  grantCredits: {
+    test3dDownloadCredit: 1
+  }
+})
+
 await new Promise((resolve) => setTimeout(resolve, 1600))
 
 loadGLB(testModel.url, testModel.filename || "free-test.glb")
-showViewerDownload(testModel.url, testModel.filename || "free-test.glb")
-incrementUsage("free3dGeneration")
+showViewerDownload(testModel.url, testModel.filename || "free-test.glb", {
+  accessPolicyKey: "test3dModelDownload"
+})
 progressBar.style.width = "100%"
 status.innerHTML = `${testModel.label} is ready.`
 }catch(err){
@@ -5204,8 +6170,9 @@ const svgViewer = document.getElementById("svgViewer")
 if(!svgViewer) return
 
 const currentAsset = window.currentViewerAsset || null
+const currentTheme = document.body.getAttribute("data-theme") || "dark"
 svgViewer.style.filter = currentAsset?.type === "svg"
-  ? "invert(1) brightness(2)"
+  ? (currentTheme === "light" ? "none" : "invert(1) brightness(2)")
   : "none"
 }
 
@@ -5428,12 +6395,6 @@ const currentPlan = authState.mode === "premium"
   : authState.mode === "free"
     ? "Free Account"
     : "Guest"
-const limits = {
-  aiImage: getUsageLimit("aiImage"),
-  svgGeneration: getUsageLimit("svgGeneration"),
-  toyGeneration: getUsageLimit("toyGeneration"),
-  free3dGeneration: getUsageLimit("free3dGeneration")
-}
 
 return `
   <div class="platform-surface-card wide">
@@ -5459,10 +6420,10 @@ return `
         <div class="surface-plan-title">Explore</div>
         <div class="surface-plan-price">Free <span>no login</span></div>
         <ul class="surface-plan-list">
-          <li>See the workspace</li>
-          <li>Try toy creation</li>
-          <li>Basic SVG tools</li>
-          <li>Simple first-touch experience</li>
+          <li>2 AI photos per day</li>
+          <li>1 SVG generation per day</li>
+          <li>1 test 3D generation per day</li>
+          <li>Viewer-only test models with no download access</li>
         </ul>
       </div>
       <div class="surface-plan-card">
@@ -5470,10 +6431,11 @@ return `
         <div class="surface-plan-title">Create</div>
         <div class="surface-plan-price">Free <span>with account</span></div>
         <ul class="surface-plan-list">
-          <li>More usage room</li>
-          <li>Toy Studio access</li>
-          <li>Print Fix workflow</li>
-          <li>Cleaner account continuity</li>
+          <li>10 AI photos per week</li>
+          <li>Unlimited SVG generation</li>
+          <li>3 test 3D generations per week</li>
+          <li>5 Relief STL exports per week, with unlimited preview</li>
+          <li>1 download credit per generated test model</li>
         </ul>
       </div>
       <div class="surface-plan-card featured">
@@ -5481,10 +6443,10 @@ return `
         <div class="surface-plan-title">Subscriber</div>
         <div class="surface-plan-price">${billingRuntime?.priceLabel || "Premium pricing"}</div>
         <ul class="surface-plan-list">
-          <li>Premium 3D generation</li>
-          <li>Better limits and faster flow</li>
-          <li>Cleaner billing management</li>
-          <li>Higher-output production path</li>
+          <li>50 AI photos per month</li>
+          <li>Unlimited SVG, test 3D, and Relief STL</li>
+          <li>Real 3D / Pro generation: 10 per month</li>
+          <li>Unlimited test-model downloads and billing management</li>
         </ul>
         <div class="surface-actions">
           ${primaryPlanActionHandler ? `<button type="button" onclick="${primaryPlanActionHandler}">${primaryPlanActionLabel}</button>` : `<button type="button" disabled>${primaryPlanActionLabel}</button>`}
@@ -5502,12 +6464,14 @@ return `
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Included Access</div>
     <div class="platform-surface-card-title">What changes across each plan</div>
-    <div class="platform-surface-card-copy">The product is structured so exploration stays simple, free accounts feel useful, and Premium clearly unlocks the faster commercial-grade workflow.</div>
+    <div class="platform-surface-card-copy">The current account allowance below reflects the configured production policy, even while local development still runs in unlimited test mode.</div>
     <ul class="platform-surface-list">
-      <li>AI image limit: ${limits.aiImage === null ? "Unlimited" : limits.aiImage}</li>
-      <li>SVG limit: ${limits.svgGeneration === null ? "Unlimited" : limits.svgGeneration}</li>
-      <li>Toy generation limit: ${limits.toyGeneration === null ? "Unlimited" : limits.toyGeneration}</li>
-      <li>3D generation limit: ${limits.free3dGeneration === null ? "Unlimited" : limits.free3dGeneration}</li>
+      <li>AI image: ${formatUsageAllowance("aiImage")}</li>
+      <li>SVG generation: ${formatUsageAllowance("svgGeneration")}</li>
+      <li>Test 3D generation: ${formatUsageAllowance("free3dGeneration")}</li>
+      <li>Relief STL export: ${formatUsageAllowance("reliefStlGeneration")}</li>
+      <li>Real 3D / Pro generation: ${formatUsageAllowance("real3dGeneration")}</li>
+      <li>Test-model download: ${getTestModelDownloadPolicyLabel()}</li>
     </ul>
   </div>
   <div class="platform-surface-card">
@@ -5524,60 +6488,97 @@ return `
 }
 
 function renderGallerySurface(){
+const authState = getAuthPreviewState()
+const usage = getUsageSnapshot()
+const usageTotal = Object.values(usage).reduce((sum, value) => sum + Number(value || 0), 0)
+const sessionMode = authState.loggedIn ? "Synced" : "Local"
+
 return `
   <div class="surface-stack wide">
-    <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Recent Work</div>
-      <div class="platform-surface-card-title">Latest work from the studio</div>
-      <div class="platform-surface-card-copy">A clean running row of the newest outputs so the gallery feels like a real creative history instead of a debug log.</div>
-      <div class="history-list" style="margin-top:14px;">
-        <div class="history-row">
-          <div class="history-row-main">
-            <div class="history-row-title">Robot.glb</div>
-            <div class="history-row-copy">A polished character model kept near the top of the recent 3D work list.</div>
-          </div>
-          <div class="history-row-type">Latest 3D</div>
+    <div class="platform-surface-card gallery-hero-card wide">
+      <div class="platform-surface-card-label">Gallery Overview</div>
+      <div class="platform-surface-card-title">A simpler studio wall for the best current work</div>
+      <div class="platform-surface-card-copy">Gallery now stays focused on two jobs only: show the strongest pieces first and keep a clean recent-history list underneath.</div>
+      <div class="surface-chip-row">
+        <span class="surface-chip primary">3 Formats Visible</span>
+        <span class="surface-chip">${sessionMode} Session</span>
+        <span class="surface-chip">${usageTotal} Actions Tracked</span>
+      </div>
+      <div class="gallery-snapshot-grid" style="margin-top:16px;">
+        <div class="gallery-snapshot-item">
+          <div class="gallery-snapshot-value">${usage.free3dGeneration}</div>
+          <div class="gallery-snapshot-label">Test 3D</div>
         </div>
-        <div class="history-row">
-          <div class="history-row-main">
-            <div class="history-row-title">f1car.glb</div>
-            <div class="history-row-copy">Recent vehicle model pushed through the viewer and print preparation flow.</div>
-          </div>
-          <div class="history-row-type">Latest Print</div>
+        <div class="gallery-snapshot-item">
+          <div class="gallery-snapshot-value">${usage.svgGeneration}</div>
+          <div class="gallery-snapshot-label">SVG Actions</div>
         </div>
-        <div class="history-row">
-          <div class="history-row-main">
-            <div class="history-row-title">Vector Outline</div>
-            <div class="history-row-copy">Saved SVG result kept beside the 3D flow for mixed-format projects.</div>
+        <div class="gallery-snapshot-item">
+          <div class="gallery-snapshot-value">${sessionMode}</div>
+          <div class="gallery-snapshot-label">Session Mode</div>
+        </div>
+      </div>
+      <div class="gallery-stage-grid" style="margin-top:16px;">
+        <div class="gallery-stage-card featured">
+          <div>
+            <div class="gallery-stage-kicker">Featured 3D</div>
+            <div class="gallery-stage-title">Robot Hero Model</div>
+            <div class="gallery-stage-copy">The clearest hero asset in the current studio direction and the right piece to anchor the gallery first.</div>
           </div>
-          <div class="history-row-type">Latest SVG</div>
+          <div class="gallery-stage-meta">
+            <span>GLB</span>
+            <span>Showcase</span>
+          </div>
+        </div>
+        <div class="gallery-stage-card">
+          <div>
+            <div class="gallery-stage-kicker">Print Ready</div>
+            <div class="gallery-stage-title">F1 Car STL</div>
+            <div class="gallery-stage-copy">A strong print-oriented asset that still carries the premium viewer language cleanly.</div>
+          </div>
+          <div class="gallery-stage-meta">
+            <span>STL</span>
+            <span>Prepared</span>
+          </div>
+        </div>
+        <div class="gallery-stage-card">
+          <div>
+            <div class="gallery-stage-kicker">Vector Asset</div>
+            <div class="gallery-stage-title">Helmet Outline</div>
+            <div class="gallery-stage-copy">A simple SVG example that keeps the gallery visibly multi-format instead of 3D-only.</div>
+          </div>
+          <div class="gallery-stage-meta">
+            <span>SVG</span>
+            <span>Saved</span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="platform-surface-card">
-      <div class="platform-surface-card-label">Best Work</div>
-      <div class="platform-surface-card-title">Highlighted pieces worth keeping visible</div>
-      <div class="platform-surface-card-copy">A focused showcase of the strongest pieces currently carrying the Pluto3D visual direction.</div>
-      <div class="gallery-wall" style="margin-top:16px;">
-        <div class="gallery-tile">
-          <div>
-            <div class="gallery-tile-title">Robot Hero Model</div>
-            <div class="gallery-tile-copy">A stylized character piece that represents the toy direction well and already reads like a featured gallery asset.</div>
+    <div class="platform-surface-card wide">
+      <div class="platform-surface-card-label">Recent Archive</div>
+      <div class="platform-surface-card-title">Latest saved outputs from the active studio flow</div>
+      <div class="platform-surface-card-copy">This keeps the history readable and useful, without turning the gallery into a long product-management list.</div>
+      <div class="gallery-archive-list" style="margin-top:16px;">
+        <div class="gallery-archive-item">
+          <div class="gallery-archive-main">
+            <div class="gallery-archive-title">Robot.glb</div>
+            <div class="gallery-archive-copy">Recent hero model still strong enough to sit at the top of the account-facing archive.</div>
           </div>
-          <div class="gallery-tile-meta">
-            <span>Robot.glb</span>
-            <span>Featured</span>
-          </div>
+          <div class="gallery-archive-type">Latest 3D</div>
         </div>
-        <div class="gallery-tile">
-          <div>
-            <div class="gallery-tile-title">F1 Car Showcase</div>
-            <div class="gallery-tile-copy">A clean vehicle model that balances speed, print appeal, and viewer presentation for the first showcase row.</div>
+        <div class="gallery-archive-item">
+          <div class="gallery-archive-main">
+            <div class="gallery-archive-title">f1car.glb</div>
+            <div class="gallery-archive-copy">Vehicle piece already aligned with the premium viewer and print-prep direction.</div>
           </div>
-          <div class="gallery-tile-meta">
-            <span>f1car.glb</span>
-            <span>Featured</span>
+          <div class="gallery-archive-type">Latest Print</div>
+        </div>
+        <div class="gallery-archive-item">
+          <div class="gallery-archive-main">
+            <div class="gallery-archive-title">Vector Outline</div>
+            <div class="gallery-archive-copy">Simple mixed-format proof that SVG sits naturally beside the main 3D outputs.</div>
           </div>
+          <div class="gallery-archive-type">Latest SVG</div>
         </div>
       </div>
     </div>
@@ -5730,21 +6731,27 @@ return `
       </div>
     </div>
     <div class="platform-surface-card-copy">${accountCopy}</div>
-    <div class="profile-summary-grid">
-      <div class="profile-summary-block">
-        <div class="profile-summary-label">Account State</div>
-        <div class="profile-summary-value">${authState.loggedIn ? "Active Session" : "Guest Mode"}</div>
-        <div class="profile-summary-copy">${liveAuthReady ? "Live auth is ready and the account surface is synced for continued use." : "A real account unlocks saved identity, billing, and smoother continuity."}</div>
+    <div class="surface-chip-row profile-pill-row">
+      <span class="surface-chip primary">${authState.planLabel}</span>
+      <span class="surface-chip">${subscriptionStatusLabel}</span>
+      <span class="surface-chip">Plan Source ${sourceLabel}</span>
+      <span class="surface-chip">${authState.loggedIn ? "Account Synced" : "Guest Session"}</span>
+    </div>
+    <div class="profile-signal-grid">
+      <div class="profile-signal-card">
+        <div class="profile-signal-label">Account State</div>
+        <div class="profile-signal-value">${authState.loggedIn ? "Active Session" : "Guest Mode"}</div>
+        <div class="profile-signal-copy">${liveAuthReady ? "Live auth is ready and the account surface is synced for continued use." : "A real account unlocks saved identity, billing, and smoother continuity."}</div>
       </div>
-      <div class="profile-summary-block">
-        <div class="profile-summary-label">Resolved Plan</div>
-        <div class="profile-summary-value">${planLabel}</div>
-        <div class="profile-summary-copy">Source: ${sourceLabel}</div>
+      <div class="profile-signal-card">
+        <div class="profile-signal-label">Resolved Plan</div>
+        <div class="profile-signal-value">${planLabel}</div>
+        <div class="profile-signal-copy">Source: ${sourceLabel}</div>
       </div>
-      <div class="profile-summary-block">
-        <div class="profile-summary-label">Current Billing</div>
-        <div class="profile-summary-value">${renewalDate || "No renewal yet"}</div>
-        <div class="profile-summary-copy">${canManageBilling ? "Billing portal is available for this account." : "Portal access appears after the first subscription is linked."}</div>
+      <div class="profile-signal-card">
+        <div class="profile-signal-label">Current Billing</div>
+        <div class="profile-signal-value">${renewalDate || "No renewal yet"}</div>
+        <div class="profile-signal-copy">${canManageBilling ? "Billing portal is available for this account." : "Portal access appears after the first subscription is linked."}</div>
       </div>
     </div>
   </div>
@@ -5752,24 +6759,27 @@ return `
     <div class="platform-surface-card-label">Subscription</div>
     <div class="platform-surface-card-title">${lifecycle.title}</div>
     <div class="platform-surface-card-copy">${lifecycle.copy}</div>
-    <div class="profile-meta-list">
-      <div class="profile-meta-item">
-        <div class="profile-meta-label">Status</div>
-        <div class="profile-meta-value">${subscriptionStatusLabel}</div>
+    <div class="profile-billing-grid">
+      <div class="profile-billing-card">
+        <div class="profile-billing-label">Status</div>
+        <div class="profile-billing-value">${subscriptionStatusLabel}</div>
+        <div class="profile-billing-copy">Current subscription visibility inside the account layer.</div>
       </div>
-      <div class="profile-meta-item">
-        <div class="profile-meta-label">Plan</div>
-        <div class="profile-meta-value">${subscriptionPlanLabel}</div>
+      <div class="profile-billing-card">
+        <div class="profile-billing-label">Plan</div>
+        <div class="profile-billing-value">${subscriptionPlanLabel}</div>
+        <div class="profile-billing-copy">The plan currently resolved from account and backend state.</div>
       </div>
-      <div class="profile-meta-item">
-        <div class="profile-meta-label">Billing</div>
-        <div class="profile-meta-value">${lifecycle.supportLabel}</div>
+      <div class="profile-billing-card">
+        <div class="profile-billing-label">Billing Path</div>
+        <div class="profile-billing-value">${lifecycle.supportLabel}</div>
+        <div class="profile-billing-copy">Portal and checkout surfaces stay lightweight and clear.</div>
       </div>
-      ${renewalDate ? `
-      <div class="profile-meta-item">
-        <div class="profile-meta-label">Current Period</div>
-        <div class="profile-meta-value">${renewalDate}</div>
-      </div>` : ""}
+      <div class="profile-billing-card">
+        <div class="profile-billing-label">Current Period</div>
+        <div class="profile-billing-value">${renewalDate || "Awaiting first renewal"}</div>
+        <div class="profile-billing-copy">${canManageBilling ? "Manage billing is available from this account state." : "Portal access appears after the first linked subscription."}</div>
+      </div>
     </div>
     <div class="surface-actions">
       ${lifecycle.actionLabel ? `<button type="button" onclick="${lifecycle.actionHandler}">${lifecycle.actionLabel}</button>` : ""}
@@ -5780,6 +6790,11 @@ return `
     <div class="platform-surface-card-label">Usage</div>
     <div class="platform-surface-card-title">Activity snapshot</div>
     <div class="platform-surface-card-copy">A compact view of the current usage counters across the main creation flows.</div>
+    <div class="profile-usage-total">
+      <div class="profile-usage-total-label">Total Account Activity</div>
+      <div class="profile-usage-total-value">${usageTotal}</div>
+      <div class="profile-usage-total-copy">${authState.loggedIn ? "Usage can grow into a real saved account history as more output surfaces become account-linked." : "Guest mode keeps the current session lightweight while still showing the active local counters."}</div>
+    </div>
     <div class="profile-usage-grid">
       <div class="profile-usage-item">
         <div class="profile-usage-value">${usage.aiImage}</div>
@@ -5795,7 +6810,15 @@ return `
       </div>
       <div class="profile-usage-item">
         <div class="profile-usage-value">${usage.free3dGeneration}</div>
-        <div class="profile-usage-label">3D Actions</div>
+        <div class="profile-usage-label">Test 3D</div>
+      </div>
+      <div class="profile-usage-item">
+        <div class="profile-usage-value">${usage.reliefStlGeneration}</div>
+        <div class="profile-usage-label">Relief STL</div>
+      </div>
+      <div class="profile-usage-item">
+        <div class="profile-usage-value">${usage.real3dGeneration}</div>
+        <div class="profile-usage-label">Real 3D</div>
       </div>
       <div class="profile-usage-item">
         <div class="profile-usage-value">${usageTotal}</div>
@@ -5812,6 +6835,11 @@ return `
     <div class="platform-surface-card-title">Need help with account or billing?</div>
     <div class="platform-surface-card-copy">Support stays clean and human: account questions, upgrade help, and billing issues all route through the same contact path.</div>
     <div class="profile-support-note">${getSupportLabel()}</div>
+    <div class="surface-chip-row">
+      <span class="surface-chip">${authRuntime.statusLabel}</span>
+      <span class="surface-chip">${authState.loggedIn ? "Signed In" : "Guest"}</span>
+      <span class="surface-chip">${canManageBilling ? "Portal Ready" : "Portal Pending"}</span>
+    </div>
     <ul class="profile-support-list">
       <li>${getSupportContactLine()}</li>
       <li>Use Plans for upgrade context and Support for account or billing questions.</li>
@@ -5867,10 +6895,42 @@ const labels = {
   aiImage: "AI image generation",
   svgGeneration: "SVG generation",
   toyGeneration: "Toy generation",
-  free3dGeneration: "3D generation"
+  free3dGeneration: "Test 3D generation",
+  reliefStlGeneration: "Relief STL export",
+  real3dGeneration: "Real 3D generation"
 }
 
 return labels[featureKey] || featureKey
+}
+
+function formatUsageAllowance(featureKey){
+const rule = typeof getUsageRule === "function"
+  ? getUsageRule(featureKey, { ignoreLocalTestMode:true })
+  : { limit:null, period:null }
+
+if(rule.limit === null){
+  return "Unlimited"
+}
+
+if(Number(rule.limit) <= 0){
+  return "Locked"
+}
+
+return `${rule.limit} / ${rule.period}`
+}
+
+function getTestModelDownloadPolicyLabel(){
+const mode = getAuthPreviewState().mode || "guest"
+
+if(mode === "premium"){
+  return "Unlimited"
+}
+
+if(mode === "free"){
+  return "1 per generated test model"
+}
+
+return "Not available"
 }
 
 function openUsageLimitPrompt(featureKey){
@@ -5882,7 +6942,7 @@ if(body){
       <div class="platform-surface-card-label">Usage Limit Reached</div>
       <div class="platform-surface-card-title">${getUsageLabel(featureKey)} is currently limited for your account tier</div>
       <div class="platform-surface-card-copy">
-        Your current plan is <strong>${getAuthPreviewState().planLabel}</strong>. Usage limits apply to the current account tier, while premium locks follow the backend account plan.
+        Your current plan is <strong>${getAuthPreviewState().planLabel}</strong>. Configured allowance for this feature: <strong>${formatUsageAllowance(featureKey)}</strong>. Usage limits apply to the current account tier, while premium locks follow the backend account plan.
       </div>
     </div>
   `)
@@ -6158,13 +7218,13 @@ if(status){
 try{
   const res = await fetch(API_BASE + "/api/ai-photo", {
     method:"POST",
+    headers:getApiRequestHeaders(),
     body:form
   })
 
   if(!res.ok){
-    const txt = await res.text()
-    console.log(txt)
-    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+    const errorData = await res.json().catch(() => ({}))
+    throw new Error(errorData.detail || errorData.error || "AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
   }
 
   const data = await res.json()
@@ -6187,7 +7247,7 @@ try{
 
   setSharedGeneratorPreview(entry.url, entry)
   pushGeneratorRecentImage(entry)
-  incrementUsage("aiImage")
+  syncUsageFromServerPayload(data, "aiImage")
 
   if(status){
     status.innerHTML = "Image ready."
@@ -6398,13 +7458,13 @@ if(status){
 try{
   const res = await fetch(API_BASE + "/api/ai-photo", {
     method:"POST",
+    headers:getApiRequestHeaders(),
     body:form
   })
 
   if(!res.ok){
-    const txt = await res.text()
-    console.log(txt)
-    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+    const errorData = await res.json().catch(() => ({}))
+    throw new Error(errorData.detail || errorData.error || "AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
   }
 
   const data = await res.json()
@@ -6427,7 +7487,7 @@ try{
 
   setSvgSourcePreview(entry.url, entry)
   pushSvgRecentImage(entry)
-  incrementUsage("aiImage")
+  syncUsageFromServerPayload(data, "aiImage")
 
   if(status){
     status.innerHTML = "SVG source image is ready."
@@ -6450,8 +7510,14 @@ form.append("clean_background", cleanBackground)
 
 const res = await fetch(API_BASE + "/api/svg",{
 method:"POST",
+headers:getApiRequestHeaders(),
 body:form
 })
+
+if(!res.ok){
+const errorData = await res.json().catch(() => ({}))
+throw new Error(errorData.detail || errorData.error || "SVG generation failed")
+}
 
 const data = await res.json()
 
@@ -6556,7 +7622,7 @@ const data = await requestSvgFromSourceState(sourceState, detail, cleanBackgroun
 const svgUrl = API_BASE + data.svg_url
 
 if(!skipUsageIncrement){
-incrementUsage("svgGeneration")
+syncUsageFromServerPayload(data, "svgGeneration")
 }
 
 showGeneratedSvg(svgUrl, `vector-${detail}.svg`)
@@ -6710,11 +7776,11 @@ if(surfaceMode === "arched" && borderMode === "print-tab"){
 }
 
 if(surfaceMode === "arched"){
-  meta.textContent = `Arched STL • ${sizeLabel.toLowerCase()} • ${qualityLabel.toLowerCase()} • ${borderMode.toLowerCase()} border`
+  meta.textContent = `Arched STL - ${sizeLabel.toLowerCase()} - ${qualityLabel.toLowerCase()} - ${borderMode.toLowerCase()} border`
   return
 }
 
-meta.textContent = `Flat STL • ${sizeLabel.toLowerCase()} • ${qualityLabel.toLowerCase()} • ${borderMode.toLowerCase()} border`
+meta.textContent = `Flat STL - ${sizeLabel.toLowerCase()} - ${qualityLabel.toLowerCase()} - ${borderMode.toLowerCase()} border`
 }
 
 function renderReliefSourcePreview(){
@@ -6876,13 +7942,13 @@ if(status){
 try{
   const res = await fetch(API_BASE + "/api/ai-photo", {
     method:"POST",
+    headers:getApiRequestHeaders(),
     body:form
   })
 
   if(!res.ok){
-    const txt = await res.text()
-    console.log(txt)
-    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+    const errorData = await res.json().catch(() => ({}))
+    throw new Error(errorData.detail || errorData.error || "AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
   }
 
   const data = await res.json()
@@ -6905,7 +7971,7 @@ try{
 
   setReliefSourcePreview(entry.url, entry)
   pushReliefRecentImage(entry)
-  incrementUsage("aiImage")
+  syncUsageFromServerPayload(data, "aiImage")
 
   if(status){
     status.innerHTML = "Relief source image is ready."
@@ -7731,6 +8797,11 @@ async function generateReliefStl(){
 const status = document.getElementById("reliefStatus")
 const sourceState = getReliefSourceState()
 
+if(!canUseFeature("reliefStlGeneration")){
+  openUsageLimitPrompt("reliefStlGeneration")
+  return
+}
+
 if(sourceState.kind === "empty"){
   alert("Generate or upload a relief source first")
   return
@@ -7758,6 +8829,7 @@ if(status){
 }
 
 try{
+  await consumeFeatureUsageOrFallback("reliefStlGeneration")
   const blob = await getReliefSourceBlob(sourceState)
   const image = await loadReliefImageFromBlob(blob)
   const stlUrl = buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode, surfaceMode)
@@ -7837,15 +8909,13 @@ try{
 
 const res = await fetch(API_BASE+"/api/ai-photo",{
 method:"POST",
+headers:getApiRequestHeaders(),
 body:form
 })
 
 if(!res.ok){
-
-const txt = await res.text()
-console.log(txt)
-
-alert("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+const errorData = await res.json().catch(() => ({}))
+alert(errorData.detail || errorData.error || "AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
 console.error("AI request failed")
 return
 
@@ -7870,7 +8940,7 @@ return
 const viewer = document.getElementById("svgViewer")
 
 viewer.src = data.image_url
-incrementUsage("aiImage")
+syncUsageFromServerPayload(data, "aiImage")
 showViewerDownload(data.image_url, "ai_image.png")
 viewer.style.display="block"
 viewer.style.filter = "none"
@@ -7923,13 +8993,14 @@ return
 
 }
 
+try{
 const res = await fetch(API_BASE+"/api/image-to-3d",{
 
 method:"POST",
 
-headers:{
+headers:getApiRequestHeaders({
 "Content-Type":"application/json"
-},
+}),
 
 body:JSON.stringify({
 job_id: currentJobId
@@ -7944,14 +9015,26 @@ alert(data.detail || data.error || "3D generation could not be started")
 return
 }
 
+syncUsageFromServerPayload(data)
 status.innerHTML = "Sending to Meshy..."
 progressBar.style.width = "4%"
 checkStatus(data.task_id)
+}catch(error){
+console.error("3D generation start failed", error)
+status.innerHTML = "3D generation could not start"
+progressBar.style.width = "0%"
+alert(error.message || "3D generation could not be started")
+}
 
 }
 async function convertTo3DPro(){
 
 const viewer = document.getElementById("svgViewer")
+
+if(!canUseFeature("real3dGeneration")){
+openUsageLimitPrompt("real3dGeneration")
+return
+}
 
 if(!viewer.src){
 
@@ -7960,13 +9043,14 @@ return
 
 }
 
+try{
 const res = await fetch(API_BASE+"/api/image-to-3d-pro",{
 
 method:"POST",
 
-headers:{
+headers:getApiRequestHeaders({
 "Content-Type":"application/json"
-},
+}),
 
 body:JSON.stringify({
 image_url: viewer.src
@@ -7981,9 +9065,16 @@ alert(data.detail || data.error || "3D PRO generation could not be started")
 return
 }
 
+syncUsageFromServerPayload(data)
 status.innerHTML = "Sending to Meshy..."
 progressBar.style.width = "4%"
 checkStatus(data.task_id)
+}catch(error){
+console.error("3D PRO generation start failed", error)
+status.innerHTML = "3D PRO generation could not start"
+progressBar.style.width = "0%"
+alert(error.message || "3D PRO generation could not be started")
+}
 
 }
 
@@ -7998,6 +9089,11 @@ if(!file && !activeImage){
 alert("Upload or generate an image first")
 return
 
+}
+
+if(!canUseFeature("real3dGeneration")){
+openUsageLimitPrompt("real3dGeneration")
+return
 }
 
 if(window.generatorUploadPromise){
@@ -8025,7 +9121,9 @@ return
 }
 
 let res
+let data
 
+try{
 if(useUploadFlow){
 
 status.innerHTML = "Sending uploaded source to Meshy..."
@@ -8035,9 +9133,9 @@ res = await fetch(API_BASE+"/api/generate",{
 
 method:"POST",
 
-headers:{
+headers:getApiRequestHeaders({
 "Content-Type":"application/json"
-},
+}),
 
 body:JSON.stringify({
 job_id: activeUploadJobId
@@ -8054,9 +9152,9 @@ res = await fetch(API_BASE+"/api/image-to-3d-pro",{
 
 method:"POST",
 
-headers:{
+headers:getApiRequestHeaders({
 "Content-Type":"application/json"
-},
+}),
 
 body:JSON.stringify({
 image_url: activeImage.url
@@ -8066,16 +9164,23 @@ image_url: activeImage.url
 
 }
 
-const data = await res.json()
+data = await res.json()
 
 if(!res.ok || !data.task_id){
 alert(data.detail || data.error || "3D generation could not be started")
 return
 }
 
+syncUsageFromServerPayload(data)
 status.innerHTML = "Sending to Meshy..."
 progressBar.style.width = "6%"
 checkStatus(data.task_id)
+}catch(error){
+console.error("Premium 3D generation start failed", error)
+status.innerHTML = "3D generation could not start"
+progressBar.style.width = "0%"
+alert(error.message || "3D generation could not be started")
+}
 
 }
 
@@ -8173,6 +9278,7 @@ form.append("job_id",currentJobId)
 
 const res = await fetch(API_BASE+"/api/upload",{
 method:"POST",
+headers:getApiRequestHeaders(),
 body:form
 })
 
@@ -8204,7 +9310,7 @@ window.generatorUploadPromise = null
 document.querySelector("#generateFreeBtn")
   .addEventListener("click", generateFree3D)
 </script>
-<script src="viewer.js?v=20260327-viewer-toolbar-pass"></script>
+<script src="viewer.js?v=20260328-usage-policy-pass"></script>
 <audio id="orbSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 </body>
 </html>

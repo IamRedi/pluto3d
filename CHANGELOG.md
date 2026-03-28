@@ -7,6 +7,71 @@ Historical entries below were migrated from the previous board, workflow, and ha
 
 ## 2026-03-28
 
+### Production rollout runbook pass
+
+- Expanded `PRODUCTION_ACTIVATION_RUNBOOK.md` with a controlled `v1.1` rollout path that now covers:
+  - release-candidate branch strategy from `develop`
+  - backend-first deploy order
+  - ordered production test phases
+  - user-only checks for Railway, Vercel, Supabase, and Stripe
+  - explicit rollback rules and rollback success criteria for returning to frozen `v1.0`
+- Clarified in the rollout runbook that older handoff notes are historical context only, while real rollout decisions should trust the current branch, config, dashboards, and live runtime endpoints.
+- Added release-snapshot hygiene for the rollout candidate by ignoring temporary `backend/data/` state files so local smoke/billing state does not get bundled into the production candidate.
+
+### Quota smoke hardening pass
+
+- Hardened `backend/app/services/usage.py` so quota time windows fall back to UTC if the host runtime cannot resolve the configured timezone, preventing local/sandbox crashes during usage snapshot reads.
+- Hardened Supabase readiness checks in both `backend/app/services/usage.py` and `backend/app/services/subscriptions.py` so verification now degrades to `not ready` instead of failing outright when Supabase is unreachable.
+- Normalized local billing/usage state-file env paths so backend tools started from inside `backend/` no longer create accidental nested paths like `backend/backend/data/...`.
+- Added `backend/scripts/quota_billing_smoke.py`, a repeatable backend smoke script that verifies guest/free/premium quota behavior, download-credit handling, and the current billing-readiness snapshot without polluting the main usage state.
+- Ran the new smoke pass successfully for quota flows and captured the current billing readiness result:
+  - quota checks passed for `Guest`, mocked authenticated `Free Account`, and mocked authenticated `Premium`
+  - billing readiness currently stops at `Awaiting schema`
+  - the remaining go-live blockers are still `Stripe test mode` and temporary Vercel billing return URLs
+
+### Usage policy implementation pass
+
+- Replaced the old flat preview limits in `frontend/auth-scaffold.js` with per-tier usage rules that support day/week/month windows for `AI image`, `SVG`, `Test 3D`, `Relief STL`, and `Real 3D / Pro`.
+- Added the first scoped download-credit policy for viewer test models so `Guest` stays view-only, `Free Account` gets one download per generated test model, and `Premium` keeps unlimited download access.
+- Wired `Test 3D`, `Relief STL`, and `Real 3D / Pro` flows to the new usage policy so the main runtime now blocks, increments, and surfaces those allowances more accurately.
+- Kept `Relief` preview outside the quota system and limited only real STL generation, matching the intended production policy.
+- Updated `Plans` and `Profile` surfaces so the current configured allowances are visible in the product instead of showing only the older simplified counters.
+- Added backend quota enforcement plus usage snapshot/consume endpoints, so the server can now track and block the main account-limited features instead of leaving the entire policy in frontend preview state only.
+- Added an `auto` usage-store path with a new `usage_buckets` Supabase schema target and a local JSON fallback, so production can move to shared persistence without changing the runtime contract again.
+- Updated frontend auth/runtime wiring so live requests send `Authorization` or `X-Pluto-Guest-Key`, backend usage can sync back into the UI, and server-returned limit errors surface as real account-limit messages instead of generic request failures.
+
+### Mobile UI pass
+
+- Reworked the mobile workspace hierarchy so the viewer preview stays first, but uses a more compact small-screen height while the control rail behaves more like a premium bottom dock on smaller screens.
+- Tightened mobile spacing, card density, and responsive behavior across `Gallery` and `Profile` so the newer premium account surfaces hold their hierarchy on narrow widths.
+- Reduced the mobile viewer footprint slightly so the main generate flow appears sooner without removing the immediate preview-first feel.
+- Made the mobile viewer sticky beneath the header so the preview stays in place while the user scrolls deeper into the generator controls.
+- Tightened the mobile header action row so the user badge, `Profile`, and `Login` controls sit on one cleaner line, with `Profile` reduced so it competes less with the main login CTA.
+- Hid the viewer `Wire` and `Print` mode buttons until a real asset exists, removing idle-state controls before anything has been generated or loaded.
+- Scaled down the full mobile viewer instrument cluster more uniformly, including `Surface`, `Wire`, `Print`, `Download`, and the status strip, so the action chrome feels closer to a reduced desktop layout instead of covering too much of the preview.
+- Lowered mobile viewer model framing slightly so loaded models sit a bit deeper in the stage and do not place their feet too close to the center of the preview.
+- Hardened the premium 3D start flow so frontend requests fail more cleanly before polling begins, and backend Meshy start/status errors now return readable text instead of raw nested objects, including the no-`task_id` edge case.
+- Prevented premium 3D polling from showing `100%` before Meshy actually reaches `SUCCEEDED`, so in-progress jobs no longer look falsely finished in the UI.
+- Removed the extra viewer kicker, stripped shell backgrounds from non-button viewer metadata, reorganized the lower viewer info into a cleaner side-column treatment, and kept that text-only viewer chrome consistent on mobile breakpoints.
+- Removed the ornamental `3D Viewer` title, moved the main `3D` source recent thumbnails into a cleaner side rail on desktop, aligned `Generate Image` with `Toy Assist`, and lowered default desktop viewer framing so loaded figures sit deeper in the stage.
+- Simplified the `Source` preview presentation so the uploaded/generated image reads as one cleaner hero preview instead of sitting on top of two decorative shell layers.
+- Added one cleaner framed plate behind the `Source` preview and tightened the thumbnail rail styling so the source area reads more intentional without reopening the upload flow.
+- Fixed the generated-model viewer framing more completely by lowering the camera target together with the stage placement, and tightened viewer metadata bounds/wrapping so longer details stay inside the frame.
+- Reworked generated-model framing again so viewer scale changes use a lower stage anchor plus a lower-mid camera focus, avoiding the old behavior where zoom growth biased too heavily upward from the feet.
+- Updated SVG viewer theme handling so SVG strokes stay black in light mode while remaining bright/inverted in dark mode.
+- Lightened the main `3D` / `SVG` / `Relief` side buttons and the viewer outer frame specifically for light mode so the workspace no longer feels too dark against the brighter theme.
+- Ran a focused final-readiness pass: local backend health is clean, billing activation reports ready, and the remaining go-live blockers are still the expected operational ones (`Stripe test mode` plus temporary billing return URLs).
+- Improved billing activation handoff accuracy so local/repo verification can read `frontend/app-config.js` and stop falsely reporting frontend public config as unresolved when those values already exist.
+- Rebalanced generated-model viewer focus higher again so scaling behavior no longer stays overly anchored near the feet and the composition sits less top-heavy.
+- Replaced the `Relief` export meta bullet separators with clean ASCII text so the visible status copy does not risk mojibake or encoding artifacts.
+- Kept the pass visual-only inside `frontend/index.html`, without reopening generator, viewer, auth, billing, or export logic.
+
+### Gallery and Profile UI pass
+
+- Reworked `Gallery` into a simpler showcase/archive surface so it reads closer to a real studio history without feeling overbuilt.
+- Rebuilt `Profile` hierarchy around stronger account, subscription, billing, usage, and support presentation while keeping the same auth/billing runtime logic underneath.
+- Added the supporting `Gallery`/`Profile` CSS classes directly in `frontend/index.html` so the account-facing surfaces match the newer premium workspace direction.
+
 ### Viewer chrome closure polish
 
 - Tightened the viewer title block, toolbar shell, status strip, and print cluster so they read as one premium control family instead of separate floating shells.

@@ -27,14 +27,49 @@ const DEFAULT_LIVE_STATE = {
 };
 
 let supabaseClient = null;
+const GUEST_USAGE_KEY_STORAGE = "plutoGuestUsageKey";
+
+function getApiBaseUrl(){
+  return window.PLUTO_API_BASE || (typeof API_BASE !== "undefined" ? API_BASE : "");
+}
+
+function getGuestUsageKey(){
+  try{
+    const existing = localStorage.getItem(GUEST_USAGE_KEY_STORAGE);
+    if(existing){
+      return existing;
+    }
+
+    const nextValue = `guest-${crypto.randomUUID()}`;
+    localStorage.setItem(GUEST_USAGE_KEY_STORAGE, nextValue);
+    return nextValue;
+  }catch(error){
+    return "guest-browser";
+  }
+}
+
+function getPlutoApiHeaders(additionalHeaders = {}){
+  const liveState = getLiveAuthState();
+  const headers = {
+    ...additionalHeaders,
+    "X-Pluto-Guest-Key": getGuestUsageKey()
+  };
+
+  if(liveState?.session?.access_token){
+    headers.Authorization = `Bearer ${liveState.session.access_token}`;
+  }
+
+  return headers;
+}
 
 async function fetchBackendAccountState(session){
-  if(!session?.access_token || typeof API_BASE === "undefined"){
+  const apiBase = getApiBaseUrl();
+  if(!session?.access_token || !apiBase){
     return null;
   }
 
   try{
-    const response = await fetch(`${API_BASE}/api/account/me`, {
+    const response = await fetch(`${apiBase}/api/account/me`, {
       headers: {
         Authorization: `Bearer ${session.access_token}`
       }
@@ -44,11 +79,104 @@ async function fetchBackendAccountState(session){
       return null;
     }
 
-    return await response.json();
+    const data = await response.json();
+    window.PLUTO_ACCOUNT_USAGE = data?.usage || null;
+    return data;
   }catch(error){
     console.warn("Backend account sync failed:", error);
     return null;
   }
+}
+
+function getBackendUsageState(){
+  return window.PLUTO_ACCOUNT_USAGE || null;
+}
+
+function setBackendUsageState(usage){
+  window.PLUTO_ACCOUNT_USAGE = usage || null;
+
+  if(typeof window.syncAuthPreviewUI === "function"){
+    window.syncAuthPreviewUI();
+  }
+}
+
+async function refreshAccountUsageState(){
+  const apiBase = getApiBaseUrl();
+  if(!apiBase){
+    return getBackendUsageState();
+  }
+
+  try{
+    const response = await fetch(`${apiBase}/api/account/usage`, {
+      headers: getPlutoApiHeaders()
+    });
+
+    if(!response.ok){
+      throw new Error("Usage request failed.");
+    }
+
+    const data = await response.json();
+    setBackendUsageState(data || null);
+  }catch(error){
+    console.warn("Backend usage sync failed:", error);
+  }
+
+  return getBackendUsageState();
+}
+
+async function consumeBackendFeatureUsage(featureKey, options = {}){
+  const apiBase = getApiBaseUrl();
+  if(!apiBase){
+    throw new Error("API base is not ready.");
+  }
+
+  const response = await fetch(`${apiBase}/api/account/usage/consume`, {
+    method: "POST",
+    headers: getPlutoApiHeaders({
+      "Content-Type": "application/json"
+    }),
+    body: JSON.stringify({
+      featureKey,
+      amount: options.amount || 1,
+      grantCredits: options.grantCredits || {}
+    })
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if(!response.ok){
+    throw new Error(data.detail || "Usage consume failed.");
+  }
+
+  setBackendUsageState(data.usage || null);
+  return data;
+}
+
+async function consumeBackendUsageCredit(creditKey, options = {}){
+  const apiBase = getApiBaseUrl();
+  if(!apiBase){
+    throw new Error("API base is not ready.");
+  }
+
+  const response = await fetch(`${apiBase}/api/account/usage/consume-credit`, {
+    method: "POST",
+    headers: getPlutoApiHeaders({
+      "Content-Type": "application/json"
+    }),
+    body: JSON.stringify({
+      creditKey,
+      amount: options.amount || 1
+    })
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if(!response.ok){
+    throw new Error(data.detail || "Usage credit consume failed.");
+  }
+
+  setBackendUsageState(data.usage || null);
+  return data;
 }
 
 function getConfig(){
@@ -299,11 +427,13 @@ async function initializeSupabaseClient(){
   const firstState = buildLiveStateFromSession(firstSession);
   const firstBackendState = await fetchBackendAccountState(firstSession);
   setLiveAuthState(mergeBackendAccountState(firstState, firstBackendState));
+  await refreshAccountUsageState();
 
   supabaseClient.auth.onAuthStateChange(async (_event, session) => {
     const nextState = buildLiveStateFromSession(session);
     const backendState = await fetchBackendAccountState(session);
     setLiveAuthState(mergeBackendAccountState(nextState, backendState));
+    await refreshAccountUsageState();
   });
 
   refreshAuthRuntimeStatus();
@@ -421,6 +551,12 @@ window.PLUTO_LIVE_AUTH_STATE = { ...DEFAULT_LIVE_STATE };
 window.refreshAuthRuntimeStatus = refreshAuthRuntimeStatus;
 window.getAuthRuntimeStatus = getAuthRuntimeStatus;
 window.getLiveAuthState = getLiveAuthState;
+window.getPlutoGuestUsageKey = getGuestUsageKey;
+window.getPlutoApiHeaders = getPlutoApiHeaders;
+window.getBackendUsageState = getBackendUsageState;
+window.refreshAccountUsageState = refreshAccountUsageState;
+window.consumeBackendFeatureUsage = consumeBackendFeatureUsage;
+window.consumeBackendUsageCredit = consumeBackendUsageCredit;
 window.signInWithGoogleReal = signInWithGoogleReal;
 window.signInWithEmailReal = signInWithEmailReal;
 window.signUpWithEmailReal = signUpWithEmailReal;
@@ -431,10 +567,12 @@ if(document.readyState === "loading"){
     ensureAuthConfigScript();
     refreshAuthRuntimeStatus();
     ensureSupabaseSdk();
+    refreshAccountUsageState();
   });
 }else{
   ensureAuthConfigScript();
   refreshAuthRuntimeStatus();
   ensureSupabaseSdk();
+  refreshAccountUsageState();
 }
 })();

@@ -2,10 +2,11 @@ import base64
 from pathlib import Path
 
 import requests
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
 
 from app.config import get_meshy_api_key
+from app.services.usage import consume_feature_usage, resolve_usage_subject
 
 router = APIRouter()
 
@@ -82,6 +83,27 @@ def _extract_failure_message(data: dict) -> str:
     return "Meshy could not complete the 3D generation task."
 
 
+def _extract_meshy_http_error_detail(data, fallback: str) -> str:
+    if isinstance(data, dict):
+        direct_message = _extract_failure_message(data)
+        if direct_message and direct_message != "Meshy could not complete the 3D generation task.":
+            return direct_message
+
+        nested_detail = data.get("detail")
+        if isinstance(nested_detail, dict):
+            nested_message = _extract_failure_message(nested_detail)
+            if nested_message and nested_message != "Meshy could not complete the 3D generation task.":
+                return nested_message
+
+        if isinstance(nested_detail, str) and nested_detail.strip():
+            return nested_detail.strip()
+
+    if isinstance(data, str) and data.strip():
+        return data.strip()
+
+    return fallback
+
+
 def _build_meshy_headers(*, include_json_content_type: bool = False) -> dict:
     meshy_api_key = get_meshy_api_key()
 
@@ -127,21 +149,34 @@ def _start_meshy_image_to_3d(payload: dict) -> dict:
         ) from exc
 
     if response.status_code >= 400:
-        raise HTTPException(status_code=502, detail=data)
+        raise HTTPException(
+            status_code=502,
+            detail=_extract_meshy_http_error_detail(
+                data,
+                "Meshy rejected the 3D generation request before task creation.",
+            ),
+        )
 
     task_id = _extract_meshy_task_id(data)
 
     if not task_id:
         raise HTTPException(
             status_code=502,
-            detail=data or "Meshy did not return a task id.",
+            detail=_extract_meshy_http_error_detail(
+                data,
+                "Meshy did not return a task id.",
+            ),
         )
 
     return {"task_id": task_id}
 
 
 @router.post("/generate")
-async def generate_3d(req: GenerateRequest):
+async def generate_3d(
+    req: GenerateRequest,
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
     job_id = req.job_id
     job_folder = UPLOAD_DIR / job_id
 
@@ -166,16 +201,32 @@ async def generate_3d(req: GenerateRequest):
         "should_texture": True,
     }
 
-    return _start_meshy_image_to_3d(payload)
+    result = _start_meshy_image_to_3d(payload)
+    usage = consume_feature_usage(
+        subject=resolve_usage_subject(authorization, x_pluto_guest_key),
+        feature_key="real3dGeneration",
+    )
+    return {
+        **result,
+        "usage": usage,
+    }
 
 
 @router.post("/image-to-3d")
-async def generate_3d_from_upload(req: GenerateRequest):
-    return await generate_3d(req)
+async def generate_3d_from_upload(
+    req: GenerateRequest,
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
+    return await generate_3d(req, authorization=authorization, x_pluto_guest_key=x_pluto_guest_key)
 
 
 @router.post("/image-to-3d-pro")
-async def generate_3d_pro(req: GenerateFromImageRequest):
+async def generate_3d_pro(
+    req: GenerateFromImageRequest,
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
     image_url = (req.image_url or "").strip()
 
     if not image_url:
@@ -187,7 +238,15 @@ async def generate_3d_pro(req: GenerateFromImageRequest):
         "should_texture": True,
     }
 
-    return _start_meshy_image_to_3d(payload)
+    result = _start_meshy_image_to_3d(payload)
+    usage = consume_feature_usage(
+        subject=resolve_usage_subject(authorization, x_pluto_guest_key),
+        feature_key="real3dGeneration",
+    )
+    return {
+        **result,
+        "usage": usage,
+    }
 
 
 @router.get("/job/{task_id}")
@@ -213,10 +272,19 @@ def check_status(task_id: str):
         ) from exc
 
     if response.status_code >= 400:
-        raise HTTPException(status_code=502, detail=data)
+        raise HTTPException(
+            status_code=502,
+            detail=_extract_meshy_http_error_detail(
+                data,
+                "Meshy returned an error while checking 3D generation status.",
+            ),
+        )
 
     status = (data.get("status") or "").strip().upper() or "PENDING"
     progress = _extract_progress_value(data.get("progress", 0))
+
+    if status != "SUCCEEDED" and progress >= 100:
+        progress = 99
 
     if status == "SUCCEEDED":
         model_urls = data.get("model_urls") or {}

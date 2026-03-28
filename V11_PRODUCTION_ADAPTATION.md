@@ -2,6 +2,17 @@
 
 Purpose: keep the final pre-production checks for `v1.1` in one place so local remodel work does not drift away from deployment reality.
 
+## Canonical Note
+
+This file remains the detailed pre-production adaptation reference for `v1.1`.
+The active day-to-day workflow should now follow the canonical docs first:
+
+- `SYSTEM_MASTER.md`
+- `CURRENT_STATE.md`
+- `CHANGELOG.md`
+
+Use this file when the project is intentionally moving from local/test stability toward release-readiness checks.
+
 This file is not the release checklist itself.
 It is the adaptation checklist for moving the current local `develop` remodel into a stable deployable production shape later.
 

@@ -32,6 +32,18 @@ The activation handoff now also exposes a phase-based `switchPath` so rollout ca
 It also exposes a current switch phase and a verification queue so the team can see what is blocked versus what is ready for smoke testing.
 Billing runtime now also exposes Stripe mode and billing-domain status so test-vs-live rollout gaps are visible in-product.
 
+## Historical Note
+
+Older project notes may mention earlier live-switch attempts or previous Stripe/Supabase states.
+Before a real rollout, trust these in order:
+
+1. current Git branch and commit
+2. current `frontend/app-config.js`
+3. current Railway / Vercel dashboard state
+4. live runtime endpoints listed above
+
+Treat older handoff notes as history, not as deployment truth.
+
 ## What The User Will Need To Provide
 
 ### Frontend Public Config
@@ -81,6 +93,161 @@ Values:
 8. Confirm webhook updates subscription persistence
 9. Confirm `/api/account/me` resolves premium from persisted subscription state
 10. Confirm billing portal opens for the subscribed user
+
+## Controlled v1.1 Rollout
+
+Use this rollout shape when `v1.1` is ready to replace the frozen `v1` production path while keeping rollback easy.
+
+### Recommended Git Shape
+
+1. Keep `main` as the production baseline until rollout is explicitly approved.
+2. Keep `develop` as the active implementation branch.
+3. Create one release candidate branch from `develop`, for example:
+   - `release/v1.1-rail-candidate`
+4. Record the current production point before any rollout move:
+   - tag the current production commit, for example:
+     - `prod-v1.0-before-v1.1-2026-03-28`
+
+### Recommended Deploy Order
+
+1. Prepare and push the release-candidate branch.
+2. Confirm Railway points to the intended commit or branch.
+3. Deploy backend first.
+4. Run backend and billing smoke checks.
+5. Only after backend looks healthy, deploy the frontend.
+6. Keep the rollout private to the current testers for one short observation window before broader promotion.
+
+### Why This Order
+
+- backend problems are the higher-risk production failure class for auth, quota, billing, and premium 3D
+- frontend rollback is easier when backend state is already known-good
+- a release-candidate branch keeps `develop` free for follow-up fixes without changing the exact rollout candidate under test
+
+## Pre-Rollout Snapshot
+
+Before touching Railway or Vercel, record these:
+
+- current production Git commit
+- current Railway deployment ID / timestamp
+- current Vercel deployment ID / timestamp
+- current `main` head commit
+- current `develop` head commit
+- current `/api/billing/activation-status` result
+- current `/api/billing/config` result
+
+If rollback becomes necessary, these snapshots remove guesswork.
+
+## Production Test Matrix
+
+Run these in order after the new backend deploy is live.
+
+### Phase 1: Health
+
+- `GET /`
+- `GET /docs`
+- `GET /api/billing/activation-status`
+- `GET /api/billing/config`
+- open the frontend and confirm no immediate auth/runtime failure
+
+### Phase 2: Guest Flow
+
+- open the app in a clean browser session
+- generate one AI image
+- generate one SVG
+- run one test 3D flow
+- run one Relief STL flow
+- confirm usage/account UI still loads cleanly
+
+### Phase 3: Auth Flow
+
+- sign in with Google
+- open `Profile`
+- confirm account state loads
+- confirm `/api/account/me` resolves correctly for the signed-in user
+- confirm backend usage sync still appears in the UI
+
+### Phase 4: Premium 3D
+
+- run one real premium 3D generation from an uploaded source
+- run one real premium 3D generation from a generated source image if available
+- confirm polling, final model load, and download behavior
+
+### Phase 5: Billing
+
+Run this last so a billing problem does not hide more basic production regressions.
+
+- open checkout
+- complete one real controlled payment
+- confirm return to the app
+- confirm webhook persistence
+- confirm `/api/account/me` resolves `premium`
+- confirm billing portal opens
+
+## User-Only Checks
+
+These require dashboard or service access that must be done manually:
+
+### Railway
+
+- confirm the project deployed the intended branch or commit
+- confirm startup logs show FastAPI boot completed
+- confirm env vars match the intended rollout state
+- confirm the previous healthy deployment is still available for rollback
+
+### Vercel
+
+- confirm the intended production deployment is active
+- confirm domain routing still points to the right deployment
+- confirm `www.pluto-3d.com` serves the expected `app-config.js`
+
+### Supabase
+
+- confirm `usage_buckets`, `profiles`, `subscriptions`, and `billing_webhook_events` exist in the target project
+- confirm `Site URL` and redirect URLs still match the production domain
+
+### Stripe
+
+- confirm the intended mode is active (`test` or `live`)
+- confirm the webhook endpoint points to the current Railway backend
+- confirm the webhook is subscribed to the required events
+
+## Rollback Trigger Rules
+
+Rollback immediately if any of these happen and a fast fix is not obvious:
+
+- app does not load for testers
+- login breaks
+- `/api/account/me` or `/api/billing/status` stops resolving correctly
+- guest or free generation paths fail broadly
+- premium 3D path fails broadly
+- checkout returns but premium does not persist
+- webhook handling is broken
+
+Cosmetic-only issues can stay in the rollout candidate if core flows remain stable.
+
+## Rollback Procedure
+
+If the rollout fails and the fix is not immediately obvious:
+
+1. Roll back Railway to the last known healthy `v1.0` deployment.
+2. If frontend was also changed, roll back Vercel to the last known healthy `v1.0` deployment.
+3. Re-check:
+   - `/`
+   - `/docs`
+   - login
+   - one guest flow
+4. Keep `main` on the `v1.0` line until the issue is fully understood.
+5. Return to `develop` for diagnosis and a careful follow-up fix.
+6. Prepare a fresh release-candidate branch for the next rollout attempt instead of reusing an uncertain deployment snapshot.
+
+## Rollback Success Criteria
+
+Rollback is complete when:
+
+- production behaves like the previous `v1.0` baseline again
+- testers can log in and use the app
+- no new production-only blocker remains active
+- follow-up work is isolated back on `develop`
 
 ## Final Go-Live Checks
 

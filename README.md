@@ -2,6 +2,20 @@
 
 Pluto3D Studio is a web app that converts images and prompts into SVG or 3D outputs, then prepares 3D models for printing through a simple non-expert workflow.
 
+## Canonical Docs
+
+The active documentation system is:
+
+- `SYSTEM_MASTER.md`
+- `CURRENT_STATE.md`
+- `CHANGELOG.md`
+- `INSTALL_GUIDE.md`
+- `PROJECT_MAP.md`
+- `AI_RULES.md`
+- `.env.example`
+
+Legacy docs are still kept in the repo as detailed historical and migration sources.
+
 ## Current Product Direction
 
 - Frontend: vanilla HTML/CSS/JavaScript with a unified viewer

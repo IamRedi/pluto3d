@@ -4,6 +4,17 @@ Date: 2026-03-27
 Branch: `develop`
 Purpose: capture the new `v1.1` product-direction pivot before implementation starts.
 
+## Canonical Note
+
+This file remains the detailed remodel-planning reference for `v1.1`.
+The active current-state and workflow truth should now be read first from:
+
+- `SYSTEM_MASTER.md`
+- `CURRENT_STATE.md`
+- `CHANGELOG.md`
+
+Use this file for remodel reasoning, staged intent, and detailed pivot context.
+
 This file is the working notes + execution plan for the larger `v1.1` remodel.
 It exists so the product direction does not get lost across chats or mixed with smaller polish tasks.
 

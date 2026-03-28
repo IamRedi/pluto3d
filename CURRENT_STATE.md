@@ -86,6 +86,91 @@ Update it after every meaningful change.
 - the `SVG` and `Relief` source preview bug is now fixed:
   - their dropzones now use the same positioned preview container rules as `3D`
   - blurred preview layers no longer escape the source card and spill across the panel background
+- the `Gallery And Profile UI Pass` is now in place:
+  - `Gallery` now reads as a simpler showcase plus recent-archive surface instead of a flat placeholder list or an overbuilt account panel
+  - `Profile` now presents account state, subscription, billing, usage, and support with stronger hierarchy and a cleaner premium account-surface layout
+  - the pass stays on the existing runtime/account logic and does not reopen auth or billing behavior
+- the `Mobile UI Pass` is now in place:
+  - the main workspace now stacks more cleanly on smaller screens, with the viewer preview remaining first, using a more compact mobile height, and now staying pinned near the top while the user scrolls deeper into the generator panel
+  - the mobile header action row is now tighter, keeping the user badge, `Profile`, and `Login` controls on one cleaner line with a smaller profile pill
+  - the mobile sidebar now behaves more like a bottom control dock so the active tools stay reachable without reopening desktop layout logic
+  - `Wire` and `Print` viewer mode buttons now stay hidden until a real viewer asset exists, avoiding idle-state controls before any output is loaded
+  - the full viewer-side instrument cluster now scales down more uniformly on mobile, including `Surface`, `Wire`, `Print`, `Download`, and the status strip, so the controls feel closer to a reduced desktop layout without occupying as much of the preview
+  - mobile viewer framing now drops loaded models slightly lower inside the viewport so feet and lower geometry do not sit too close to the visual center line
+  - `Gallery` and `Profile` premium cards now compress more gracefully on narrow widths while keeping the `Frozen Deep Green + bronze` hierarchy intact
+  - the pass stays responsive/cosmetic-only and does not change generator, viewer, auth, billing, or export behavior
+- light mode is now a bit more balanced:
+  - the main `3D` / `SVG` / `Relief` side buttons now use lighter shells in light mode instead of keeping the heavier dark treatment
+  - the viewer outer frame now reads lighter in light mode, closer to the inner stage treatment instead of staying overly dark
+- the premium 3D path is now a bit more production-safe:
+  - frontend start requests now fail more cleanly if Meshy/startup calls break before a `task_id` is returned
+  - backend Meshy start/status failures now resolve to readable string details instead of surfacing raw nested objects to the UI, including the no-`task_id` edge case
+  - job polling no longer reports a full `100%` while a Meshy task is still `IN_PROGRESS`, reducing false-finished progress states in the UI
+- a focused local final-readiness pass has now been run:
+  - local backend runtime is healthy on `http://127.0.0.1:8000`, with `/` and `/docs` responding correctly
+  - unauthenticated `GET /api/account/me` correctly resolves to guest state
+  - billing activation runtime reports `activationReady: true`
+  - the current go-live blockers remain operational, not product-bug blockers:
+    - Stripe is still configured in `test` mode
+    - billing return URLs still point to a temporary domain
+  - authenticated `/api/billing/status`, checkout, webhook, and portal verification are still pending as the remaining live-readiness checks
+- billing activation handoff is now more truthful during repo/local verification:
+  - it reads `frontend/app-config.js` when available and marks frontend public config entries as configured instead of always treating them as unresolved external work
+  - the switch phase can now advance past `frontend_public_config` during local production-prep checks when those values are already present
+- the current production usage policy is now wired into the active frontend runtime:
+  - usage limits now support `day`, `week`, and `month` windows instead of one flat counter model
+  - `Guest`, `Free Account`, and `Premium` now have separate configured allowances for `AI image`, `SVG`, `Test 3D`, `Relief STL`, and `Real 3D / Pro`
+  - `Guest` test 3D now stays viewer-only with no download access, while `Free Account` receives one download credit per generated test model and `Premium` keeps unlimited download access
+  - `Relief` preview remains unmetered, while only `Generate STL` consumes the configured relief allowance
+  - `Plans` and `Profile` now reflect the configured production policy instead of only the older simplified preview counters
+  - live auth and guest requests now send account-aware quota headers so backend routes can resolve `guest`, `free`, and `premium` subjects before consuming usage
+- backend quota enforcement is now in place for the active production path:
+  - server-side usage tracking now exists for `AI image`, `SVG`, `Toy`, and `Real 3D / Pro` routes
+  - the account layer now exposes usage snapshots plus backend `consume` / `consume-credit` actions so local studio flows like `Test 3D`, `Relief STL`, and test-model download credits can also sync against one server authority
+  - usage persistence now supports `auto` store selection:
+    - `Supabase usage_buckets` becomes the shared production store once the schema is applied
+    - local JSON fallback remains available for scaffold/dev recovery
+  - frontend usage rendering now prefers backend usage state when available, so `Plans`, `Profile`, prompts, and viewer download access can reflect the server-tracked account allowance instead of only local preview counters
+  - fully local features still depend on the official frontend flow to hit the backend usage endpoints before/while they run, so the strongest commercial protection is now in place for server-handled actions and substantially improved for local-preview workflows
+  - usage window calculation now falls back safely to UTC if the host runtime cannot resolve the configured IANA timezone, preventing local usage snapshot crashes on stricter Windows/Python installs
+  - usage-store and subscription-schema readiness checks now degrade to a safe `not ready` state if Supabase cannot be reached during local or sandbox verification, instead of crashing the readiness path outright
+  - local state-file env paths are now normalized more safely, so running backend tools from inside `backend/` no longer creates accidental nested paths like `backend/backend/data/...`
+  - a dedicated backend smoke script now exists at `backend/scripts/quota_billing_smoke.py`
+  - the current smoke pass from that script confirms:
+    - `Guest` test 3D consume plus download-credit grant/consume works
+    - `Guest` AI image limit blocks on the third consume as expected
+    - mocked authenticated `Free Account` test 3D quota blocks on the fourth weekly consume as expected
+    - mocked authenticated `Premium` still reports unlimited toy generation plus allowed test-model download access
+  - the current billing readiness snapshot from that same smoke pass reports:
+    - current phase: `Awaiting schema`
+    - subscription store mode remains `supabase`, but schema readiness is still unresolved in this verification environment
+    - the remaining go-live blockers are still the expected operational blockers:
+      - Stripe is still configured in `test` mode
+      - billing return URLs still point to a temporary Vercel domain
+- the viewer chrome is now cleaner and more text-first:
+  - the upper `Pluto3D Studio` kicker was removed from the viewer shell
+  - non-button viewer metadata now reads as clean text without shell backgrounds
+  - the lower viewer status metadata now sits as a lighter side column instead of a wide bottom shell bar
+  - mobile viewer overrides now preserve that text-only treatment instead of reintroducing padded metadata shells on smaller breakpoints
+  - the ornamental `3D Viewer` title is now removed entirely so the top viewer edge stays cleaner and more product-like
+- the `3D` generator control flow is now tighter:
+  - `Generate Image` now sits on the same row as `Toy Assist` in the main `3D` prompt card
+  - the `3D` source card now places recent source thumbnails in a cleaner side rail when desktop width allows it, while collapsing back to a stacked layout on smaller screens
+  - the `Source` preview image now uses a cleaner single-image presentation, with the old double shell-like decorative layers behind the preview removed
+  - the `Source` preview now sits on one cleaner framed stage and the side thumbnail rail has a slightly more premium, clearer selected-state treatment
+- viewer model framing now sits lower by default on non-mobile viewports as well, so loaded figures do not ride too high in the stage on desktop
+- viewer stage placement is now more correct for generated models:
+  - the camera target now follows the lowered stage placement instead of continuing to center the old higher position
+  - desktop generated models now sit deeper in the viewer stage instead of snapping back toward the upper center after load
+  - generated-model framing now uses a separate lower stage anchor and a higher lower-mid camera focus, so scale changes no longer pivot mainly from the feet and push growth almost entirely upward
+  - the viewer focus point has now been raised further on generated assets so scale and zoom behavior rebalance away from the old top-heavy framing
+- viewer metadata is now more bounded:
+  - longer filenames and labels wrap inside the viewer status strip instead of spilling outside the stage
+  - upper-right viewer chrome and print CTA keep stricter width bounds inside the viewer frame
+- SVG viewer theme behavior is now cleaner:
+  - SVG lines stay light in dark mode for contrast
+  - SVG lines now remain black in light mode instead of being inverted to white
+- `Relief` export meta copy now uses clean ASCII separators instead of a risky special-character bullet in the visible status text
 - owned test-model registry is active and includes:
   - Pluto Robot
   - F1 Car
@@ -137,21 +222,28 @@ Update it after every meaningful change.
 - migration to the new canonical documentation system
 - broader UI and visual-system pass across `3D Generator`, `SVG`, and `Relief`
 - shell-level CSS cleanup so the next redesign steps sit on a simpler theme foundation
-- gallery and profile UI pass
-- spacing, rhythm, and CTA clarity polish across account-facing surfaces
+- responsive smoke validation and edge-case spacing polish across workspace and account-facing surfaces
 - keeping the remodel compact and premium-looking without reopening backend architecture
+- preparing a controlled `v1.1` production rollout path with explicit backend-first testing, limited tester exposure, and documented rollback to `v1.0`
+- release-candidate prep is now underway on top of `develop`, including rollback tagging strategy and local deploy-snapshot cleanup so temporary backend state files do not leak into the production candidate
 
 ## Next Tasks
 
 - treat `SYSTEM_MASTER.md`, `CURRENT_STATE.md`, and `CHANGELOG.md` as the primary working documentation
+- apply `usage_buckets` plus the billing schema in the target Supabase project, then rerun `backend/scripts/quota_billing_smoke.py`
+- rerun billing readiness in the target environment after switching off Stripe `test` mode and replacing the temporary Vercel billing URLs
+- follow the updated `PRODUCTION_ACTIVATION_RUNBOOK.md` for:
+  - release-candidate rollout from `develop`
+  - production test order
+  - Railway/Vercel/Supabase/Stripe manual checks
+  - fast rollback to the frozen `v1.0` line if needed
 - continue the shell redesign from the simplified `Frozen Deep Green` base:
   - cleaner sidebar
   - cleaner viewer frame
-- continue with `Gallery And Profile UI Pass`
 - finish the UI pass for:
   - spacing
   - visual clarity
-- continue with `Mobile UI Pass`
+- run a focused mobile smoke pass across `Workspace`, `Gallery`, and `Profile`
 - run a real `3D Generator` premium-path smoke test before production adaptation
 - verify Relief export quality on intended user machines
 - normalize owned-asset staging folders before `v1.1` release if they remain active
@@ -167,6 +259,7 @@ Update it after every meaningful change.
 - the current Transparent Textures background should be replaced or fully cleared before sale
 - the exact Replicate model license snapshot still needs to be recorded for commercial readiness
 - final live Stripe checkout, webhook, and portal smoke tests are still operational follow-up work
+- target-environment Supabase schema reachability still needs confirmation before billing verification can move from `Awaiting schema` to live smoke testing
 
 ## Current Working Boundaries
 
@@ -174,6 +267,7 @@ Update it after every meaningful change.
 - do not reopen heavy backend scaling work unless stability requires it
 - do not break already working `3D`, `SVG`, or `Relief` behavior for cosmetic-only changes
 - keep the new canonical documentation system as the default project workflow from now on
+- treat older deployment/live-status notes in legacy docs as historical context only; before rollout, trust the current branch, current config, dashboards, and live runtime endpoints
 - every meaningful change must update:
   - `CURRENT_STATE.md`
   - `CHANGELOG.md`

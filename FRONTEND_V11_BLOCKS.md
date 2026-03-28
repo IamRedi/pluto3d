@@ -3,6 +3,20 @@
 This file is the working plan for safe frontend-only improvements in `v1.1`.
 Use it to keep each pass small, focused, and easy to review without mixing unrelated UI work.
 
+## Canonical Note
+
+This file remains the detailed block planner for frontend-specific `v1.1` work.
+The default working system is now the canonical documentation set:
+
+- `SYSTEM_MASTER.md`
+- `CURRENT_STATE.md`
+- `CHANGELOG.md`
+- `INSTALL_GUIDE.md`
+- `PROJECT_MAP.md`
+- `AI_RULES.md`
+
+Use this file to shape frontend passes, but record the resulting high-level state in the canonical docs.
+
 ## Working Rule
 
 - stay on `develop` as the active integration branch unless a clean checkpoint clearly justifies a separate feature branch

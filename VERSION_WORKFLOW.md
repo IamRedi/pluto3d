@@ -3,6 +3,20 @@
 This file explains how Pluto3D is being handled after the first public launch.
 Use it whenever the current branch, release state, or hotfix flow is unclear.
 
+## Canonical Note
+
+This file is now a supporting legacy workflow reference.
+The active canonical workflow system lives in:
+
+1. `SYSTEM_MASTER.md`
+2. `CURRENT_STATE.md`
+3. `CHANGELOG.md`
+4. `INSTALL_GUIDE.md`
+5. `PROJECT_MAP.md`
+6. `AI_RULES.md`
+
+Keep this file for version-split detail and historical continuity, but use the canonical docs first.
+
 ## Current Version Split
 
 ### Frozen Production

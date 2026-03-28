@@ -8,14 +8,30 @@ import requests
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+REPO_ROOT = BASE_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 DEFAULT_STATE_FILE = DATA_DIR / "billing_state.json"
 ACTIVE_SUBSCRIPTION_STATUSES = {"active", "trialing"}
 
 
+def _resolve_state_file_path(env_key: str, default_path: Path) -> Path:
+    configured_value = (os.getenv(env_key, "") or "").strip()
+    if not configured_value:
+        return default_path
+
+    configured_path = Path(configured_value)
+    if configured_path.is_absolute():
+        return configured_path
+
+    if configured_path.parts and configured_path.parts[0].lower() == "backend":
+        return REPO_ROOT / configured_path
+
+    return BASE_DIR / configured_path
+
+
 def _ensure_state_file() -> Path:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    state_file = Path(os.getenv("PLUTO_BILLING_STATE_FILE", DEFAULT_STATE_FILE))
+    state_file = _resolve_state_file_path("PLUTO_BILLING_STATE_FILE", DEFAULT_STATE_FILE)
     state_file.parent.mkdir(parents=True, exist_ok=True)
 
     if not state_file.exists():
@@ -100,9 +116,9 @@ def get_subscription_store_status() -> dict:
     if mode != "supabase" or not supabase_env_ready:
         return status
 
-    profiles_ready = _supabase_table_exists("profiles")
-    subscriptions_ready = _supabase_table_exists("subscriptions")
-    webhook_events_ready = _supabase_table_exists("billing_webhook_events")
+    profiles_ready = _safe_supabase_table_exists("profiles")
+    subscriptions_ready = _safe_supabase_table_exists("subscriptions")
+    webhook_events_ready = _safe_supabase_table_exists("billing_webhook_events")
 
     status.update(
         {
@@ -232,6 +248,13 @@ def _supabase_table_exists(table: str) -> bool:
         timeout=15,
     )
     return response.status_code == 200
+
+
+def _safe_supabase_table_exists(table: str) -> bool:
+    try:
+        return _supabase_table_exists(table)
+    except Exception:
+        return False
 
 
 def _supabase_upsert_profile(
