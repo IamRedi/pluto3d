@@ -117,6 +117,30 @@ Use this rollout shape when `v1.1` is ready to replace the frozen `v1` productio
 5. Only after backend looks healthy, deploy the frontend.
 6. Keep the rollout private to the current testers for one short observation window before broader promotion.
 
+### Actual March 28, 2026 Rollout Path
+
+This is the exact path that was used successfully for the `v1.1` production rollout:
+
+1. Push `release/v1.1-rail-candidate` plus rollback tags to GitHub.
+2. In Railway:
+   - open the backend service settings
+   - go to `Source`
+   - change `Branch connected to production` from `main` to `release/v1.1-rail-candidate`
+   - wait for the backend deploy to finish
+3. Verify backend directly on Railway before touching frontend:
+   - `GET /api/billing/activation-status`
+   - `GET /api/account/usage`
+4. In Vercel:
+   - use the preview deployment created from `release/v1.1-rail-candidate`
+   - verify the preview visually and functionally before promoting anything
+5. Because direct `Promote to Production` was not exposed in the Vercel UI during this rollout:
+   - switch local Git to `main`
+   - merge `release/v1.1-rail-candidate` into `main`
+   - push `main`
+6. Let Vercel production update from `main`.
+
+This is now the preferred fallback procedure when Vercel preview deployment exists but the UI does not expose a direct production-promotion action.
+
 ### Why This Order
 
 - backend problems are the higher-risk production failure class for auth, quota, billing, and premium 3D
@@ -157,6 +181,7 @@ Run these in order after the new backend deploy is live.
 - run one test 3D flow
 - run one Relief STL flow
 - confirm usage/account UI still loads cleanly
+- if owned test models are large, explicitly run one `Test 3D` flow with `bike` from the preview deployment before promoting the frontend, so static asset weight problems surface before the live switch
 
 ### Phase 3: Auth Flow
 
@@ -199,6 +224,7 @@ These require dashboard or service access that must be done manually:
 - confirm the intended production deployment is active
 - confirm domain routing still points to the right deployment
 - confirm `www.pluto-3d.com` serves the expected `app-config.js`
+- if `Promote to Production` is not visible for the preview deployment, use the verified release-candidate branch as the source for a merge into `main`, then let Vercel production rebuild from `main`
 
 ### Supabase
 

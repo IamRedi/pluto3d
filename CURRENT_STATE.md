@@ -23,9 +23,10 @@ Update it after every meaningful change.
 
 ### Versioning And Release Split
 
-- production `v1` is frozen on `main`
+- production now runs the `v1.1` rollout that was merged into `main` on `2026-03-28`
 - active development continues on `develop` as `v1.1`
 - local/test work does not change production by itself
+- the previous production rollback anchor is tagged as `prod-v1.0-before-v1.1-2026-03-28`
 
 ### Core Workspace
 
@@ -147,6 +148,18 @@ Update it after every meaningful change.
     - the remaining go-live blockers are still the expected operational blockers:
       - Stripe is still configured in `test` mode
       - billing return URLs still point to a temporary Vercel domain
+- the `v1.1` rollout is now live in production:
+  - Railway backend is connected to branch `release/v1.1-rail-candidate`
+  - Vercel production was updated by verifying the preview deployment first, then merging the same release-candidate into `main`
+  - direct backend verification passed before the frontend switch:
+    - `GET /api/billing/activation-status`
+    - `GET /api/account/usage`
+  - preview verification passed for the main user-facing changes:
+    - `3D Generator`
+    - `Gallery`
+    - `Profile`
+    - theme switching
+  - one preview `Test 3D` smoke check with `bike` succeeded, reducing the immediate risk from the heavier owned test-model assets before the frontend production switch
 - the viewer chrome is now cleaner and more text-first:
   - the upper `Pluto3D Studio` kicker was removed from the viewer shell
   - non-button viewer metadata now reads as clean text without shell backgrounds
@@ -228,12 +241,17 @@ Update it after every meaningful change.
 - release-candidate prep is now underway on top of `develop`, including rollback tagging strategy and local deploy-snapshot cleanup so temporary backend state files do not leak into the production candidate
 - the current rollout snapshot is now frozen on branch `release/v1.1-rail-candidate`
 - the current rollback anchor for frozen production is tagged as `prod-v1.0-before-v1.1-2026-03-28`
+- early post-rollout observation on the live `v1.1` production path with the current small tester group before broader promotion
 
 ## Next Tasks
 
 - treat `SYSTEM_MASTER.md`, `CURRENT_STATE.md`, and `CHANGELOG.md` as the primary working documentation
 - apply `usage_buckets` plus the billing schema in the target Supabase project, then rerun `backend/scripts/quota_billing_smoke.py`
 - rerun billing readiness in the target environment after switching off Stripe `test` mode and replacing the temporary Vercel billing URLs
+- keep the just-used March 28 rollout path as the default operational playbook:
+  - Railway backend from `release/v1.1-rail-candidate`
+  - Vercel preview verification first
+  - then merge the verified release candidate into `main` if direct Vercel production promotion is not available
 - follow the updated `PRODUCTION_ACTIVATION_RUNBOOK.md` for:
   - release-candidate rollout from `develop`
   - production test order
@@ -262,6 +280,7 @@ Update it after every meaningful change.
 - the exact Replicate model license snapshot still needs to be recorded for commercial readiness
 - final live Stripe checkout, webhook, and portal smoke tests are still operational follow-up work
 - target-environment Supabase schema reachability still needs confirmation before billing verification can move from `Awaiting schema` to live smoke testing
+- owned test-model asset weight is still a production watch item even though the first preview `bike` smoke test succeeded during rollout
 
 ## Current Working Boundaries
 

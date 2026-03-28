@@ -7,6 +7,17 @@ Historical entries below were migrated from the previous board, workflow, and ha
 
 ## 2026-03-28
 
+### v1.1 production rollout
+
+- Rolled `v1.1` into live production with the following path:
+  - prepared and pushed `release/v1.1-rail-candidate`
+  - switched Railway backend production source to `release/v1.1-rail-candidate`
+  - verified live backend endpoints directly before touching frontend
+  - verified the Vercel preview deployment for the same branch
+  - merged the verified release candidate into `main` and pushed `main` so Vercel production could update
+- Recorded the real operator procedure in `PRODUCTION_ACTIVATION_RUNBOOK.md`, including the Vercel fallback path used when direct preview-to-production promotion was not exposed in the UI.
+- Confirmed one preview `Test 3D` smoke check with the heavier `bike` owned model before the production frontend switch, so large test-model assets remain a watch item but did not block this rollout.
+
 ### Production rollout runbook pass
 
 - Expanded `PRODUCTION_ACTIVATION_RUNBOOK.md` with a controlled `v1.1` rollout path that now covers:
