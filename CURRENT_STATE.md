@@ -226,6 +226,8 @@ Update it after every meaningful change.
 - keeping the remodel compact and premium-looking without reopening backend architecture
 - preparing a controlled `v1.1` production rollout path with explicit backend-first testing, limited tester exposure, and documented rollback to `v1.0`
 - release-candidate prep is now underway on top of `develop`, including rollback tagging strategy and local deploy-snapshot cleanup so temporary backend state files do not leak into the production candidate
+- the current rollout snapshot is now frozen on branch `release/v1.1-rail-candidate`
+- the current rollback anchor for frozen production is tagged as `prod-v1.0-before-v1.1-2026-03-28`
 
 ## Next Tasks
 

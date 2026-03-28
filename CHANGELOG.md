@@ -17,6 +17,7 @@ Historical entries below were migrated from the previous board, workflow, and ha
   - explicit rollback rules and rollback success criteria for returning to frozen `v1.0`
 - Clarified in the rollout runbook that older handoff notes are historical context only, while real rollout decisions should trust the current branch, config, dashboards, and live runtime endpoints.
 - Added release-snapshot hygiene for the rollout candidate by ignoring temporary `backend/data/` state files so local smoke/billing state does not get bundled into the production candidate.
+- Created the rollout branch `release/v1.1-rail-candidate` and the rollback tag `prod-v1.0-before-v1.1-2026-03-28` so the upcoming production switch has a documented forward path and a fast return point.
 
 ### Quota smoke hardening pass
 
