@@ -507,6 +507,11 @@ pointer-events:none;
 z-index:18;
 }
 
+/* When a platform surface (Plans/Profile/etc) is open, hide the workspace viewer/panels behind it. */
+body.platform-surface-open .workspace{
+display:none;
+}
+
 .platform-surface.hidden{
 display:none;
 }
@@ -3252,27 +3257,27 @@ grid-area:nav;
 width:100%;
 }
 .platform-brand-name{
-font-size:14px;
+font-size:13px;
 }
 .platform-brand-subtitle{
 font-size:10px;
 }
 .platform-actions{
 align-items:center;
-justify-content:space-between;
+justify-content:flex-end;
 flex-wrap:nowrap;
-gap:8px;
+gap:6px;
 }
 .platform-plan-badge{
-height:30px;
-padding:0 10px;
-font-size:10px;
+height:26px;
+padding:0 8px;
+font-size:9px;
 white-space:nowrap;
 }
 .platform-pill{
-height:34px;
-padding:0 12px;
-font-size:11px;
+height:30px;
+padding:0 10px;
+font-size:10px;
 white-space:nowrap;
 }
 .platform-link{
@@ -3294,6 +3299,12 @@ display:none;
 
 .platform-brand-subtitle{
 display:none;
+}
+
+@media (max-width: 420px){
+#platformPlanBadge{
+display:none;
+}
 }
 .platform-surface{
 inset:68px 10px 10px 10px;
@@ -6297,6 +6308,7 @@ title.textContent = config.title
 subtitle.textContent = config.subtitle
 body.innerHTML = renderPlatformSurfaceBody(config)
 surface.classList.remove("hidden")
+document.body.classList.add("platform-surface-open")
 syncPlatformLinks(key)
 }
 
@@ -6304,6 +6316,7 @@ function closePlatformSurface(){
 const surface = document.getElementById("platformSurface")
 delete surface.dataset.surface
 surface.classList.add("hidden")
+document.body.classList.remove("platform-surface-open")
 syncPlatformLinks("workspace")
 }
 
