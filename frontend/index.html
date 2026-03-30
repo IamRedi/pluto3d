@@ -51,7 +51,7 @@ box-sizing:border-box;
   --surface-hover:rgba(255,255,255,0.05);
   --surface-card-bg:linear-gradient(180deg, rgba(24, 29, 26, 0.98), rgba(17, 21, 18, 0.96));
   --surface-card-border:rgba(105, 123, 111, 0.16);
-  --surface-card-shadow:0 14px 28px rgba(0, 0, 0, 0.22);
+  --surface-card-shadow:0 10px 20px rgba(0, 0, 0, 0.18);
   --surface-chip-bg:rgba(255,255,255,0.045);
   --surface-chip-border:rgba(116, 138, 118, 0.18);
   --surface-chip-primary-bg:rgba(88,184,115,0.14);
@@ -60,28 +60,28 @@ box-sizing:border-box;
   --surface-chip-premium-text:#e2f0d7;
   --header-bg:rgba(14, 18, 16, 0.96);
   --header-border:rgba(105, 123, 111, 0.14);
-  --header-shadow:0 10px 24px rgba(0,0,0,0.22);
+  --header-shadow:0 8px 18px rgba(0,0,0,0.16);
   --nav-pill-active-bg:rgba(61, 83, 70, 0.42);
   --nav-pill-active-border:rgba(123, 150, 134, 0.24);
   --control-bg:linear-gradient(180deg, rgba(28, 33, 29, 0.98), rgba(18, 22, 19, 0.96));
   --control-border:rgba(105, 123, 111, 0.22);
   --control-text:#d8e3d8;
   --control-hover-border:rgba(145, 170, 153, 0.34);
-  --control-hover-shadow:0 10px 20px rgba(0,0,0,0.16);
+  --control-hover-shadow:0 8px 16px rgba(0,0,0,0.12);
   --control-active-bg:linear-gradient(135deg, rgba(39, 56, 47, 0.98), rgba(24, 33, 28, 0.96));
   --control-active-border:rgba(123, 150, 134, 0.36);
   --control-active-shadow:0 12px 22px rgba(0,0,0,0.2);
   --button-bg:linear-gradient(180deg, rgba(45, 50, 45, 0.98) 0%, rgba(31, 35, 31, 0.98) 54%, rgba(19, 22, 19, 0.98) 100%);
   --button-border:rgba(121, 136, 125, 0.24);
   --button-text:var(--text-strong);
-  --button-shadow:inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -10px 18px rgba(5,7,5,0.3), 0 12px 20px rgba(0,0,0,0.2);
+  --button-shadow:inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 18px rgba(0,0,0,0.18);
   --button-hover-border:rgba(171, 192, 176, 0.32);
-  --button-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -12px 20px rgba(5,7,5,0.34), 0 14px 22px rgba(0,0,0,0.24);
-  --button-premium-bg:linear-gradient(180deg, rgba(232, 202, 136, 0.99) 0%, rgba(196, 152, 73, 0.99) 52%, rgba(126, 87, 28, 0.99) 100%);
-  --button-premium-border:rgba(236, 208, 150, 0.46);
-  --button-premium-text:#fff7e6;
-  --button-premium-shadow:inset 0 1px 0 rgba(255,247,227,0.32), inset 0 -12px 20px rgba(89,58,13,0.26), 0 14px 24px rgba(76, 51, 15, 0.2);
-  --button-premium-hover-shadow:inset 0 1px 0 rgba(255,249,232,0.38), inset 0 -14px 22px rgba(89,58,13,0.28), 0 16px 28px rgba(76, 51, 15, 0.24);
+  --button-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 20px rgba(0,0,0,0.2);
+  --button-premium-bg:linear-gradient(180deg, rgba(245, 223, 172, 0.99) 0%, rgba(214, 174, 96, 0.99) 52%, rgba(156, 110, 40, 0.99) 100%);
+  --button-premium-border:rgba(246, 226, 180, 0.52);
+  --button-premium-text:#fff9ef;
+  --button-premium-shadow:inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -10px 18px rgba(76,50,12,0.22), 0 14px 26px rgba(60, 38, 10, 0.18);
+  --button-premium-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -12px 20px rgba(76,50,12,0.24), 0 16px 30px rgba(60, 38, 10, 0.2);
   --button-premium-badge-bg:rgba(9, 12, 9, 0.76);
   --button-premium-badge-border:rgba(225, 192, 124, 0.28);
   --button-premium-badge-text:#f0dba8;
@@ -97,7 +97,7 @@ box-sizing:border-box;
   --viewer-border:rgba(105, 123, 111, 0.14);
   --viewer-ambient:none;
   --viewer-core-glow:none;
-  --viewer-shell-shadow:0 22px 44px rgba(0,0,0,0.24), 0 44px 80px rgba(0,0,0,0.16);
+  --viewer-shell-shadow:0 18px 42px rgba(0,0,0,0.22);
   --viewer-shell-inner-highlight:rgba(255,255,255,0.05);
   --viewer-shell-rim:rgba(148, 165, 153, 0.08);
   --viewer-stage-border:rgba(137, 149, 140, 0.14);
@@ -118,9 +118,9 @@ box-sizing:border-box;
   --viewer-launch-text:#f8eed9;
   --viewer-launch-hover-border:rgba(236, 208, 150, 0.44);
   --viewer-launch-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -10px 16px rgba(0,0,0,0.24), 0 14px 30px rgba(76,51,15,0.18);
-  --viewer-download-bg:linear-gradient(180deg, rgba(232, 202, 136, 0.99) 0%, rgba(196, 152, 73, 0.99) 52%, rgba(126, 87, 28, 0.99) 100%);
-  --viewer-download-shadow:inset 0 1px 0 rgba(255,247,227,0.32), inset 0 -12px 20px rgba(89,58,13,0.26), 0 14px 28px rgba(76, 51, 15, 0.22);
-  --viewer-download-hover-shadow:inset 0 1px 0 rgba(255,249,232,0.38), inset 0 -14px 22px rgba(89,58,13,0.28), 0 16px 32px rgba(76, 51, 15, 0.26);
+  --viewer-download-bg:var(--button-premium-bg);
+  --viewer-download-shadow:inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -10px 18px rgba(76,50,12,0.22), 0 14px 28px rgba(60, 38, 10, 0.2);
+  --viewer-download-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -12px 20px rgba(76,50,12,0.24), 0 16px 32px rgba(60, 38, 10, 0.22);
   --login-modal-width:min(760px, calc(100vw - 48px));
   --progress-track:rgba(8, 12, 8, 0.74);
   --progress-fill:linear-gradient(90deg, #73c58a, #b7e1b4);
@@ -154,11 +154,11 @@ box-sizing:border-box;
   --studio-status-warning-border:rgba(251,191,36,0.24);
   --studio-status-warning-text:#fef3c7;
   --glow-cyan:0 0 30px rgba(115,197,138,0.14);
-  --body-background:linear-gradient(180deg, #0a0d0b 0%, #101611 48%, #161d17 100%);
-  --space-background:linear-gradient(180deg, #0a0d0b 0%, #101611 48%, #161d17 100%);
-  --sidebar-background:linear-gradient(180deg, rgba(16, 21, 18, 0.98), rgba(13, 17, 15, 0.96));
-  --panel-background:linear-gradient(180deg, rgba(18, 22, 19, 0.98), rgba(15, 19, 16, 0.96));
-  --viewer-background:linear-gradient(180deg, rgba(10, 12, 11, 0.99), rgba(14, 17, 15, 0.98));
+  --body-background:#0a0d0b;
+  --space-background:#0a0d0b;
+  --sidebar-background:rgba(16, 21, 18, 0.92);
+  --panel-background:rgba(18, 22, 19, 0.92);
+  --viewer-background:rgba(10, 12, 11, 0.92);
 }
 
 body[data-theme="light"]{
@@ -198,7 +198,7 @@ body[data-theme="light"]{
   --surface-hover:rgba(88,184,115,0.08);
   --surface-card-bg:linear-gradient(180deg, rgba(250,252,249,0.98), rgba(238,243,238,0.95));
   --surface-card-border:rgba(93, 115, 101, 0.12);
-  --surface-card-shadow:0 12px 24px rgba(84, 96, 87, 0.08);
+  --surface-card-shadow:0 10px 20px rgba(84, 96, 87, 0.08);
   --surface-chip-bg:rgba(255,255,255,0.8);
   --surface-chip-border:rgba(74, 118, 83, 0.12);
   --surface-chip-primary-bg:rgba(88,184,115,0.12);
@@ -207,28 +207,28 @@ body[data-theme="light"]{
   --surface-chip-premium-text:#35542f;
   --header-bg:rgba(245, 248, 244, 0.96);
   --header-border:rgba(93, 115, 101, 0.1);
-  --header-shadow:0 10px 18px rgba(84, 96, 87, 0.08);
+  --header-shadow:0 8px 16px rgba(84, 96, 87, 0.07);
   --nav-pill-active-bg:rgba(88, 108, 96, 0.16);
   --nav-pill-active-border:rgba(109, 132, 117, 0.18);
   --control-bg:linear-gradient(180deg, rgba(248, 250, 247, 0.99), rgba(236, 241, 236, 0.96));
   --control-border:rgba(93, 115, 101, 0.16);
   --control-text:#17361d;
   --control-hover-border:rgba(109, 132, 117, 0.28);
-  --control-hover-shadow:0 8px 16px rgba(84, 96, 87, 0.08);
+  --control-hover-shadow:0 8px 14px rgba(84, 96, 87, 0.07);
   --control-active-bg:linear-gradient(135deg, rgba(221, 230, 223, 0.98), rgba(211, 221, 214, 0.96));
   --control-active-border:rgba(109, 132, 117, 0.3);
   --control-active-shadow:0 10px 18px rgba(84, 96, 87, 0.1);
   --button-bg:linear-gradient(180deg, rgba(254,255,252,0.99) 0%, rgba(242,245,240,0.98) 58%, rgba(228,234,228,0.97) 100%);
   --button-border:rgba(93, 115, 101, 0.16);
   --button-text:#17361d;
-  --button-shadow:inset 0 1px 0 rgba(255,255,255,0.92), inset 0 -8px 14px rgba(178,188,179,0.28), 0 10px 18px rgba(84, 96, 87, 0.09);
+  --button-shadow:inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 18px rgba(84, 96, 87, 0.09);
   --button-hover-border:rgba(109, 132, 117, 0.26);
-  --button-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.98), inset 0 -10px 16px rgba(178,188,179,0.3), 0 12px 20px rgba(84, 96, 87, 0.11);
-  --button-premium-bg:linear-gradient(180deg, rgba(253, 244, 220, 1) 0%, rgba(233, 209, 152, 0.99) 54%, rgba(198, 161, 93, 0.98) 100%);
-  --button-premium-border:rgba(188, 144, 56, 0.34);
-  --button-premium-text:#6c4a12;
-  --button-premium-shadow:inset 0 1px 0 rgba(255,255,255,0.82), inset 0 -10px 16px rgba(188,144,56,0.15), 0 12px 18px rgba(188, 144, 56, 0.12);
-  --button-premium-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -12px 18px rgba(188,144,56,0.17), 0 14px 20px rgba(188, 144, 56, 0.14);
+  --button-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.96), 0 12px 20px rgba(84, 96, 87, 0.11);
+  --button-premium-bg:linear-gradient(180deg, rgba(255, 249, 234, 1) 0%, rgba(246, 226, 180, 0.99) 56%, rgba(220, 185, 112, 0.98) 100%);
+  --button-premium-border:rgba(188, 144, 56, 0.32);
+  --button-premium-text:#5f3f10;
+  --button-premium-shadow:inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -10px 16px rgba(188,144,56,0.12), 0 12px 18px rgba(188, 144, 56, 0.11);
+  --button-premium-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.94), inset 0 -12px 18px rgba(188,144,56,0.14), 0 14px 22px rgba(188, 144, 56, 0.13);
   --button-premium-badge-bg:rgba(245, 250, 245, 0.94);
   --button-premium-badge-border:rgba(171, 131, 49, 0.24);
   --button-premium-badge-text:#6a4b18;
@@ -244,7 +244,7 @@ body[data-theme="light"]{
   --viewer-border:rgba(93, 115, 101, 0.14);
   --viewer-ambient:none;
   --viewer-core-glow:none;
-  --viewer-shell-shadow:0 18px 34px rgba(84, 96, 87, 0.12), 0 30px 60px rgba(148,163,184,0.08);
+  --viewer-shell-shadow:0 16px 34px rgba(84, 96, 87, 0.12);
   --viewer-shell-inner-highlight:rgba(255,255,255,0.7);
   --viewer-shell-rim:rgba(188, 144, 56, 0.08);
   --viewer-stage-border:rgba(109, 132, 117, 0.14);
@@ -265,9 +265,9 @@ body[data-theme="light"]{
   --viewer-launch-text:#624317;
   --viewer-launch-hover-border:rgba(188, 144, 56, 0.36);
   --viewer-launch-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -8px 14px rgba(188,144,56,0.12), 0 12px 24px rgba(188,144,56,0.1);
-  --viewer-download-bg:linear-gradient(180deg, rgba(253, 244, 220, 1) 0%, rgba(233, 209, 152, 0.99) 54%, rgba(198, 161, 93, 0.98) 100%);
-  --viewer-download-shadow:inset 0 1px 0 rgba(255,255,255,0.82), inset 0 -10px 16px rgba(188,144,56,0.15), 0 12px 24px rgba(188, 144, 56, 0.14);
-  --viewer-download-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -12px 18px rgba(188,144,56,0.17), 0 14px 28px rgba(188, 144, 56, 0.16);
+  --viewer-download-bg:var(--button-premium-bg);
+  --viewer-download-shadow:inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -10px 16px rgba(188,144,56,0.12), 0 12px 24px rgba(188, 144, 56, 0.13);
+  --viewer-download-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.94), inset 0 -12px 18px rgba(188,144,56,0.14), 0 14px 28px rgba(188, 144, 56, 0.15);
   --progress-track:rgba(216, 226, 217, 0.86);
   --progress-fill:linear-gradient(90deg, #3f9b58, #7ac18a);
   --status-text:#42604a;
@@ -300,11 +300,11 @@ body[data-theme="light"]{
   --studio-status-warning-border:rgba(245,158,11,0.22);
   --studio-status-warning-text:#92400e;
   --glow-cyan:0 0 30px rgba(63,155,88,0.12);
-  --body-background:linear-gradient(180deg, #eff3ee 0%, #e6ece6 48%, #dde5de 100%);
-  --space-background:linear-gradient(180deg, #eff3ee 0%, #e6ece6 48%, #dde5de 100%);
-  --sidebar-background:linear-gradient(180deg, rgba(243, 247, 242, 0.98), rgba(232, 238, 232, 0.96));
-  --panel-background:linear-gradient(180deg, rgba(247, 250, 246, 0.99), rgba(237, 242, 237, 0.97));
-  --viewer-background:linear-gradient(180deg, rgba(239, 244, 240, 0.99), rgba(228, 235, 229, 0.98));
+  --body-background:#eff3ee;
+  --space-background:#eff3ee;
+  --sidebar-background:rgba(243, 247, 242, 0.92);
+  --panel-background:rgba(247, 250, 246, 0.92);
+  --viewer-background:rgba(14, 18, 16, 0.92);
 }
 
 body {
@@ -1252,319 +1252,6 @@ grid-template-columns:1.2fr 0.8fr;
 gap:16px;
 }
 
-.gallery-showcase-grid{
-display:grid;
-grid-template-columns:minmax(0, 1.3fr) minmax(260px, 0.7fr);
-gap:16px;
-align-items:stretch;
-}
-
-.gallery-hero-card{
-padding:22px 22px 24px;
-background:
-linear-gradient(180deg, rgba(18, 21, 18, 0.96), rgba(13, 16, 14, 0.9)),
-radial-gradient(circle at top right, rgba(151, 111, 43, 0.16), transparent 28%),
-radial-gradient(circle at bottom left, rgba(88,184,115,0.1), transparent 34%);
-}
-
-body[data-theme="light"] .gallery-hero-card{
-background:
-linear-gradient(180deg, rgba(249, 251, 249, 0.99), rgba(240, 244, 240, 0.97)),
-radial-gradient(circle at top right, rgba(188, 144, 56, 0.12), transparent 28%),
-radial-gradient(circle at bottom left, rgba(88,184,115,0.08), transparent 34%);
-}
-
-.gallery-stage-panel,
-.gallery-side-panel{
-display:flex;
-flex-direction:column;
-gap:14px;
-}
-
-.gallery-stage-grid{
-display:grid;
-grid-template-columns:repeat(3, minmax(0, 1fr));
-gap:12px;
-}
-
-.gallery-stage-card{
-min-height:190px;
-padding:16px;
-border-radius:22px;
-border:1px solid rgba(151, 111, 43, 0.16);
-background:
-linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)),
-radial-gradient(circle at top, rgba(196, 161, 96, 0.16), transparent 34%),
-radial-gradient(circle at bottom left, rgba(88,184,115,0.12), transparent 36%);
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
-}
-
-body[data-theme="light"] .gallery-stage-card{
-background:
-linear-gradient(180deg, rgba(255,255,255,0.88), rgba(244, 247, 243, 0.78)),
-radial-gradient(circle at top, rgba(188, 144, 56, 0.12), transparent 34%),
-radial-gradient(circle at bottom left, rgba(88,184,115,0.08), transparent 36%);
-}
-
-.gallery-stage-card.featured{
-border-color:rgba(196, 161, 96, 0.24);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.07), 0 16px 28px rgba(0,0,0,0.14);
-}
-
-.gallery-stage-kicker{
-font-size:10px;
-font-weight:600;
-letter-spacing:0.14em;
-text-transform:uppercase;
-color:var(--bronze-soft);
-margin-bottom:10px;
-}
-
-.gallery-stage-title{
-font-size:18px;
-font-weight:700;
-line-height:1.2;
-margin-bottom:8px;
-}
-
-.gallery-stage-copy{
-font-size:13px;
-line-height:1.65;
-color:var(--text-soft);
-}
-
-.gallery-stage-meta{
-display:flex;
-justify-content:space-between;
-gap:10px;
-font-size:11px;
-letter-spacing:0.08em;
-text-transform:uppercase;
-color:var(--text-soft);
-}
-
-.gallery-snapshot-grid{
-display:grid;
-grid-template-columns:repeat(3, minmax(0, 1fr));
-gap:12px;
-}
-
-.gallery-snapshot-item{
-padding:14px 15px;
-border-radius:18px;
-border:1px solid var(--line-soft);
-background:rgba(255,255,255,0.03);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
-}
-
-.gallery-snapshot-value{
-font-size:22px;
-font-weight:700;
-line-height:1.1;
-color:var(--text-main);
-margin-bottom:6px;
-}
-
-.gallery-snapshot-label{
-font-size:10px;
-letter-spacing:0.12em;
-text-transform:uppercase;
-color:var(--text-soft);
-}
-
-.gallery-archive-list{
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-.gallery-archive-item{
-display:flex;
-align-items:flex-start;
-justify-content:space-between;
-gap:12px;
-padding:14px 15px;
-border-radius:18px;
-border:1px solid var(--line-soft);
-background:rgba(255,255,255,0.03);
-}
-
-.gallery-archive-main{
-display:flex;
-flex-direction:column;
-gap:5px;
-min-width:0;
-}
-
-.gallery-archive-title{
-font-size:15px;
-font-weight:700;
-line-height:1.25;
-}
-
-.gallery-archive-copy{
-font-size:12px;
-line-height:1.6;
-color:var(--text-soft);
-}
-
-.gallery-archive-type{
-flex-shrink:0;
-font-size:10px;
-font-weight:600;
-letter-spacing:0.12em;
-text-transform:uppercase;
-color:var(--bronze-soft);
-}
-
-.gallery-curation-grid{
-display:grid;
-grid-template-columns:repeat(2, minmax(0, 1fr));
-gap:14px;
-margin-top:16px;
-}
-
-.gallery-curation-card{
-padding:16px;
-border-radius:20px;
-border:1px solid var(--line-soft);
-background:rgba(255,255,255,0.03);
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-.gallery-curation-label{
-font-size:10px;
-font-weight:600;
-letter-spacing:0.14em;
-text-transform:uppercase;
-color:var(--bronze-soft);
-}
-
-.gallery-curation-title{
-font-size:17px;
-font-weight:700;
-line-height:1.25;
-}
-
-.gallery-curation-copy{
-font-size:13px;
-line-height:1.65;
-color:var(--text-soft);
-}
-
-.profile-pill-row{
-margin-top:14px;
-}
-
-.profile-signal-grid{
-display:grid;
-grid-template-columns:repeat(3, minmax(0, 1fr));
-gap:12px;
-}
-
-.profile-signal-card{
-padding:16px 16px 17px;
-border-radius:18px;
-border:1px solid var(--line-soft);
-background:rgba(255,255,255,0.03);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
-}
-
-.profile-signal-label{
-font-size:11px;
-letter-spacing:0.12em;
-text-transform:uppercase;
-color:var(--text-soft);
-margin-bottom:8px;
-}
-
-.profile-signal-value{
-font-size:20px;
-font-weight:700;
-line-height:1.2;
-color:var(--text-main);
-}
-
-.profile-signal-copy{
-margin-top:6px;
-font-size:12px;
-line-height:1.55;
-color:var(--text-soft);
-}
-
-.profile-billing-grid{
-display:grid;
-grid-template-columns:repeat(2, minmax(0, 1fr));
-gap:12px;
-margin-top:14px;
-}
-
-.profile-billing-card{
-padding:15px 16px;
-border-radius:18px;
-border:1px solid var(--line-soft);
-background:rgba(255,255,255,0.03);
-}
-
-.profile-billing-label{
-font-size:10px;
-letter-spacing:0.14em;
-text-transform:uppercase;
-color:var(--text-soft);
-margin-bottom:8px;
-}
-
-.profile-billing-value{
-font-size:16px;
-font-weight:700;
-line-height:1.35;
-color:var(--text-main);
-}
-
-.profile-billing-copy{
-margin-top:6px;
-font-size:12px;
-line-height:1.55;
-color:var(--text-soft);
-}
-
-.profile-usage-total{
-padding:16px 16px 17px;
-border-radius:18px;
-border:1px solid rgba(196, 161, 96, 0.18);
-background:
-linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
-radial-gradient(circle at top right, rgba(196, 161, 96, 0.16), transparent 34%);
-margin-top:14px;
-}
-
-.profile-usage-total-label{
-font-size:10px;
-letter-spacing:0.14em;
-text-transform:uppercase;
-color:var(--text-soft);
-margin-bottom:10px;
-}
-
-.profile-usage-total-value{
-font-size:30px;
-font-weight:700;
-line-height:1;
-color:var(--bronze-soft);
-margin-bottom:8px;
-}
-
-.profile-usage-total-copy{
-font-size:12px;
-line-height:1.55;
-color:var(--text-soft);
-}
-
 .gallery-wall{
 display:grid;
 grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -1653,7 +1340,7 @@ white-space:nowrap;
 
 .workspace{
 display:grid;
-grid-template-columns:154px minmax(440px, 540px) minmax(0, 1fr);
+grid-template-columns:154px clamp(360px, 32vw, 480px) minmax(0, 1fr);
 height:calc(100dvh - 62px);
 max-height:calc(100dvh - 62px);
 overflow:hidden;
@@ -1733,7 +1420,7 @@ width:100%;
 max-width:96px;
 height:78px;
 
-border-radius:26px;
+border-radius:18px;
 
 display:flex;
 align-items:center;
@@ -1741,10 +1428,9 @@ justify-content:center;
 
 cursor:pointer;
 
-background:
-linear-gradient(180deg, rgba(32, 37, 33, 0.99), rgba(18, 22, 19, 0.98));
+background:var(--control-bg);
 border:1px solid rgba(105, 123, 111, 0.16);
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.03), 0 10px 18px rgba(0, 0, 0, 0.2);
+box-shadow:0 10px 18px rgba(0, 0, 0, 0.18);
 font-family:Orbitron;
 font-size:14px;
 letter-spacing:0.06em;
@@ -1756,38 +1442,35 @@ transition:0.2s;
 }
 
 .sidebtn:hover{
-transform:translateY(-2px);
+transform:none;
 border-color:rgba(145, 170, 153, 0.26);
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04), 0 12px 20px rgba(0, 0, 0, 0.24);
+box-shadow:0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
 .sidebtn.active{
-background:
-linear-gradient(180deg, rgba(61, 83, 70, 0.98), rgba(35, 48, 41, 0.98));
+background:var(--control-active-bg);
 border-color:rgba(123, 150, 134, 0.28);
 color:#ffffff;
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05), 0 12px 22px rgba(0,0,0,0.24);
+box-shadow:0 12px 22px rgba(0,0,0,0.22);
 
 }
 
 body[data-theme="light"] .sidebtn{
-background:
-linear-gradient(180deg, rgba(250, 252, 249, 0.99), rgba(235, 240, 235, 0.97));
+background:var(--control-bg);
 border-color:rgba(109, 132, 117, 0.16);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.94), inset 0 -10px 16px rgba(188, 196, 188, 0.24), 0 10px 18px rgba(84, 96, 87, 0.08);
+box-shadow:0 10px 18px rgba(84, 96, 87, 0.08);
 color:#304a37;
 }
 
 body[data-theme="light"] .sidebtn:hover{
 border-color:rgba(109, 132, 117, 0.24);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.98), inset 0 -12px 18px rgba(188, 196, 188, 0.26), 0 12px 20px rgba(84, 96, 87, 0.1);
+box-shadow:0 12px 20px rgba(84, 96, 87, 0.1);
 }
 
 body[data-theme="light"] .sidebtn.active{
-background:
-linear-gradient(180deg, rgba(224, 235, 226, 0.99), rgba(211, 223, 214, 0.97));
+background:var(--control-active-bg);
 border-color:rgba(109, 132, 117, 0.28);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.92), inset 0 -12px 18px rgba(168, 182, 171, 0.24), 0 12px 22px rgba(84, 96, 87, 0.1);
+box-shadow:0 12px 22px rgba(84, 96, 87, 0.1);
 color:#17361d;
 }
 
@@ -1800,12 +1483,12 @@ margin-bottom:10px;
 padding:0;
 border-radius:999px;
 border:1px solid rgba(105, 123, 111, 0.16);
-background:linear-gradient(180deg, rgba(32, 37, 33, 0.99), rgba(18, 22, 19, 0.98));
+background:var(--control-bg);
 color:#d9e2db;
 font-size:18px;
 line-height:1;
 cursor:pointer;
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.03), 0 10px 18px rgba(0, 0, 0, 0.2);
+box-shadow:0 10px 18px rgba(0, 0, 0, 0.18);
 transition:0.2s;
 display:flex;
 align-items:center;
@@ -1813,21 +1496,21 @@ justify-content:center;
 }
 
 .theme-toggle:hover{
-transform:translateY(-2px);
+transform:none;
 border-color:rgba(145, 170, 153, 0.26);
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04), 0 12px 20px rgba(0, 0, 0, 0.24);
+box-shadow:0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
 body[data-theme="light"] .theme-toggle{
 border-color:rgba(93, 115, 101, 0.14);
-background:linear-gradient(180deg, rgba(252, 253, 251, 0.99), rgba(236, 241, 236, 0.97));
+background:var(--control-bg);
 color:#294032;
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -8px 12px rgba(178,188,179,0.24), 0 8px 14px rgba(84,96,87,0.06);
+box-shadow:0 8px 14px rgba(84,96,87,0.06);
 }
 
 body[data-theme="light"] .theme-toggle:hover{
 border-color:rgba(109, 132, 117, 0.22);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.96), inset 0 -10px 14px rgba(178,188,179,0.26), 0 10px 16px rgba(84,96,87,0.08);
+box-shadow:0 10px 16px rgba(84,96,87,0.08);
 }
 
 .theme-toggle-icon{
@@ -2015,7 +1698,7 @@ var(--viewer-stage-glow),
 var(--viewer-stage-panel);
 box-shadow:
 inset 0 1px 0 var(--viewer-shell-inner-highlight),
-inset 0 -26px 40px rgba(0,0,0,0.14),
+inset 0 -18px 28px rgba(0,0,0,0.12),
 inset 0 0 0 1px var(--viewer-shell-rim);
 pointer-events:none;
 z-index:0;
@@ -2023,14 +1706,7 @@ z-index:0;
 
 body[data-theme="light"] .viewer{
 border:1px solid var(--viewer-border);
-box-shadow:0 18px 30px rgba(84, 96, 87, 0.1), 0 28px 48px rgba(148,163,184,0.08);
-}
-
-body[data-theme="light"] .viewer::before{
-box-shadow:
-inset 0 1px 0 rgba(255,255,255,0.84),
-inset 0 -20px 32px rgba(182, 191, 184, 0.14),
-inset 0 0 0 1px rgba(188, 144, 56, 0.05);
+box-shadow:var(--viewer-shell-shadow);
 }
 .viewer::after{
 content:"";
@@ -2043,7 +1719,7 @@ transform:translateX(-50%);
 border-radius:50%;
 background:var(--viewer-stage-falloff);
 filter:blur(12px);
-opacity:0.96;
+opacity:0.6;
 pointer-events:none;
 z-index:0;
 }
@@ -2055,9 +1731,8 @@ right:20px;
 z-index:3;
 display:flex;
 align-items:flex-start;
-justify-content:flex-end;
+justify-content:space-between;
 gap:14px;
-max-width:calc(100% - 40px);
 pointer-events:none;
 }
 
@@ -2069,9 +1744,21 @@ pointer-events:auto;
 .viewer-title-block{
 display:flex;
 flex-direction:column;
-gap:2px;
-padding:0;
+gap:4px;
+padding:11px 14px 11px;
+border-radius:20px;
+background:linear-gradient(180deg, rgba(19, 24, 20, 0.88), rgba(10, 12, 11, 0.76));
+border:1px solid rgba(164, 144, 101, 0.14);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -12px 18px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.1);
 max-width:214px;
+}
+
+.viewer-kicker{
+font-size:10px;
+font-weight:600;
+letter-spacing:0.16em;
+text-transform:uppercase;
+color:rgba(206, 214, 208, 0.68);
 }
 
 .viewer-title{
@@ -2091,16 +1778,18 @@ display:flex;
 flex-direction:column;
 align-items:flex-end;
 gap:8px;
-padding:0;
-max-width:min(220px, calc(100% - 40px));
+padding:10px 12px 12px;
+border-radius:20px;
+background:linear-gradient(180deg, rgba(19, 24, 20, 0.9), rgba(10, 12, 11, 0.78));
+border:1px solid rgba(164, 144, 101, 0.14);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -12px 18px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.1);
 }
 
 .viewer-toolbar-meta{
 display:flex;
-flex-direction:column;
-align-items:flex-end;
-justify-content:flex-start;
-gap:2px;
+align-items:center;
+justify-content:flex-end;
+gap:8px;
 flex-wrap:wrap;
 }
 
@@ -2110,21 +1799,22 @@ font-weight:600;
 letter-spacing:0.14em;
 text-transform:uppercase;
 color:var(--text-soft);
-max-width:100%;
-text-align:right;
-overflow-wrap:anywhere;
 }
 
 .viewer-toolbar-value{
-display:block;
-color:var(--bronze-soft);
-font-size:11px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-height:25px;
+padding:0 11px;
+border-radius:999px;
+background:rgba(151, 111, 43, 0.14);
+border:1px solid rgba(195, 161, 99, 0.24);
+color:#d8bc8c;
+font-size:9px;
 font-weight:700;
-letter-spacing:0.1em;
+letter-spacing:0.12em;
 text-transform:uppercase;
-max-width:100%;
-text-align:right;
-overflow-wrap:anywhere;
 }
 
 .viewer-status-strip{
@@ -2133,38 +1823,45 @@ left:20px;
 bottom:20px;
 z-index:3;
 display:flex;
-flex-direction:column;
 align-items:flex-start;
-gap:10px;
-width:min(220px, calc(100% - 180px));
-max-width:220px;
+gap:12px;
+flex-wrap:wrap;
+padding:0;
+border-radius:0;
+background:transparent;
+border:none;
+box-shadow:none;
+max-width:min(408px, calc(100% - 210px));
 pointer-events:none;
 }
 
 .viewer-status-group{
 display:flex;
 flex-direction:column;
-gap:2px;
+gap:1px;
 min-width:0;
-width:100%;
 }
 
 .viewer-status-label{
-font-size:9px;
+font-size:6px;
 font-weight:600;
-letter-spacing:0.14em;
+letter-spacing:0.12em;
 text-transform:uppercase;
 color:var(--text-soft);
 }
 
 .viewer-status-value{
-font-size:12px;
+font-size:7px;
 font-weight:600;
 line-height:1.35;
 color:var(--text-main);
-max-width:100%;
-overflow-wrap:anywhere;
-word-break:break-word;
+}
+
+body[data-theme="light"] .viewer-title-block,
+body[data-theme="light"] .viewer-toolbar-shell,
+body[data-theme="light"] .viewer-status-strip{
+background:transparent;
+border-color:transparent;
 }
 
 .viewer > :not(.viewer-topbar):not(.viewer-status-strip):not(.viewer-download):not(.studio-launch):not(.viewer-print-cta){
@@ -2264,6 +1961,14 @@ height:100%;
 box-shadow:
 var(--viewer-core-glow);
 
+}
+
+/* Center SVG/relief preview image inside the viewer across breakpoints. */
+#viewer #svgViewer{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%, -50%);
 }
 
 /* panels */
@@ -2381,9 +2086,9 @@ margin-bottom:0;
 
 .dropzone{
 border-radius:22px;
-padding:30px 26px;
+padding:18px 18px;
 text-align:center;
-margin-bottom:16px;
+margin-bottom:12px;
 
 background:var(--dropzone-bg);
 border:1px solid var(--dropzone-border);
@@ -2406,13 +2111,13 @@ transition:border-color 0.34s ease, box-shadow 0.34s ease;
 #dropRelief::before{
 content:"";
 position:absolute;
-inset:30px;
-border-radius:28px;
-background:
-radial-gradient(circle at 50% 24%, rgba(224, 204, 154, 0.18), transparent 34%),
-radial-gradient(circle at 50% 74%, rgba(88, 184, 115, 0.1), transparent 42%);
-filter:blur(26px);
-transform:scale(1);
+inset:12px;
+border-radius:18px;
+background-image:var(--generator-preview-bg);
+background-size:cover;
+background-position:center;
+filter:blur(28px) saturate(0.9);
+transform:scale(1.08);
 opacity:0;
 transition:opacity 0.38s ease;
 pointer-events:none;
@@ -2424,13 +2129,12 @@ z-index:0;
 #dropRelief::after{
 content:"";
 position:absolute;
-inset:18px;
-border-radius:24px;
+inset:12px;
+border-radius:18px;
 background:
-linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012)),
-radial-gradient(circle at 50% 0%, rgba(222, 193, 137, 0.08), transparent 42%);
-border:1px solid rgba(255,255,255,0.05);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+radial-gradient(circle at 50% 16%, rgba(126, 206, 145, 0.16), transparent 46%),
+linear-gradient(180deg, rgba(10,14,11,0.1), rgba(10,14,11,0.24));
+border:1px solid rgba(255,255,255,0.06);
 opacity:0;
 transition:opacity 0.38s ease;
 pointer-events:none;
@@ -2477,20 +2181,21 @@ transform:translateY(6px);
 position:relative;
 z-index:2;
 display:block;
-width:min(78%, 432px) !important;
-height:204px !important;
+width:min(74%, 420px) !important;
+height:148px !important;
 margin:0 auto;
 object-fit:contain;
-border-radius:20px !important;
-padding:0;
-border:1px solid rgba(255,255,255,0.06);
+border-radius:18px !important;
+padding:8px;
+border:1px solid rgba(255,255,255,0.08);
 background:
-linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
 box-shadow:
-0 16px 34px rgba(2,6,23,0.2);
+0 18px 42px rgba(2,6,23,0.3),
+0 0 0 1px rgba(255,255,255,0.04);
 opacity:0;
 transform:translateY(10px) scale(0.985);
-filter:saturate(0.98) contrast(1.02);
+filter:saturate(0.94) contrast(1.03);
 transition:
 opacity 0.34s ease,
 transform 0.34s ease,
@@ -2502,7 +2207,7 @@ filter 0.34s ease;
 #dropPreviewRelief.is-visible{
 opacity:1;
 transform:translateY(0) scale(1);
-filter:saturate(1.02) contrast(1.03);
+filter:saturate(1) contrast(1.04);
 }
 
 /* buttons */
@@ -2639,7 +2344,7 @@ var(--progress-fill);
 /* status */
 
 .status{
-margin-top:12px;
+margin-top:8px;
 font-size:13px;
 line-height:1.6;
 color:var(--status-text);
@@ -2655,7 +2360,7 @@ gap:10px;
 background:var(--surface-card-bg);
 border:1px solid var(--surface-card-border);
 border-radius:20px;
-padding:14px;
+padding:12px;
 box-shadow:var(--surface-card-shadow);
 }
 
@@ -2664,7 +2369,7 @@ display:flex;
 justify-content:space-between;
 align-items:flex-start;
 gap:12px;
-margin-bottom:12px;
+margin-bottom:8px;
 }
 
 .generator-card-lead{
@@ -2725,6 +2430,10 @@ max-width:360px;
 display:block;
 }
 
+.generator-card-copy:empty{
+display:none;
+}
+
 .generator-chip{
 display:inline-flex;
 align-items:center;
@@ -2745,7 +2454,7 @@ text-transform:uppercase;
 .generator-stack{
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:8px;
 }
 
 .generator-option-grid{
@@ -2763,28 +2472,284 @@ gap:8px;
 min-width:0;
 }
 
+.generator-field.compact{
+flex-direction:row;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.generator-field.compact label{
+margin:0;
+white-space:nowrap;
+}
+
+.generator-field.compact select{
+flex:0 0 auto;
+width:auto;
+}
+
 .generator-field label{
 margin-bottom:0;
 }
 
 .generator-field.compact select{
 width:auto;
-min-width:170px;
+min-width:120px;
 max-width:100%;
 padding:10px 40px 10px 12px;
 border-radius:14px;
 font-size:13px;
 }
 
-.generator-stack.compact{
-gap:12px;
+/* Relief: compact option controls without heavy shells */
+#panel-relief .generator-option-grid{
+gap:10px 12px;
 }
 
-.generator-toggle-action-row{
-display:grid;
-grid-template-columns:minmax(0, 1fr) auto;
-gap:10px;
-align-items:stretch;
+#panel-relief .generator-field.compact{
+gap:8px;
+}
+
+#panel-relief .generator-field.compact select{
+min-width:104px;
+padding:8px 32px 8px 10px;
+border-radius:12px;
+font-size:12px;
+background:transparent;
+box-shadow:none;
+border:1px solid var(--line-soft);
+}
+
+body[data-theme="light"] #panel-relief .generator-field.compact select{
+background:transparent;
+box-shadow:none;
+border:1px solid rgba(93, 115, 101, 0.18);
+}
+
+/* Relief: custom dropdown popovers (avoid native white menus) */
+#panel-relief .generator-field.compact{
+position:relative;
+}
+
+#panel-relief .relief-select{
+position:relative;
+display:flex;
+align-items:center;
+justify-content:flex-end;
+flex:1 1 auto;
+}
+
+#panel-relief .relief-select-trigger{
+appearance:none;
+border:none;
+background:transparent;
+padding:0;
+margin:0;
+cursor:pointer;
+font:inherit;
+font-size:10px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-soft);
+display:inline-flex;
+align-items:center;
+gap:8px;
+white-space:nowrap;
+max-width:120px;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+#panel-relief .relief-select-trigger:hover{
+color:var(--text-main);
+text-decoration:underline;
+text-underline-offset:3px;
+}
+
+#panel-relief .relief-select-trigger::after{
+content:"▾";
+font-size:10px;
+opacity:0.7;
+}
+
+#panel-relief .relief-select-menu{
+position:absolute;
+top:calc(100% + 8px);
+right:0;
+min-width:190px;
+max-width:240px;
+padding:8px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.08);
+background:rgba(10, 12, 11, 0.92);
+box-shadow:0 18px 40px rgba(0,0,0,0.35);
+backdrop-filter:blur(10px);
+display:none;
+z-index:50;
+}
+
+body[data-theme="light"] #panel-relief .relief-select-menu{
+background:rgba(245, 248, 244, 0.96);
+border:1px solid rgba(93, 115, 101, 0.14);
+box-shadow:0 18px 40px rgba(84, 96, 87, 0.14);
+}
+
+#panel-svg .generator-option-grid{
+gap:10px 10px;
+}
+
+#panel-svg .generator-field.compact{
+gap:8px;
+}
+
+#panel-svg .generator-field.compact select{
+min-width:0;
+padding:0;
+border-radius:0;
+font-size:10px;
+background:transparent;
+box-shadow:none;
+border:none;
+width:auto;
+}
+
+/* SVG: custom dropdown popovers (match relief style) */
+#panel-svg .svg-select{
+position:relative;
+display:flex;
+align-items:center;
+justify-content:flex-end;
+flex:1 1 auto;
+}
+
+#panel-svg .svg-select-trigger{
+appearance:none;
+border:none;
+background:transparent;
+padding:0;
+margin:0;
+cursor:pointer;
+font:inherit;
+font-size:10px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-soft);
+display:inline-flex;
+align-items:center;
+gap:6px;
+white-space:nowrap;
+max-width:92px;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+#panel-svg .svg-select-trigger::after{
+content:"▾";
+font-size:10px;
+opacity:0.7;
+}
+
+#panel-svg .svg-select-menu{
+position:absolute;
+top:calc(100% + 8px);
+right:0;
+min-width:170px;
+max-width:220px;
+padding:8px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.08);
+background:rgba(10, 12, 11, 0.92);
+box-shadow:0 18px 40px rgba(0,0,0,0.35);
+backdrop-filter:blur(10px);
+display:none;
+z-index:50;
+}
+
+body[data-theme="light"] #panel-svg .svg-select-menu{
+background:rgba(245, 248, 244, 0.96);
+border:1px solid rgba(93, 115, 101, 0.14);
+box-shadow:0 18px 40px rgba(84, 96, 87, 0.14);
+}
+
+#panel-svg .svg-select-menu.open{
+display:block;
+}
+
+#panel-svg .svg-select-option{
+width:100%;
+text-align:left;
+appearance:none;
+border:none;
+background:transparent;
+padding:9px 10px;
+border-radius:12px;
+cursor:pointer;
+font:inherit;
+font-size:10px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-main);
+}
+
+#panel-svg .svg-select-option:hover{
+background:rgba(255,255,255,0.04);
+}
+
+body[data-theme="light"] #panel-svg .svg-select-option:hover{
+background:rgba(88,184,115,0.08);
+}
+
+#panel-svg .svg-select-option.active{
+background:rgba(88,184,115,0.12);
+color:var(--text-strong);
+}
+
+body[data-theme="light"] #panel-svg .svg-select-option.active{
+background:rgba(88,184,115,0.12);
+color:#17361d;
+}
+
+#panel-relief .relief-select-menu.open{
+display:block;
+}
+
+#panel-relief .relief-select-option{
+width:100%;
+text-align:left;
+appearance:none;
+border:none;
+background:transparent;
+padding:9px 10px;
+border-radius:12px;
+cursor:pointer;
+font:inherit;
+font-size:10px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-main);
+}
+
+#panel-relief .relief-select-option:hover{
+background:rgba(255,255,255,0.04);
+}
+
+body[data-theme="light"] #panel-relief .relief-select-option:hover{
+background:rgba(88,184,115,0.08);
+}
+
+#panel-relief .relief-select-option.active{
+background:rgba(88,184,115,0.12);
+color:var(--text-strong);
+}
+
+body[data-theme="light"] #panel-relief .relief-select-option.active{
+background:rgba(88,184,115,0.12);
+color:#17361d;
+}
+
+.generator-stack.compact{
+gap:12px;
 }
 
 .generator-toggle-row{
@@ -2792,15 +2757,15 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 gap:12px;
-padding:7px 10px;
-border-radius:14px;
-background:rgba(255,255,255,0.015);
-border:1px solid rgba(255,255,255,0.05);
+padding:0;
+border-radius:0;
+background:transparent;
+border:none;
 }
 
 body[data-theme="light"] .generator-toggle-row{
-background:rgba(255,255,255,0.74);
-border:1px solid rgba(24,33,25,0.08);
+background:transparent;
+border:none;
 }
 
 .generator-toggle-copy{
@@ -2812,10 +2777,10 @@ min-width:0;
 }
 
 .generator-toggle-title{
-font-size:10px;
+font-size:12px;
 font-weight:600;
-letter-spacing:0.14em;
-text-transform:uppercase;
+letter-spacing:0.02em;
+text-transform:none;
 color:var(--text-strong);
 }
 
@@ -2886,32 +2851,10 @@ gap:10px;
 margin-top:2px;
 }
 
-.generator-source-layout{
-display:grid;
-grid-template-columns:minmax(0, 1fr) 68px;
-gap:12px;
-align-items:stretch;
-}
-
-.generator-source-layout:has(.generator-thumbnail-strip:empty){
-grid-template-columns:minmax(0, 1fr);
-}
-
 .generator-thumbnail-strip{
 display:grid;
 grid-template-columns:repeat(5, minmax(0, 1fr));
 gap:7px;
-}
-
-.generator-thumbnail-strip:empty{
-display:none;
-}
-
-.generator-source-layout .generator-thumbnail-strip{
-grid-template-columns:1fr;
-grid-auto-rows:52px;
-gap:10px;
-align-content:start;
 }
 
 .generator-thumb{
@@ -2964,28 +2907,6 @@ padding:0 4px;
 text-shadow:0 1px 6px rgba(0,0,0,0.5);
 }
 
-.generator-source-layout .generator-thumb{
-min-height:52px;
-padding:0;
-border-radius:14px;
-border-style:solid;
-border-color:rgba(255,255,255,0.05);
-background:
-linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 18px rgba(2,6,23,0.16);
-}
-
-.generator-source-layout .generator-thumb span{
-display:none;
-}
-
-.generator-source-layout .generator-thumb.active{
-border-color:rgba(196, 161, 96, 0.38);
-background:
-linear-gradient(180deg, rgba(196, 161, 96, 0.14), rgba(88,184,115,0.08));
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.05), 0 14px 24px rgba(2,6,23,0.2);
-}
-
 .generator-limit-note{
 font-size:11px;
 line-height:1.55;
@@ -3013,9 +2934,9 @@ margin-top:0;
 width:auto;
 min-width:156px;
 align-self:flex-start;
-padding:12px 20px;
+padding:11px 18px;
 border-radius:999px;
-font-size:13px;
+font-size:12px;
 font-weight:700;
 letter-spacing:0.06em;
 text-transform:uppercase;
@@ -3023,12 +2944,6 @@ color:var(--button-premium-text);
 background:var(--button-premium-bg);
 border-color:var(--button-premium-border);
 box-shadow:var(--button-premium-shadow);
-}
-
-.generator-toggle-action-row .generator-cta{
-min-width:188px;
-padding-inline:18px;
-align-self:stretch;
 }
 
 body[data-theme="light"] .generator-cta{
@@ -3051,8 +2966,9 @@ box-shadow:var(--button-premium-hover-shadow);
 .generator-cta:disabled{
 opacity:0.56;
 cursor:not-allowed;
-filter:saturate(0.68);
-box-shadow:none;
+filter:none;
+box-shadow:var(--button-premium-shadow);
+border-color:var(--button-premium-border);
 }
 
 .generator-cta-secondary{
@@ -3287,7 +3203,7 @@ animation:shake 0.4s ease;
 100%{transform:translate(0,0);}
 }
 
-/* ===== MOBILE WORKSPACE PASS ===== */
+/* ===== MOBILE FINAL (Pluto PRO) ===== */
 
 @media (max-width: 900px){
 body{
@@ -3301,17 +3217,13 @@ min-height:100dvh;
 overflow:visible;
 }
 .platform-header{
+padding:12px 12px 10px;
+gap:10px;
 position:sticky;
 top:0;
 z-index:25;
-height:auto;
-min-height:unset;
-padding:12px 12px 10px;
-gap:10px;
-align-items:flex-start;
-}
-.platform-brand{
-width:100%;
+flex-wrap:nowrap;
+align-items:center;
 }
 .platform-brand-name{
 font-size:14px;
@@ -3320,104 +3232,61 @@ font-size:14px;
 font-size:10px;
 }
 .platform-actions{
-width:100%;
-order:2;
-display:grid;
-grid-template-columns:max-content max-content minmax(0, 1fr);
 align-items:center;
+justify-content:space-between;
+flex-wrap:nowrap;
 gap:8px;
 }
 .platform-plan-badge{
 height:30px;
-min-width:0;
-max-width:118px;
-padding:0 9px;
-font-size:9px;
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap;
+padding:0 10px;
+font-size:10px;
 }
 .platform-pill{
 height:34px;
 padding:0 12px;
 font-size:11px;
 }
-.platform-nav{
-order:3;
-}
-#platformProfileLink{
-min-width:0;
-max-width:110px;
-padding:0 10px;
-font-size:10px;
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap;
-}
-#platformLoginLink{
-min-width:96px;
-justify-self:stretch;
-}
 .platform-link{
 height:34px;
 padding:0 12px;
 font-size:11px;
 }
+
+.platform-nav{
+flex-wrap:nowrap;
+overflow-x:auto;
+justify-content:flex-start;
+scrollbar-width:none;
+}
+
+.platform-nav::-webkit-scrollbar{
+display:none;
+}
+
+.platform-brand-subtitle{
+display:none;
+}
 .platform-surface{
-inset:72px 10px 10px 10px;
+inset:68px 10px 10px 10px;
 }
 .platform-surface-panel{
-max-height:calc(100dvh - 20px);
 border-radius:24px;
 }
 .platform-surface-header{
-padding:16px 16px 12px;
-gap:12px;
-align-items:flex-start;
+padding:16px 16px 10px;
 }
 .platform-surface-body{
 padding:14px;
-gap:12px;
+gap:14px;
 }
 .platform-surface-title{
 font-size:18px;
-}
-.platform-surface-subtitle{
-font-size:13px;
-line-height:1.55;
-max-width:none;
 }
 .platform-surface-close{
 min-width:40px;
 height:40px;
 padding:0 12px;
-}
-.platform-surface-card{
-padding:16px 16px 18px;
-border-radius:20px;
-}
-.platform-surface-card-title{
-font-size:17px;
-}
-.platform-surface-card-copy{
-font-size:13px;
-line-height:1.6;
-}
-.surface-chip-row{
-gap:8px;
-}
-.surface-chip{
-padding:7px 10px;
-font-size:10px;
-letter-spacing:0.07em;
-}
-.surface-actions{
-gap:8px;
-}
-.surface-actions button{
-width:100%;
-min-width:0;
-justify-content:center;
 }
 .studio-overlay{
 top:12px;
@@ -3432,22 +3301,21 @@ max-height:calc(100dvh - 24px);
 /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ FIX VIEWER SHFAQJE */
 .viewer{
 display:block !important;
-order:1;
+order:2;
 
 width:100% !important;
-height:clamp(280px, 38vh, 360px) !important;
+height:clamp(240px, 42dvh, 360px) !important;
 
-min-height:280px !important;
+min-height:240px;
 flex-shrink:0;
 
 position:relative;
 z-index:1;
-border-radius:26px;
 }
 
 /* panel sipÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«r */
 .panel{
-order:2;
+order:3;
 }
 
 /* sidebar sipÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«r fare */
@@ -3463,18 +3331,14 @@ overflow:visible !important;
 display:flex !important;
 flex-direction:column !important;
 height:auto !important;
-max-height:none !important;
-min-height:0 !important;
-padding:12px 10px 0;
-gap:12px;
+min-height:100vh !important;
 grid-template-columns:none !important;   /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ KJO E VRIT GRID */
 }
 
-/* gjithashtu sigurohu */
-.sidebar, .panel, .viewer{
+/* keep sidebar/panel flexible without collapsing viewer */
+.sidebar, .panel{
 width:100% !important;
 height:auto !important;
-max-height:none !important;
 min-height:auto !important;
 }
 .sidebar{
@@ -3508,13 +3372,13 @@ font-size:12px;
 .panel{
 width:100%;
 padding:14px 14px 18px;
-margin-bottom:72px; /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ mos mbulohet nga sidebar */
+margin-bottom:0;
 }
 
 /* viewer TOP si hero */
 .viewer{
 width:100%;
-height:280px;
+height:clamp(240px, 42dvh, 360px);
 }
 .viewer-topbar{
 top:14px;
@@ -3524,12 +3388,16 @@ gap:10px;
 }
 
 .viewer-title-block{
-padding:0;
+padding:10px 12px 9px;
 max-width:170px;
 }
 
+.viewer-kicker{
+font-size:8px;
+}
+
 .viewer-toolbar-shell{
-padding:0;
+padding:8px 10px 10px;
 }
 
 .viewer-toolbar-label{
@@ -3537,23 +3405,23 @@ font-size:8px;
 }
 
 .viewer-toolbar-value{
-min-height:0;
-padding:0;
+min-height:22px;
+padding:0 8px;
 font-size:9px;
 }
 
 .viewer-status-strip{
 left:14px;
-right:auto;
+right:14px;
 bottom:14px;
-max-width:152px;
-gap:8px;
-padding:0;
+max-width:none;
+gap:10px;
+padding:9px 11px 10px;
 }
 
 .viewer-status-group{
-min-width:0;
-flex:0 0 auto;
+min-width:74px;
+flex:1 1 90px;
 }
 
 .viewer-status-label{
@@ -3608,10 +3476,6 @@ border-radius:22px;
 .generator-action-grid{
 grid-template-columns:1fr;
 }
-.generator-toggle-action-row,
-.generator-source-layout{
-grid-template-columns:1fr;
-}
 .generator-option-grid{
 grid-template-columns:1fr;
 gap:10px;
@@ -3621,309 +3485,11 @@ gap:10px;
 .generator-cta-compact{
 width:100%;
 }
-.generator-toggle-action-row .generator-cta{
-min-width:0;
-}
 .generator-thumbnail-strip{
 grid-template-columns:repeat(2, minmax(0, 1fr));
 }
-.generator-source-layout .generator-thumbnail-strip{
-grid-template-columns:repeat(2, minmax(0, 1fr));
-grid-auto-rows:minmax(48px, auto);
-}
-.generator-source-layout .generator-thumb span{
-display:block;
-}
 
-/* Mobile shell refinements */
-.workspace{
-max-height:none !important;
-min-height:0 !important;
-padding:12px 10px 0;
-gap:12px;
-}
-
-.sidebar,
-.panel,
-.viewer{
-max-height:none !important;
-}
-
-.sidebar{
-order:3;
-position:sticky;
-bottom:0;
-z-index:12;
-justify-content:flex-start;
-padding:10px 10px calc(10px + env(safe-area-inset-bottom, 0px));
-overflow-x:auto;
-overflow-y:hidden;
-background:linear-gradient(180deg, rgba(19, 24, 20, 0.96), rgba(11, 14, 12, 0.98));
-border:1px solid var(--line-soft);
-border-radius:24px 24px 0 0;
-box-shadow:0 -18px 34px rgba(0,0,0,0.18);
-backdrop-filter:blur(18px);
-}
-
-.sidebtn{
-flex:0 0 92px;
-width:92px;
-height:56px;
-padding:0 10px;
-border-radius:18px;
-font-size:11px;
-}
-
-.theme-toggle{
-flex:0 0 56px;
-width:56px;
-height:56px;
-min-height:56px;
-margin:0 0 0 auto;
-}
-
-.panel{
-order:2;
-padding:16px 14px 108px;
-margin:0;
-overflow:visible;
-border:1px solid var(--line-soft);
-border-right:none;
-border-radius:26px;
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.035);
-}
-
-.viewer{
-order:1;
-border-radius:26px;
-position:sticky;
-top:108px;
-z-index:10;
-}
-
-.viewer::before{
-inset:12px 12px 16px 12px;
-border-radius:22px;
-}
-
-.viewer::after{
-bottom:24px;
-width:min(78%, 460px);
-height:96px;
-}
-
-.viewer-topbar{
-flex-direction:row;
-align-items:flex-start;
-justify-content:flex-end;
-gap:8px;
-}
-
-.viewer-title-block,
-.viewer-toolbar-shell{
-width:auto;
-}
-
-.viewer-title-block{
-max-width:146px;
-padding:0;
-}
-
-.viewer-toolbar-shell{
-max-width:max-content;
-align-items:flex-end;
-margin-left:auto;
-gap:6px;
-padding:0;
-}
-
-.viewer-toolbar,
-.viewer-toolbar-meta{
-justify-content:flex-end;
-gap:6px;
-}
-
-.viewer-modes{
-gap:6px;
-flex-wrap:nowrap;
-justify-content:flex-end;
-}
-
-.viewer-toolbar-label{
-font-size:7px;
-letter-spacing:0.12em;
-}
-
-.viewer-toolbar-value{
-min-height:0;
-padding:0;
-font-size:8px;
-letter-spacing:0.1em;
-}
-
-.viewer-mode-btn{
-flex:0 0 auto;
-min-width:64px;
-padding:6px 10px;
-font-size:8px;
-letter-spacing:0.08em;
-}
-
-.viewer-status-strip{
-gap:6px;
-width:min(148px, calc(100% - 132px));
-max-width:148px;
-}
-
-.viewer-status-group{
-min-width:0;
-flex:0 0 auto;
-gap:2px;
-}
-
-.viewer-status-label{
-font-size:7px;
-letter-spacing:0.12em;
-}
-
-.viewer-status-value{
-font-size:10px;
-line-height:1.25;
-}
-
-.viewer-print-cta{
-left:auto !important;
-right:14px !important;
-align-items:flex-end !important;
-max-width:calc(100% - 28px) !important;
-padding:0 !important;
-}
-
-.viewer-print-note{
-font-size:7px !important;
-letter-spacing:0.11em !important;
-text-align:right !important;
-}
-
-.viewer-print-download{
-padding:8px 12px !important;
-font-size:9px !important;
-letter-spacing:0.06em !important;
-}
-
-.gallery-hero-card,
-.profile-hero-card{
-padding:18px 18px 20px;
-}
-
-.profile-hero-top{
-gap:14px;
-}
-
-.profile-name{
-font-size:24px;
-}
-
-.profile-email{
-font-size:13px;
-line-height:1.5;
-}
-
-.profile-meta-list{
-width:100%;
-}
-
-.profile-meta-item{
-min-width:0;
-}
-
-.profile-signal-card,
-.profile-billing-card,
-.profile-usage-total,
-.gallery-stage-card,
-.gallery-archive-item,
-.gallery-snapshot-item,
-.gallery-curation-card{
-padding:14px 14px 15px;
-border-radius:18px;
-}
-
-.profile-usage-grid{
-grid-template-columns:repeat(2, minmax(0, 1fr));
-gap:10px;
-}
-
-.profile-usage-total-value{
-font-size:26px;
-}
-
-.gallery-stage-card{
-min-height:unset;
-gap:16px;
-}
-
-.gallery-stage-title{
-font-size:16px;
-}
-
-.gallery-stage-copy,
-.gallery-archive-copy,
-.gallery-curation-copy,
-.profile-signal-copy,
-.profile-billing-copy,
-.profile-usage-total-copy{
-font-size:12px;
-line-height:1.6;
-}
-
-.gallery-stage-meta{
-flex-wrap:wrap;
-}
-
-.gallery-snapshot-value{
-font-size:20px;
-}
-
-.gallery-archive-type{
-align-self:flex-start;
-}
-
-.viewer-download{
-bottom:14px !important;
-width:auto !important;
-max-width:calc(100% - 40px) !important;
-min-width:0 !important;
-padding:9px 14px !important;
-font-size:11px !important;
-letter-spacing:0.07em !important;
-}
-
-.viewer-print-cta{
-top:128px !important;
-left:14px !important;
-right:14px !important;
-align-items:stretch !important;
-gap:6px !important;
-padding:8px 10px 10px !important;
-}
-
-.viewer-print-note{
-text-align:left !important;
-max-width:none !important;
-font-size:8px !important;
-letter-spacing:0.12em !important;
-}
-
-.viewer-print-download{
-width:auto !important;
-max-width:100% !important;
-min-width:0 !important;
-padding:9px 14px !important;
-font-size:10px !important;
-letter-spacing:0.07em !important;
-}
-
-/* SVG responsive */
+/* svg responsive */
 #svgViewer{
 position:absolute;
 top:50%;
@@ -3931,8 +3497,8 @@ left:50%;
 
 transform:translate(-50%, -50%);
 
-max-width:80%;
-max-height:80%;
+max-width:92%;
+max-height:92%;
 
 object-fit:contain;
 
@@ -3940,166 +3506,19 @@ z-index:2;
 
 pointer-events:none;
 }
+
+/* keep popover menus inside the viewport on mobile */
+#panel-relief .relief-select-menu,
+#panel-svg .svg-select-menu{
+max-width:min(320px, calc(100vw - 40px));
 }
 
-@media (max-width: 640px){
-.platform-header{
-padding:10px 10px 9px;
+#panel-relief .relief-select-trigger{
+max-width:160px;
 }
 
-.platform-brand-subtitle{
-display:none;
-}
-
-.platform-nav{
-gap:6px;
-}
-
-.platform-actions{
-order:2;
-display:grid;
-grid-template-columns:max-content max-content minmax(0, 1fr);
-align-items:center;
-gap:6px;
-}
-
-.platform-plan-badge{
-max-width:104px;
-padding:0 8px;
-font-size:9px;
-}
-
-#platformProfileLink{
-max-width:92px;
-padding:0 9px;
-font-size:9px;
-}
-
-#platformLoginLink{
-min-width:88px;
-}
-
-.workspace{
-padding:10px 8px 0;
-gap:10px;
-}
-
-.viewer{
-height:clamp(264px, 34vh, 320px) !important;
-min-height:264px !important;
-border-radius:24px;
-top:96px;
-}
-
-.panel{
-padding:14px 12px 104px;
-border-radius:24px;
-}
-
-.sidebar{
-padding:8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
-gap:8px;
-border-radius:22px 22px 0 0;
-}
-
-.sidebtn{
-flex-basis:84px;
-width:84px;
-height:52px;
-font-size:10px;
-letter-spacing:0.04em;
-}
-
-.theme-toggle{
-flex-basis:52px;
-width:52px;
-height:52px;
-min-height:52px;
-}
-
-.viewer-title-block,
-.viewer-toolbar-shell,
-.viewer-status-strip,
-.viewer-print-cta{
-border-radius:0 !important;
-}
-
-.viewer-topbar{
-gap:6px;
-}
-
-.viewer-title-block{
-max-width:124px;
-padding:0;
-}
-
-.viewer-toolbar-shell{
-padding:0;
-gap:5px;
-}
-
-.viewer-mode-btn{
-min-width:58px;
-padding:5px 8px;
-font-size:8px;
-letter-spacing:0.07em;
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.04), inset 0 -6px 10px rgba(0,0,0,0.22), 0 8px 14px rgba(0,0,0,0.16);
-}
-
-.viewer-toolbar-label{
-font-size:6px;
-}
-
-.viewer-toolbar-value{
-width:auto;
-min-height:0;
-padding:0;
-font-size:7px;
-}
-
-.viewer-status-strip{
-gap:6px;
-width:min(132px, calc(100% - 124px));
-max-width:132px;
-}
-
-.viewer-status-group{
-min-width:0;
-flex:0 0 auto;
-}
-
-.viewer-status-label{
-font-size:6px;
-}
-
-.viewer-status-value{
-font-size:9px;
-}
-
-.viewer-download{
-min-width:136px;
-padding:8px 12px;
-font-size:10px;
-}
-
-.viewer-print-cta{
-right:12px !important;
-padding:0 !important;
-}
-
-.viewer-print-note{
-font-size:6px !important;
-}
-
-.viewer-print-download{
-min-width:132px;
-padding:7px 11px !important;
-font-size:8px !important;
-}
-
-.profile-usage-grid,
-.gallery-snapshot-grid{
-grid-template-columns:1fr;
+#panel-svg .svg-select-trigger{
+max-width:140px;
 }
 }
 
@@ -4110,9 +3529,8 @@ left:50%;
 transform:translateX(-50%);
 
 width:auto;
-min-width:150px;
-max-width:calc(100% - 40px);
-padding:9px 14px;
+min-width:170px;
+padding:10px 18px;
 
 border-radius:999px;
 cursor:pointer;
@@ -4122,8 +3540,8 @@ border:1px solid var(--button-premium-border);
 
 color:var(--button-premium-text);
 font-weight:650;
-font-size:11px;
-letter-spacing:0.07em;
+font-size:14px;
+letter-spacing:0.06em;
 text-transform:uppercase;
 
 box-shadow:var(--viewer-download-shadow);
@@ -4146,15 +3564,18 @@ z-index:3;
 display:flex;
 flex-direction:column;
 align-items:flex-end;
-gap:6px;
-padding:0;
-max-width:min(200px, calc(100% - 40px));
+gap:7px;
+padding:10px 12px 12px;
+border-radius:20px;
+background:linear-gradient(180deg, rgba(19, 24, 20, 0.9), rgba(10, 12, 11, 0.78));
+border:1px solid rgba(164, 144, 101, 0.14);
+box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -12px 18px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.1);
 }
 
 .viewer-print-note{
-font-size:8px;
+font-size:9px;
 font-weight:600;
-letter-spacing:0.12em;
+letter-spacing:0.14em;
 text-transform:uppercase;
 color:rgba(238, 219, 176, 0.76);
 text-align:right;
@@ -4163,16 +3584,15 @@ line-height:1.35;
 }
 
 .viewer-print-download{
-min-width:156px;
-max-width:100%;
-padding:9px 14px;
+min-width:196px;
+padding:10px 16px;
 border-radius:999px;
 border:1px solid var(--button-premium-border);
 background:var(--viewer-download-bg);
 color:var(--button-premium-text);
 font-weight:650;
-font-size:10px;
-letter-spacing:0.07em;
+font-size:11px;
+letter-spacing:0.08em;
 cursor:pointer;
 box-shadow:var(--viewer-download-shadow);
 transition:0.25s ease;
@@ -4186,6 +3606,11 @@ box-shadow:var(--viewer-download-hover-shadow);
 
 body[data-theme="light"] .viewer-print-note{
 color:rgba(108, 74, 18, 0.68);
+}
+
+body[data-theme="light"] .viewer-print-cta{
+background:linear-gradient(180deg, rgba(251, 253, 250, 0.94), rgba(236, 241, 236, 0.88));
+border-color:rgba(171, 131, 49, 0.12);
 }
 
 .studio-overlay{
@@ -4562,29 +3987,32 @@ max-width:none;
 height:auto;
 min-height:unset;
 padding:12px 16px;
-flex-wrap:wrap;
-gap:12px;
-align-items:flex-start;
+flex-wrap:nowrap;
+gap:10px;
+align-items:center;
 }
 
 .platform-brand{
-width:100%;
+width:auto;
 }
 
 .platform-actions{
-width:100%;
-justify-content:space-between;
-flex-wrap:wrap;
+width:auto;
+justify-content:flex-end;
+flex-wrap:nowrap;
 gap:8px;
 }
 
 .platform-nav{
-order:3;
-width:100%;
-justify-content:flex-start;
+order:0;
+width:auto;
+flex:1 1 auto;
+min-width:0;
+justify-content:center;
 overflow-x:auto;
 scrollbar-width:none;
 padding-bottom:2px;
+flex-wrap:nowrap;
 }
 
 .platform-nav::-webkit-scrollbar{
@@ -4655,19 +4083,9 @@ min-height:unset;
 .surface-feature-grid,
 .surface-stat-grid,
 .profile-summary-grid,
-.profile-signal-grid,
-.profile-billing-grid,
 .gallery-grid,
-.gallery-wall,
-.gallery-showcase-grid,
-.gallery-stage-grid,
-.gallery-snapshot-grid,
-.gallery-curation-grid{
+.gallery-wall{
 grid-template-columns:1fr;
-}
-
-.gallery-archive-item{
-flex-direction:column;
 }
 
 .panel-footer{
@@ -4765,12 +4183,10 @@ padding-bottom:18px;
     </svg>
   </div>
   <div class="section-heading">
-    <div class="section-kicker">Studio Workflow</div>
     <div class="section-title-row">
       <div class="section-title">3D Generator</div>
-      <div class="section-badge">Model</div>
     </div>
-    <div class="section-intro">Prepare one source, then generate 3D.</div>
+    <div class="section-intro"></div>
   </div>
 </div>
 
@@ -4786,37 +4202,27 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Generate AI Image</div>
-        <div class="generator-card-copy">Create from prompt.</div>
+        <div class="generator-card-title">Describe the image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.75 6.75h14.5v10.5H4.75z"></path>
-          <path d="m7.5 14 2.6-2.6 2.4 2.4 2.5-3 1.75 2.2"></path>
-          <circle cx="9" cy="9.25" r="1.1"></circle>
-        </svg>
-        <span>Image</span>
       </div>
     </div>
 
     <div class="generator-stack">
-      <textarea id="generatorPrompt" class="generator-prompt" placeholder="Rounded robot toy with clean collectible silhouette."></textarea>
+      <textarea id="generatorPrompt" class="generator-prompt" placeholder="Describe your 3D model..."></textarea>
 
-      <div class="generator-toggle-action-row">
-        <div class="generator-toggle-row">
-          <div class="generator-toggle-copy">
-            <div class="generator-toggle-title">Toy Assist</div>
-            <div class="generator-toggle-note">Collectible prompt help.</div>
-          </div>
-          <label class="generator-switch" aria-label="Toy assist toggle">
-            <input id="generatorToyAssist" type="checkbox">
-            <span class="generator-switch-track"></span>
-          </label>
+      <div class="generator-toggle-row">
+        <div class="generator-toggle-copy">
+          <div class="generator-toggle-title">Toy Assist</div>
+          <div class="generator-toggle-note"></div>
         </div>
-        <button id="generateConceptImageBtn" class="generator-cta" type="button" onclick="generateConceptImage()">Generate Image</button>
+        <label class="generator-switch" aria-label="Toy assist toggle">
+          <input id="generatorToyAssist" type="checkbox">
+          <span class="generator-switch-track"></span>
+        </label>
       </div>
 
+      <button id="generateConceptImageBtn" class="generator-cta" type="button" onclick="generateConceptImage()">Generate image</button>
       <div id="generatorImageStatus" class="status"></div>
     </div>
   </div>
@@ -4832,32 +4238,24 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Source</div>
-        <div class="generator-card-copy">Upload or choose the active source.</div>
+        <div class="generator-card-title">Add an image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 15.25V7.75"></path>
-          <path d="m8.75 11 3.25-3.25L15.25 11"></path>
-          <path d="M6.5 17.25h11"></path>
-        </svg>
-        <span>Source</span>
       </div>
     </div>
 
-    <div class="generator-source-layout">
-      <div class="dropzone" id="drop3d">
+    <div class="dropzone" id="drop3d">
 
-      <p id="dropText3d">Drop source image or click to upload</p>
+    <p id="dropText3d">Drop an image or click to upload</p>
 
-      <img id="dropPreview3d" 
-      style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
+    <img id="dropPreview3d" 
+    style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
 
-      <input type="file" id="fileInput" multiple style="display:none">
+    <input type="file" id="fileInput" multiple style="display:none">
 
-      </div>
+    </div>
 
+    <div class="generator-stack">
       <div class="generator-thumbnail-strip" id="generatorThumbStrip">
       </div>
     </div>
@@ -4875,18 +4273,9 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">3D Output</div>
-        <div class="generator-card-copy">Choose test or real 3D.</div>
+        <div class="generator-card-title">3D output</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="m12 3.75 7 4.05v8.4l-7 4.05-7-4.05V7.8l7-4.05Z"></path>
-          <path d="M12 12.1 19 8.05"></path>
-          <path d="M12 12.1 5 8.05"></path>
-          <path d="M12 12.1v8.15"></path>
-        </svg>
-        <span>3D</span>
       </div>
     </div>
 
@@ -4896,7 +4285,7 @@ padding-bottom:18px;
       </button>
 
       <button class="btn-premium generator-cta generator-cta-primary" data-premium-feature="premium-3d-generation" onclick="runPremiumAction('premium-3d-generation', generateReal3D)">
-      Real 3D
+      3D Pro
       </button>
     </div>
 
@@ -4906,7 +4295,7 @@ padding-bottom:18px;
 
     <div class="status" id="status"></div>
     <a id="downloadBtn" class="download-btn" style="display:none;" download>
-    Download GLB Model
+    Download GLB
     </a>
   </div>
 </div>
@@ -4923,12 +4312,10 @@ padding-bottom:18px;
     </svg>
   </div>
   <div class="section-heading">
-    <div class="section-kicker">Studio Workflow</div>
     <div class="section-title-row">
       <div class="section-title">SVG Generator</div>
-      <div class="section-badge">Vector</div>
     </div>
-    <div class="section-intro">Prepare one source, then generate SVG.</div>
+    <div class="section-intro"></div>
   </div>
 </div>
 
@@ -4944,23 +4331,15 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Generate AI Image</div>
-        <div class="generator-card-copy">Create from prompt.</div>
+        <div class="generator-card-title">Describe the image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.75 6.75h14.5v10.5H4.75z"></path>
-          <path d="m7.5 14 2.6-2.6 2.4 2.4 2.5-3 1.75 2.2"></path>
-          <circle cx="9" cy="9.25" r="1.1"></circle>
-        </svg>
-        <span>Image</span>
       </div>
     </div>
 
     <div class="generator-stack">
-      <textarea id="svgPrompt" class="generator-prompt" placeholder="Clean laser-cut line art of a racing helmet viewed from the side."></textarea>
-      <button id="generateSvgImageBtn" class="generator-cta" type="button" onclick="generateSvgConceptImage()">Generate Image</button>
+      <textarea id="svgPrompt" class="generator-prompt" placeholder="Describe your SVG idea..."></textarea>
+      <button id="generateSvgImageBtn" class="generator-cta" type="button" onclick="generateSvgConceptImage()">Generate image</button>
       <div id="svgImageStatus" class="status"></div>
     </div>
   </div>
@@ -4976,22 +4355,14 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Source</div>
-        <div class="generator-card-copy">Upload or choose the active source.</div>
+        <div class="generator-card-title">Add an image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 15.25V7.75"></path>
-          <path d="m8.75 11 3.25-3.25L15.25 11"></path>
-          <path d="M6.5 17.25h11"></path>
-        </svg>
-        <span>Source</span>
       </div>
     </div>
 
     <div class="dropzone" id="dropSVG">
-      <p id="dropTextSVG">Drop source image or click to upload</p>
+      <p id="dropTextSVG">Drop an image or click to upload</p>
       <img id="dropPreviewSVG" style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
       <input type="file" id="svgInput" style="display:none">
     </div>
@@ -5013,17 +4384,9 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">SVG Output</div>
-        <div class="generator-card-copy">Set the cleanup and generate SVG.</div>
+        <div class="generator-card-title">SVG output</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 17.25h10"></path>
-          <path d="m8.75 14.75 6.5-6.5 2 2-6.5 6.5-3 1z"></path>
-          <path d="m14.5 9 2 2"></path>
-        </svg>
-        <span>SVG</span>
       </div>
     </div>
 
@@ -5067,12 +4430,10 @@ padding-bottom:18px;
     </svg>
   </div>
   <div class="section-heading">
-    <div class="section-kicker">Studio Workflow</div>
     <div class="section-title-row">
       <div class="section-title">Photo Relief</div>
-      <div class="section-badge">Print</div>
     </div>
-    <div class="section-intro">Prepare one source, preview relief, then export STL.</div>
+    <div class="section-intro"></div>
   </div>
 </div>
 
@@ -5088,23 +4449,15 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Generate AI Image</div>
-        <div class="generator-card-copy">Create from prompt.</div>
+        <div class="generator-card-title">Describe the image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.75 6.75h14.5v10.5H4.75z"></path>
-          <path d="m7.5 14 2.6-2.6 2.4 2.4 2.5-3 1.75 2.2"></path>
-          <circle cx="9" cy="9.25" r="1.1"></circle>
-        </svg>
-        <span>Image</span>
       </div>
     </div>
 
     <div class="generator-stack">
-      <textarea id="reliefPrompt" class="generator-prompt" placeholder="Portrait photo with clean lighting and strong facial separation for lithophane relief."></textarea>
-      <button id="generateReliefImageBtn" class="generator-cta" type="button" onclick="generateReliefConceptImage()">Generate Image</button>
+      <textarea id="reliefPrompt" class="generator-prompt" placeholder="Describe your relief..."></textarea>
+      <button id="generateReliefImageBtn" class="generator-cta" type="button" onclick="generateReliefConceptImage()">Generate image</button>
       <div id="reliefImageStatus" class="status"></div>
     </div>
   </div>
@@ -5120,22 +4473,14 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Source</div>
-        <div class="generator-card-copy">Upload or choose the active source.</div>
+        <div class="generator-card-title">Add an image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 15.25V7.75"></path>
-          <path d="m8.75 11 3.25-3.25L15.25 11"></path>
-          <path d="M6.5 17.25h11"></path>
-        </svg>
-        <span>Source</span>
       </div>
     </div>
 
     <div class="dropzone" id="dropRelief">
-      <p id="dropTextRelief">Drop source image or click to upload</p>
+      <p id="dropTextRelief">Drop an image or click to upload</p>
       <img id="dropPreviewRelief" style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
       <input type="file" id="reliefInput" style="display:none">
     </div>
@@ -5157,17 +4502,9 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Relief</div>
-        <div class="generator-card-copy">Preview the relief, then export STL.</div>
+        <div class="generator-card-title">Relief STL</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="m12 5.25 7 3.75-7 3.75L5 9l7-3.75Z"></path>
-          <path d="m5 12.25 7 3.75 7-3.75"></path>
-          <path d="m5 15.5 7 3.75 7-3.75"></path>
-        </svg>
-        <span>Relief</span>
       </div>
     </div>
 
@@ -5576,50 +4913,6 @@ filter:none;
 
 const API_BASE = window.PLUTO_API_BASE
 
-function getApiRequestHeaders(additionalHeaders = {}){
-if(typeof window.getPlutoApiHeaders === "function"){
-  return window.getPlutoApiHeaders(additionalHeaders)
-}
-
-return additionalHeaders
-}
-
-function syncUsageFromServerPayload(data, fallbackFeatureKey = ""){
-if(data?.usage){
-  window.PLUTO_ACCOUNT_USAGE = data.usage
-  if(typeof syncAuthPreviewUI === "function"){
-    syncAuthPreviewUI()
-  }
-  return
-}
-
-if(typeof window.refreshAccountUsageState === "function" && !(window.isLocalTestMode?.() || false)){
-  window.refreshAccountUsageState()
-  return
-}
-
-if(fallbackFeatureKey){
-  incrementUsage(fallbackFeatureKey)
-}
-}
-
-async function consumeFeatureUsageOrFallback(featureKey, options = {}){
-if(typeof window.consumeBackendFeatureUsage === "function" && !(window.isLocalTestMode?.() || false)){
-  await window.consumeBackendFeatureUsage(featureKey, options)
-  return "backend"
-}
-
-incrementUsage(featureKey)
-
-Object.entries(options.grantCredits || {}).forEach(([creditKey, amount]) => {
-  if(creditKey === "test3dDownloadCredit"){
-    grantViewerDownloadAccess("test3dModelDownload", amount)
-  }
-})
-
-return "local"
-}
-
 function getPublicAppConfig(){
 return window.PLUTO_APP_CONFIG || {}
 }
@@ -5902,6 +5195,35 @@ const progressBar = document.getElementById("progressBar")
 let currentJobId=null
 window.currentWorkspacePanel = window.currentWorkspacePanel || "3d"
 
+function revealViewer(options = {}){
+const {
+  force = false,
+  behavior = "smooth"
+} = options
+
+const viewer = document.getElementById("viewer")
+if(!viewer){
+  return
+}
+
+const rect = viewer.getBoundingClientRect()
+const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0
+const mostlyVisible = rect.top >= 0 && rect.bottom <= viewportHeight
+
+if(!force && mostlyVisible){
+  return
+}
+
+const header = document.querySelector(".platform-header")
+const headerHeight = header ? header.getBoundingClientRect().height : 0
+const targetY = window.scrollY + rect.top - Math.max(0, headerHeight) - 12
+
+window.scrollTo({
+  top: Math.max(0, targetY),
+  behavior
+})
+}
+
 
 async function upload(){
 
@@ -5924,7 +5246,6 @@ form.append("job_id",currentJobId)
 
 await fetch(API_BASE+"/api/upload",{
 method:"POST",
-headers:getApiRequestHeaders(),
 body:form
 })
 
@@ -5942,9 +5263,9 @@ const res=await fetch(API_BASE+"/api/generate",{
 
 method:"POST",
 
-headers:getApiRequestHeaders({
+headers:{
 "Content-Type":"application/json"
-}),
+},
 
 body: JSON.stringify({
   job_id: currentJobId
@@ -5954,7 +5275,6 @@ body: JSON.stringify({
 
 const data=await res.json()
 
-syncUsageFromServerPayload(data)
 checkStatus(data.task_id)
 
 }
@@ -6066,6 +5386,8 @@ openUsageLimitPrompt("free3dGeneration")
 return
 }
 
+revealViewer({ force:true })
+
 const fileInput = document.querySelector("#fileInput")
 const file = fileInput.files[0]
 const activeImage = window.generatorActiveImage
@@ -6110,18 +5432,11 @@ await new Promise((resolve) => setTimeout(resolve, 1300))
 status.innerHTML = "Building your 3D preview..."
 progressBar.style.width = "68%"
 
-await consumeFeatureUsageOrFallback("free3dGeneration", {
-  grantCredits: {
-    test3dDownloadCredit: 1
-  }
-})
-
 await new Promise((resolve) => setTimeout(resolve, 1600))
 
 loadGLB(testModel.url, testModel.filename || "free-test.glb")
-showViewerDownload(testModel.url, testModel.filename || "free-test.glb", {
-  accessPolicyKey: "test3dModelDownload"
-})
+showViewerDownload(testModel.url, testModel.filename || "free-test.glb")
+incrementUsage("free3dGeneration")
 progressBar.style.width = "100%"
 status.innerHTML = `${testModel.label} is ready.`
 }catch(err){
@@ -6170,9 +5485,8 @@ const svgViewer = document.getElementById("svgViewer")
 if(!svgViewer) return
 
 const currentAsset = window.currentViewerAsset || null
-const currentTheme = document.body.getAttribute("data-theme") || "dark"
 svgViewer.style.filter = currentAsset?.type === "svg"
-  ? (currentTheme === "light" ? "none" : "invert(1) brightness(2)")
+  ? "invert(1) brightness(2)"
   : "none"
 }
 
@@ -6395,6 +5709,12 @@ const currentPlan = authState.mode === "premium"
   : authState.mode === "free"
     ? "Free Account"
     : "Guest"
+const limits = {
+  aiImage: getUsageLimit("aiImage"),
+  svgGeneration: getUsageLimit("svgGeneration"),
+  toyGeneration: getUsageLimit("toyGeneration"),
+  free3dGeneration: getUsageLimit("free3dGeneration")
+}
 
 return `
   <div class="platform-surface-card wide">
@@ -6420,10 +5740,10 @@ return `
         <div class="surface-plan-title">Explore</div>
         <div class="surface-plan-price">Free <span>no login</span></div>
         <ul class="surface-plan-list">
-          <li>2 AI photos per day</li>
-          <li>1 SVG generation per day</li>
-          <li>1 test 3D generation per day</li>
-          <li>Viewer-only test models with no download access</li>
+          <li>See the workspace</li>
+          <li>Try toy creation</li>
+          <li>Basic SVG tools</li>
+          <li>Simple first-touch experience</li>
         </ul>
       </div>
       <div class="surface-plan-card">
@@ -6431,11 +5751,10 @@ return `
         <div class="surface-plan-title">Create</div>
         <div class="surface-plan-price">Free <span>with account</span></div>
         <ul class="surface-plan-list">
-          <li>10 AI photos per week</li>
-          <li>Unlimited SVG generation</li>
-          <li>3 test 3D generations per week</li>
-          <li>5 Relief STL exports per week, with unlimited preview</li>
-          <li>1 download credit per generated test model</li>
+          <li>More usage room</li>
+          <li>Toy Studio access</li>
+          <li>Print Fix workflow</li>
+          <li>Cleaner account continuity</li>
         </ul>
       </div>
       <div class="surface-plan-card featured">
@@ -6443,10 +5762,10 @@ return `
         <div class="surface-plan-title">Subscriber</div>
         <div class="surface-plan-price">${billingRuntime?.priceLabel || "Premium pricing"}</div>
         <ul class="surface-plan-list">
-          <li>50 AI photos per month</li>
-          <li>Unlimited SVG, test 3D, and Relief STL</li>
-          <li>Real 3D / Pro generation: 10 per month</li>
-          <li>Unlimited test-model downloads and billing management</li>
+          <li>Premium 3D generation</li>
+          <li>Better limits and faster flow</li>
+          <li>Cleaner billing management</li>
+          <li>Higher-output production path</li>
         </ul>
         <div class="surface-actions">
           ${primaryPlanActionHandler ? `<button type="button" onclick="${primaryPlanActionHandler}">${primaryPlanActionLabel}</button>` : `<button type="button" disabled>${primaryPlanActionLabel}</button>`}
@@ -6464,14 +5783,12 @@ return `
   <div class="platform-surface-card">
     <div class="platform-surface-card-label">Included Access</div>
     <div class="platform-surface-card-title">What changes across each plan</div>
-    <div class="platform-surface-card-copy">The current account allowance below reflects the configured production policy, even while local development still runs in unlimited test mode.</div>
+    <div class="platform-surface-card-copy">The product is structured so exploration stays simple, free accounts feel useful, and Premium clearly unlocks the faster commercial-grade workflow.</div>
     <ul class="platform-surface-list">
-      <li>AI image: ${formatUsageAllowance("aiImage")}</li>
-      <li>SVG generation: ${formatUsageAllowance("svgGeneration")}</li>
-      <li>Test 3D generation: ${formatUsageAllowance("free3dGeneration")}</li>
-      <li>Relief STL export: ${formatUsageAllowance("reliefStlGeneration")}</li>
-      <li>Real 3D / Pro generation: ${formatUsageAllowance("real3dGeneration")}</li>
-      <li>Test-model download: ${getTestModelDownloadPolicyLabel()}</li>
+      <li>AI image limit: ${limits.aiImage === null ? "Unlimited" : limits.aiImage}</li>
+      <li>SVG limit: ${limits.svgGeneration === null ? "Unlimited" : limits.svgGeneration}</li>
+      <li>Toy generation limit: ${limits.toyGeneration === null ? "Unlimited" : limits.toyGeneration}</li>
+      <li>3D generation limit: ${limits.free3dGeneration === null ? "Unlimited" : limits.free3dGeneration}</li>
     </ul>
   </div>
   <div class="platform-surface-card">
@@ -6488,97 +5805,60 @@ return `
 }
 
 function renderGallerySurface(){
-const authState = getAuthPreviewState()
-const usage = getUsageSnapshot()
-const usageTotal = Object.values(usage).reduce((sum, value) => sum + Number(value || 0), 0)
-const sessionMode = authState.loggedIn ? "Synced" : "Local"
-
 return `
   <div class="surface-stack wide">
-    <div class="platform-surface-card gallery-hero-card wide">
-      <div class="platform-surface-card-label">Gallery Overview</div>
-      <div class="platform-surface-card-title">A simpler studio wall for the best current work</div>
-      <div class="platform-surface-card-copy">Gallery now stays focused on two jobs only: show the strongest pieces first and keep a clean recent-history list underneath.</div>
-      <div class="surface-chip-row">
-        <span class="surface-chip primary">3 Formats Visible</span>
-        <span class="surface-chip">${sessionMode} Session</span>
-        <span class="surface-chip">${usageTotal} Actions Tracked</span>
-      </div>
-      <div class="gallery-snapshot-grid" style="margin-top:16px;">
-        <div class="gallery-snapshot-item">
-          <div class="gallery-snapshot-value">${usage.free3dGeneration}</div>
-          <div class="gallery-snapshot-label">Test 3D</div>
+    <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Recent Work</div>
+      <div class="platform-surface-card-title">Latest work from the studio</div>
+      <div class="platform-surface-card-copy">A clean running row of the newest outputs so the gallery feels like a real creative history instead of a debug log.</div>
+      <div class="history-list" style="margin-top:14px;">
+        <div class="history-row">
+          <div class="history-row-main">
+            <div class="history-row-title">Robot.glb</div>
+            <div class="history-row-copy">A polished character model kept near the top of the recent 3D work list.</div>
+          </div>
+          <div class="history-row-type">Latest 3D</div>
         </div>
-        <div class="gallery-snapshot-item">
-          <div class="gallery-snapshot-value">${usage.svgGeneration}</div>
-          <div class="gallery-snapshot-label">SVG Actions</div>
+        <div class="history-row">
+          <div class="history-row-main">
+            <div class="history-row-title">f1car.glb</div>
+            <div class="history-row-copy">Recent vehicle model pushed through the viewer and print preparation flow.</div>
+          </div>
+          <div class="history-row-type">Latest Print</div>
         </div>
-        <div class="gallery-snapshot-item">
-          <div class="gallery-snapshot-value">${sessionMode}</div>
-          <div class="gallery-snapshot-label">Session Mode</div>
-        </div>
-      </div>
-      <div class="gallery-stage-grid" style="margin-top:16px;">
-        <div class="gallery-stage-card featured">
-          <div>
-            <div class="gallery-stage-kicker">Featured 3D</div>
-            <div class="gallery-stage-title">Robot Hero Model</div>
-            <div class="gallery-stage-copy">The clearest hero asset in the current studio direction and the right piece to anchor the gallery first.</div>
+        <div class="history-row">
+          <div class="history-row-main">
+            <div class="history-row-title">Vector Outline</div>
+            <div class="history-row-copy">Saved SVG result kept beside the 3D flow for mixed-format projects.</div>
           </div>
-          <div class="gallery-stage-meta">
-            <span>GLB</span>
-            <span>Showcase</span>
-          </div>
-        </div>
-        <div class="gallery-stage-card">
-          <div>
-            <div class="gallery-stage-kicker">Print Ready</div>
-            <div class="gallery-stage-title">F1 Car STL</div>
-            <div class="gallery-stage-copy">A strong print-oriented asset that still carries the premium viewer language cleanly.</div>
-          </div>
-          <div class="gallery-stage-meta">
-            <span>STL</span>
-            <span>Prepared</span>
-          </div>
-        </div>
-        <div class="gallery-stage-card">
-          <div>
-            <div class="gallery-stage-kicker">Vector Asset</div>
-            <div class="gallery-stage-title">Helmet Outline</div>
-            <div class="gallery-stage-copy">A simple SVG example that keeps the gallery visibly multi-format instead of 3D-only.</div>
-          </div>
-          <div class="gallery-stage-meta">
-            <span>SVG</span>
-            <span>Saved</span>
-          </div>
+          <div class="history-row-type">Latest SVG</div>
         </div>
       </div>
     </div>
-    <div class="platform-surface-card wide">
-      <div class="platform-surface-card-label">Recent Archive</div>
-      <div class="platform-surface-card-title">Latest saved outputs from the active studio flow</div>
-      <div class="platform-surface-card-copy">This keeps the history readable and useful, without turning the gallery into a long product-management list.</div>
-      <div class="gallery-archive-list" style="margin-top:16px;">
-        <div class="gallery-archive-item">
-          <div class="gallery-archive-main">
-            <div class="gallery-archive-title">Robot.glb</div>
-            <div class="gallery-archive-copy">Recent hero model still strong enough to sit at the top of the account-facing archive.</div>
+    <div class="platform-surface-card">
+      <div class="platform-surface-card-label">Best Work</div>
+      <div class="platform-surface-card-title">Highlighted pieces worth keeping visible</div>
+      <div class="platform-surface-card-copy">A focused showcase of the strongest pieces currently carrying the Pluto3D visual direction.</div>
+      <div class="gallery-wall" style="margin-top:16px;">
+        <div class="gallery-tile">
+          <div>
+            <div class="gallery-tile-title">Robot Hero Model</div>
+            <div class="gallery-tile-copy">A stylized character piece that represents the toy direction well and already reads like a featured gallery asset.</div>
           </div>
-          <div class="gallery-archive-type">Latest 3D</div>
+          <div class="gallery-tile-meta">
+            <span>Robot.glb</span>
+            <span>Featured</span>
+          </div>
         </div>
-        <div class="gallery-archive-item">
-          <div class="gallery-archive-main">
-            <div class="gallery-archive-title">f1car.glb</div>
-            <div class="gallery-archive-copy">Vehicle piece already aligned with the premium viewer and print-prep direction.</div>
+        <div class="gallery-tile">
+          <div>
+            <div class="gallery-tile-title">F1 Car Showcase</div>
+            <div class="gallery-tile-copy">A clean vehicle model that balances speed, print appeal, and viewer presentation for the first showcase row.</div>
           </div>
-          <div class="gallery-archive-type">Latest Print</div>
-        </div>
-        <div class="gallery-archive-item">
-          <div class="gallery-archive-main">
-            <div class="gallery-archive-title">Vector Outline</div>
-            <div class="gallery-archive-copy">Simple mixed-format proof that SVG sits naturally beside the main 3D outputs.</div>
+          <div class="gallery-tile-meta">
+            <span>f1car.glb</span>
+            <span>Featured</span>
           </div>
-          <div class="gallery-archive-type">Latest SVG</div>
         </div>
       </div>
     </div>
@@ -6731,27 +6011,21 @@ return `
       </div>
     </div>
     <div class="platform-surface-card-copy">${accountCopy}</div>
-    <div class="surface-chip-row profile-pill-row">
-      <span class="surface-chip primary">${authState.planLabel}</span>
-      <span class="surface-chip">${subscriptionStatusLabel}</span>
-      <span class="surface-chip">Plan Source ${sourceLabel}</span>
-      <span class="surface-chip">${authState.loggedIn ? "Account Synced" : "Guest Session"}</span>
-    </div>
-    <div class="profile-signal-grid">
-      <div class="profile-signal-card">
-        <div class="profile-signal-label">Account State</div>
-        <div class="profile-signal-value">${authState.loggedIn ? "Active Session" : "Guest Mode"}</div>
-        <div class="profile-signal-copy">${liveAuthReady ? "Live auth is ready and the account surface is synced for continued use." : "A real account unlocks saved identity, billing, and smoother continuity."}</div>
+    <div class="profile-summary-grid">
+      <div class="profile-summary-block">
+        <div class="profile-summary-label">Account State</div>
+        <div class="profile-summary-value">${authState.loggedIn ? "Active Session" : "Guest Mode"}</div>
+        <div class="profile-summary-copy">${liveAuthReady ? "Live auth is ready and the account surface is synced for continued use." : "A real account unlocks saved identity, billing, and smoother continuity."}</div>
       </div>
-      <div class="profile-signal-card">
-        <div class="profile-signal-label">Resolved Plan</div>
-        <div class="profile-signal-value">${planLabel}</div>
-        <div class="profile-signal-copy">Source: ${sourceLabel}</div>
+      <div class="profile-summary-block">
+        <div class="profile-summary-label">Resolved Plan</div>
+        <div class="profile-summary-value">${planLabel}</div>
+        <div class="profile-summary-copy">Source: ${sourceLabel}</div>
       </div>
-      <div class="profile-signal-card">
-        <div class="profile-signal-label">Current Billing</div>
-        <div class="profile-signal-value">${renewalDate || "No renewal yet"}</div>
-        <div class="profile-signal-copy">${canManageBilling ? "Billing portal is available for this account." : "Portal access appears after the first subscription is linked."}</div>
+      <div class="profile-summary-block">
+        <div class="profile-summary-label">Current Billing</div>
+        <div class="profile-summary-value">${renewalDate || "No renewal yet"}</div>
+        <div class="profile-summary-copy">${canManageBilling ? "Billing portal is available for this account." : "Portal access appears after the first subscription is linked."}</div>
       </div>
     </div>
   </div>
@@ -6759,27 +6033,24 @@ return `
     <div class="platform-surface-card-label">Subscription</div>
     <div class="platform-surface-card-title">${lifecycle.title}</div>
     <div class="platform-surface-card-copy">${lifecycle.copy}</div>
-    <div class="profile-billing-grid">
-      <div class="profile-billing-card">
-        <div class="profile-billing-label">Status</div>
-        <div class="profile-billing-value">${subscriptionStatusLabel}</div>
-        <div class="profile-billing-copy">Current subscription visibility inside the account layer.</div>
+    <div class="profile-meta-list">
+      <div class="profile-meta-item">
+        <div class="profile-meta-label">Status</div>
+        <div class="profile-meta-value">${subscriptionStatusLabel}</div>
       </div>
-      <div class="profile-billing-card">
-        <div class="profile-billing-label">Plan</div>
-        <div class="profile-billing-value">${subscriptionPlanLabel}</div>
-        <div class="profile-billing-copy">The plan currently resolved from account and backend state.</div>
+      <div class="profile-meta-item">
+        <div class="profile-meta-label">Plan</div>
+        <div class="profile-meta-value">${subscriptionPlanLabel}</div>
       </div>
-      <div class="profile-billing-card">
-        <div class="profile-billing-label">Billing Path</div>
-        <div class="profile-billing-value">${lifecycle.supportLabel}</div>
-        <div class="profile-billing-copy">Portal and checkout surfaces stay lightweight and clear.</div>
+      <div class="profile-meta-item">
+        <div class="profile-meta-label">Billing</div>
+        <div class="profile-meta-value">${lifecycle.supportLabel}</div>
       </div>
-      <div class="profile-billing-card">
-        <div class="profile-billing-label">Current Period</div>
-        <div class="profile-billing-value">${renewalDate || "Awaiting first renewal"}</div>
-        <div class="profile-billing-copy">${canManageBilling ? "Manage billing is available from this account state." : "Portal access appears after the first linked subscription."}</div>
-      </div>
+      ${renewalDate ? `
+      <div class="profile-meta-item">
+        <div class="profile-meta-label">Current Period</div>
+        <div class="profile-meta-value">${renewalDate}</div>
+      </div>` : ""}
     </div>
     <div class="surface-actions">
       ${lifecycle.actionLabel ? `<button type="button" onclick="${lifecycle.actionHandler}">${lifecycle.actionLabel}</button>` : ""}
@@ -6790,11 +6061,6 @@ return `
     <div class="platform-surface-card-label">Usage</div>
     <div class="platform-surface-card-title">Activity snapshot</div>
     <div class="platform-surface-card-copy">A compact view of the current usage counters across the main creation flows.</div>
-    <div class="profile-usage-total">
-      <div class="profile-usage-total-label">Total Account Activity</div>
-      <div class="profile-usage-total-value">${usageTotal}</div>
-      <div class="profile-usage-total-copy">${authState.loggedIn ? "Usage can grow into a real saved account history as more output surfaces become account-linked." : "Guest mode keeps the current session lightweight while still showing the active local counters."}</div>
-    </div>
     <div class="profile-usage-grid">
       <div class="profile-usage-item">
         <div class="profile-usage-value">${usage.aiImage}</div>
@@ -6810,15 +6076,7 @@ return `
       </div>
       <div class="profile-usage-item">
         <div class="profile-usage-value">${usage.free3dGeneration}</div>
-        <div class="profile-usage-label">Test 3D</div>
-      </div>
-      <div class="profile-usage-item">
-        <div class="profile-usage-value">${usage.reliefStlGeneration}</div>
-        <div class="profile-usage-label">Relief STL</div>
-      </div>
-      <div class="profile-usage-item">
-        <div class="profile-usage-value">${usage.real3dGeneration}</div>
-        <div class="profile-usage-label">Real 3D</div>
+        <div class="profile-usage-label">3D Actions</div>
       </div>
       <div class="profile-usage-item">
         <div class="profile-usage-value">${usageTotal}</div>
@@ -6835,11 +6093,6 @@ return `
     <div class="platform-surface-card-title">Need help with account or billing?</div>
     <div class="platform-surface-card-copy">Support stays clean and human: account questions, upgrade help, and billing issues all route through the same contact path.</div>
     <div class="profile-support-note">${getSupportLabel()}</div>
-    <div class="surface-chip-row">
-      <span class="surface-chip">${authRuntime.statusLabel}</span>
-      <span class="surface-chip">${authState.loggedIn ? "Signed In" : "Guest"}</span>
-      <span class="surface-chip">${canManageBilling ? "Portal Ready" : "Portal Pending"}</span>
-    </div>
     <ul class="profile-support-list">
       <li>${getSupportContactLine()}</li>
       <li>Use Plans for upgrade context and Support for account or billing questions.</li>
@@ -6895,42 +6148,10 @@ const labels = {
   aiImage: "AI image generation",
   svgGeneration: "SVG generation",
   toyGeneration: "Toy generation",
-  free3dGeneration: "Test 3D generation",
-  reliefStlGeneration: "Relief STL export",
-  real3dGeneration: "Real 3D generation"
+  free3dGeneration: "3D generation"
 }
 
 return labels[featureKey] || featureKey
-}
-
-function formatUsageAllowance(featureKey){
-const rule = typeof getUsageRule === "function"
-  ? getUsageRule(featureKey, { ignoreLocalTestMode:true })
-  : { limit:null, period:null }
-
-if(rule.limit === null){
-  return "Unlimited"
-}
-
-if(Number(rule.limit) <= 0){
-  return "Locked"
-}
-
-return `${rule.limit} / ${rule.period}`
-}
-
-function getTestModelDownloadPolicyLabel(){
-const mode = getAuthPreviewState().mode || "guest"
-
-if(mode === "premium"){
-  return "Unlimited"
-}
-
-if(mode === "free"){
-  return "1 per generated test model"
-}
-
-return "Not available"
 }
 
 function openUsageLimitPrompt(featureKey){
@@ -6942,7 +6163,7 @@ if(body){
       <div class="platform-surface-card-label">Usage Limit Reached</div>
       <div class="platform-surface-card-title">${getUsageLabel(featureKey)} is currently limited for your account tier</div>
       <div class="platform-surface-card-copy">
-        Your current plan is <strong>${getAuthPreviewState().planLabel}</strong>. Configured allowance for this feature: <strong>${formatUsageAllowance(featureKey)}</strong>. Usage limits apply to the current account tier, while premium locks follow the backend account plan.
+        Your current plan is <strong>${getAuthPreviewState().planLabel}</strong>. Usage limits apply to the current account tier, while premium locks follow the backend account plan.
       </div>
     </div>
   `)
@@ -7115,6 +6336,32 @@ function getGeneratorHiddenToyPrompt(){
 return " full toy object, complete collectible toy, isolated studio render, centered product composition, premium toy silhouette"
 }
 
+function getPanelPromptAugmentation(panel){
+  switch(String(panel || "").toLowerCase()){
+    case "svg":
+      return "flat vector line art, high contrast, clean contours, no background, no gradients, no text, centered subject"
+    case "relief":
+      return "single subject, strong separation, clean contours, no background, even lighting, centered subject, minimal clutter"
+    case "3d":
+    default:
+      return "single object, clean silhouette, sharp contours, no background, centered product shot, minimal clutter"
+  }
+}
+
+function applyPromptAugmentation(rawPrompt, panel){
+  const base = String(rawPrompt || "").trim()
+  if(!base){
+    return base
+  }
+
+  const suffix = getPanelPromptAugmentation(panel)
+  if(!suffix){
+    return base
+  }
+
+  return `${base}. ${suffix}`
+}
+
 function setSharedGeneratorPreview(imageUrl, options = {}){
 const drop = document.getElementById("drop3d")
 const img = document.getElementById("dropPreview3d")
@@ -7203,28 +6450,29 @@ if(!rawPrompt){
   return
 }
 
+const augmentedPrompt = applyPromptAugmentation(rawPrompt, "3d")
 const finalPrompt = toyAssist?.checked
-  ? `${rawPrompt}${getGeneratorHiddenToyPrompt()}`
-  : rawPrompt
+  ? `${augmentedPrompt}${getGeneratorHiddenToyPrompt()}`
+  : augmentedPrompt
 
 const form = new FormData()
 form.append("prompt", finalPrompt)
 form.append("style", toyAssist?.checked ? "toy" : "realistic")
 
 if(status){
-  status.innerHTML = "Generating concept image..."
+  status.innerHTML = "Writing..."
 }
 
 try{
   const res = await fetch(API_BASE + "/api/ai-photo", {
     method:"POST",
-    headers:getApiRequestHeaders(),
     body:form
   })
 
   if(!res.ok){
-    const errorData = await res.json().catch(() => ({}))
-    throw new Error(errorData.detail || errorData.error || "AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+    const txt = await res.text()
+    console.log(txt)
+    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
   }
 
   const data = await res.json()
@@ -7247,16 +6495,16 @@ try{
 
   setSharedGeneratorPreview(entry.url, entry)
   pushGeneratorRecentImage(entry)
-  syncUsageFromServerPayload(data, "aiImage")
+  incrementUsage("aiImage")
 
   if(status){
-    status.innerHTML = "Image ready."
+    status.innerHTML = ""
   }
 }catch(err){
   console.log(err)
   console.error("Concept image request crashed", err)
   if(status){
-    status.innerHTML = err.message || "Concept image generation failed."
+    status.innerHTML = err.message || "Failed."
   }
   alert(err.message || "Concept image generation failed.")
 }
@@ -7273,6 +6521,107 @@ document.getElementById("svgDetail")?.addEventListener("change", triggerSvgAutoR
 document.getElementById("svgCleanBackground")?.addEventListener("change", triggerSvgAutoRegenerate)
 
 let svgAutoRegenerateTimer = null
+
+function enhanceSvgPopoverSelect(selectId){
+  const select = document.getElementById(selectId)
+  if(!select || select.dataset.enhancedPopover === "1"){
+    return
+  }
+
+  const label = document.querySelector(`label[for="${selectId}"]`)
+  if(!label){
+    return
+  }
+
+  const wrapper = document.createElement("div")
+  wrapper.className = "svg-select"
+
+  const trigger = document.createElement("button")
+  trigger.type = "button"
+  trigger.className = "svg-select-trigger"
+
+  const menu = document.createElement("div")
+  menu.className = "svg-select-menu"
+  menu.setAttribute("role", "menu")
+
+  const closeMenu = () => {
+    menu.classList.remove("open")
+    trigger.setAttribute("aria-expanded", "false")
+  }
+
+  const openMenu = () => {
+    document.querySelectorAll("#panel-svg .svg-select-menu.open").forEach((el) => {
+      el.classList.remove("open")
+    })
+    menu.classList.add("open")
+    trigger.setAttribute("aria-expanded", "true")
+  }
+
+  const updateActive = () => {
+    const val = String(select.value || "")
+    const activeOption = Array.from(select.options || []).find((opt) => opt.value === val)
+    const fullLabel = activeOption?.textContent || (select.options?.[0]?.textContent ?? "Select")
+    trigger.textContent = String(fullLabel).trim().split(/\s+/)[0]
+    menu.querySelectorAll("button[data-value]").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-value") === val)
+    })
+  }
+
+  trigger.setAttribute("aria-haspopup", "menu")
+  trigger.setAttribute("aria-expanded", "false")
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if(menu.classList.contains("open")){
+      closeMenu()
+    }else{
+      openMenu()
+    }
+  })
+
+  Array.from(select.options || []).forEach((opt) => {
+    const btn = document.createElement("button")
+    btn.type = "button"
+    btn.className = "svg-select-option"
+    btn.textContent = opt.textContent
+    btn.setAttribute("data-value", opt.value)
+    btn.setAttribute("role", "menuitem")
+    btn.addEventListener("click", (event) => {
+      event.preventDefault()
+      select.value = opt.value
+      select.dispatchEvent(new Event("change", { bubbles: true }))
+      updateActive()
+      closeMenu()
+    })
+    menu.appendChild(btn)
+  })
+
+  wrapper.appendChild(trigger)
+  wrapper.appendChild(menu)
+  select.insertAdjacentElement("afterend", wrapper)
+  select.style.display = "none"
+  select.dataset.enhancedPopover = "1"
+
+  select.addEventListener("change", updateActive)
+  updateActive()
+
+  document.addEventListener("click", (event) => {
+    if(!wrapper.contains(event.target)){
+      closeMenu()
+    }
+  })
+
+  document.addEventListener("keydown", (event) => {
+    if(event.key === "Escape"){
+      closeMenu()
+    }
+  })
+}
+
+;[
+  "svgDetail",
+  "svgCleanBackground"
+].forEach(enhanceSvgPopoverSelect)
 
 function renderSvgSourceMeta(){
 const typeChip = document.getElementById("svgSourceType")
@@ -7386,7 +6735,7 @@ if(!entry){
 setSvgSourcePreview(entry.url, entry)
 const status = document.getElementById("svgImageStatus")
 if(status){
-  status.innerHTML = "SVG source restored from recent images."
+  status.innerHTML = ""
 }
 }
 
@@ -7428,7 +6777,7 @@ pushSvgRecentImage(entry)
 
 const status = document.getElementById("svgImageStatus")
 if(status){
-  status.innerHTML = "Uploaded source is ready for SVG conversion."
+  status.innerHTML = ""
 }
 }
 
@@ -7448,23 +6797,23 @@ if(!rawPrompt){
 }
 
 const form = new FormData()
-form.append("prompt", rawPrompt)
+form.append("prompt", applyPromptAugmentation(rawPrompt, "svg"))
 form.append("style", "realistic")
 
 if(status){
-  status.innerHTML = "Generating SVG source image..."
+  status.innerHTML = "Writing..."
 }
 
 try{
   const res = await fetch(API_BASE + "/api/ai-photo", {
     method:"POST",
-    headers:getApiRequestHeaders(),
     body:form
   })
 
   if(!res.ok){
-    const errorData = await res.json().catch(() => ({}))
-    throw new Error(errorData.detail || errorData.error || "AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+    const txt = await res.text()
+    console.log(txt)
+    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
   }
 
   const data = await res.json()
@@ -7487,7 +6836,7 @@ try{
 
   setSvgSourcePreview(entry.url, entry)
   pushSvgRecentImage(entry)
-  syncUsageFromServerPayload(data, "aiImage")
+  incrementUsage("aiImage")
 
   if(status){
     status.innerHTML = "SVG source image is ready."
@@ -7510,14 +6859,8 @@ form.append("clean_background", cleanBackground)
 
 const res = await fetch(API_BASE + "/api/svg",{
 method:"POST",
-headers:getApiRequestHeaders(),
 body:form
 })
-
-if(!res.ok){
-const errorData = await res.json().catch(() => ({}))
-throw new Error(errorData.detail || errorData.error || "SVG generation failed")
-}
 
 const data = await res.json()
 
@@ -7613,6 +6956,8 @@ alert("Generate or upload an SVG source first")
 return
 }
 
+revealViewer({ force:true })
+
 if(status){
   status.innerHTML = "Generating SVG..."
 }
@@ -7622,7 +6967,7 @@ const data = await requestSvgFromSourceState(sourceState, detail, cleanBackgroun
 const svgUrl = API_BASE + data.svg_url
 
 if(!skipUsageIncrement){
-syncUsageFromServerPayload(data, "svgGeneration")
+incrementUsage("svgGeneration")
 }
 
 showGeneratedSvg(svgUrl, `vector-${detail}.svg`)
@@ -7714,6 +7059,143 @@ renderReliefExportState()
 renderReliefUsageNote()
 })
 
+function enhanceReliefPopoverSelect(selectId){
+  const select = document.getElementById(selectId)
+  if(!select || select.dataset.enhancedPopover === "1"){
+    return
+  }
+
+  const label = document.querySelector(`label[for="${selectId}"]`)
+  if(!label){
+    return
+  }
+
+  const wrapper = document.createElement("div")
+  wrapper.className = "relief-select"
+
+  const trigger = document.createElement("button")
+  trigger.type = "button"
+  trigger.className = "relief-select-trigger"
+
+  const menu = document.createElement("div")
+  menu.className = "relief-select-menu"
+  menu.setAttribute("role", "menu")
+
+  const closeMenu = () => {
+    menu.classList.remove("open")
+    trigger.setAttribute("aria-expanded", "false")
+  }
+
+  const openMenu = () => {
+    document.querySelectorAll("#panel-relief .relief-select-menu.open").forEach((el) => {
+      el.classList.remove("open")
+    })
+    menu.classList.add("open")
+    trigger.setAttribute("aria-expanded", "true")
+  }
+
+  const updateActive = () => {
+    const val = String(select.value || "")
+    const activeOption = Array.from(select.options || []).find((opt) => opt.value === val)
+    const fullLabel = activeOption?.textContent || (select.options?.[0]?.textContent ?? "Select")
+    trigger.textContent = shortenReliefTriggerLabel(selectId, val, fullLabel)
+    menu.querySelectorAll("button[data-value]").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-value") === val)
+    })
+  }
+
+  trigger.setAttribute("aria-haspopup", "menu")
+  trigger.setAttribute("aria-expanded", "false")
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if(menu.classList.contains("open")){
+      closeMenu()
+    }else{
+      openMenu()
+    }
+  })
+
+  Array.from(select.options || []).forEach((opt) => {
+    const btn = document.createElement("button")
+    btn.type = "button"
+    btn.className = "relief-select-option"
+    btn.textContent = opt.textContent
+    btn.setAttribute("data-value", opt.value)
+    btn.setAttribute("role", "menuitem")
+    btn.addEventListener("click", (event) => {
+      event.preventDefault()
+      select.value = opt.value
+      select.dispatchEvent(new Event("change", { bubbles: true }))
+      updateActive()
+      closeMenu()
+    })
+    menu.appendChild(btn)
+  })
+
+  wrapper.appendChild(trigger)
+  wrapper.appendChild(menu)
+  select.insertAdjacentElement("afterend", wrapper)
+  select.style.display = "none"
+  select.dataset.enhancedPopover = "1"
+
+  select.addEventListener("change", updateActive)
+  updateActive()
+
+  document.addEventListener("click", (event) => {
+    if(!wrapper.contains(event.target)){
+      closeMenu()
+    }
+  })
+
+  document.addEventListener("keydown", (event) => {
+    if(event.key === "Escape"){
+      closeMenu()
+    }
+  })
+}
+
+function shortenReliefTriggerLabel(selectId, value, label){
+  const clean = String(label || "").trim()
+  if(!clean){
+    return "Select"
+  }
+
+  switch(selectId){
+    case "reliefDirection":
+      if(value === "dark-deep") return "Dark"
+      if(value === "light-deep") return "Light"
+      return clean.split(/\s+/)[0]
+    case "reliefSize":
+      if(value === "small") return "Small"
+      if(value === "medium") return "Medium"
+      if(value === "large") return "Large"
+      return clean.split(/\s+/)[0]
+    case "reliefMeshQuality":
+      if(value === "draft") return "Draft"
+      if(value === "normal") return "Normal"
+      if(value === "fine") return "Fine"
+      return clean.split(/\s+/)[0]
+    case "reliefBorder":
+      if(value === "print-tab") return "Tab"
+      if(value === "frame") return "Frame"
+      if(value === "none") return "None"
+      return clean.split(/\s+/)[0]
+    default:
+      return clean.split(/\s+/)[0]
+  }
+}
+
+;[
+  "reliefDepth",
+  "reliefThickness",
+  "reliefBorder",
+  "reliefSurface",
+  "reliefDirection",
+  "reliefSize",
+  "reliefMeshQuality"
+].forEach(enhanceReliefPopoverSelect)
+
 let reliefAutoPreviewTimer = null
 
 function renderReliefSourceMeta(){
@@ -7776,11 +7258,11 @@ if(surfaceMode === "arched" && borderMode === "print-tab"){
 }
 
 if(surfaceMode === "arched"){
-  meta.textContent = `Arched STL - ${sizeLabel.toLowerCase()} - ${qualityLabel.toLowerCase()} - ${borderMode.toLowerCase()} border`
+  meta.textContent = `Arched STL • ${sizeLabel.toLowerCase()} • ${qualityLabel.toLowerCase()} • ${borderMode.toLowerCase()} border`
   return
 }
 
-meta.textContent = `Flat STL - ${sizeLabel.toLowerCase()} - ${qualityLabel.toLowerCase()} - ${borderMode.toLowerCase()} border`
+meta.textContent = `Flat STL • ${sizeLabel.toLowerCase()} • ${qualityLabel.toLowerCase()} • ${borderMode.toLowerCase()} border`
 }
 
 function renderReliefSourcePreview(){
@@ -7870,7 +7352,7 @@ if(!entry){
 setReliefSourcePreview(entry.url, entry)
 const status = document.getElementById("reliefImageStatus")
 if(status){
-  status.innerHTML = "Relief source restored from recent images."
+  status.innerHTML = ""
 }
 }
 
@@ -7912,7 +7394,7 @@ pushReliefRecentImage(entry)
 
 const status = document.getElementById("reliefImageStatus")
 if(status){
-  status.innerHTML = "Uploaded source is ready for relief preview."
+  status.innerHTML = ""
 }
 }
 
@@ -7932,23 +7414,23 @@ if(!rawPrompt){
 }
 
 const form = new FormData()
-form.append("prompt", rawPrompt)
+form.append("prompt", applyPromptAugmentation(rawPrompt, "relief"))
 form.append("style", "realistic")
 
 if(status){
-  status.innerHTML = "Generating relief source image..."
+  status.innerHTML = "Writing..."
 }
 
 try{
   const res = await fetch(API_BASE + "/api/ai-photo", {
     method:"POST",
-    headers:getApiRequestHeaders(),
     body:form
   })
 
   if(!res.ok){
-    const errorData = await res.json().catch(() => ({}))
-    throw new Error(errorData.detail || errorData.error || "AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+    const txt = await res.text()
+    console.log(txt)
+    throw new Error("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
   }
 
   const data = await res.json()
@@ -7971,7 +7453,7 @@ try{
 
   setReliefSourcePreview(entry.url, entry)
   pushReliefRecentImage(entry)
-  syncUsageFromServerPayload(data, "aiImage")
+  incrementUsage("aiImage")
 
   if(status){
     status.innerHTML = "Relief source image is ready."
@@ -8748,6 +8230,8 @@ if(sourceState.kind === "empty"){
   return
 }
 
+revealViewer({ force:true })
+
 const depthMode = document.getElementById("reliefDepth").value
 const thicknessMode = document.getElementById("reliefThickness").value
 const borderMode = document.getElementById("reliefBorder").value
@@ -8797,15 +8281,12 @@ async function generateReliefStl(){
 const status = document.getElementById("reliefStatus")
 const sourceState = getReliefSourceState()
 
-if(!canUseFeature("reliefStlGeneration")){
-  openUsageLimitPrompt("reliefStlGeneration")
-  return
-}
-
 if(sourceState.kind === "empty"){
   alert("Generate or upload a relief source first")
   return
 }
+
+revealViewer({ force:true })
 
 const surfaceMode = document.getElementById("reliefSurface").value
 
@@ -8829,7 +8310,6 @@ if(status){
 }
 
 try{
-  await consumeFeatureUsageOrFallback("reliefStlGeneration")
   const blob = await getReliefSourceBlob(sourceState)
   const image = await loadReliefImageFromBlob(blob)
   const stlUrl = buildReliefStlBlobUrl(image, depthMode, directionMode, thicknessMode, borderMode, sizeMode, qualityMode, surfaceMode)
@@ -8909,13 +8389,15 @@ try{
 
 const res = await fetch(API_BASE+"/api/ai-photo",{
 method:"POST",
-headers:getApiRequestHeaders(),
 body:form
 })
 
 if(!res.ok){
-const errorData = await res.json().catch(() => ({}))
-alert(errorData.detail || errorData.error || "AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
+
+const txt = await res.text()
+console.log(txt)
+
+alert("AI request failed. Check backend logs or REPLICATE_API_TOKEN.")
 console.error("AI request failed")
 return
 
@@ -8940,7 +8422,7 @@ return
 const viewer = document.getElementById("svgViewer")
 
 viewer.src = data.image_url
-syncUsageFromServerPayload(data, "aiImage")
+incrementUsage("aiImage")
 showViewerDownload(data.image_url, "ai_image.png")
 viewer.style.display="block"
 viewer.style.filter = "none"
@@ -8993,14 +8475,13 @@ return
 
 }
 
-try{
 const res = await fetch(API_BASE+"/api/image-to-3d",{
 
 method:"POST",
 
-headers:getApiRequestHeaders({
+headers:{
 "Content-Type":"application/json"
-}),
+},
 
 body:JSON.stringify({
 job_id: currentJobId
@@ -9015,26 +8496,14 @@ alert(data.detail || data.error || "3D generation could not be started")
 return
 }
 
-syncUsageFromServerPayload(data)
 status.innerHTML = "Sending to Meshy..."
 progressBar.style.width = "4%"
 checkStatus(data.task_id)
-}catch(error){
-console.error("3D generation start failed", error)
-status.innerHTML = "3D generation could not start"
-progressBar.style.width = "0%"
-alert(error.message || "3D generation could not be started")
-}
 
 }
 async function convertTo3DPro(){
 
 const viewer = document.getElementById("svgViewer")
-
-if(!canUseFeature("real3dGeneration")){
-openUsageLimitPrompt("real3dGeneration")
-return
-}
 
 if(!viewer.src){
 
@@ -9043,14 +8512,13 @@ return
 
 }
 
-try{
 const res = await fetch(API_BASE+"/api/image-to-3d-pro",{
 
 method:"POST",
 
-headers:getApiRequestHeaders({
+headers:{
 "Content-Type":"application/json"
-}),
+},
 
 body:JSON.stringify({
 image_url: viewer.src
@@ -9065,16 +8533,9 @@ alert(data.detail || data.error || "3D PRO generation could not be started")
 return
 }
 
-syncUsageFromServerPayload(data)
 status.innerHTML = "Sending to Meshy..."
 progressBar.style.width = "4%"
 checkStatus(data.task_id)
-}catch(error){
-console.error("3D PRO generation start failed", error)
-status.innerHTML = "3D PRO generation could not start"
-progressBar.style.width = "0%"
-alert(error.message || "3D PRO generation could not be started")
-}
 
 }
 
@@ -9091,10 +8552,7 @@ return
 
 }
 
-if(!canUseFeature("real3dGeneration")){
-openUsageLimitPrompt("real3dGeneration")
-return
-}
+revealViewer({ force:true })
 
 if(window.generatorUploadPromise){
 try{
@@ -9121,9 +8579,7 @@ return
 }
 
 let res
-let data
 
-try{
 if(useUploadFlow){
 
 status.innerHTML = "Sending uploaded source to Meshy..."
@@ -9133,9 +8589,9 @@ res = await fetch(API_BASE+"/api/generate",{
 
 method:"POST",
 
-headers:getApiRequestHeaders({
+headers:{
 "Content-Type":"application/json"
-}),
+},
 
 body:JSON.stringify({
 job_id: activeUploadJobId
@@ -9152,9 +8608,9 @@ res = await fetch(API_BASE+"/api/image-to-3d-pro",{
 
 method:"POST",
 
-headers:getApiRequestHeaders({
+headers:{
 "Content-Type":"application/json"
-}),
+},
 
 body:JSON.stringify({
 image_url: activeImage.url
@@ -9164,23 +8620,16 @@ image_url: activeImage.url
 
 }
 
-data = await res.json()
+const data = await res.json()
 
 if(!res.ok || !data.task_id){
 alert(data.detail || data.error || "3D generation could not be started")
 return
 }
 
-syncUsageFromServerPayload(data)
 status.innerHTML = "Sending to Meshy..."
 progressBar.style.width = "6%"
 checkStatus(data.task_id)
-}catch(error){
-console.error("Premium 3D generation start failed", error)
-status.innerHTML = "3D generation could not start"
-progressBar.style.width = "0%"
-alert(error.message || "3D generation could not be started")
-}
 
 }
 
@@ -9278,7 +8727,6 @@ form.append("job_id",currentJobId)
 
 const res = await fetch(API_BASE+"/api/upload",{
 method:"POST",
-headers:getApiRequestHeaders(),
 body:form
 })
 
@@ -9310,7 +8758,7 @@ window.generatorUploadPromise = null
 document.querySelector("#generateFreeBtn")
   .addEventListener("click", generateFree3D)
 </script>
-<script src="viewer.js?v=20260328-usage-policy-pass"></script>
+<script src="viewer.js?v=20260327-viewer-toolbar-pass"></script>
 <audio id="orbSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 </body>
 </html>
