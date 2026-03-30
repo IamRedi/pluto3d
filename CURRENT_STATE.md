@@ -106,7 +106,8 @@ This records how **hosted** backend/frontend update today; it is configured in *
   - SVG/Relief popover menus are constrained on mobile so they remain inside the viewport
   - fixed a mobile CSS override that could collapse the viewer height (causing the canvas to disappear) by preventing the mobile auto-height rule from applying to the viewer container
 - viewer auto-focus behavior is now enabled for the main creation flows:
-  - when users click key generation CTAs (`Test 3D`, `3D Pro`, `Generate SVG`, `Preview Relief`, `Generate STL`), the page scrolls the main viewer into view so users immediately see the output surface without manually hunting for it
+  - the viewer now stays pinned at the top of the mobile workspace while the header can hide on scroll, so users keep the output surface in view as they move through the panels
+  - the mobile header now uses a two-row layout (brand + account actions above, nav below) to prevent the brand and auth pills from overlapping on small screens
   - relief preview images now remain centered in the main viewer across breakpoints instead of anchoring to the top-left
   - viewer-injected `svgViewer` markup now uses explicit centering rules so relief preview PNGs remain centered reliably
 - the `SVG` and `Relief` source preview bug is now fixed:
