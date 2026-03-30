@@ -20,7 +20,8 @@ Historical entries below were migrated from the previous board, workflow, and ha
 - Reworked `SVG` `Detail` and `Background` controls into the same compact popover-select style so the controls remain inside the panel column.
 - Added a `v1.1` mobile workspace pass so the layout stacks as `Sidebar` → `Viewer` → `Panel`, the viewer uses a `clamp(...)` height on phones, and SVG/Relief popover menus stay inside the viewport.
 - Fixed a mobile CSS override that could collapse the viewer height (making the viewer appear missing) by ensuring the mobile auto-height rule does not apply to the viewer container.
-- Added viewer auto-focus so when users click key generation CTAs (`Test 3D`, `3D Pro`, `Generate SVG`, `Preview Relief`, `Generate STL`) the page scrolls the viewer into view automatically.
+- Updated mobile behavior so the main viewer remains pinned at the top of the workspace while the header can hide on scroll, instead of auto-scrolling the page when users click generation CTAs.
+- Adjusted the mobile header into a two-row layout (brand + account actions above, nav below) to avoid overlapping header pills on small screens.
 - Fixed `Preview Relief` viewer alignment so the preview image stays centered instead of anchoring to the top-left on some layouts.
 - Hardened `svgViewer` centering inside the injected viewer shell so relief preview PNGs remain centered reliably (not dependent on `inset:0` auto-margins).
 - Refined premium bronze button tokens (lighter, cleaner highlight) so premium CTAs read more polished and consistent.

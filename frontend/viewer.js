@@ -67,36 +67,17 @@ Download
 </button>
 <div class="viewer-topbar">
   <div class="viewer-title-block">
-    <div class="viewer-kicker">Pluto3D Studio</div>
-    <div class="viewer-title">3D Viewer</div>
+    <div class="viewer-title">Pluto3D Viewer</div>
   </div>
   <div class="viewer-toolbar-shell">
-    <div class="viewer-toolbar-meta">
-      <div class="viewer-toolbar-label">Surface</div>
-      <div id="viewerSurfaceValue" class="viewer-toolbar-value">3D Controls</div>
-    </div>
     <div class="viewer-toolbar">
       <div class="viewer-modes">
-        <button class="viewer-mode-btn" data-viewer-mode="wireframe">Wire</button>
         <button class="viewer-mode-btn" data-viewer-mode="print">Print</button>
       </div>
     </div>
   </div>
 </div>
-<div id="viewerStatusStrip" class="viewer-status-strip">
-  <div class="viewer-status-group">
-    <div class="viewer-status-label">Asset</div>
-    <div id="viewerStatusAsset" class="viewer-status-value">Idle showroom</div>
-  </div>
-  <div class="viewer-status-group">
-    <div class="viewer-status-label">Mode</div>
-    <div id="viewerStatusMode" class="viewer-status-value">Wire</div>
-  </div>
-  <div class="viewer-status-group">
-    <div class="viewer-status-label">Output</div>
-    <div id="viewerStatusOutput" class="viewer-status-value">Viewer ready</div>
-  </div>
-</div>
+<div id="viewerStatusStrip" class="viewer-status-strip"></div>
 <div id="viewerPrintCta" class="viewer-print-cta hidden">
   <div id="viewerPrintNote" class="viewer-print-note">Printer STL export</div>
   <button id="viewerPrintDownload" class="viewer-print-download" type="button">Bambu Lab / Prusa STL</button>
