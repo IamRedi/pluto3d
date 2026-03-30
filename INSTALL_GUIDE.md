@@ -157,6 +157,10 @@ Confirm these after startup:
 
 ## Plug-And-Play Deployment Setup
 
+### Git branch and auto-deploy
+
+Hosted deploys are triggered by **GitHub webhooks**, not by local tools. In **Railway** and **Vercel**, open the project **Settings → Git** and confirm which **branch** builds production. The current operator setup uses **`develop`** for Railway production backend (`/backend` root); **Vercel** must use the same branch for production or you merge into whatever branch Vercel watches (often `main`). Pushes to any *other* branch will not update that environment. See `CURRENT_STATE.md` → **Hosted production deploy**.
+
 ### 1. Deploy backend
 
 Recommended target:

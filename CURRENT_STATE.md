@@ -27,6 +27,14 @@ Update it after every meaningful change.
 - active development continues on `develop` as `v1.1`
 - local/test work does not change production by itself
 
+### Hosted production deploy (operator workflow)
+
+This records how **hosted** backend/frontend update today; it is configured in **Railway / Vercel dashboards**, not in repo files.
+
+- **Railway (backend, production)**: service **`pluto3d`** uses root **`/backend`** and is connected so that pushes to branch **`develop`** deploy automatically to the **production** environment (“branch connected to production”).
+- **Direct path (this is the intended flow now)**: work on **`develop`**, commit, then **`git push origin develop`** → Railway rebuilds and ships the backend without a separate release branch.
+- **Vercel (frontend)**: the repo links to **`pluto3d.vercel.app`**. If Vercel **Production Branch** is still **`main`**, the live site will not update until you either merge **`develop` → `main`** (e.g. GitHub “Compare & pull request”) **or** change Vercel’s production branch to **`develop`** so it matches Railway. Align the two hosts to the same branch to avoid API/UI drift.
+
 ### Core Workspace
 
 - `3D Generator` is functionally stabilized for the current local/test checkpoint

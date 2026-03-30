@@ -27,6 +27,10 @@ Historical entries below were migrated from the previous board, workflow, and ha
 - Verified local smoke runtime: frontend `http://127.0.0.1:5500` and backend `http://127.0.0.1:8000` respond, and `GET /api/account/me` resolves guest state.
 - Kept the pass cosmetic-only inside `frontend/index.html`. Meshy `3D Pro` was intentionally not exercised to avoid consuming credits.
 
+### Documentation: production deploy branch
+
+- Documented the hosted workflow: Railway production tied to branch `develop` (backend root `/backend`), push `develop` for direct backend deploy, and aligning Vercel production branch with the same branch (or merge `develop` → `main` if Vercel stays on `main`) (`CURRENT_STATE.md`, `INSTALL_GUIDE.md`).
+
 ## 2026-03-28
 
 ### Viewer chrome closure polish
