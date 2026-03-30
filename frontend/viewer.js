@@ -106,11 +106,12 @@ Download
   style="
     display:none;
     position:absolute;
-    inset:0;
-    margin:auto;
-    width:70%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:min(92%, 700px);
     height:auto;
-    max-width:700px;
+    max-height:92%;
     object-fit:contain;
     z-index:2;
     filter:none;
@@ -230,6 +231,37 @@ function setViewerHeroCamera(targetY = 0.32, distance = 2.9){
   controls.update()
 }
 
+function frameViewerToModel(model, options = {}){
+  const {
+    distanceMultiplier = 1.18,
+    yOffsetRatio = 0.08,
+    minDistanceMultiplier = 0.62,
+    maxDistanceMultiplier = 2.4
+  } = options
+
+  const box = new THREE.Box3().setFromObject(model)
+  const center = box.getCenter(new THREE.Vector3())
+  const sphere = box.getBoundingSphere(new THREE.Sphere())
+  const radius = Math.max(0.001, sphere.radius || 0.001)
+
+  const fov = (camera.fov * Math.PI) / 180
+  const fitDistance = (radius / Math.sin(fov / 2)) * distanceMultiplier
+  const yOffset = radius * yOffsetRatio
+
+  controls.target.copy(center)
+  camera.position.set(center.x, center.y + yOffset, center.z + fitDistance)
+
+  controls.minDistance = Math.max(0.6, fitDistance * minDistanceMultiplier)
+  controls.maxDistance = Math.max(controls.minDistance + 0.4, fitDistance * maxDistanceMultiplier)
+  controls.update()
+
+  return {
+    center,
+    radius,
+    fitDistance
+  }
+}
+
 function centerModelOnViewerStage(model, liftRatio = 0.34, minLift = 0.2, maxLift = 0.62){
   const box = new THREE.Box3().setFromObject(model)
   const center = box.getCenter(new THREE.Vector3())
@@ -256,8 +288,8 @@ function fitModelToViewer(model){
   const scale = maxDimension > 0 ? 1.95 / maxDimension : 1
   model.scale.setScalar(scale)
 
-  const targetY = centerModelOnViewerStage(model, 0.34, 0.2, 0.62)
-  setViewerHeroCamera(targetY, 2.96)
+  centerModelOnViewerStage(model, 0.34, 0.2, 0.62)
+  frameViewerToModel(model, { distanceMultiplier: 1.12 })
 }
 
 function restoreIdleViewer(){
@@ -288,8 +320,8 @@ function restoreIdleViewer(){
 
     fitModelToViewer(model)
     model.scale.multiplyScalar(1.42)
-    const idleTargetY = centerModelOnViewerStage(model, 0.32, 0.22, 0.62)
-    setViewerHeroCamera(idleTargetY, 3.04)
+    centerModelOnViewerStage(model, 0.32, 0.22, 0.62)
+    frameViewerToModel(model, { distanceMultiplier: 1.18, yOffsetRatio: 0.06 })
     scene.add(model)
 
     setCurrentViewerAsset({
@@ -823,8 +855,8 @@ function loadSTL(url, filename="model.stl", options = {}){
     const scale = 2 / size
 
     mesh.scale.setScalar(scale)
-    const targetY = centerModelOnViewerStage(mesh, 0.26, 0.18, 0.5)
-    setViewerHeroCamera(targetY, 3.12)
+    centerModelOnViewerStage(mesh, 0.26, 0.18, 0.5)
+    frameViewerToModel(mesh, { distanceMultiplier: 1.2, yOffsetRatio: 0.06 })
     if(typeof refreshToyStudioState === "function"){
       refreshToyStudioState()
     }

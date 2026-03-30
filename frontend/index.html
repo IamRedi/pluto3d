@@ -51,7 +51,7 @@ box-sizing:border-box;
   --surface-hover:rgba(255,255,255,0.05);
   --surface-card-bg:linear-gradient(180deg, rgba(24, 29, 26, 0.98), rgba(17, 21, 18, 0.96));
   --surface-card-border:rgba(105, 123, 111, 0.16);
-  --surface-card-shadow:0 14px 28px rgba(0, 0, 0, 0.22);
+  --surface-card-shadow:0 10px 20px rgba(0, 0, 0, 0.18);
   --surface-chip-bg:rgba(255,255,255,0.045);
   --surface-chip-border:rgba(116, 138, 118, 0.18);
   --surface-chip-primary-bg:rgba(88,184,115,0.14);
@@ -60,28 +60,28 @@ box-sizing:border-box;
   --surface-chip-premium-text:#e2f0d7;
   --header-bg:rgba(14, 18, 16, 0.96);
   --header-border:rgba(105, 123, 111, 0.14);
-  --header-shadow:0 10px 24px rgba(0,0,0,0.22);
+  --header-shadow:0 8px 18px rgba(0,0,0,0.16);
   --nav-pill-active-bg:rgba(61, 83, 70, 0.42);
   --nav-pill-active-border:rgba(123, 150, 134, 0.24);
   --control-bg:linear-gradient(180deg, rgba(28, 33, 29, 0.98), rgba(18, 22, 19, 0.96));
   --control-border:rgba(105, 123, 111, 0.22);
   --control-text:#d8e3d8;
   --control-hover-border:rgba(145, 170, 153, 0.34);
-  --control-hover-shadow:0 10px 20px rgba(0,0,0,0.16);
+  --control-hover-shadow:0 8px 16px rgba(0,0,0,0.12);
   --control-active-bg:linear-gradient(135deg, rgba(39, 56, 47, 0.98), rgba(24, 33, 28, 0.96));
   --control-active-border:rgba(123, 150, 134, 0.36);
   --control-active-shadow:0 12px 22px rgba(0,0,0,0.2);
   --button-bg:linear-gradient(180deg, rgba(45, 50, 45, 0.98) 0%, rgba(31, 35, 31, 0.98) 54%, rgba(19, 22, 19, 0.98) 100%);
   --button-border:rgba(121, 136, 125, 0.24);
   --button-text:var(--text-strong);
-  --button-shadow:inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -10px 18px rgba(5,7,5,0.3), 0 12px 20px rgba(0,0,0,0.2);
+  --button-shadow:inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 18px rgba(0,0,0,0.18);
   --button-hover-border:rgba(171, 192, 176, 0.32);
-  --button-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -12px 20px rgba(5,7,5,0.34), 0 14px 22px rgba(0,0,0,0.24);
-  --button-premium-bg:linear-gradient(180deg, rgba(232, 202, 136, 0.99) 0%, rgba(196, 152, 73, 0.99) 52%, rgba(126, 87, 28, 0.99) 100%);
-  --button-premium-border:rgba(236, 208, 150, 0.46);
-  --button-premium-text:#fff7e6;
-  --button-premium-shadow:inset 0 1px 0 rgba(255,247,227,0.32), inset 0 -12px 20px rgba(89,58,13,0.26), 0 14px 24px rgba(76, 51, 15, 0.2);
-  --button-premium-hover-shadow:inset 0 1px 0 rgba(255,249,232,0.38), inset 0 -14px 22px rgba(89,58,13,0.28), 0 16px 28px rgba(76, 51, 15, 0.24);
+  --button-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 20px rgba(0,0,0,0.2);
+  --button-premium-bg:linear-gradient(180deg, rgba(245, 223, 172, 0.99) 0%, rgba(214, 174, 96, 0.99) 52%, rgba(156, 110, 40, 0.99) 100%);
+  --button-premium-border:rgba(246, 226, 180, 0.52);
+  --button-premium-text:#fff9ef;
+  --button-premium-shadow:inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -10px 18px rgba(76,50,12,0.22), 0 14px 26px rgba(60, 38, 10, 0.18);
+  --button-premium-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -12px 20px rgba(76,50,12,0.24), 0 16px 30px rgba(60, 38, 10, 0.2);
   --button-premium-badge-bg:rgba(9, 12, 9, 0.76);
   --button-premium-badge-border:rgba(225, 192, 124, 0.28);
   --button-premium-badge-text:#f0dba8;
@@ -97,7 +97,7 @@ box-sizing:border-box;
   --viewer-border:rgba(105, 123, 111, 0.14);
   --viewer-ambient:none;
   --viewer-core-glow:none;
-  --viewer-shell-shadow:0 22px 44px rgba(0,0,0,0.24), 0 44px 80px rgba(0,0,0,0.16);
+  --viewer-shell-shadow:0 18px 42px rgba(0,0,0,0.22);
   --viewer-shell-inner-highlight:rgba(255,255,255,0.05);
   --viewer-shell-rim:rgba(148, 165, 153, 0.08);
   --viewer-stage-border:rgba(137, 149, 140, 0.14);
@@ -118,9 +118,9 @@ box-sizing:border-box;
   --viewer-launch-text:#f8eed9;
   --viewer-launch-hover-border:rgba(236, 208, 150, 0.44);
   --viewer-launch-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -10px 16px rgba(0,0,0,0.24), 0 14px 30px rgba(76,51,15,0.18);
-  --viewer-download-bg:linear-gradient(180deg, rgba(232, 202, 136, 0.99) 0%, rgba(196, 152, 73, 0.99) 52%, rgba(126, 87, 28, 0.99) 100%);
-  --viewer-download-shadow:inset 0 1px 0 rgba(255,247,227,0.32), inset 0 -12px 20px rgba(89,58,13,0.26), 0 14px 28px rgba(76, 51, 15, 0.22);
-  --viewer-download-hover-shadow:inset 0 1px 0 rgba(255,249,232,0.38), inset 0 -14px 22px rgba(89,58,13,0.28), 0 16px 32px rgba(76, 51, 15, 0.26);
+  --viewer-download-bg:var(--button-premium-bg);
+  --viewer-download-shadow:inset 0 1px 0 rgba(255,255,255,0.16), inset 0 -10px 18px rgba(76,50,12,0.22), 0 14px 28px rgba(60, 38, 10, 0.2);
+  --viewer-download-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -12px 20px rgba(76,50,12,0.24), 0 16px 32px rgba(60, 38, 10, 0.22);
   --login-modal-width:min(760px, calc(100vw - 48px));
   --progress-track:rgba(8, 12, 8, 0.74);
   --progress-fill:linear-gradient(90deg, #73c58a, #b7e1b4);
@@ -154,11 +154,11 @@ box-sizing:border-box;
   --studio-status-warning-border:rgba(251,191,36,0.24);
   --studio-status-warning-text:#fef3c7;
   --glow-cyan:0 0 30px rgba(115,197,138,0.14);
-  --body-background:linear-gradient(180deg, #0a0d0b 0%, #101611 48%, #161d17 100%);
-  --space-background:linear-gradient(180deg, #0a0d0b 0%, #101611 48%, #161d17 100%);
-  --sidebar-background:linear-gradient(180deg, rgba(16, 21, 18, 0.98), rgba(13, 17, 15, 0.96));
-  --panel-background:linear-gradient(180deg, rgba(18, 22, 19, 0.98), rgba(15, 19, 16, 0.96));
-  --viewer-background:linear-gradient(180deg, rgba(10, 12, 11, 0.99), rgba(14, 17, 15, 0.98));
+  --body-background:#0a0d0b;
+  --space-background:#0a0d0b;
+  --sidebar-background:rgba(16, 21, 18, 0.92);
+  --panel-background:rgba(18, 22, 19, 0.92);
+  --viewer-background:rgba(10, 12, 11, 0.92);
 }
 
 body[data-theme="light"]{
@@ -198,7 +198,7 @@ body[data-theme="light"]{
   --surface-hover:rgba(88,184,115,0.08);
   --surface-card-bg:linear-gradient(180deg, rgba(250,252,249,0.98), rgba(238,243,238,0.95));
   --surface-card-border:rgba(93, 115, 101, 0.12);
-  --surface-card-shadow:0 12px 24px rgba(84, 96, 87, 0.08);
+  --surface-card-shadow:0 10px 20px rgba(84, 96, 87, 0.08);
   --surface-chip-bg:rgba(255,255,255,0.8);
   --surface-chip-border:rgba(74, 118, 83, 0.12);
   --surface-chip-primary-bg:rgba(88,184,115,0.12);
@@ -207,28 +207,28 @@ body[data-theme="light"]{
   --surface-chip-premium-text:#35542f;
   --header-bg:rgba(245, 248, 244, 0.96);
   --header-border:rgba(93, 115, 101, 0.1);
-  --header-shadow:0 10px 18px rgba(84, 96, 87, 0.08);
+  --header-shadow:0 8px 16px rgba(84, 96, 87, 0.07);
   --nav-pill-active-bg:rgba(88, 108, 96, 0.16);
   --nav-pill-active-border:rgba(109, 132, 117, 0.18);
   --control-bg:linear-gradient(180deg, rgba(248, 250, 247, 0.99), rgba(236, 241, 236, 0.96));
   --control-border:rgba(93, 115, 101, 0.16);
   --control-text:#17361d;
   --control-hover-border:rgba(109, 132, 117, 0.28);
-  --control-hover-shadow:0 8px 16px rgba(84, 96, 87, 0.08);
+  --control-hover-shadow:0 8px 14px rgba(84, 96, 87, 0.07);
   --control-active-bg:linear-gradient(135deg, rgba(221, 230, 223, 0.98), rgba(211, 221, 214, 0.96));
   --control-active-border:rgba(109, 132, 117, 0.3);
   --control-active-shadow:0 10px 18px rgba(84, 96, 87, 0.1);
   --button-bg:linear-gradient(180deg, rgba(254,255,252,0.99) 0%, rgba(242,245,240,0.98) 58%, rgba(228,234,228,0.97) 100%);
   --button-border:rgba(93, 115, 101, 0.16);
   --button-text:#17361d;
-  --button-shadow:inset 0 1px 0 rgba(255,255,255,0.92), inset 0 -8px 14px rgba(178,188,179,0.28), 0 10px 18px rgba(84, 96, 87, 0.09);
+  --button-shadow:inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 18px rgba(84, 96, 87, 0.09);
   --button-hover-border:rgba(109, 132, 117, 0.26);
-  --button-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.98), inset 0 -10px 16px rgba(178,188,179,0.3), 0 12px 20px rgba(84, 96, 87, 0.11);
-  --button-premium-bg:linear-gradient(180deg, rgba(253, 244, 220, 1) 0%, rgba(233, 209, 152, 0.99) 54%, rgba(198, 161, 93, 0.98) 100%);
-  --button-premium-border:rgba(188, 144, 56, 0.34);
-  --button-premium-text:#6c4a12;
-  --button-premium-shadow:inset 0 1px 0 rgba(255,255,255,0.82), inset 0 -10px 16px rgba(188,144,56,0.15), 0 12px 18px rgba(188, 144, 56, 0.12);
-  --button-premium-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -12px 18px rgba(188,144,56,0.17), 0 14px 20px rgba(188, 144, 56, 0.14);
+  --button-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.96), 0 12px 20px rgba(84, 96, 87, 0.11);
+  --button-premium-bg:linear-gradient(180deg, rgba(255, 249, 234, 1) 0%, rgba(246, 226, 180, 0.99) 56%, rgba(220, 185, 112, 0.98) 100%);
+  --button-premium-border:rgba(188, 144, 56, 0.32);
+  --button-premium-text:#5f3f10;
+  --button-premium-shadow:inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -10px 16px rgba(188,144,56,0.12), 0 12px 18px rgba(188, 144, 56, 0.11);
+  --button-premium-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.94), inset 0 -12px 18px rgba(188,144,56,0.14), 0 14px 22px rgba(188, 144, 56, 0.13);
   --button-premium-badge-bg:rgba(245, 250, 245, 0.94);
   --button-premium-badge-border:rgba(171, 131, 49, 0.24);
   --button-premium-badge-text:#6a4b18;
@@ -244,7 +244,7 @@ body[data-theme="light"]{
   --viewer-border:rgba(93, 115, 101, 0.14);
   --viewer-ambient:none;
   --viewer-core-glow:none;
-  --viewer-shell-shadow:0 18px 34px rgba(84, 96, 87, 0.12), 0 30px 60px rgba(148,163,184,0.08);
+  --viewer-shell-shadow:0 16px 34px rgba(84, 96, 87, 0.12);
   --viewer-shell-inner-highlight:rgba(255,255,255,0.7);
   --viewer-shell-rim:rgba(188, 144, 56, 0.08);
   --viewer-stage-border:rgba(109, 132, 117, 0.14);
@@ -265,9 +265,9 @@ body[data-theme="light"]{
   --viewer-launch-text:#624317;
   --viewer-launch-hover-border:rgba(188, 144, 56, 0.36);
   --viewer-launch-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -8px 14px rgba(188,144,56,0.12), 0 12px 24px rgba(188,144,56,0.1);
-  --viewer-download-bg:linear-gradient(180deg, rgba(253, 244, 220, 1) 0%, rgba(233, 209, 152, 0.99) 54%, rgba(198, 161, 93, 0.98) 100%);
-  --viewer-download-shadow:inset 0 1px 0 rgba(255,255,255,0.82), inset 0 -10px 16px rgba(188,144,56,0.15), 0 12px 24px rgba(188, 144, 56, 0.14);
-  --viewer-download-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.88), inset 0 -12px 18px rgba(188,144,56,0.17), 0 14px 28px rgba(188, 144, 56, 0.16);
+  --viewer-download-bg:var(--button-premium-bg);
+  --viewer-download-shadow:inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -10px 16px rgba(188,144,56,0.12), 0 12px 24px rgba(188, 144, 56, 0.13);
+  --viewer-download-hover-shadow:inset 0 1px 0 rgba(255,255,255,0.94), inset 0 -12px 18px rgba(188,144,56,0.14), 0 14px 28px rgba(188, 144, 56, 0.15);
   --progress-track:rgba(216, 226, 217, 0.86);
   --progress-fill:linear-gradient(90deg, #3f9b58, #7ac18a);
   --status-text:#42604a;
@@ -300,11 +300,11 @@ body[data-theme="light"]{
   --studio-status-warning-border:rgba(245,158,11,0.22);
   --studio-status-warning-text:#92400e;
   --glow-cyan:0 0 30px rgba(63,155,88,0.12);
-  --body-background:linear-gradient(180deg, #eff3ee 0%, #e6ece6 48%, #dde5de 100%);
-  --space-background:linear-gradient(180deg, #eff3ee 0%, #e6ece6 48%, #dde5de 100%);
-  --sidebar-background:linear-gradient(180deg, rgba(243, 247, 242, 0.98), rgba(232, 238, 232, 0.96));
-  --panel-background:linear-gradient(180deg, rgba(247, 250, 246, 0.99), rgba(237, 242, 237, 0.97));
-  --viewer-background:linear-gradient(180deg, rgba(14, 18, 16, 0.98), rgba(18, 23, 20, 0.99));
+  --body-background:#eff3ee;
+  --space-background:#eff3ee;
+  --sidebar-background:rgba(243, 247, 242, 0.92);
+  --panel-background:rgba(247, 250, 246, 0.92);
+  --viewer-background:rgba(14, 18, 16, 0.92);
 }
 
 body {
@@ -1340,7 +1340,7 @@ white-space:nowrap;
 
 .workspace{
 display:grid;
-grid-template-columns:154px minmax(440px, 540px) minmax(0, 1fr);
+grid-template-columns:154px clamp(360px, 32vw, 480px) minmax(0, 1fr);
 height:calc(100dvh - 62px);
 max-height:calc(100dvh - 62px);
 overflow:hidden;
@@ -1420,7 +1420,7 @@ width:100%;
 max-width:96px;
 height:78px;
 
-border-radius:26px;
+border-radius:18px;
 
 display:flex;
 align-items:center;
@@ -1428,10 +1428,9 @@ justify-content:center;
 
 cursor:pointer;
 
-background:
-linear-gradient(180deg, rgba(32, 37, 33, 0.99), rgba(18, 22, 19, 0.98));
+background:var(--control-bg);
 border:1px solid rgba(105, 123, 111, 0.16);
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.03), 0 10px 18px rgba(0, 0, 0, 0.2);
+box-shadow:0 10px 18px rgba(0, 0, 0, 0.18);
 font-family:Orbitron;
 font-size:14px;
 letter-spacing:0.06em;
@@ -1443,18 +1442,36 @@ transition:0.2s;
 }
 
 .sidebtn:hover{
-transform:translateY(-2px);
+transform:none;
 border-color:rgba(145, 170, 153, 0.26);
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04), 0 12px 20px rgba(0, 0, 0, 0.24);
+box-shadow:0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
 .sidebtn.active{
-background:
-linear-gradient(180deg, rgba(61, 83, 70, 0.98), rgba(35, 48, 41, 0.98));
+background:var(--control-active-bg);
 border-color:rgba(123, 150, 134, 0.28);
 color:#ffffff;
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05), 0 12px 22px rgba(0,0,0,0.24);
+box-shadow:0 12px 22px rgba(0,0,0,0.22);
 
+}
+
+body[data-theme="light"] .sidebtn{
+background:var(--control-bg);
+border-color:rgba(109, 132, 117, 0.16);
+box-shadow:0 10px 18px rgba(84, 96, 87, 0.08);
+color:#304a37;
+}
+
+body[data-theme="light"] .sidebtn:hover{
+border-color:rgba(109, 132, 117, 0.24);
+box-shadow:0 12px 20px rgba(84, 96, 87, 0.1);
+}
+
+body[data-theme="light"] .sidebtn.active{
+background:var(--control-active-bg);
+border-color:rgba(109, 132, 117, 0.28);
+box-shadow:0 12px 22px rgba(84, 96, 87, 0.1);
+color:#17361d;
 }
 
 .theme-toggle{
@@ -1466,12 +1483,12 @@ margin-bottom:10px;
 padding:0;
 border-radius:999px;
 border:1px solid rgba(105, 123, 111, 0.16);
-background:linear-gradient(180deg, rgba(32, 37, 33, 0.99), rgba(18, 22, 19, 0.98));
+background:var(--control-bg);
 color:#d9e2db;
 font-size:18px;
 line-height:1;
 cursor:pointer;
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.03), 0 10px 18px rgba(0, 0, 0, 0.2);
+box-shadow:0 10px 18px rgba(0, 0, 0, 0.18);
 transition:0.2s;
 display:flex;
 align-items:center;
@@ -1479,21 +1496,21 @@ justify-content:center;
 }
 
 .theme-toggle:hover{
-transform:translateY(-2px);
+transform:none;
 border-color:rgba(145, 170, 153, 0.26);
-box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04), 0 12px 20px rgba(0, 0, 0, 0.24);
+box-shadow:0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
 body[data-theme="light"] .theme-toggle{
 border-color:rgba(93, 115, 101, 0.14);
-background:linear-gradient(180deg, rgba(252, 253, 251, 0.99), rgba(236, 241, 236, 0.97));
+background:var(--control-bg);
 color:#294032;
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -8px 12px rgba(178,188,179,0.24), 0 8px 14px rgba(84,96,87,0.06);
+box-shadow:0 8px 14px rgba(84,96,87,0.06);
 }
 
 body[data-theme="light"] .theme-toggle:hover{
 border-color:rgba(109, 132, 117, 0.22);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.96), inset 0 -10px 14px rgba(178,188,179,0.26), 0 10px 16px rgba(84,96,87,0.08);
+box-shadow:0 10px 16px rgba(84,96,87,0.08);
 }
 
 .theme-toggle-icon{
@@ -1681,7 +1698,7 @@ var(--viewer-stage-glow),
 var(--viewer-stage-panel);
 box-shadow:
 inset 0 1px 0 var(--viewer-shell-inner-highlight),
-inset 0 -26px 40px rgba(0,0,0,0.14),
+inset 0 -18px 28px rgba(0,0,0,0.12),
 inset 0 0 0 1px var(--viewer-shell-rim);
 pointer-events:none;
 z-index:0;
@@ -1702,7 +1719,7 @@ transform:translateX(-50%);
 border-radius:50%;
 background:var(--viewer-stage-falloff);
 filter:blur(12px);
-opacity:0.96;
+opacity:0.6;
 pointer-events:none;
 z-index:0;
 }
@@ -1809,11 +1826,11 @@ display:flex;
 align-items:flex-start;
 gap:12px;
 flex-wrap:wrap;
-padding:11px 14px 12px;
-border-radius:20px;
-background:linear-gradient(180deg, rgba(19, 24, 20, 0.9), rgba(10, 12, 11, 0.78));
-border:1px solid rgba(164, 144, 101, 0.14);
-box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -12px 18px rgba(0,0,0,0.12), 0 12px 24px rgba(0,0,0,0.1);
+padding:0;
+border-radius:0;
+background:transparent;
+border:none;
+box-shadow:none;
 max-width:min(408px, calc(100% - 210px));
 pointer-events:none;
 }
@@ -1821,20 +1838,20 @@ pointer-events:none;
 .viewer-status-group{
 display:flex;
 flex-direction:column;
-gap:3px;
-min-width:94px;
+gap:1px;
+min-width:0;
 }
 
 .viewer-status-label{
-font-size:9px;
+font-size:6px;
 font-weight:600;
-letter-spacing:0.14em;
+letter-spacing:0.12em;
 text-transform:uppercase;
 color:var(--text-soft);
 }
 
 .viewer-status-value{
-font-size:12px;
+font-size:7px;
 font-weight:600;
 line-height:1.35;
 color:var(--text-main);
@@ -1843,8 +1860,8 @@ color:var(--text-main);
 body[data-theme="light"] .viewer-title-block,
 body[data-theme="light"] .viewer-toolbar-shell,
 body[data-theme="light"] .viewer-status-strip{
-background:linear-gradient(180deg, rgba(251, 253, 250, 0.94), rgba(236, 241, 236, 0.88));
-border-color:rgba(171, 131, 49, 0.12);
+background:transparent;
+border-color:transparent;
 }
 
 .viewer > :not(.viewer-topbar):not(.viewer-status-strip):not(.viewer-download):not(.studio-launch):not(.viewer-print-cta){
@@ -1944,6 +1961,14 @@ height:100%;
 box-shadow:
 var(--viewer-core-glow);
 
+}
+
+/* Center SVG/relief preview image inside the viewer across breakpoints. */
+#viewer #svgViewer{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%, -50%);
 }
 
 /* panels */
@@ -2061,9 +2086,9 @@ margin-bottom:0;
 
 .dropzone{
 border-radius:22px;
-padding:30px 26px;
+padding:18px 18px;
 text-align:center;
-margin-bottom:16px;
+margin-bottom:12px;
 
 background:var(--dropzone-bg);
 border:1px solid var(--dropzone-border);
@@ -2157,7 +2182,7 @@ position:relative;
 z-index:2;
 display:block;
 width:min(74%, 420px) !important;
-height:176px !important;
+height:148px !important;
 margin:0 auto;
 object-fit:contain;
 border-radius:18px !important;
@@ -2319,7 +2344,7 @@ var(--progress-fill);
 /* status */
 
 .status{
-margin-top:12px;
+margin-top:8px;
 font-size:13px;
 line-height:1.6;
 color:var(--status-text);
@@ -2335,7 +2360,7 @@ gap:10px;
 background:var(--surface-card-bg);
 border:1px solid var(--surface-card-border);
 border-radius:20px;
-padding:14px;
+padding:12px;
 box-shadow:var(--surface-card-shadow);
 }
 
@@ -2344,7 +2369,7 @@ display:flex;
 justify-content:space-between;
 align-items:flex-start;
 gap:12px;
-margin-bottom:12px;
+margin-bottom:8px;
 }
 
 .generator-card-lead{
@@ -2405,6 +2430,10 @@ max-width:360px;
 display:block;
 }
 
+.generator-card-copy:empty{
+display:none;
+}
+
 .generator-chip{
 display:inline-flex;
 align-items:center;
@@ -2425,7 +2454,7 @@ text-transform:uppercase;
 .generator-stack{
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:8px;
 }
 
 .generator-option-grid{
@@ -2443,17 +2472,280 @@ gap:8px;
 min-width:0;
 }
 
+.generator-field.compact{
+flex-direction:row;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.generator-field.compact label{
+margin:0;
+white-space:nowrap;
+}
+
+.generator-field.compact select{
+flex:0 0 auto;
+width:auto;
+}
+
 .generator-field label{
 margin-bottom:0;
 }
 
 .generator-field.compact select{
 width:auto;
-min-width:170px;
+min-width:120px;
 max-width:100%;
 padding:10px 40px 10px 12px;
 border-radius:14px;
 font-size:13px;
+}
+
+/* Relief: compact option controls without heavy shells */
+#panel-relief .generator-option-grid{
+gap:10px 12px;
+}
+
+#panel-relief .generator-field.compact{
+gap:8px;
+}
+
+#panel-relief .generator-field.compact select{
+min-width:104px;
+padding:8px 32px 8px 10px;
+border-radius:12px;
+font-size:12px;
+background:transparent;
+box-shadow:none;
+border:1px solid var(--line-soft);
+}
+
+body[data-theme="light"] #panel-relief .generator-field.compact select{
+background:transparent;
+box-shadow:none;
+border:1px solid rgba(93, 115, 101, 0.18);
+}
+
+/* Relief: custom dropdown popovers (avoid native white menus) */
+#panel-relief .generator-field.compact{
+position:relative;
+}
+
+#panel-relief .relief-select{
+position:relative;
+display:flex;
+align-items:center;
+justify-content:flex-end;
+flex:1 1 auto;
+}
+
+#panel-relief .relief-select-trigger{
+appearance:none;
+border:none;
+background:transparent;
+padding:0;
+margin:0;
+cursor:pointer;
+font:inherit;
+font-size:10px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-soft);
+display:inline-flex;
+align-items:center;
+gap:8px;
+white-space:nowrap;
+max-width:120px;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+#panel-relief .relief-select-trigger:hover{
+color:var(--text-main);
+text-decoration:underline;
+text-underline-offset:3px;
+}
+
+#panel-relief .relief-select-trigger::after{
+content:"▾";
+font-size:10px;
+opacity:0.7;
+}
+
+#panel-relief .relief-select-menu{
+position:absolute;
+top:calc(100% + 8px);
+right:0;
+min-width:190px;
+max-width:240px;
+padding:8px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.08);
+background:rgba(10, 12, 11, 0.92);
+box-shadow:0 18px 40px rgba(0,0,0,0.35);
+backdrop-filter:blur(10px);
+display:none;
+z-index:50;
+}
+
+body[data-theme="light"] #panel-relief .relief-select-menu{
+background:rgba(245, 248, 244, 0.96);
+border:1px solid rgba(93, 115, 101, 0.14);
+box-shadow:0 18px 40px rgba(84, 96, 87, 0.14);
+}
+
+#panel-svg .generator-option-grid{
+gap:10px 10px;
+}
+
+#panel-svg .generator-field.compact{
+gap:8px;
+}
+
+#panel-svg .generator-field.compact select{
+min-width:0;
+padding:0;
+border-radius:0;
+font-size:10px;
+background:transparent;
+box-shadow:none;
+border:none;
+width:auto;
+}
+
+/* SVG: custom dropdown popovers (match relief style) */
+#panel-svg .svg-select{
+position:relative;
+display:flex;
+align-items:center;
+justify-content:flex-end;
+flex:1 1 auto;
+}
+
+#panel-svg .svg-select-trigger{
+appearance:none;
+border:none;
+background:transparent;
+padding:0;
+margin:0;
+cursor:pointer;
+font:inherit;
+font-size:10px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-soft);
+display:inline-flex;
+align-items:center;
+gap:6px;
+white-space:nowrap;
+max-width:92px;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+#panel-svg .svg-select-trigger::after{
+content:"▾";
+font-size:10px;
+opacity:0.7;
+}
+
+#panel-svg .svg-select-menu{
+position:absolute;
+top:calc(100% + 8px);
+right:0;
+min-width:170px;
+max-width:220px;
+padding:8px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.08);
+background:rgba(10, 12, 11, 0.92);
+box-shadow:0 18px 40px rgba(0,0,0,0.35);
+backdrop-filter:blur(10px);
+display:none;
+z-index:50;
+}
+
+body[data-theme="light"] #panel-svg .svg-select-menu{
+background:rgba(245, 248, 244, 0.96);
+border:1px solid rgba(93, 115, 101, 0.14);
+box-shadow:0 18px 40px rgba(84, 96, 87, 0.14);
+}
+
+#panel-svg .svg-select-menu.open{
+display:block;
+}
+
+#panel-svg .svg-select-option{
+width:100%;
+text-align:left;
+appearance:none;
+border:none;
+background:transparent;
+padding:9px 10px;
+border-radius:12px;
+cursor:pointer;
+font:inherit;
+font-size:10px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-main);
+}
+
+#panel-svg .svg-select-option:hover{
+background:rgba(255,255,255,0.04);
+}
+
+body[data-theme="light"] #panel-svg .svg-select-option:hover{
+background:rgba(88,184,115,0.08);
+}
+
+#panel-svg .svg-select-option.active{
+background:rgba(88,184,115,0.12);
+color:var(--text-strong);
+}
+
+body[data-theme="light"] #panel-svg .svg-select-option.active{
+background:rgba(88,184,115,0.12);
+color:#17361d;
+}
+
+#panel-relief .relief-select-menu.open{
+display:block;
+}
+
+#panel-relief .relief-select-option{
+width:100%;
+text-align:left;
+appearance:none;
+border:none;
+background:transparent;
+padding:9px 10px;
+border-radius:12px;
+cursor:pointer;
+font:inherit;
+font-size:10px;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(--text-main);
+}
+
+#panel-relief .relief-select-option:hover{
+background:rgba(255,255,255,0.04);
+}
+
+body[data-theme="light"] #panel-relief .relief-select-option:hover{
+background:rgba(88,184,115,0.08);
+}
+
+#panel-relief .relief-select-option.active{
+background:rgba(88,184,115,0.12);
+color:var(--text-strong);
+}
+
+body[data-theme="light"] #panel-relief .relief-select-option.active{
+background:rgba(88,184,115,0.12);
+color:#17361d;
 }
 
 .generator-stack.compact{
@@ -2465,15 +2757,15 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 gap:12px;
-padding:7px 10px;
-border-radius:14px;
-background:rgba(255,255,255,0.015);
-border:1px solid rgba(255,255,255,0.05);
+padding:0;
+border-radius:0;
+background:transparent;
+border:none;
 }
 
 body[data-theme="light"] .generator-toggle-row{
-background:rgba(255,255,255,0.74);
-border:1px solid rgba(24,33,25,0.08);
+background:transparent;
+border:none;
 }
 
 .generator-toggle-copy{
@@ -2485,10 +2777,10 @@ min-width:0;
 }
 
 .generator-toggle-title{
-font-size:10px;
+font-size:12px;
 font-weight:600;
-letter-spacing:0.14em;
-text-transform:uppercase;
+letter-spacing:0.02em;
+text-transform:none;
 color:var(--text-strong);
 }
 
@@ -2642,9 +2934,9 @@ margin-top:0;
 width:auto;
 min-width:156px;
 align-self:flex-start;
-padding:12px 20px;
+padding:11px 18px;
 border-radius:999px;
-font-size:13px;
+font-size:12px;
 font-weight:700;
 letter-spacing:0.06em;
 text-transform:uppercase;
@@ -2674,8 +2966,9 @@ box-shadow:var(--button-premium-hover-shadow);
 .generator-cta:disabled{
 opacity:0.56;
 cursor:not-allowed;
-filter:saturate(0.68);
-box-shadow:none;
+filter:none;
+box-shadow:var(--button-premium-shadow);
+border-color:var(--button-premium-border);
 }
 
 .generator-cta-secondary{
@@ -2929,6 +3222,8 @@ gap:10px;
 position:sticky;
 top:0;
 z-index:25;
+flex-wrap:nowrap;
+align-items:center;
 }
 .platform-brand-name{
 font-size:14px;
@@ -2939,6 +3234,8 @@ font-size:10px;
 .platform-actions{
 align-items:center;
 justify-content:space-between;
+flex-wrap:nowrap;
+gap:8px;
 }
 .platform-plan-badge{
 height:30px;
@@ -2954,6 +3251,21 @@ font-size:11px;
 height:34px;
 padding:0 12px;
 font-size:11px;
+}
+
+.platform-nav{
+flex-wrap:nowrap;
+overflow-x:auto;
+justify-content:flex-start;
+scrollbar-width:none;
+}
+
+.platform-nav::-webkit-scrollbar{
+display:none;
+}
+
+.platform-brand-subtitle{
+display:none;
 }
 .platform-surface{
 inset:68px 10px 10px 10px;
@@ -2989,12 +3301,12 @@ max-height:calc(100dvh - 24px);
 /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ FIX VIEWER SHFAQJE */
 .viewer{
 display:block !important;
-order:3;
+order:2;
 
 width:100% !important;
-height:280px !important;
+height:clamp(240px, 42dvh, 360px) !important;
 
-min-height:200px;
+min-height:240px;
 flex-shrink:0;
 
 position:relative;
@@ -3003,7 +3315,7 @@ z-index:1;
 
 /* panel sipÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«r */
 .panel{
-order:2;
+order:3;
 }
 
 /* sidebar sipÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â«r fare */
@@ -3023,8 +3335,8 @@ min-height:100vh !important;
 grid-template-columns:none !important;   /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ KJO E VRIT GRID */
 }
 
-/* gjithashtu sigurohu */
-.sidebar, .panel, .viewer{
+/* keep sidebar/panel flexible without collapsing viewer */
+.sidebar, .panel{
 width:100% !important;
 height:auto !important;
 min-height:auto !important;
@@ -3060,13 +3372,13 @@ font-size:12px;
 .panel{
 width:100%;
 padding:14px 14px 18px;
-margin-bottom:72px; /* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ mos mbulohet nga sidebar */
+margin-bottom:0;
 }
 
 /* viewer TOP si hero */
 .viewer{
 width:100%;
-height:280px;
+height:clamp(240px, 42dvh, 360px);
 }
 .viewer-topbar{
 top:14px;
@@ -3185,14 +3497,28 @@ left:50%;
 
 transform:translate(-50%, -50%);
 
-max-width:80%;
-max-height:80%;
+max-width:92%;
+max-height:92%;
 
 object-fit:contain;
 
 z-index:2;
 
 pointer-events:none;
+}
+
+/* keep popover menus inside the viewport on mobile */
+#panel-relief .relief-select-menu,
+#panel-svg .svg-select-menu{
+max-width:min(320px, calc(100vw - 40px));
+}
+
+#panel-relief .relief-select-trigger{
+max-width:160px;
+}
+
+#panel-svg .svg-select-trigger{
+max-width:140px;
 }
 }
 
@@ -3661,29 +3987,32 @@ max-width:none;
 height:auto;
 min-height:unset;
 padding:12px 16px;
-flex-wrap:wrap;
-gap:12px;
-align-items:flex-start;
+flex-wrap:nowrap;
+gap:10px;
+align-items:center;
 }
 
 .platform-brand{
-width:100%;
+width:auto;
 }
 
 .platform-actions{
-width:100%;
-justify-content:space-between;
-flex-wrap:wrap;
+width:auto;
+justify-content:flex-end;
+flex-wrap:nowrap;
 gap:8px;
 }
 
 .platform-nav{
-order:3;
-width:100%;
-justify-content:flex-start;
+order:0;
+width:auto;
+flex:1 1 auto;
+min-width:0;
+justify-content:center;
 overflow-x:auto;
 scrollbar-width:none;
 padding-bottom:2px;
+flex-wrap:nowrap;
 }
 
 .platform-nav::-webkit-scrollbar{
@@ -3854,12 +4183,10 @@ padding-bottom:18px;
     </svg>
   </div>
   <div class="section-heading">
-    <div class="section-kicker">Studio Workflow</div>
     <div class="section-title-row">
       <div class="section-title">3D Generator</div>
-      <div class="section-badge">Model</div>
     </div>
-    <div class="section-intro">Prepare one source, then generate 3D.</div>
+    <div class="section-intro"></div>
   </div>
 </div>
 
@@ -3875,27 +4202,19 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Generate AI Image</div>
-        <div class="generator-card-copy">Create from prompt.</div>
+        <div class="generator-card-title">Describe the image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.75 6.75h14.5v10.5H4.75z"></path>
-          <path d="m7.5 14 2.6-2.6 2.4 2.4 2.5-3 1.75 2.2"></path>
-          <circle cx="9" cy="9.25" r="1.1"></circle>
-        </svg>
-        <span>Image</span>
       </div>
     </div>
 
     <div class="generator-stack">
-      <textarea id="generatorPrompt" class="generator-prompt" placeholder="Rounded robot toy with clean collectible silhouette."></textarea>
+      <textarea id="generatorPrompt" class="generator-prompt" placeholder="Describe your 3D model..."></textarea>
 
       <div class="generator-toggle-row">
         <div class="generator-toggle-copy">
           <div class="generator-toggle-title">Toy Assist</div>
-          <div class="generator-toggle-note">Collectible prompt help.</div>
+          <div class="generator-toggle-note"></div>
         </div>
         <label class="generator-switch" aria-label="Toy assist toggle">
           <input id="generatorToyAssist" type="checkbox">
@@ -3903,7 +4222,7 @@ padding-bottom:18px;
         </label>
       </div>
 
-      <button id="generateConceptImageBtn" class="generator-cta" type="button" onclick="generateConceptImage()">Generate Image</button>
+      <button id="generateConceptImageBtn" class="generator-cta" type="button" onclick="generateConceptImage()">Generate image</button>
       <div id="generatorImageStatus" class="status"></div>
     </div>
   </div>
@@ -3919,23 +4238,15 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Source</div>
-        <div class="generator-card-copy">Upload or choose the active source.</div>
+        <div class="generator-card-title">Add an image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 15.25V7.75"></path>
-          <path d="m8.75 11 3.25-3.25L15.25 11"></path>
-          <path d="M6.5 17.25h11"></path>
-        </svg>
-        <span>Source</span>
       </div>
     </div>
 
     <div class="dropzone" id="drop3d">
 
-    <p id="dropText3d">Drop source image or click to upload</p>
+    <p id="dropText3d">Drop an image or click to upload</p>
 
     <img id="dropPreview3d" 
     style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
@@ -3962,18 +4273,9 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">3D Output</div>
-        <div class="generator-card-copy">Choose test or real 3D.</div>
+        <div class="generator-card-title">3D output</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="m12 3.75 7 4.05v8.4l-7 4.05-7-4.05V7.8l7-4.05Z"></path>
-          <path d="M12 12.1 19 8.05"></path>
-          <path d="M12 12.1 5 8.05"></path>
-          <path d="M12 12.1v8.15"></path>
-        </svg>
-        <span>3D</span>
       </div>
     </div>
 
@@ -3983,7 +4285,7 @@ padding-bottom:18px;
       </button>
 
       <button class="btn-premium generator-cta generator-cta-primary" data-premium-feature="premium-3d-generation" onclick="runPremiumAction('premium-3d-generation', generateReal3D)">
-      Real 3D
+      3D Pro
       </button>
     </div>
 
@@ -3993,7 +4295,7 @@ padding-bottom:18px;
 
     <div class="status" id="status"></div>
     <a id="downloadBtn" class="download-btn" style="display:none;" download>
-    Download GLB Model
+    Download GLB
     </a>
   </div>
 </div>
@@ -4010,12 +4312,10 @@ padding-bottom:18px;
     </svg>
   </div>
   <div class="section-heading">
-    <div class="section-kicker">Studio Workflow</div>
     <div class="section-title-row">
       <div class="section-title">SVG Generator</div>
-      <div class="section-badge">Vector</div>
     </div>
-    <div class="section-intro">Prepare one source, then generate SVG.</div>
+    <div class="section-intro"></div>
   </div>
 </div>
 
@@ -4031,23 +4331,15 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Generate AI Image</div>
-        <div class="generator-card-copy">Create from prompt.</div>
+        <div class="generator-card-title">Describe the image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.75 6.75h14.5v10.5H4.75z"></path>
-          <path d="m7.5 14 2.6-2.6 2.4 2.4 2.5-3 1.75 2.2"></path>
-          <circle cx="9" cy="9.25" r="1.1"></circle>
-        </svg>
-        <span>Image</span>
       </div>
     </div>
 
     <div class="generator-stack">
-      <textarea id="svgPrompt" class="generator-prompt" placeholder="Clean laser-cut line art of a racing helmet viewed from the side."></textarea>
-      <button id="generateSvgImageBtn" class="generator-cta" type="button" onclick="generateSvgConceptImage()">Generate Image</button>
+      <textarea id="svgPrompt" class="generator-prompt" placeholder="Describe your SVG idea..."></textarea>
+      <button id="generateSvgImageBtn" class="generator-cta" type="button" onclick="generateSvgConceptImage()">Generate image</button>
       <div id="svgImageStatus" class="status"></div>
     </div>
   </div>
@@ -4063,22 +4355,14 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Source</div>
-        <div class="generator-card-copy">Upload or choose the active source.</div>
+        <div class="generator-card-title">Add an image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 15.25V7.75"></path>
-          <path d="m8.75 11 3.25-3.25L15.25 11"></path>
-          <path d="M6.5 17.25h11"></path>
-        </svg>
-        <span>Source</span>
       </div>
     </div>
 
     <div class="dropzone" id="dropSVG">
-      <p id="dropTextSVG">Drop source image or click to upload</p>
+      <p id="dropTextSVG">Drop an image or click to upload</p>
       <img id="dropPreviewSVG" style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
       <input type="file" id="svgInput" style="display:none">
     </div>
@@ -4100,17 +4384,9 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">SVG Output</div>
-        <div class="generator-card-copy">Set the cleanup and generate SVG.</div>
+        <div class="generator-card-title">SVG output</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 17.25h10"></path>
-          <path d="m8.75 14.75 6.5-6.5 2 2-6.5 6.5-3 1z"></path>
-          <path d="m14.5 9 2 2"></path>
-        </svg>
-        <span>SVG</span>
       </div>
     </div>
 
@@ -4154,12 +4430,10 @@ padding-bottom:18px;
     </svg>
   </div>
   <div class="section-heading">
-    <div class="section-kicker">Studio Workflow</div>
     <div class="section-title-row">
       <div class="section-title">Photo Relief</div>
-      <div class="section-badge">Print</div>
     </div>
-    <div class="section-intro">Prepare one source, preview relief, then export STL.</div>
+    <div class="section-intro"></div>
   </div>
 </div>
 
@@ -4175,23 +4449,15 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Generate AI Image</div>
-        <div class="generator-card-copy">Create from prompt.</div>
+        <div class="generator-card-title">Describe the image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.75 6.75h14.5v10.5H4.75z"></path>
-          <path d="m7.5 14 2.6-2.6 2.4 2.4 2.5-3 1.75 2.2"></path>
-          <circle cx="9" cy="9.25" r="1.1"></circle>
-        </svg>
-        <span>Image</span>
       </div>
     </div>
 
     <div class="generator-stack">
-      <textarea id="reliefPrompt" class="generator-prompt" placeholder="Portrait photo with clean lighting and strong facial separation for lithophane relief."></textarea>
-      <button id="generateReliefImageBtn" class="generator-cta" type="button" onclick="generateReliefConceptImage()">Generate Image</button>
+      <textarea id="reliefPrompt" class="generator-prompt" placeholder="Describe your relief..."></textarea>
+      <button id="generateReliefImageBtn" class="generator-cta" type="button" onclick="generateReliefConceptImage()">Generate image</button>
       <div id="reliefImageStatus" class="status"></div>
     </div>
   </div>
@@ -4207,22 +4473,14 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Source</div>
-        <div class="generator-card-copy">Upload or choose the active source.</div>
+        <div class="generator-card-title">Add an image</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 15.25V7.75"></path>
-          <path d="m8.75 11 3.25-3.25L15.25 11"></path>
-          <path d="M6.5 17.25h11"></path>
-        </svg>
-        <span>Source</span>
       </div>
     </div>
 
     <div class="dropzone" id="dropRelief">
-      <p id="dropTextRelief">Drop source image or click to upload</p>
+      <p id="dropTextRelief">Drop an image or click to upload</p>
       <img id="dropPreviewRelief" style="width:100%;height:200px;object-fit:contain;display:none;border-radius:10px;">
       <input type="file" id="reliefInput" style="display:none">
     </div>
@@ -4244,17 +4502,9 @@ padding-bottom:18px;
           </svg>
         </div>
         <div>
-        <div class="generator-card-title">Relief</div>
-        <div class="generator-card-copy">Preview the relief, then export STL.</div>
+        <div class="generator-card-title">Relief STL</div>
+        <div class="generator-card-copy"></div>
       </div>
-      </div>
-      <div class="generator-chip">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="m12 5.25 7 3.75-7 3.75L5 9l7-3.75Z"></path>
-          <path d="m5 12.25 7 3.75 7-3.75"></path>
-          <path d="m5 15.5 7 3.75 7-3.75"></path>
-        </svg>
-        <span>Relief</span>
       </div>
     </div>
 
@@ -4945,6 +5195,35 @@ const progressBar = document.getElementById("progressBar")
 let currentJobId=null
 window.currentWorkspacePanel = window.currentWorkspacePanel || "3d"
 
+function revealViewer(options = {}){
+const {
+  force = false,
+  behavior = "smooth"
+} = options
+
+const viewer = document.getElementById("viewer")
+if(!viewer){
+  return
+}
+
+const rect = viewer.getBoundingClientRect()
+const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0
+const mostlyVisible = rect.top >= 0 && rect.bottom <= viewportHeight
+
+if(!force && mostlyVisible){
+  return
+}
+
+const header = document.querySelector(".platform-header")
+const headerHeight = header ? header.getBoundingClientRect().height : 0
+const targetY = window.scrollY + rect.top - Math.max(0, headerHeight) - 12
+
+window.scrollTo({
+  top: Math.max(0, targetY),
+  behavior
+})
+}
+
 
 async function upload(){
 
@@ -5106,6 +5385,8 @@ if(!canUseFeature("free3dGeneration")){
 openUsageLimitPrompt("free3dGeneration")
 return
 }
+
+revealViewer({ force:true })
 
 const fileInput = document.querySelector("#fileInput")
 const file = fileInput.files[0]
@@ -6055,6 +6336,32 @@ function getGeneratorHiddenToyPrompt(){
 return " full toy object, complete collectible toy, isolated studio render, centered product composition, premium toy silhouette"
 }
 
+function getPanelPromptAugmentation(panel){
+  switch(String(panel || "").toLowerCase()){
+    case "svg":
+      return "flat vector line art, high contrast, clean contours, no background, no gradients, no text, centered subject"
+    case "relief":
+      return "single subject, strong separation, clean contours, no background, even lighting, centered subject, minimal clutter"
+    case "3d":
+    default:
+      return "single object, clean silhouette, sharp contours, no background, centered product shot, minimal clutter"
+  }
+}
+
+function applyPromptAugmentation(rawPrompt, panel){
+  const base = String(rawPrompt || "").trim()
+  if(!base){
+    return base
+  }
+
+  const suffix = getPanelPromptAugmentation(panel)
+  if(!suffix){
+    return base
+  }
+
+  return `${base}. ${suffix}`
+}
+
 function setSharedGeneratorPreview(imageUrl, options = {}){
 const drop = document.getElementById("drop3d")
 const img = document.getElementById("dropPreview3d")
@@ -6143,16 +6450,17 @@ if(!rawPrompt){
   return
 }
 
+const augmentedPrompt = applyPromptAugmentation(rawPrompt, "3d")
 const finalPrompt = toyAssist?.checked
-  ? `${rawPrompt}${getGeneratorHiddenToyPrompt()}`
-  : rawPrompt
+  ? `${augmentedPrompt}${getGeneratorHiddenToyPrompt()}`
+  : augmentedPrompt
 
 const form = new FormData()
 form.append("prompt", finalPrompt)
 form.append("style", toyAssist?.checked ? "toy" : "realistic")
 
 if(status){
-  status.innerHTML = "Generating concept image..."
+  status.innerHTML = "Writing..."
 }
 
 try{
@@ -6190,13 +6498,13 @@ try{
   incrementUsage("aiImage")
 
   if(status){
-    status.innerHTML = "Image ready."
+    status.innerHTML = ""
   }
 }catch(err){
   console.log(err)
   console.error("Concept image request crashed", err)
   if(status){
-    status.innerHTML = err.message || "Concept image generation failed."
+    status.innerHTML = err.message || "Failed."
   }
   alert(err.message || "Concept image generation failed.")
 }
@@ -6213,6 +6521,107 @@ document.getElementById("svgDetail")?.addEventListener("change", triggerSvgAutoR
 document.getElementById("svgCleanBackground")?.addEventListener("change", triggerSvgAutoRegenerate)
 
 let svgAutoRegenerateTimer = null
+
+function enhanceSvgPopoverSelect(selectId){
+  const select = document.getElementById(selectId)
+  if(!select || select.dataset.enhancedPopover === "1"){
+    return
+  }
+
+  const label = document.querySelector(`label[for="${selectId}"]`)
+  if(!label){
+    return
+  }
+
+  const wrapper = document.createElement("div")
+  wrapper.className = "svg-select"
+
+  const trigger = document.createElement("button")
+  trigger.type = "button"
+  trigger.className = "svg-select-trigger"
+
+  const menu = document.createElement("div")
+  menu.className = "svg-select-menu"
+  menu.setAttribute("role", "menu")
+
+  const closeMenu = () => {
+    menu.classList.remove("open")
+    trigger.setAttribute("aria-expanded", "false")
+  }
+
+  const openMenu = () => {
+    document.querySelectorAll("#panel-svg .svg-select-menu.open").forEach((el) => {
+      el.classList.remove("open")
+    })
+    menu.classList.add("open")
+    trigger.setAttribute("aria-expanded", "true")
+  }
+
+  const updateActive = () => {
+    const val = String(select.value || "")
+    const activeOption = Array.from(select.options || []).find((opt) => opt.value === val)
+    const fullLabel = activeOption?.textContent || (select.options?.[0]?.textContent ?? "Select")
+    trigger.textContent = String(fullLabel).trim().split(/\s+/)[0]
+    menu.querySelectorAll("button[data-value]").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-value") === val)
+    })
+  }
+
+  trigger.setAttribute("aria-haspopup", "menu")
+  trigger.setAttribute("aria-expanded", "false")
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if(menu.classList.contains("open")){
+      closeMenu()
+    }else{
+      openMenu()
+    }
+  })
+
+  Array.from(select.options || []).forEach((opt) => {
+    const btn = document.createElement("button")
+    btn.type = "button"
+    btn.className = "svg-select-option"
+    btn.textContent = opt.textContent
+    btn.setAttribute("data-value", opt.value)
+    btn.setAttribute("role", "menuitem")
+    btn.addEventListener("click", (event) => {
+      event.preventDefault()
+      select.value = opt.value
+      select.dispatchEvent(new Event("change", { bubbles: true }))
+      updateActive()
+      closeMenu()
+    })
+    menu.appendChild(btn)
+  })
+
+  wrapper.appendChild(trigger)
+  wrapper.appendChild(menu)
+  select.insertAdjacentElement("afterend", wrapper)
+  select.style.display = "none"
+  select.dataset.enhancedPopover = "1"
+
+  select.addEventListener("change", updateActive)
+  updateActive()
+
+  document.addEventListener("click", (event) => {
+    if(!wrapper.contains(event.target)){
+      closeMenu()
+    }
+  })
+
+  document.addEventListener("keydown", (event) => {
+    if(event.key === "Escape"){
+      closeMenu()
+    }
+  })
+}
+
+;[
+  "svgDetail",
+  "svgCleanBackground"
+].forEach(enhanceSvgPopoverSelect)
 
 function renderSvgSourceMeta(){
 const typeChip = document.getElementById("svgSourceType")
@@ -6326,7 +6735,7 @@ if(!entry){
 setSvgSourcePreview(entry.url, entry)
 const status = document.getElementById("svgImageStatus")
 if(status){
-  status.innerHTML = "SVG source restored from recent images."
+  status.innerHTML = ""
 }
 }
 
@@ -6368,7 +6777,7 @@ pushSvgRecentImage(entry)
 
 const status = document.getElementById("svgImageStatus")
 if(status){
-  status.innerHTML = "Uploaded source is ready for SVG conversion."
+  status.innerHTML = ""
 }
 }
 
@@ -6388,11 +6797,11 @@ if(!rawPrompt){
 }
 
 const form = new FormData()
-form.append("prompt", rawPrompt)
+form.append("prompt", applyPromptAugmentation(rawPrompt, "svg"))
 form.append("style", "realistic")
 
 if(status){
-  status.innerHTML = "Generating SVG source image..."
+  status.innerHTML = "Writing..."
 }
 
 try{
@@ -6547,6 +6956,8 @@ alert("Generate or upload an SVG source first")
 return
 }
 
+revealViewer({ force:true })
+
 if(status){
   status.innerHTML = "Generating SVG..."
 }
@@ -6647,6 +7058,143 @@ document.getElementById("reliefMeshQuality")?.addEventListener("change", () => {
 renderReliefExportState()
 renderReliefUsageNote()
 })
+
+function enhanceReliefPopoverSelect(selectId){
+  const select = document.getElementById(selectId)
+  if(!select || select.dataset.enhancedPopover === "1"){
+    return
+  }
+
+  const label = document.querySelector(`label[for="${selectId}"]`)
+  if(!label){
+    return
+  }
+
+  const wrapper = document.createElement("div")
+  wrapper.className = "relief-select"
+
+  const trigger = document.createElement("button")
+  trigger.type = "button"
+  trigger.className = "relief-select-trigger"
+
+  const menu = document.createElement("div")
+  menu.className = "relief-select-menu"
+  menu.setAttribute("role", "menu")
+
+  const closeMenu = () => {
+    menu.classList.remove("open")
+    trigger.setAttribute("aria-expanded", "false")
+  }
+
+  const openMenu = () => {
+    document.querySelectorAll("#panel-relief .relief-select-menu.open").forEach((el) => {
+      el.classList.remove("open")
+    })
+    menu.classList.add("open")
+    trigger.setAttribute("aria-expanded", "true")
+  }
+
+  const updateActive = () => {
+    const val = String(select.value || "")
+    const activeOption = Array.from(select.options || []).find((opt) => opt.value === val)
+    const fullLabel = activeOption?.textContent || (select.options?.[0]?.textContent ?? "Select")
+    trigger.textContent = shortenReliefTriggerLabel(selectId, val, fullLabel)
+    menu.querySelectorAll("button[data-value]").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-value") === val)
+    })
+  }
+
+  trigger.setAttribute("aria-haspopup", "menu")
+  trigger.setAttribute("aria-expanded", "false")
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if(menu.classList.contains("open")){
+      closeMenu()
+    }else{
+      openMenu()
+    }
+  })
+
+  Array.from(select.options || []).forEach((opt) => {
+    const btn = document.createElement("button")
+    btn.type = "button"
+    btn.className = "relief-select-option"
+    btn.textContent = opt.textContent
+    btn.setAttribute("data-value", opt.value)
+    btn.setAttribute("role", "menuitem")
+    btn.addEventListener("click", (event) => {
+      event.preventDefault()
+      select.value = opt.value
+      select.dispatchEvent(new Event("change", { bubbles: true }))
+      updateActive()
+      closeMenu()
+    })
+    menu.appendChild(btn)
+  })
+
+  wrapper.appendChild(trigger)
+  wrapper.appendChild(menu)
+  select.insertAdjacentElement("afterend", wrapper)
+  select.style.display = "none"
+  select.dataset.enhancedPopover = "1"
+
+  select.addEventListener("change", updateActive)
+  updateActive()
+
+  document.addEventListener("click", (event) => {
+    if(!wrapper.contains(event.target)){
+      closeMenu()
+    }
+  })
+
+  document.addEventListener("keydown", (event) => {
+    if(event.key === "Escape"){
+      closeMenu()
+    }
+  })
+}
+
+function shortenReliefTriggerLabel(selectId, value, label){
+  const clean = String(label || "").trim()
+  if(!clean){
+    return "Select"
+  }
+
+  switch(selectId){
+    case "reliefDirection":
+      if(value === "dark-deep") return "Dark"
+      if(value === "light-deep") return "Light"
+      return clean.split(/\s+/)[0]
+    case "reliefSize":
+      if(value === "small") return "Small"
+      if(value === "medium") return "Medium"
+      if(value === "large") return "Large"
+      return clean.split(/\s+/)[0]
+    case "reliefMeshQuality":
+      if(value === "draft") return "Draft"
+      if(value === "normal") return "Normal"
+      if(value === "fine") return "Fine"
+      return clean.split(/\s+/)[0]
+    case "reliefBorder":
+      if(value === "print-tab") return "Tab"
+      if(value === "frame") return "Frame"
+      if(value === "none") return "None"
+      return clean.split(/\s+/)[0]
+    default:
+      return clean.split(/\s+/)[0]
+  }
+}
+
+;[
+  "reliefDepth",
+  "reliefThickness",
+  "reliefBorder",
+  "reliefSurface",
+  "reliefDirection",
+  "reliefSize",
+  "reliefMeshQuality"
+].forEach(enhanceReliefPopoverSelect)
 
 let reliefAutoPreviewTimer = null
 
@@ -6804,7 +7352,7 @@ if(!entry){
 setReliefSourcePreview(entry.url, entry)
 const status = document.getElementById("reliefImageStatus")
 if(status){
-  status.innerHTML = "Relief source restored from recent images."
+  status.innerHTML = ""
 }
 }
 
@@ -6846,7 +7394,7 @@ pushReliefRecentImage(entry)
 
 const status = document.getElementById("reliefImageStatus")
 if(status){
-  status.innerHTML = "Uploaded source is ready for relief preview."
+  status.innerHTML = ""
 }
 }
 
@@ -6866,11 +7414,11 @@ if(!rawPrompt){
 }
 
 const form = new FormData()
-form.append("prompt", rawPrompt)
+form.append("prompt", applyPromptAugmentation(rawPrompt, "relief"))
 form.append("style", "realistic")
 
 if(status){
-  status.innerHTML = "Generating relief source image..."
+  status.innerHTML = "Writing..."
 }
 
 try{
@@ -7682,6 +8230,8 @@ if(sourceState.kind === "empty"){
   return
 }
 
+revealViewer({ force:true })
+
 const depthMode = document.getElementById("reliefDepth").value
 const thicknessMode = document.getElementById("reliefThickness").value
 const borderMode = document.getElementById("reliefBorder").value
@@ -7735,6 +8285,8 @@ if(sourceState.kind === "empty"){
   alert("Generate or upload a relief source first")
   return
 }
+
+revealViewer({ force:true })
 
 const surfaceMode = document.getElementById("reliefSurface").value
 
@@ -7999,6 +8551,8 @@ alert("Upload or generate an image first")
 return
 
 }
+
+revealViewer({ force:true })
 
 if(window.generatorUploadPromise){
 try{

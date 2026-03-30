@@ -1,6 +1,6 @@
 # Pluto3D Current State
 
-Last updated: `2026-03-28`
+Last updated: `2026-03-30`
 Active branch: `develop`
 Local checkpoint used for this snapshot: `6c04d9b` + current working tree updates
 
@@ -35,6 +35,10 @@ Update it after every meaningful change.
   - prompt-generated concept images
   - test 3D generation
   - premium real 3D generation
+- concept-image prompts now receive per-panel augmentation so generated sources are more conversion-friendly (e.g. cleaner contours and no-background cues for `3D`, `SVG`, and `Relief`)
+- desktop workspace layout now uses a `clamp(...)`-based middle column width so the viewer remains usable at default `100%` browser zoom across Chrome/Brave without relying on manual zoom tweaks
+- viewer framing now zooms around the model center (bounding box/sphere) so test-model zoom does not drift upward out of frame
+- viewer status strip now uses a text-only treatment (no shell) with smaller metadata typography
 - recent concept/source thumbnail strips exist in the remodel flow
 - active `3D`, `SVG`, and `Relief` panels now use stronger section headers, visible card chips, and clearer CTA priority for faster scanning
 - `SVG` and `Relief` option controls now use a more compact layout, with narrower selects and parallel field placement where the space allows it
@@ -44,6 +48,11 @@ Update it after every meaningful change.
   - viewer neural overlays were removed
   - heavy blur and glow usage was reduced across the main shell
   - sidebar and shell controls now lean more matte and restrained
+- an additional UI simplification pass was applied to further reduce visual load:
+  - flattened the main shell surfaces (body, sidebar, panel, viewer) by reducing heavy gradients and ambient shadows
+  - simplified the sidebar tool buttons and theme toggle to rely on the shared control tokens instead of bespoke gradient shells
+  - reduced viewer stage glow intensity so the viewport reads cleaner without changing any render logic
+  - kept the pass cosmetic-only inside `frontend/index.html`
 - header navigation, sidebar controls, viewer toolbar, and generator CTAs are now being rebased toward a more consistent green-and-bronze language instead of mixed glow-heavy accents
 - bronze accents now extend into pills, badges, chips, viewer labels, and secondary shell metadata so the workspace reads as one visual family
 - the active button family is now more premium and mechanically consistent:
@@ -83,6 +92,15 @@ Update it after every meaningful change.
   - the title block, toolbar shell, status strip, and print cluster now share a tighter premium shell treatment instead of reading like separate floating boxes
   - mode buttons and viewer metadata chips now use slightly cleaner spacing and hierarchy for a more finished studio-control look
   - this pass stays cosmetic-only and is intended to close the current viewer premium task without reopening working flows
+- mobile workspace stacking has been stabilized for `v1.1`:
+  - the mobile workspace now stacks as `Sidebar (horizontal)` → `Viewer` → `Panel` to keep the preview visible early in the flow
+  - the viewer height now uses a `clamp(...)` rule on mobile so it stays usable across phone sizes without crushing the generator panel
+  - SVG/Relief popover menus are constrained on mobile so they remain inside the viewport
+  - fixed a mobile CSS override that could collapse the viewer height (causing the canvas to disappear) by preventing the mobile auto-height rule from applying to the viewer container
+- viewer auto-focus behavior is now enabled for the main creation flows:
+  - when users click key generation CTAs (`Test 3D`, `3D Pro`, `Generate SVG`, `Preview Relief`, `Generate STL`), the page scrolls the main viewer into view so users immediately see the output surface without manually hunting for it
+  - relief preview images now remain centered in the main viewer across breakpoints instead of anchoring to the top-left
+  - viewer-injected `svgViewer` markup now uses explicit centering rules so relief preview PNGs remain centered reliably
 - the `SVG` and `Relief` source preview bug is now fixed:
   - their dropzones now use the same positioned preview container rules as `3D`
   - blurred preview layers no longer escape the source card and spill across the panel background

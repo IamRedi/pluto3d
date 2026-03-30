@@ -5,6 +5,28 @@ Update it after every meaningful change.
 
 Historical entries below were migrated from the previous board, workflow, and handoff documents.
 
+## 2026-03-30
+
+### UI polish: simplify shell surfaces
+
+- Flattened the main workspace shell surfaces by reducing heavy gradients and lowering ambient shadows across the app chrome.
+- Simplified the sidebar tool buttons and the theme toggle to rely on the shared control tokens instead of bespoke gradient shells.
+- Reduced viewer stage glow intensity so the viewport reads cleaner without changing generation, viewer logic, or export flows.
+- Added per-panel prompt augmentation for concept image generation so user prompts automatically gain conversion-friendly cues (e.g. no background, clean contours) depending on whether the user is in `3D`, `SVG`, or `Relief`.
+- Updated the desktop workspace grid column sizing to a `clamp(...)`-based middle panel width so the viewer remains usable at default `100%` browser zoom in Chrome/Brave.
+- Updated viewer fit/framing to keep zoom centered on the model so test-model zoom no longer drifts upward out of frame.
+- Simplified viewer status strip to a text-only treatment with smaller metadata typography.
+- Reworked `Relief` option selects into custom popover menus (no native white dropdown) with shorter trigger labels to avoid layout overflow.
+- Reworked `SVG` `Detail` and `Background` controls into the same compact popover-select style so the controls remain inside the panel column.
+- Added a `v1.1` mobile workspace pass so the layout stacks as `Sidebar` → `Viewer` → `Panel`, the viewer uses a `clamp(...)` height on phones, and SVG/Relief popover menus stay inside the viewport.
+- Fixed a mobile CSS override that could collapse the viewer height (making the viewer appear missing) by ensuring the mobile auto-height rule does not apply to the viewer container.
+- Added viewer auto-focus so when users click key generation CTAs (`Test 3D`, `3D Pro`, `Generate SVG`, `Preview Relief`, `Generate STL`) the page scrolls the viewer into view automatically.
+- Fixed `Preview Relief` viewer alignment so the preview image stays centered instead of anchoring to the top-left on some layouts.
+- Hardened `svgViewer` centering inside the injected viewer shell so relief preview PNGs remain centered reliably (not dependent on `inset:0` auto-margins).
+- Refined premium bronze button tokens (lighter, cleaner highlight) so premium CTAs read more polished and consistent.
+- Verified local smoke runtime: frontend `http://127.0.0.1:5500` and backend `http://127.0.0.1:8000` respond, and `GET /api/account/me` resolves guest state.
+- Kept the pass cosmetic-only inside `frontend/index.html`. Meshy `3D Pro` was intentionally not exercised to avoid consuming credits.
+
 ## 2026-03-28
 
 ### Viewer chrome closure polish
