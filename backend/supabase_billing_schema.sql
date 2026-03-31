@@ -57,6 +57,17 @@ create table if not exists public.usage_buckets (
   unique(subject_key, bucket_type, feature_key, window_key)
 );
 
+create table if not exists public.guest_activity (
+  guest_key text primary key,
+  first_seen_at timestamptz not null default now(),
+  last_seen_at timestamptz not null default now(),
+  total_active_seconds bigint not null default 0,
+  last_user_agent text,
+  last_ip text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 create index if not exists subscriptions_user_id_idx
   on public.subscriptions(user_id);
 
@@ -68,6 +79,9 @@ create index if not exists usage_buckets_subject_key_idx
 
 create index if not exists usage_buckets_user_id_idx
   on public.usage_buckets(user_id);
+
+create index if not exists guest_activity_last_seen_idx
+  on public.guest_activity(last_seen_at desc);
 
 create or replace function public.touch_updated_at()
 returns trigger
@@ -94,12 +108,18 @@ execute function public.touch_updated_at();
 drop trigger if exists usage_buckets_touch_updated_at on public.usage_buckets;
 create trigger usage_buckets_touch_updated_at
 before update on public.usage_buckets
+
+drop trigger if exists guest_activity_touch_updated_at on public.guest_activity;
+create trigger guest_activity_touch_updated_at
+before update on public.guest_activity
 for each row
 execute function public.touch_updated_at();
 
 alter table public.profiles enable row level security;
 alter table public.subscriptions enable row level security;
 alter table public.billing_webhook_events enable row level security;
+alter table public.usage_buckets enable row level security;
+alter table public.guest_activity enable row level security;
 alter table public.usage_buckets enable row level security;
 
 drop policy if exists "Users can read own profile" on public.profiles;
@@ -127,3 +147,6 @@ comment on table public.billing_webhook_events is
 
 comment on table public.usage_buckets is
 'Server-side usage counters and credits for guest, free, and premium quota enforcement.';
+
+comment on table public.guest_activity is
+'Anonymous guest visit activity summary keyed by browser guest token.';

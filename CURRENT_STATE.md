@@ -120,6 +120,10 @@ This records how **hosted** backend/frontend update today; it is configured in *
   - `profiles` now support `last_login_at`, `last_seen_at`, and `total_active_seconds`
   - `/api/account/me` returns an `activity` block with login/seen timestamps and total active minutes
   - frontend auth runtime sends a heartbeat ping every 60s while the user is logged in and the tab is visible
+- guest activity tracking is now also available:
+  - backend stores guest heartbeat summaries in `guest_activity` (`guest_key`, `first_seen_at`, `last_seen_at`, `total_active_seconds`, `last_user_agent`, `last_ip`)
+  - new endpoint `/api/account/guest/ping` accepts heartbeat pings from anonymous sessions
+  - frontend sends guest heartbeat pings every 60s while the tab is visible when no authenticated session exists
 - the `SVG` and `Relief` source preview bug is now fixed:
   - their dropzones now use the same positioned preview container rules as `3D`
   - blurred preview layers no longer escape the source card and spill across the panel background

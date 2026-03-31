@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Body, Header
 from pydantic import BaseModel, Field
+from fastapi import Request
 
 from app.services.auth import extract_bearer_token, verify_supabase_user
 from app.services.plans import get_premium_emails, resolve_user_plan_details
@@ -8,6 +9,7 @@ from app.services.subscriptions import (
     get_activity_summary_for_user,
     get_subscription_summary_for_user,
     get_user_display_name,
+    update_guest_activity,
     update_profile_activity_for_user,
 )
 from app.services.usage import build_usage_snapshot, consume_credit_usage, consume_feature_usage, resolve_usage_subject
@@ -189,4 +191,33 @@ def post_account_activity_ping(
         plan=plan_details["plan"],
         active_seconds_delta=active_seconds,
     )
+    return {"ok": True}
+
+
+@router.post("/guest/ping")
+def post_guest_activity_ping(
+    request: Request,
+    payload: dict = Body(default={}),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
+    guest_key = (x_pluto_guest_key or "").strip()
+    if not guest_key:
+        return {"ok": False, "reason": "guest_key_missing"}
+
+    active_seconds = int(payload.get("activeSeconds") or 0)
+    forwarded_for = request.headers.get("x-forwarded-for", "")
+    forwarded_ip = forwarded_for.split(",")[0].strip() if forwarded_for else ""
+    ip_address = forwarded_ip or (request.client.host if request.client else "")
+    user_agent = request.headers.get("user-agent", "")
+
+    try:
+        update_guest_activity(
+            guest_key=guest_key,
+            active_seconds_delta=active_seconds,
+            user_agent=user_agent,
+            ip_address=ip_address,
+        )
+    except Exception:
+        return {"ok": False, "reason": "guest_tracking_failed"}
+
     return {"ok": True}
