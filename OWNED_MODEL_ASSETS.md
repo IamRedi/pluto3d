@@ -63,7 +63,7 @@ Before sale, keep external proof of:
   - `frontend/models/models with png foto previewe/Skenderbeg.png`
 - current usage:
   - active `Generate Test in 3D` owned model for `toy`, `hero`, and `warrior` prompts
-  - also intentionally weighted higher for random fallback selection
+  - random fallback selection is equal across the full owned model library
 
 ## Staging Note
 

@@ -261,7 +261,7 @@ before:
 - `2026-03-27`: test-registry expansion started:
   - generic `car` now separates from `F1`
   - `bike` and `Skenderbeg` are being added to the active owned test library
-  - random fallback should favor `Skenderbeg` more often than the other owned test models
+  - random fallback should be equal across the owned test-model library
   - production adaptation must still review the growing asset weight before `v1.1` goes live
 - `2026-03-27`: production adaptation tracking started:
   - `V11_PRODUCTION_ADAPTATION.md` now keeps the final deploy-readiness concerns separate from the remodel notes
