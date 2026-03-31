@@ -1,8 +1,14 @@
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Body, Header
 
 from app.services.auth import extract_bearer_token, verify_supabase_user
 from app.services.plans import get_premium_emails, resolve_user_plan_details
-from app.services.subscriptions import ensure_profile_for_user, get_subscription_summary_for_user, get_user_display_name
+from app.services.subscriptions import (
+    ensure_profile_for_user,
+    get_activity_summary_for_user,
+    get_subscription_summary_for_user,
+    get_user_display_name,
+    update_profile_activity_for_user,
+)
 
 
 router = APIRouter(prefix="/api/account", tags=["account"])
@@ -34,6 +40,17 @@ def _resolve_plan_details_safely(user: dict) -> dict:
 def _ensure_profile_safely(user: dict, plan: str) -> None:
     try:
         ensure_profile_for_user(user, plan=plan)
+    except Exception:
+        return
+
+
+def _update_profile_activity_safely(user: dict, *, plan: str, active_seconds_delta: int = 0) -> None:
+    try:
+        update_profile_activity_for_user(
+            user,
+            plan=plan,
+            active_seconds_delta=active_seconds_delta,
+        )
     except Exception:
         return
 
@@ -73,6 +90,7 @@ def get_account_me(authorization: str | None = Header(default=None)):
 
     plan_details = _resolve_plan_details_safely(user)
     _ensure_profile_safely(user, plan=plan_details["plan"])
+    _update_profile_activity_safely(user, plan=plan_details["plan"], active_seconds_delta=0)
 
     return {
         "authenticated": True,
@@ -80,9 +98,33 @@ def get_account_me(authorization: str | None = Header(default=None)):
         "planSource": plan_details["source"],
         "planReason": plan_details["reason"],
         "subscription": _get_subscription_summary_safely(user),
+        "activity": get_activity_summary_for_user(user),
         "user": {
             "id": user.get("id"),
             "email": user.get("email"),
             "name": get_user_display_name(user),
         },
     }
+
+
+@router.post("/activity/ping")
+def post_account_activity_ping(
+    payload: dict = Body(default={}),
+    authorization: str | None = Header(default=None),
+):
+    token = extract_bearer_token(authorization)
+    if not token:
+        return {"ok": False, "reason": "unauthenticated"}
+
+    user = verify_supabase_user(token)
+    if not user:
+        return {"ok": False, "reason": "unauthenticated"}
+
+    plan_details = _resolve_plan_details_safely(user)
+    active_seconds = int(payload.get("activeSeconds") or 0)
+    _update_profile_activity_safely(
+        user,
+        plan=plan_details["plan"],
+        active_seconds_delta=active_seconds,
+    )
+    return {"ok": True}

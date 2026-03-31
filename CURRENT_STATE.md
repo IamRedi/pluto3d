@@ -115,6 +115,10 @@ This records how **hosted** backend/frontend update today; it is configured in *
   - `Free Account`: AI `10`, SVG `30`, test 3D `5`, premium 3D `0`
   - `Premium`: AI `60`, premium 3D `10`, with other creation counters kept unlimited in the preview scaffold path
   - plans/profile UI now exposes the dedicated `Premium 3D` usage counter and updated plan copy (`AI photo: 50+ foto generation`, `Premium 3D: 200 token 10+ modele`)
+- authenticated user activity tracking is now wired on backend profile records:
+  - `profiles` now support `last_login_at`, `last_seen_at`, and `total_active_seconds`
+  - `/api/account/me` returns an `activity` block with login/seen timestamps and total active minutes
+  - frontend auth runtime sends a heartbeat ping every 60s while the user is logged in and the tab is visible
 - the `SVG` and `Relief` source preview bug is now fixed:
   - their dropzones now use the same positioned preview container rules as `3D`
   - blurred preview layers no longer escape the source card and spill across the panel background

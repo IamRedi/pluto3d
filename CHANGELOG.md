@@ -28,6 +28,7 @@ Historical entries below were migrated from the previous board, workflow, and ha
 - Updated plan/profile surfaces to reflect the new quota messaging (`AI 50+ target`, `200-token premium 3D flow`, `10 model runs`) and show the premium 3D usage metric.
 - Simplified premium plan copy by removing parenthetical notes and keeping direct customer-facing lines (`AI photo: 50+ foto generation`, `Premium 3D: 200 token 10+ modele`).
 - Updated `Test 3D` owned-model resolver to prioritize prompt keyword similarity (including `moto`-related prompts) and use equal random fallback instead of favoring `Skenderbeg`.
+- Added authenticated activity tracking to profile records (`last_login_at`, `last_seen_at`, `total_active_seconds`) plus a new `/api/account/activity/ping` heartbeat path so account state can reflect last access time and accumulated active minutes.
 - Refined premium bronze button tokens (lighter, cleaner highlight) so premium CTAs read more polished and consistent.
 - Verified local smoke runtime: frontend `http://127.0.0.1:5500` and backend `http://127.0.0.1:8000` respond, and `GET /api/account/me` resolves guest state.
 - Kept the pass cosmetic-only inside `frontend/index.html`. Meshy `3D Pro` was intentionally not exercised to avoid consuming credits.
