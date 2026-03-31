@@ -10,8 +10,7 @@ window.PLUTO_TEST_MODEL_LIBRARY = [
     url: `models/pluto-robot.glb?v=${TEST_MODEL_ASSET_VERSION}`,
     filename: "pluto-robot-test.glb",
     previewUrl: `${TEST_MODEL_PREVIEW_BASE}/pluto-robot.png?v=${TEST_MODEL_ASSET_VERSION}`,
-    previewLabel: "Pluto Robot source",
-    randomWeight: 1
+    previewLabel: "Pluto Robot source"
   },
   {
     id: "car",
@@ -20,8 +19,7 @@ window.PLUTO_TEST_MODEL_LIBRARY = [
     url: `${TEST_MODEL_PREVIEW_BASE}/car.glb?v=${TEST_MODEL_ASSET_VERSION}`,
     filename: "car-test.glb",
     previewUrl: `${TEST_MODEL_PREVIEW_BASE}/car.png?v=${TEST_MODEL_ASSET_VERSION}`,
-    previewLabel: "Car source",
-    randomWeight: 1
+    previewLabel: "Car source"
   },
   {
     id: "f1car",
@@ -30,18 +28,16 @@ window.PLUTO_TEST_MODEL_LIBRARY = [
     url: `models/f1car.glb?v=${TEST_MODEL_ASSET_VERSION}`,
     filename: "f1car-test.glb",
     previewUrl: `${TEST_MODEL_PREVIEW_BASE}/f1car.png?v=${TEST_MODEL_ASSET_VERSION}`,
-    previewLabel: "F1 Car source",
-    randomWeight: 1
+    previewLabel: "F1 Car source"
   },
   {
     id: "bike",
     label: "Bike",
-    keywords: ["bike", "motorbike", "motorcycle", "bicycle", "cycle"],
+    keywords: ["bike", "motorbike", "motorcycle", "moto", "sport bike", "bicycle", "cycle"],
     url: `${TEST_MODEL_PREVIEW_BASE}/bike.glb?v=${TEST_MODEL_ASSET_VERSION}`,
     filename: "bike-test.glb",
     previewUrl: `${TEST_MODEL_PREVIEW_BASE}/bike.png?v=${TEST_MODEL_ASSET_VERSION}`,
-    previewLabel: "Bike source",
-    randomWeight: 1
+    previewLabel: "Bike source"
   },
   {
     id: "skenderbeg",
@@ -50,8 +46,7 @@ window.PLUTO_TEST_MODEL_LIBRARY = [
     url: `${TEST_MODEL_PREVIEW_BASE}/Skenderbeg.glb?v=${TEST_MODEL_ASSET_VERSION}`,
     filename: "skenderbeg-test.glb",
     previewUrl: `${TEST_MODEL_PREVIEW_BASE}/Skenderbeg.png?v=${TEST_MODEL_ASSET_VERSION}`,
-    previewLabel: "Skenderbeg source",
-    randomWeight: 4
+    previewLabel: "Skenderbeg source"
   }
 ];
 
@@ -63,17 +58,14 @@ window.PLUTO_TEST_MODELS = {
   hero: window.PLUTO_TEST_MODEL_LIBRARY[4]
 };
 
-function getWeightedRandomOwnedTestModel(){
-  const weightedPool = window.PLUTO_TEST_MODEL_LIBRARY.flatMap((entry) =>
-    Array(Math.max(1, Number(entry.randomWeight || 1))).fill(entry)
-  );
-
-  if(!weightedPool.length){
+function getRandomOwnedTestModel(){
+  const library = window.PLUTO_TEST_MODEL_LIBRARY;
+  if(!library.length){
     return null;
   }
 
-  const randomIndex = Math.floor(Math.random() * weightedPool.length);
-  return weightedPool[randomIndex];
+  const randomIndex = Math.floor(Math.random() * library.length);
+  return library[randomIndex];
 }
 
 window.resolveOwnedTestModel = function resolveOwnedTestModel(options = {}){
@@ -84,15 +76,21 @@ window.resolveOwnedTestModel = function resolveOwnedTestModel(options = {}){
     activeImage?.filename || "",
     activeImage?.url || ""
   ].join(" ").toLowerCase();
-  const query = `${prompt} ${imageHints}`.trim();
-
-  const directMatch = window.PLUTO_TEST_MODEL_LIBRARY.find((entry) =>
-    entry.keywords.some((keyword) => query.includes(keyword))
+  const promptMatch = window.PLUTO_TEST_MODEL_LIBRARY.find((entry) =>
+    entry.keywords.some((keyword) => prompt.includes(keyword))
   );
 
-  if(directMatch){
-    return directMatch;
+  if(promptMatch){
+    return promptMatch;
   }
 
-  return getWeightedRandomOwnedTestModel();
+  const imageHintMatch = window.PLUTO_TEST_MODEL_LIBRARY.find((entry) =>
+    entry.keywords.some((keyword) => imageHints.includes(keyword))
+  );
+
+  if(imageHintMatch){
+    return imageHintMatch;
+  }
+
+  return getRandomOwnedTestModel();
 };

@@ -1086,7 +1086,7 @@ If anything is unclear, check these first in this order:
   - test-registry prompt refinement:
     - generic `car` should resolve to the owned car model, while `f1` and `sport car` should resolve to the owned F1 model
     - `bike` is now part of the owned test library
-    - `Skenderbeg` should resolve for `toy`, `hero`, and `warrior` style prompts and is intentionally weighted higher in random fallback
+    - `Skenderbeg` should resolve for `toy`, `hero`, and `warrior` style prompts, while random fallback stays equal across owned test models
   - pre-production asset-delivery note:
     - the owned test-model library is growing in file size, so final `v1.1` production adaptation must verify whether local static delivery is acceptable
     - if Railway/Vercel or the final deployment shape does not handle the asset weight comfortably, move heavy owned model assets to a cleaner delivery path such as object storage or CDN before release

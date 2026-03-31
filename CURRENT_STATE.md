@@ -222,6 +222,7 @@ This records how **hosted** backend/frontend update today; it is configured in *
   - Car
   - Bike
   - Skenderbeg
+- `Test 3D` model selection now follows prompt similarity first (keyword match, including `moto`-style prompts -> bike model), then falls back to equal random selection across the owned library (no weighted random bias)
 
 ### SVG
 
