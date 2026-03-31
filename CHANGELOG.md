@@ -24,6 +24,8 @@ Historical entries below were migrated from the previous board, workflow, and ha
 - Adjusted the mobile header into a two-row layout (brand + account actions above, nav below) to avoid overlapping header pills on small screens.
 - Fixed `Preview Relief` viewer alignment so the preview image stays centered instead of anchoring to the top-left on some layouts.
 - Hardened `svgViewer` centering inside the injected viewer shell so relief preview PNGs remain centered reliably (not dependent on `inset:0` auto-margins).
+- Updated usage-limit policy values to the new quota model (Guest, Free, Premium), including a dedicated `premium3dGeneration` counter and enforcement path for premium 3D actions.
+- Updated plan/profile surfaces to reflect the new quota messaging (`AI 50+ target`, `200-token premium 3D flow`, `10 model runs`) and show the premium 3D usage metric.
 - Refined premium bronze button tokens (lighter, cleaner highlight) so premium CTAs read more polished and consistent.
 - Verified local smoke runtime: frontend `http://127.0.0.1:5500` and backend `http://127.0.0.1:8000` respond, and `GET /api/account/me` resolves guest state.
 - Kept the pass cosmetic-only inside `frontend/index.html`. Meshy `3D Pro` was intentionally not exercised to avoid consuming credits.

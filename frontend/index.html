@@ -5770,7 +5770,8 @@ const limits = {
   aiImage: getUsageLimit("aiImage"),
   svgGeneration: getUsageLimit("svgGeneration"),
   toyGeneration: getUsageLimit("toyGeneration"),
-  free3dGeneration: getUsageLimit("free3dGeneration")
+  free3dGeneration: getUsageLimit("free3dGeneration"),
+  premium3dGeneration: getUsageLimit("premium3dGeneration")
 }
 
 return `
@@ -5819,8 +5820,8 @@ return `
         <div class="surface-plan-title">Subscriber</div>
         <div class="surface-plan-price">${billingRuntime?.priceLabel || "Premium pricing"}</div>
         <ul class="surface-plan-list">
-          <li>Premium 3D generation</li>
-          <li>Better limits and faster flow</li>
+          <li>AI images: 50+ target (hard cap 60)</li>
+          <li>Premium 3D: 200-token flow (10 model runs)</li>
           <li>Cleaner billing management</li>
           <li>Higher-output production path</li>
         </ul>
@@ -5846,6 +5847,7 @@ return `
       <li>SVG limit: ${limits.svgGeneration === null ? "Unlimited" : limits.svgGeneration}</li>
       <li>Toy generation limit: ${limits.toyGeneration === null ? "Unlimited" : limits.toyGeneration}</li>
       <li>3D generation limit: ${limits.free3dGeneration === null ? "Unlimited" : limits.free3dGeneration}</li>
+      <li>Premium 3D limit: ${limits.premium3dGeneration === null ? "Unlimited" : limits.premium3dGeneration}</li>
     </ul>
   </div>
   <div class="platform-surface-card">
@@ -6136,6 +6138,10 @@ return `
         <div class="profile-usage-label">3D Actions</div>
       </div>
       <div class="profile-usage-item">
+        <div class="profile-usage-value">${usage.premium3dGeneration}</div>
+        <div class="profile-usage-label">Premium 3D</div>
+      </div>
+      <div class="profile-usage-item">
         <div class="profile-usage-value">${usageTotal}</div>
         <div class="profile-usage-label">Total Actions</div>
       </div>
@@ -6205,7 +6211,8 @@ const labels = {
   aiImage: "AI image generation",
   svgGeneration: "SVG generation",
   toyGeneration: "Toy generation",
-  free3dGeneration: "3D generation"
+  free3dGeneration: "3D generation",
+  premium3dGeneration: "Premium 3D generation"
 }
 
 return labels[featureKey] || featureKey
@@ -6243,6 +6250,16 @@ if(typeof action === "function"){
 function runPremiumAction(featureKey, action){
 if(!isPremiumPreview()){
   openPremiumUpgradePrompt(featureKey)
+  return
+}
+
+const premiumUsageMap = {
+  "premium-3d-generation":"premium3dGeneration",
+  "pro-3d-conversion":"premium3dGeneration"
+}
+const usageFeature = premiumUsageMap[featureKey] || null
+if(usageFeature && !canUseFeature(usageFeature)){
+  openUsageLimitPrompt(usageFeature)
   return
 }
 
@@ -8557,6 +8574,7 @@ return
 
 status.innerHTML = "Sending to Meshy..."
 progressBar.style.width = "4%"
+incrementUsage("premium3dGeneration")
 checkStatus(data.task_id)
 
 }
@@ -8688,6 +8706,7 @@ return
 
 status.innerHTML = "Sending to Meshy..."
 progressBar.style.width = "6%"
+incrementUsage("premium3dGeneration")
 checkStatus(data.task_id)
 
 }
