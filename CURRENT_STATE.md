@@ -110,6 +110,11 @@ This records how **hosted** backend/frontend update today; it is configured in *
   - the mobile header now uses a two-row layout (brand + account actions above, nav below) to prevent the brand and auth pills from overlapping on small screens
   - relief preview images now remain centered in the main viewer across breakpoints instead of anchoring to the top-left
   - viewer-injected `svgViewer` markup now uses explicit centering rules so relief preview PNGs remain centered reliably
+- plan and usage policy now follows the latest customer-facing quota model:
+  - `Guest`: AI `2`, SVG `1`, test 3D `1`, premium 3D `0`
+  - `Free Account`: AI `10`, SVG `30`, test 3D `5`, premium 3D `0`
+  - `Premium`: AI `60`, premium 3D `10`, with other creation counters kept unlimited in the preview scaffold path
+  - plans/profile UI now exposes the dedicated `Premium 3D` usage counter and updated plan copy (`50+ AI`, `200-token flow`, `10 model runs`)
 - the `SVG` and `Relief` source preview bug is now fixed:
   - their dropzones now use the same positioned preview container rules as `3D`
   - blurred preview layers no longer escape the source card and spill across the panel background

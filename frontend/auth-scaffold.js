@@ -21,19 +21,22 @@ const USAGE_LIMITS = {
     aiImage: 2,
     svgGeneration: 1,
     toyGeneration: 3,
-    free3dGeneration: 1
+    free3dGeneration: 1,
+    premium3dGeneration: 0
   },
   free: {
-    aiImage: 8,
-    svgGeneration: 5,
+    aiImage: 10,
+    svgGeneration: 30,
     toyGeneration: 10,
-    free3dGeneration: 4
+    free3dGeneration: 5,
+    premium3dGeneration: 0
   },
   premium: {
-    aiImage: null,
+    aiImage: 60,
     svgGeneration: null,
     toyGeneration: null,
-    free3dGeneration: null
+    free3dGeneration: null,
+    premium3dGeneration: 10
   }
 };
 
@@ -155,7 +158,8 @@ function getUsageSnapshot(){
     aiImage: getUsageCount("aiImage"),
     svgGeneration: getUsageCount("svgGeneration"),
     toyGeneration: getUsageCount("toyGeneration"),
-    free3dGeneration: getUsageCount("free3dGeneration")
+    free3dGeneration: getUsageCount("free3dGeneration"),
+    premium3dGeneration: getUsageCount("premium3dGeneration")
   };
 }
 
