@@ -32,6 +32,21 @@ let activityHeartbeatTimer = null;
 let activityHeartbeatSession = null;
 const ACTIVITY_HEARTBEAT_MS = 60000;
 const ACTIVITY_HEARTBEAT_SECONDS = 60;
+const GUEST_ACTIVITY_KEY_STORAGE = "plutoGuestActivityKey";
+
+function getGuestActivityKey(){
+  try{
+    const existing = localStorage.getItem(GUEST_ACTIVITY_KEY_STORAGE);
+    if(existing){
+      return existing;
+    }
+    const nextValue = `guest-${crypto.randomUUID()}`;
+    localStorage.setItem(GUEST_ACTIVITY_KEY_STORAGE, nextValue);
+    return nextValue;
+  }catch(error){
+    return `guest-fallback-${Date.now()}`;
+  }
+}
 
 async function fetchBackendAccountState(session){
   if(!session?.access_token || typeof API_BASE === "undefined"){
@@ -57,17 +72,29 @@ async function fetchBackendAccountState(session){
 }
 
 async function postActivityPing(session){
-  if(!session?.access_token || typeof API_BASE === "undefined"){
+  if(typeof API_BASE === "undefined"){
     return;
   }
 
+  const isAuthenticated = Boolean(session?.access_token);
+  const url = isAuthenticated
+    ? `${API_BASE}/api/account/activity/ping`
+    : `${API_BASE}/api/account/guest/ping`;
+
+  const headers = {
+    "Content-Type": "application/json"
+  };
+
+  if(isAuthenticated){
+    headers.Authorization = `Bearer ${session.access_token}`;
+  }else{
+    headers["X-Pluto-Guest-Key"] = getGuestActivityKey();
+  }
+
   try{
-    await fetch(`${API_BASE}/api/account/activity/ping`, {
+    await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session.access_token}`
-      },
+      headers,
       body: JSON.stringify({
         activeSeconds: ACTIVITY_HEARTBEAT_SECONDS
       })
@@ -87,11 +114,6 @@ function stopActivityHeartbeat(){
 
 function startActivityHeartbeat(session){
   stopActivityHeartbeat();
-
-  if(!session?.access_token){
-    return;
-  }
-
   activityHeartbeatSession = session;
   activityHeartbeatTimer = setInterval(() => {
     if(document.visibilityState !== "visible"){

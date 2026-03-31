@@ -757,6 +757,67 @@ def get_activity_summary_for_user(user: Optional[dict]) -> dict:
     }
 
 
+def update_guest_activity(
+    *,
+    guest_key: str,
+    active_seconds_delta: int = 0,
+    user_agent: str = "",
+    ip_address: str = "",
+) -> None:
+    if not _can_use_supabase_store() or not _supabase_table_exists("guest_activity"):
+        return
+
+    normalized_guest_key = (guest_key or "").strip()
+    if not normalized_guest_key:
+        return
+
+    seconds_delta = max(0, int(active_seconds_delta or 0))
+    if seconds_delta > 300:
+        seconds_delta = 300
+
+    now_iso = datetime.now(tz=UTC).isoformat()
+    existing = _supabase_select_single(
+        "guest_activity",
+        {
+            "select": "guest_key,total_active_seconds,first_seen_at",
+            "guest_key": f"eq.{normalized_guest_key}",
+            "limit": "1",
+        },
+    )
+
+    clean_user_agent = (user_agent or "").strip()[:512] or None
+    clean_ip = (ip_address or "").strip()[:128] or None
+
+    if existing:
+        current_total = int(existing.get("total_active_seconds") or 0)
+        payload = {
+            "last_seen_at": now_iso,
+            "total_active_seconds": current_total + seconds_delta,
+            "last_user_agent": clean_user_agent,
+            "last_ip": clean_ip,
+        }
+        _supabase_patch(
+            "guest_activity",
+            params={"guest_key": f"eq.{normalized_guest_key}"},
+            payload=payload,
+        )
+        return
+
+    requests.post(
+        _get_supabase_rest_url("guest_activity"),
+        headers=_get_supabase_headers(prefer="resolution=merge-duplicates,return=minimal"),
+        json=[{
+            "guest_key": normalized_guest_key,
+            "first_seen_at": now_iso,
+            "last_seen_at": now_iso,
+            "total_active_seconds": seconds_delta,
+            "last_user_agent": clean_user_agent,
+            "last_ip": clean_ip,
+        }],
+        timeout=15,
+    ).raise_for_status()
+
+
 def get_subscription_summary_for_user(user: Optional[dict]) -> dict:
     record = get_subscription_record_for_user(user)
     profile = get_profile_record_for_user(user)
