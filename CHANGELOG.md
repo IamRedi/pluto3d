@@ -26,6 +26,7 @@ Historical entries below were migrated from the previous board, workflow, and ha
 - Hardened `svgViewer` centering inside the injected viewer shell so relief preview PNGs remain centered reliably (not dependent on `inset:0` auto-margins).
 - Updated usage-limit policy values to the new quota model (Guest, Free, Premium), including a dedicated `premium3dGeneration` counter and enforcement path for premium 3D actions.
 - Updated plan/profile surfaces to reflect the new quota messaging (`AI 50+ target`, `200-token premium 3D flow`, `10 model runs`) and show the premium 3D usage metric.
+- Simplified premium plan copy by removing parenthetical notes and keeping direct customer-facing lines (`AI photo: 50+ foto generation`, `Premium 3D: 200 token 10+ modele`).
 - Refined premium bronze button tokens (lighter, cleaner highlight) so premium CTAs read more polished and consistent.
 - Verified local smoke runtime: frontend `http://127.0.0.1:5500` and backend `http://127.0.0.1:8000` respond, and `GET /api/account/me` resolves guest state.
 - Kept the pass cosmetic-only inside `frontend/index.html`. Meshy `3D Pro` was intentionally not exercised to avoid consuming credits.
