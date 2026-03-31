@@ -6,9 +6,21 @@ create table if not exists public.profiles (
   display_name text,
   plan text not null default 'free',
   stripe_customer_id text unique,
+  last_login_at timestamptz,
+  last_seen_at timestamptz,
+  total_active_seconds bigint not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.profiles
+  add column if not exists last_login_at timestamptz;
+
+alter table public.profiles
+  add column if not exists last_seen_at timestamptz;
+
+alter table public.profiles
+  add column if not exists total_active_seconds bigint not null default 0;
 
 create table if not exists public.subscriptions (
   id uuid primary key default gen_random_uuid(),

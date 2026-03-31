@@ -22,12 +22,17 @@ const DEFAULT_LIVE_STATE = {
   planSource: "guest",
   planReason: "",
   subscription: null,
+  activity: null,
   session: null,
   user: null
 };
 
 let supabaseClient = null;
 const GUEST_USAGE_KEY_STORAGE = "plutoGuestUsageKey";
+let activityHeartbeatTimer = null;
+let activityHeartbeatSession = null;
+const ACTIVITY_HEARTBEAT_MS = 60000;
+const ACTIVITY_HEARTBEAT_SECONDS = 60;
 
 function getApiBaseUrl(){
   return window.PLUTO_API_BASE || (typeof API_BASE !== "undefined" ? API_BASE : "");
@@ -86,6 +91,52 @@ async function fetchBackendAccountState(session){
     console.warn("Backend account sync failed:", error);
     return null;
   }
+}
+
+async function postActivityPing(session){
+  const apiBase = getApiBaseUrl();
+  if(!session?.access_token || !apiBase){
+    return;
+  }
+
+  try{
+    await fetch(`${apiBase}/api/account/activity/ping`, {
+      method: "POST",
+      headers: getPlutoApiHeaders({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`
+      }),
+      body: JSON.stringify({
+        activeSeconds: ACTIVITY_HEARTBEAT_SECONDS
+      })
+    });
+  }catch(error){
+    console.warn("Activity heartbeat failed:", error);
+  }
+}
+
+function stopActivityHeartbeat(){
+  if(activityHeartbeatTimer){
+    clearInterval(activityHeartbeatTimer);
+    activityHeartbeatTimer = null;
+  }
+  activityHeartbeatSession = null;
+}
+
+function startActivityHeartbeat(session){
+  stopActivityHeartbeat();
+
+  if(!session?.access_token){
+    return;
+  }
+
+  activityHeartbeatSession = session;
+  activityHeartbeatTimer = setInterval(() => {
+    if(document.visibilityState !== "visible"){
+      return;
+    }
+    postActivityPing(activityHeartbeatSession);
+  }, ACTIVITY_HEARTBEAT_MS);
 }
 
 function getBackendUsageState(){
@@ -276,6 +327,7 @@ function mergeBackendAccountState(liveState, backendState){
       planSource: "guest",
       planReason: "Backend returned an unauthenticated account state.",
       subscription: null,
+      activity: null,
       session: null,
       user: null
     };
@@ -293,7 +345,8 @@ function mergeBackendAccountState(liveState, backendState){
     backendPlan,
     planSource: backendState.planSource || liveState.planSource || "unknown",
     planReason: backendState.planReason || liveState.planReason || "",
-    subscription: backendState.subscription || null
+    subscription: backendState.subscription || null,
+    activity: backendState.activity || null
   };
 }
 
@@ -428,12 +481,18 @@ async function initializeSupabaseClient(){
   const firstBackendState = await fetchBackendAccountState(firstSession);
   setLiveAuthState(mergeBackendAccountState(firstState, firstBackendState));
   await refreshAccountUsageState();
+  startActivityHeartbeat(firstSession);
 
   supabaseClient.auth.onAuthStateChange(async (_event, session) => {
     const nextState = buildLiveStateFromSession(session);
     const backendState = await fetchBackendAccountState(session);
     setLiveAuthState(mergeBackendAccountState(nextState, backendState));
     await refreshAccountUsageState();
+    if(session?.access_token){
+      startActivityHeartbeat(session);
+    }else{
+      stopActivityHeartbeat();
+    }
   });
 
   refreshAuthRuntimeStatus();

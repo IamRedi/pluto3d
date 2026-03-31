@@ -264,6 +264,9 @@ def _supabase_upsert_profile(
     stripe_customer_id: str = "",
     plan: str = "free",
     display_name: str = "",
+    last_login_at: Optional[str] = None,
+    last_seen_at: Optional[str] = None,
+    active_seconds_delta: int = 0,
 ) -> None:
     if not user_id:
         return
@@ -281,16 +284,25 @@ def _supabase_upsert_profile(
     if stripe_customer_id:
         payload["stripe_customer_id"] = stripe_customer_id
 
+    if last_login_at:
+        payload["last_login_at"] = last_login_at
+
+    if last_seen_at:
+        payload["last_seen_at"] = last_seen_at
+
     existing_by_id = _supabase_select_single(
         "profiles",
         {
-            "select": "id,email",
+            "select": "id,email,total_active_seconds",
             "id": f"eq.{user_id}",
             "limit": "1",
         },
     )
 
     if existing_by_id:
+        if active_seconds_delta > 0:
+            current_total = int(existing_by_id.get("total_active_seconds") or 0)
+            payload["total_active_seconds"] = current_total + int(active_seconds_delta)
         _supabase_patch(
             "profiles",
             params={"id": f"eq.{user_id}"},
@@ -303,7 +315,7 @@ def _supabase_upsert_profile(
         existing_by_email = _supabase_select_single(
             "profiles",
             {
-                "select": "id,email",
+                "select": "id,email,total_active_seconds",
                 "email": f"eq.{normalized_email}",
                 "limit": "1",
             },
@@ -321,12 +333,25 @@ def _supabase_upsert_profile(
         if stripe_customer_id:
             patch_payload["stripe_customer_id"] = stripe_customer_id
 
+        if last_login_at:
+            patch_payload["last_login_at"] = last_login_at
+
+        if last_seen_at:
+            patch_payload["last_seen_at"] = last_seen_at
+
+        if active_seconds_delta > 0:
+            current_total = int(existing_by_email.get("total_active_seconds") or 0)
+            patch_payload["total_active_seconds"] = current_total + int(active_seconds_delta)
+
         _supabase_patch(
             "profiles",
             params={"id": f"eq.{existing_by_email.get('id')}"},
             payload=patch_payload,
         )
         return
+
+    if active_seconds_delta > 0:
+        payload["total_active_seconds"] = int(active_seconds_delta)
 
     requests.post(
         _get_supabase_rest_url("profiles"),
@@ -524,7 +549,7 @@ def get_profile_record_for_user(user: Optional[dict]) -> Optional[dict]:
     email = normalize_email(user.get("email"))
 
     if _can_use_supabase_store():
-        select = "id,email,display_name,plan,stripe_customer_id,updated_at"
+        select = "id,email,display_name,plan,stripe_customer_id,last_login_at,last_seen_at,total_active_seconds,updated_at"
 
         if user_id:
             record = _supabase_select_single(
@@ -710,6 +735,49 @@ def ensure_profile_for_user(user: Optional[dict], *, plan: str = "free") -> None
         plan=plan,
         display_name=get_user_display_name(user),
     )
+
+
+def update_profile_activity_for_user(
+    user: Optional[dict],
+    *,
+    plan: str = "free",
+    active_seconds_delta: int = 0,
+) -> None:
+    if not user:
+        return
+
+    if not _can_use_supabase_store() or not _supabase_table_exists("profiles"):
+        return
+
+    user_id = _normalize_user_id(user.get("id"))
+    if not user_id:
+        return
+
+    seconds_delta = max(0, int(active_seconds_delta or 0))
+    if seconds_delta > 300:
+        seconds_delta = 300
+
+    _supabase_upsert_profile(
+        user_id=user_id,
+        email=user.get("email") or "",
+        stripe_customer_id=get_customer_id_for_user(user),
+        plan=plan,
+        display_name=get_user_display_name(user),
+        last_login_at=user.get("last_sign_in_at"),
+        last_seen_at=datetime.now(tz=UTC).isoformat(),
+        active_seconds_delta=seconds_delta,
+    )
+
+
+def get_activity_summary_for_user(user: Optional[dict]) -> dict:
+    profile = get_profile_record_for_user(user) or {}
+    total_seconds = int(profile.get("total_active_seconds") or 0)
+    return {
+        "lastLoginAt": profile.get("last_login_at"),
+        "lastSeenAt": profile.get("last_seen_at"),
+        "totalActiveSeconds": total_seconds,
+        "totalActiveMinutes": round(total_seconds / 60, 1),
+    }
 
 
 def get_subscription_summary_for_user(user: Optional[dict]) -> dict:
