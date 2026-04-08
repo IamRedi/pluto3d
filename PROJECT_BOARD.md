@@ -911,6 +911,7 @@ If anything is unclear, check these first in this order:
   - click and keyboard activation now open the embedded AI assistant chat instead of only returning a decorative follow-up reply
   - the widget's own floating launcher is hidden so the existing orb remains the sole visible trigger
   - the assistant panel is repositioned next to the orb area instead of opening in the widget's default bottom-right corner
+  - the assistant panel is now forced hidden on initial load and behaves as a proper orb-toggled surface with a smaller green neon shell
 - The sidebar brand lockup now renders `PLUTO` with a smaller `Ai Assist.` subtitle.
 - The top brand keeps only the wordmark and subtitle, without the square icon.
 - `Gallery` is now split into latest history and featured best work.

@@ -3227,9 +3227,158 @@ animation:shake 0.4s ease;
 display:none !important;
 }
 
+.aiw-root{
+z-index:40 !important;
+}
+
 .aiw-panel{
-max-width:min(360px, calc(100vw - 32px));
-max-height:min(520px, calc(100vh - 32px));
+width:min(340px, calc(100vw - 32px)) !important;
+height:380px !important;
+max-width:min(340px, calc(100vw - 32px));
+max-height:min(420px, calc(100vh - 32px));
+background:linear-gradient(180deg, rgba(13, 19, 16, 0.98), rgba(9, 13, 11, 0.96)) !important;
+border:1px solid rgba(104, 201, 132, 0.24) !important;
+border-radius:20px !important;
+box-shadow:
+0 18px 40px rgba(0,0,0,0.34),
+0 0 0 1px rgba(149, 232, 170, 0.04),
+0 0 28px rgba(88,184,115,0.12) !important;
+overflow:hidden !important;
+}
+
+.aiw-panel[hidden]{
+display:none !important;
+}
+
+.aiw-header{
+padding:14px 16px !important;
+background:linear-gradient(180deg, rgba(16, 23, 19, 0.98), rgba(12, 18, 15, 0.94)) !important;
+border-bottom:1px solid rgba(104, 201, 132, 0.14) !important;
+color:#dbf7e1 !important;
+font-family:Orbitron, Inter, sans-serif !important;
+font-size:14px !important;
+letter-spacing:0.06em !important;
+text-transform:uppercase !important;
+}
+
+.aiw-messages{
+padding:12px !important;
+background:
+radial-gradient(circle at top, rgba(88,184,115,0.07), transparent 38%),
+linear-gradient(180deg, rgba(11, 16, 13, 0.98), rgba(8, 12, 10, 0.96)) !important;
+}
+
+.aiw-msg{
+margin-bottom:8px !important;
+}
+
+.aiw-msg-bubble{
+padding:9px 11px !important;
+border-radius:14px !important;
+font-size:13px !important;
+line-height:1.45 !important;
+}
+
+.aiw-msg--assistant .aiw-msg-bubble{
+background:rgba(18, 26, 21, 0.96) !important;
+border:1px solid rgba(104, 201, 132, 0.14) !important;
+color:#d8f3de !important;
+}
+
+.aiw-msg--user .aiw-msg-bubble{
+background:linear-gradient(180deg, rgba(74, 132, 89, 0.98), rgba(45, 92, 57, 0.98)) !important;
+border:1px solid rgba(141, 227, 161, 0.2) !important;
+color:#f4fff6 !important;
+}
+
+.aiw-msg--error .aiw-msg-bubble{
+background:rgba(61, 22, 22, 0.96) !important;
+border:1px solid rgba(242, 120, 120, 0.28) !important;
+color:#ffdede !important;
+}
+
+.aiw-composer{
+gap:8px !important;
+padding:10px 12px 12px !important;
+border-top:1px solid rgba(104, 201, 132, 0.12) !important;
+background:rgba(10, 14, 12, 0.98) !important;
+}
+
+.aiw-input{
+min-width:0 !important;
+height:42px !important;
+border:1px solid rgba(104, 201, 132, 0.18) !important;
+border-radius:14px !important;
+background:rgba(17, 24, 20, 0.98) !important;
+color:#effbf1 !important;
+padding:0 14px !important;
+}
+
+.aiw-input::placeholder{
+color:#8ea696 !important;
+}
+
+.aiw-input:focus{
+border-color:rgba(123, 222, 147, 0.38) !important;
+box-shadow:0 0 0 1px rgba(88,184,115,0.16), 0 0 18px rgba(88,184,115,0.12) !important;
+}
+
+.aiw-send{
+height:42px !important;
+padding:0 14px !important;
+border-radius:14px !important;
+background:linear-gradient(180deg, rgba(121, 196, 141, 0.98), rgba(77, 145, 94, 0.98) 52%, rgba(43, 84, 54, 0.99) 100%) !important;
+color:#f2fff4 !important;
+border:1px solid rgba(155, 223, 171, 0.34) !important;
+box-shadow:inset 0 1px 0 rgba(225,255,231,0.18), inset 0 -10px 18px rgba(18,50,27,0.26), 0 10px 18px rgba(20, 60, 31, 0.18) !important;
+font-weight:700 !important;
+}
+
+.aiw-send:hover{
+transform:translateY(-1px);
+}
+
+.aiw-send:disabled{
+opacity:0.6 !important;
+}
+
+body[data-theme="light"] .aiw-panel{
+background:linear-gradient(180deg, rgba(240, 247, 241, 0.98), rgba(229, 237, 231, 0.97)) !important;
+border-color:rgba(74, 140, 90, 0.2) !important;
+box-shadow:0 18px 40px rgba(84, 96, 87, 0.18), 0 0 22px rgba(88,184,115,0.08) !important;
+}
+
+body[data-theme="light"] .aiw-header{
+background:linear-gradient(180deg, rgba(244, 250, 245, 0.98), rgba(233, 241, 235, 0.96)) !important;
+border-bottom-color:rgba(74, 140, 90, 0.14) !important;
+color:#21452b !important;
+}
+
+body[data-theme="light"] .aiw-messages{
+background:
+radial-gradient(circle at top, rgba(88,184,115,0.08), transparent 38%),
+linear-gradient(180deg, rgba(240, 246, 241, 0.98), rgba(232, 239, 233, 0.96)) !important;
+}
+
+body[data-theme="light"] .aiw-msg--assistant .aiw-msg-bubble{
+background:rgba(251, 255, 251, 0.94) !important;
+border-color:rgba(74, 140, 90, 0.16) !important;
+color:#21452b !important;
+}
+
+body[data-theme="light"] .aiw-composer{
+background:rgba(236, 243, 237, 0.98) !important;
+border-top-color:rgba(74, 140, 90, 0.12) !important;
+}
+
+body[data-theme="light"] .aiw-input{
+background:rgba(251, 255, 252, 0.98) !important;
+color:#17361d !important;
+border-color:rgba(74, 140, 90, 0.16) !important;
+}
+
+body[data-theme="light"] .aiw-input::placeholder{
+color:#6f8474 !important;
 }
 
 @keyframes shake{
@@ -5019,6 +5168,7 @@ function initializeOrbGreeting(){
 const orb = document.getElementById("aiOrb")
 const greeting = document.getElementById("orbGreeting")
 const orbSound = document.getElementById("orbSound")
+let assistantOpen = false
 
 if(!orb || !greeting){
   return
@@ -5102,36 +5252,75 @@ const showHoverGreeting = () => {
     hideGreeting()
   }
 
+  const getAssistantPanel = () => document.querySelector(".aiw-panel")
+
+  const syncAssistantVisibility = (open) => {
+    const widgetPanel = getAssistantPanel()
+    if(!widgetPanel){
+      return false
+    }
+
+    assistantOpen = open === true
+    widgetPanel.hidden = !assistantOpen
+    widgetPanel.setAttribute("aria-hidden", assistantOpen ? "false" : "true")
+    widgetPanel.style.pointerEvents = assistantOpen ? "auto" : "none"
+    widgetPanel.style.opacity = assistantOpen ? "1" : "0"
+    widgetPanel.style.visibility = assistantOpen ? "visible" : "hidden"
+
+    if(assistantOpen){
+      const widgetInput = document.querySelector(".aiw-input")
+      if(widgetInput){
+        window.setTimeout(() => widgetInput.focus(), 30)
+      }
+    }
+
+    return true
+  }
+
+  const ensureAssistantWidget = () => {
+    if(typeof window.initWidget === "function"){
+      window.initWidget()
+    }
+
+    const widgetPanel = getAssistantPanel()
+    if(!widgetPanel){
+      return null
+    }
+
+    widgetPanel.hidden = true
+    widgetPanel.setAttribute("aria-hidden", "true")
+    widgetPanel.style.pointerEvents = "none"
+    widgetPanel.style.opacity = "0"
+    widgetPanel.style.visibility = "hidden"
+    return widgetPanel
+  }
+
   const positionAssistantPanel = () => {
-    const widgetPanel = document.querySelector(".aiw-panel")
+    const widgetPanel = getAssistantPanel()
     if(!widgetPanel){
       return
     }
 
     const orbRect = orb.getBoundingClientRect()
-    const panelWidth = Math.min(360, window.innerWidth - 32)
-    const preferredLeft = orbRect.right + 18
+    const panelWidth = Math.min(340, window.innerWidth - 32)
+    const panelHeight = Math.min(380, window.innerHeight - 32)
+    const preferredLeft = orbRect.right + 20
     const maxLeft = window.innerWidth - panelWidth - 16
-    const fallbackLeft = Math.max(16, orbRect.left)
-    const left = Math.max(16, Math.min(preferredLeft, Math.max(16, maxLeft)))
-    const top = Math.max(16, Math.min(orbRect.top, Math.max(16, window.innerHeight - 420)))
+    const left = Math.max(16, Math.min(preferredLeft, maxLeft))
+    const preferredTop = orbRect.top + Math.max(0, (orbRect.height / 2) - 56)
+    const top = Math.max(16, Math.min(preferredTop, window.innerHeight - panelHeight - 16))
 
-    widgetPanel.style.left = `${preferredLeft <= maxLeft ? left : fallbackLeft}px`
+    widgetPanel.style.left = `${left}px`
     widgetPanel.style.right = "auto"
     widgetPanel.style.top = `${top}px`
     widgetPanel.style.bottom = "auto"
     widgetPanel.style.width = `${panelWidth}px`
-    widgetPanel.style.height = "400px"
+    widgetPanel.style.height = `${panelHeight}px`
   }
 
   const toggleAssistantChat = () => {
-    if(typeof window.initWidget === "function"){
-      window.initWidget()
-    }
-
-    const widgetBubble = document.querySelector(".aiw-bubble")
-    if(!widgetBubble){
-      window.setTimeout(positionAssistantPanel, 120)
+    const widgetPanel = ensureAssistantWidget()
+    if(!widgetPanel){
       return
     }
 
@@ -5140,9 +5329,16 @@ const showHoverGreeting = () => {
     scheduleHide(0)
     playOrbSound()
     shakeOrb()
-    widgetBubble.click()
+    syncAssistantVisibility(!assistantOpen)
     window.requestAnimationFrame(positionAssistantPanel)
   }
+
+  ensureAssistantWidget()
+  window.setTimeout(() => {
+    ensureAssistantWidget()
+    positionAssistantPanel()
+    syncAssistantVisibility(false)
+  }, 120)
 
 orb.addEventListener("mouseenter", showHoverGreeting)
 orb.addEventListener("mouseleave", () => scheduleHide())
@@ -5159,7 +5355,17 @@ orb.addEventListener("click", toggleAssistantChat)
   window.addEventListener("resize", positionAssistantPanel)
 
   document.addEventListener("click", (event) => {
+    const widgetPanel = getAssistantPanel()
     if(!pinnedReply){
+      if(!assistantOpen || !widgetPanel){
+        return
+      }
+
+      if(orb.contains(event.target) || widgetPanel.contains(event.target)){
+        return
+      }
+
+      syncAssistantVisibility(false)
       return
     }
 

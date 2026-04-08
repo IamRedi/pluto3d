@@ -14,6 +14,7 @@ Historical entries below were migrated from the previous board, workflow, and ha
 - Hid the widget's default floating launcher so the existing sidebar orb remains the only visible trigger and the workspace UI does not visually change.
 - Updated the sidebar brand lockup to render `PLUTO` with a smaller `Ai Assist.` subtitle beneath it.
 - Repositioned the assistant panel so it opens beside the sidebar orb trigger instead of using the widget's default bottom-right placement.
+- Refined the assistant behavior so the panel stays hidden on initial page load, toggles only from the Pluto orb, closes cleanly on repeat click/outside click, and uses a smaller neon-green shell that fits the workspace styling better.
 
 ## 2026-03-30
 
