@@ -3298,6 +3298,8 @@ color:#ffdede !important;
 }
 
 .aiw-composer{
+display:flex !important;
+align-items:center !important;
 gap:8px !important;
 padding:10px 12px 12px !important;
 border-top:1px solid rgba(104, 201, 132, 0.12) !important;
@@ -3305,6 +3307,7 @@ background:rgba(10, 14, 12, 0.98) !important;
 }
 
 .aiw-input{
+flex:1 1 auto !important;
 min-width:0 !important;
 height:42px !important;
 border:1px solid rgba(104, 201, 132, 0.18) !important;
@@ -3324,14 +3327,17 @@ box-shadow:0 0 0 1px rgba(88,184,115,0.16), 0 0 18px rgba(88,184,115,0.12) !impo
 }
 
 .aiw-send{
+flex:0 0 auto !important;
+min-width:92px !important;
 height:42px !important;
-padding:0 14px !important;
+padding:0 18px !important;
 border-radius:14px !important;
 background:linear-gradient(180deg, rgba(121, 196, 141, 0.98), rgba(77, 145, 94, 0.98) 52%, rgba(43, 84, 54, 0.99) 100%) !important;
 color:#f2fff4 !important;
 border:1px solid rgba(155, 223, 171, 0.34) !important;
 box-shadow:inset 0 1px 0 rgba(225,255,231,0.18), inset 0 -10px 18px rgba(18,50,27,0.26), 0 10px 18px rgba(20, 60, 31, 0.18) !important;
 font-weight:700 !important;
+font-size:13px !important;
 }
 
 .aiw-send:hover{
@@ -5174,7 +5180,7 @@ if(!orb || !greeting){
   return
 }
 
-const hoverMessage = "Hello, ready?"
+const hoverMessage = "Click for info"
 let hideTimer = null
 let pinnedReply = false
 
