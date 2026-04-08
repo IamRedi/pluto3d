@@ -893,8 +893,9 @@ If anything is unclear, check these first in this order:
 - The sidebar orb now reads as `Pluto` with a softer grey-blue pulse.
 - the sidebar orb now also restores a small personality microinteraction:
   - hover shows a short greeting
-  - click returns a short follow-up reply
-  - the effect stays decorative and does not interfere with navigation or product logic
+  - click and keyboard activation now open the embedded AI assistant chat instead of only returning a decorative follow-up reply
+  - the widget's own floating launcher is hidden so the existing orb remains the sole visible trigger
+- The sidebar brand lockup now renders `PLUTO` with a smaller `Ai Assist.` subtitle.
 - The top brand keeps only the wordmark and subtitle, without the square icon.
 - `Gallery` is now split into latest history and featured best work.
 - `Shop` is intentionally simplified into one clean placeholder surface for now.

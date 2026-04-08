@@ -5,6 +5,15 @@ Update it after every meaningful change.
 
 Historical entries below were migrated from the previous board, workflow, and handoff documents.
 
+## 2026-04-08
+
+### Pluto orb assistant launch integration
+
+- Kept the existing sidebar `Pluto` orb hover/focus personality microinteraction intact while changing orb click/keyboard activation to open the embedded AI assistant chat widget.
+- Added the external assistant widget bootstrap in `frontend/index.html` using the provided `window.AI_CONFIG` public key and Railway API URL.
+- Hid the widget's default floating launcher so the existing sidebar orb remains the only visible trigger and the workspace UI does not visually change.
+- Updated the sidebar brand lockup to render `PLUTO` with a smaller `Ai Assist.` subtitle beneath it.
+
 ## 2026-03-30
 
 ### UI polish: simplify shell surfaces

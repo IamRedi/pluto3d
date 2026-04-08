@@ -1399,6 +1399,19 @@ letter-spacing:0.08em;
 text-transform:uppercase;
 
 }
+.logo-title{
+display:block;
+}
+.logo-subtitle{
+display:block;
+margin-top:4px;
+font-family:Inter, sans-serif;
+font-size:11px;
+font-weight:500;
+letter-spacing:0.12em;
+text-transform:none;
+color:var(--text-soft);
+}
 .logo-container{
 display:flex;
 flex-direction:column;
@@ -3200,6 +3213,10 @@ box-shadow:
 animation:shake 0.4s ease;
 }
 
+.aiw-bubble{
+display:none !important;
+}
+
 @keyframes shake{
 0%{transform:translate(0,0);}
 25%{transform:translate(1px,-1px);}
@@ -4177,7 +4194,10 @@ padding-bottom:18px;
 
 </div>
 
-<div id="sidebarBrandName" class="logo">Pluto</div>
+<div class="logo">
+  <span id="sidebarBrandName" class="logo-title">PLUTO</span>
+  <span class="logo-subtitle">Ai Assist.</span>
+</div>
 
 </div>
 
@@ -4948,6 +4968,13 @@ filter:none;
 <script src="print-mode.js"></script>
 <script src="toy-mode.js"></script>
 <script src="toy-studio.js"></script>
+<script>
+window.AI_CONFIG = {
+  publicKey: "73dead34-1a5f-49e0-94e6-1b1c1afd4407",
+  apiUrl: "https://clientflow-ai-production.up.railway.app"
+};
+</script>
+<script src="https://clientflow-ai-production.up.railway.app/widget.js"></script>
 
 <script>
 
@@ -4962,7 +4989,7 @@ return getPublicAppConfig().appName || "Pluto3D"
 }
 
 function getSidebarBrandName(){
-return getPublicAppConfig().sidebarBrandName || "Pluto"
+return getPublicAppConfig().sidebarBrandName || "PLUTO"
 }
 
 function getStudioName(){
@@ -4983,7 +5010,6 @@ if(!orb || !greeting){
 }
 
 const hoverMessage = "Hello, ready?"
-const replyMessage = "I'm well. How can I help?"
 let hideTimer = null
 let pinnedReply = false
 
@@ -5061,25 +5087,32 @@ const showHoverGreeting = () => {
     hideGreeting()
   }
 
-  const showReplyGreeting = () => {
-    showGreeting(replyMessage, { pin:true })
+  const toggleAssistantChat = () => {
+    if(typeof window.initWidget === "function"){
+      window.initWidget()
+    }
+
+    const widgetBubble = document.querySelector(".aiw-bubble")
+    if(!widgetBubble){
+      return
+    }
+
+    dismissReplyGreeting()
+    scheduleHide(0)
     playOrbSound()
     shakeOrb()
-    clearHideTimer()
-    hideTimer = window.setTimeout(() => {
-      dismissReplyGreeting()
-    }, 3000)
+    widgetBubble.click()
   }
 
 orb.addEventListener("mouseenter", showHoverGreeting)
 orb.addEventListener("mouseleave", () => scheduleHide())
 orb.addEventListener("focus", showHoverGreeting)
 orb.addEventListener("blur", () => scheduleHide())
-orb.addEventListener("click", showReplyGreeting)
+orb.addEventListener("click", toggleAssistantChat)
   orb.addEventListener("keydown", (event) => {
   if(event.key === "Enter" || event.key === " "){
     event.preventDefault()
-    showReplyGreeting()
+    toggleAssistantChat()
   }
   })
 
