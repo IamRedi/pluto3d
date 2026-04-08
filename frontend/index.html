@@ -3217,6 +3217,11 @@ animation:shake 0.4s ease;
 display:none !important;
 }
 
+.aiw-panel{
+max-width:min(360px, calc(100vw - 32px));
+max-height:min(520px, calc(100vh - 32px));
+}
+
 @keyframes shake{
 0%{transform:translate(0,0);}
 25%{transform:translate(1px,-1px);}
@@ -5087,6 +5092,28 @@ const showHoverGreeting = () => {
     hideGreeting()
   }
 
+  const positionAssistantPanel = () => {
+    const widgetPanel = document.querySelector(".aiw-panel")
+    if(!widgetPanel){
+      return
+    }
+
+    const orbRect = orb.getBoundingClientRect()
+    const panelWidth = Math.min(360, window.innerWidth - 32)
+    const preferredLeft = orbRect.right + 18
+    const maxLeft = window.innerWidth - panelWidth - 16
+    const fallbackLeft = Math.max(16, orbRect.left)
+    const left = Math.max(16, Math.min(preferredLeft, Math.max(16, maxLeft)))
+    const top = Math.max(16, Math.min(orbRect.top, Math.max(16, window.innerHeight - 420)))
+
+    widgetPanel.style.left = `${preferredLeft <= maxLeft ? left : fallbackLeft}px`
+    widgetPanel.style.right = "auto"
+    widgetPanel.style.top = `${top}px`
+    widgetPanel.style.bottom = "auto"
+    widgetPanel.style.width = `${panelWidth}px`
+    widgetPanel.style.height = "400px"
+  }
+
   const toggleAssistantChat = () => {
     if(typeof window.initWidget === "function"){
       window.initWidget()
@@ -5094,14 +5121,17 @@ const showHoverGreeting = () => {
 
     const widgetBubble = document.querySelector(".aiw-bubble")
     if(!widgetBubble){
+      window.setTimeout(positionAssistantPanel, 120)
       return
     }
 
+    positionAssistantPanel()
     dismissReplyGreeting()
     scheduleHide(0)
     playOrbSound()
     shakeOrb()
     widgetBubble.click()
+    window.requestAnimationFrame(positionAssistantPanel)
   }
 
 orb.addEventListener("mouseenter", showHoverGreeting)
@@ -5115,6 +5145,8 @@ orb.addEventListener("click", toggleAssistantChat)
     toggleAssistantChat()
   }
   })
+
+  window.addEventListener("resize", positionAssistantPanel)
 
   document.addEventListener("click", (event) => {
     if(!pinnedReply){

@@ -13,6 +13,7 @@ Historical entries below were migrated from the previous board, workflow, and ha
 - Added the external assistant widget bootstrap in `frontend/index.html` using the provided `window.AI_CONFIG` public key and Railway API URL.
 - Hid the widget's default floating launcher so the existing sidebar orb remains the only visible trigger and the workspace UI does not visually change.
 - Updated the sidebar brand lockup to render `PLUTO` with a smaller `Ai Assist.` subtitle beneath it.
+- Repositioned the assistant panel so it opens beside the sidebar orb trigger instead of using the widget's default bottom-right placement.
 
 ## 2026-03-30
 
