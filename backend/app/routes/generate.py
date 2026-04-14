@@ -2,10 +2,11 @@ import base64
 from pathlib import Path
 
 import requests
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Header, HTTPException, Request
 from pydantic import BaseModel
 
 from app.config import get_meshy_api_key
+from app.services.rate_limits import enforce_rate_limit
 
 router = APIRouter()
 
@@ -141,7 +142,19 @@ def _start_meshy_image_to_3d(payload: dict) -> dict:
 
 
 @router.post("/generate")
-async def generate_3d(req: GenerateRequest):
+async def generate_3d(
+    req: GenerateRequest,
+    request: Request,
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
+    enforce_rate_limit(
+        "premium_3d",
+        request=request,
+        authorization=authorization,
+        guest_key=x_pluto_guest_key,
+    )
+
     job_id = req.job_id
     job_folder = UPLOAD_DIR / job_id
 
@@ -170,12 +183,34 @@ async def generate_3d(req: GenerateRequest):
 
 
 @router.post("/image-to-3d")
-async def generate_3d_from_upload(req: GenerateRequest):
-    return await generate_3d(req)
+async def generate_3d_from_upload(
+    req: GenerateRequest,
+    request: Request,
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
+    return await generate_3d(
+        req,
+        request=request,
+        authorization=authorization,
+        x_pluto_guest_key=x_pluto_guest_key,
+    )
 
 
 @router.post("/image-to-3d-pro")
-async def generate_3d_pro(req: GenerateFromImageRequest):
+async def generate_3d_pro(
+    req: GenerateFromImageRequest,
+    request: Request,
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
+):
+    enforce_rate_limit(
+        "premium_3d",
+        request=request,
+        authorization=authorization,
+        guest_key=x_pluto_guest_key,
+    )
+
     image_url = (req.image_url or "").strip()
 
     if not image_url:

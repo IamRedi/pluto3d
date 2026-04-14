@@ -5,6 +5,22 @@ Update it after every meaningful change.
 
 Historical entries below were migrated from the previous board, workflow, and handoff documents.
 
+## 2026-04-14
+
+### Backend protection: generation cooldowns and rate limits
+
+- Added a backend-owned rate-limit service for the cost-sensitive generation routes so repeated requests are blocked before Replicate, Meshy, or SVG processing work starts.
+- Applied backend cooldown + rolling-window protection to:
+  - `POST /api/ai-photo`
+  - `POST /api/svg`
+  - `POST /api/svg-from-image`
+  - `POST /api/generate`
+  - `POST /api/image-to-3d`
+  - `POST /api/image-to-3d-pro`
+- Wired frontend generation requests to send either the authenticated bearer token or the stable guest key so the backend can identify repeat callers more reliably than frontend-only local usage counters.
+- Improved frontend error handling so rate-limit responses now surface as clear user-facing wait messages instead of generic failures.
+- Declared `backend/data/usage_state.json` runtime-only state and ignored it in git so local protection counters are not committed as source history.
+
 ## 2026-04-08
 
 ### Pluto orb assistant launch integration

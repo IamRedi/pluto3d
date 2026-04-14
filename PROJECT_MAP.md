@@ -107,6 +107,8 @@ backend/
   - AI request helpers
 - `backend/app/services/auth.py`
   - Supabase user verification
+- `backend/app/services/rate_limits.py`
+  - backend cooldown and rolling-window protection for cost-sensitive generation routes
 - `backend/app/services/billing.py`
   - billing config and runtime helpers
 - `backend/app/services/subscriptions.py`
@@ -140,16 +142,19 @@ backend/
 - `POST /api/image-to-3d`
 - `POST /api/image-to-3d-pro`
 - `GET /api/job/{task_id}`
+- Meshy-backed generation start routes now enforce backend rate limits before task creation
 
 ### SVG
 
 - `POST /api/svg`
 - `POST /api/svg-from-image`
 - `POST /api/silhouette`
+- SVG generation routes now enforce backend rate limits before conversion work starts
 
 ### AI Photo
 
 - `POST /api/ai-photo`
+- the AI photo route now enforces backend rate limits before Replicate is called
 
 ### Toy And Print
 

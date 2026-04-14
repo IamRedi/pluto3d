@@ -48,6 +48,20 @@ function getGuestActivityKey(){
   }
 }
 
+function getPlutoRequestIdentityHeaders(extraHeaders = {}){
+  const headers = { ...extraHeaders };
+  const liveState = getLiveAuthState();
+  const accessToken = liveState?.session?.access_token || "";
+
+  if(accessToken){
+    headers.Authorization = `Bearer ${accessToken}`;
+    return headers;
+  }
+
+  headers["X-Pluto-Guest-Key"] = getGuestActivityKey();
+  return headers;
+}
+
 async function fetchBackendAccountState(session){
   if(!session?.access_token || typeof API_BASE === "undefined"){
     return null;
@@ -501,6 +515,7 @@ window.PLUTO_LIVE_AUTH_STATE = { ...DEFAULT_LIVE_STATE };
 window.refreshAuthRuntimeStatus = refreshAuthRuntimeStatus;
 window.getAuthRuntimeStatus = getAuthRuntimeStatus;
 window.getLiveAuthState = getLiveAuthState;
+window.getPlutoRequestIdentityHeaders = getPlutoRequestIdentityHeaders;
 window.signInWithGoogleReal = signInWithGoogleReal;
 window.signInWithEmailReal = signInWithEmailReal;
 window.signUpWithEmailReal = signUpWithEmailReal;

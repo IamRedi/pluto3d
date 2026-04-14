@@ -1,17 +1,29 @@
 import os
-from fastapi import APIRouter, Form, UploadFile, File
+from fastapi import APIRouter, File, Form, Header, Request, UploadFile
 import replicate
+
+from app.services.rate_limits import enforce_rate_limit
 
 router = APIRouter()
 
 @router.post("/api/ai-photo")
 async def ai_photo(
+    request: Request,
     prompt: str = Form(""),
     style: str = Form(""),
-    image: UploadFile = File(None)
+    image: UploadFile = File(None),
+    authorization: str | None = Header(default=None),
+    x_pluto_guest_key: str | None = Header(default=None, alias="X-Pluto-Guest-Key"),
 ):
 
     try:
+        enforce_rate_limit(
+            "ai_photo",
+            request=request,
+            authorization=authorization,
+            guest_key=x_pluto_guest_key,
+        )
+
         api_token = os.getenv("REPLICATE_API_TOKEN")
 
         if not api_token:

@@ -1,6 +1,6 @@
 # Pluto3D Current State
 
-Last updated: `2026-03-30`
+Last updated: `2026-04-14`
 Active branch: `develop`
 Local checkpoint used for this snapshot: `6c04d9b` + current working tree updates
 
@@ -172,6 +172,12 @@ This records how **hosted** backend/frontend update today; it is configured in *
 - premium locks follow backend-owned account state
 - Stripe billing scaffold and activation endpoints exist
 - local testing remains intentionally more permissive than production
+- backend generation spam protection is now active for the cost-sensitive routes:
+  - `AI Photo` uses backend cooldown + rolling-window limits
+  - `SVG` generation uses backend cooldown + rolling-window limits
+  - `Premium 3D` / Meshy generation uses backend cooldown + rolling-window limits
+- frontend generation requests now send either the live bearer token or the stable guest key so backend rate limits can distinguish repeated requests by the same visitor
+- local backend rate-limit state is persisted in `backend/data/usage_state.json` and intentionally ignored by git as runtime state, not source code
 
 ## What Is In Progress
 
@@ -208,6 +214,7 @@ This records how **hosted** backend/frontend update today; it is configured in *
 - the current Transparent Textures background should be replaced or fully cleared before sale
 - the exact Replicate model license snapshot still needs to be recorded for commercial readiness
 - final live Stripe checkout, webhook, and portal smoke tests are still operational follow-up work
+- backend rate limiting currently uses local JSON persistence, which is enough for the current single-instance path but should move to a shared store before multi-instance scaling
 
 ## Current Working Boundaries
 

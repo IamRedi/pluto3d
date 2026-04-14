@@ -20,6 +20,7 @@ Pluto3D Studio is a web app that converts images and prompts into SVG or 3D outp
 - SVG conversion
 - 3D generation
 - Toy test mode with local reference models
+- backend cooldown and rate-limit protection on cost-sensitive generation routes
 - Print Fix:
   - GLB input
   - topology cleanup
